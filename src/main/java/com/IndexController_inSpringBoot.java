@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.morning.emp.model.EmpService;
 import com.morning.emp.model.EmpVO;
+import com.morning.leave.model.LeaveService;
+import com.morning.leave.model.LeaveVO;
 import com.morning.mem.controller.ViewController;
 import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
@@ -37,6 +39,9 @@ public class IndexController_inSpringBoot  extends ViewController {
 	
 	@Autowired
 	MemService memSvc;
+	
+	@Autowired
+	LeaveService leaveSvc;
 	
 	
 	
@@ -258,4 +263,20 @@ public class IndexController_inSpringBoot  extends ViewController {
 	   
 	   return "test2";
    }
+   
+   @GetMapping("/back-end/leave/listAllLeave")
+	public String listAllLeave(HttpSession session,Model model) {
+	   EmpVO empVO = (EmpVO) session.getAttribute("empVO");
+       if (empVO != null) {
+           model.addAttribute("empVO", empVO);
+       }
+		return "back-end/leave/listAllLeave";
+	}
+   @ModelAttribute("leaveListData")  // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
+  	protected List<LeaveVO> referenceListData3(Model model) {
+  		
+      	List<LeaveVO> list = leaveSvc.getAll();
+      	
+  		return list;
+  	}
 }
