@@ -103,9 +103,9 @@ button {
 }
 .morning-code {
   position: absolute;
-  width: 132px;
+  width: 50px;
   height: 30px;
-  top: 67px;
+  top: 30px;
   left: 80px;
   cursor: pointer;
   color: #000000;
@@ -118,6 +118,11 @@ button {
   border: none;
   z-index: 26;
 }
+ img.imgsmall {
+        width: 100px; 
+        height: 100px; 
+    }
+    
 .heading {
   display: flex;
   flex-direction: column;

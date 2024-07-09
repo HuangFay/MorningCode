@@ -20,38 +20,54 @@
 	button {
 		padding: 5px;
 	}
-	form {
-		display: table;
-	}
-	form div {
-		display: table-row;
-	}
+	
 	label, input, span, select {
 		display: table-cell;
 		margin: 5px;
 		text-align: left;		
 	}
 	input[type=text], input[type=password], select, textarea {
-		width: 200px;
-		margin: 5px;
+			margin-right: 8px;
+  box-shadow:  inset 2px 2px 5px #BABECC, inset -5px -5px 10px  #FFF;
+  width: 97%;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+  appearance: none;
+  -webkit-appearance: none;
 	}
-	form div div {
-		display: table-cell;
-	}
+	
 	.center {
         margin-left: auto;
         margin-right: auto;
     }
+     .error {
+
+    color: red; 
+}
+#formContent {
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+  background: #fff;
+  margin: 10px auto;
+	
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+  padding: 0px;
+  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  text-align: center;
+}
 </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+<nav >
 		 <div align="center"> <h2>會員資料新增 - addMem.html</h2>
 		 <h3><a class="navbar-brand" th:href="@{/back-end/mem/listAllMem}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3></div>
 </nav>
 
-	<div align="center">
+	<div id="formContent">
 		<h3><b>所有欄位皆為必填欄位</b></h3>
 		<form th:action="@{insert}" method="post" th:object="${memVO}" enctype="multipart/form-data">
 			
