@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   
+    <title>G by C</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&display=swap" />
+   <link rel="stylesheet" th:href="@{/css/index3.css}">
+   <link rel="stylesheet" th:href="@{/css/emplogin.css}">
+  </head>
+  <body>
+    <div class="main-container">
+      <div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+     
+     
+     
+     
+     <div class="right-pane">
+      <div class="login">
+        <div class="login-header">
+          <h1>員工登入</h1>
+        </div>
+        <div class="login-form">
+          <h3>員工帳號:</h3>
+          <input type="text" class="Username" placeholder="Username"/><br>
+          <h3>員工密碼:</h3>
+          <input type="password" class="Password" placeholder="Password"/>
+          <br>
+          <input type="button" value="登登登登" class="login-button"/>
+          <br>
+          
+        </div>
+      </div>
+      <div class="error-page">
+        <div class="try-again">錯誤:在試一次?</div>
+      </div>
+     </div>
+     
+     
+     
+    </div>
+   
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+   
+    
+    
+    <script th:inline="javascript">
+     $("a.aa").on("click",function(){
+        console.log(this);
+       
+        var $li = $(this).closest("li"); 
+        $li.find("div.menu-item-1").slideToggle();
+        $li.siblings().find(".menu-item-1").slideUp();
+      });
+     
+     
+     $('.error-page').hide(0);
+     
+     
+     //登入
+     $('.login-button').on('click',function(){
+    	 var emplogin ={
+    			 empAccount : $('.Username').val(),
+    			 empPassword : $('.Password').val()
+    	 };
+    	 
+     //簡單驗證
+     if(!emplogin.empAccount){
+    	 alert("蝦嗎?");
+    	 return;
+     }
+     if(!emplogin.empPassword){
+    	 alert("蝦啊?");
+    	 return;
+     }
+     
+     
+     
+    
+     //發送ajax請求,上線要轉/CIA10206-Webapp3/api/emplogin
+     $.ajax({
+    	 type : "POST",
+			url :  /*[[@{/api/emplogin}]]*/ "",
+			contentType : "application/json",
+			data : JSON.stringify(emplogin),
+    	 success : function(response){
+    		 alert("准奏");
+    		 
+    		 window.location.href = /*[[@{/index3}]]*/ "";
+    	 },
+    	 error : function(xhr){
+    		 if(xhr.status === 401 ){
+    			 alert("還敢皮啊?");
+    			   $('.login').slideUp(500);
+      		     $('.error-page').slideDown(1000);
+    		 }else{
+    			//驗證後處理錯誤邏輯
+    			alert("錯錯" + xhr.responseText);
+    		  
+    			 
+    		 }
+    	 }
+    	 
+    	 
+    	 
+     });
+     
+  
+     
+     });
+     $('.try-again').click(function(){
+         $('.error-page').hide(0);
+         $('.login').slideDown(1000);
+       });
+    
+     function redirectTo(url) {
+			window.location.href = url;
+		}
+     
+     $('.Username, .Password').on('keypress', function(e) {
+         if (e.which === 13) { // Enter鍵的鍵碼是13
+             $('.login-button').click();
+         }
+     });
+     
+     
+    
+    </script>
+  </body>
+</html>

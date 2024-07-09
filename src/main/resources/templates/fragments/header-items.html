@@ -1,0 +1,49 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+ 
+ 
+<div th:fragment="navigation">
+ 
+        <div class="items">
+          <span class="page"onclick="redirectTo('test1')">最新消息</span>
+          <span class="page">瀏覽餐點</span>
+          <span class="page">討論區</span>
+          <span class="page">訂位</span>
+          <span class="page">購物車</span>
+          
+          
+          
+         
+          <button th:if="${memVO == null}" class="button" onclick="redirectTo('signup')">
+            <span class="login-register">登入/註冊</span>
+          </button>
+          <div class="dropdown" th:if="${memVO != null}" >
+           <button class="button" >
+            <span class="login-register">會員中心</span>
+          </button>
+          
+          <div class="dropdown-content">
+            <a href="#" onclick="redirectTo('customSettings')">個人資料管理</a>
+            <a href="#" onclick="redirectTo('test1')">訂單查詢</a>
+            <a href="#" onclick="redirectTo('test2')">收藏餐點查詢</a>
+            <a href="#" onclick="redirectTo('test3')">客服功能</a>
+            <a href="#" onclick="redirectTo('logout')">登出</a>
+          </div>
+          </div>
+         
+        
+          
+       
+        <div th:if="${memVO != null}" class="welcome-message">
+             <span class="page">歡迎會員： <span th:text="${memVO.memName}"></span></span>
+        </div>
+          
+          
+          
+          
+        </div>
+        <!-- 以上是功能欄 -->
+       
+        
+        <button class="morning-code" onclick="redirectTo('index2')" >morning code</button>
+      </div>

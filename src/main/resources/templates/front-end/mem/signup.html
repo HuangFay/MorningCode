@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>login and register form</title>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel='stylesheet'
+	href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'>
+<link rel="stylesheet" th:href="@{/css/signup.css}">
+
+</head>
+<body>
+	<!-- partial:index.partial.html -->
+	<div class="wrapper">
+		<div class="login is-active">
+			<div class="profile"></div>
+			<div class="form-element">
+				<span><i class="fa fa-envelope"></i></span><input type="email"
+					class="login-email" placeholder="請輸入Email " />
+			</div>
+			<div class="form-element">
+				<span><i class="fa fa-lock"></i></span><input type="password"
+					class="login-password" placeholder=" 密碼" />
+			</div>
+			<button class="btn-login">登入</button>
+
+		</div>
+
+		<div class="register down">
+			<div class="form-element">
+				<span><i class="fa fa-user"></i></span><input type="text"
+					class="name" placeholder="姓名" />
+			</div>
+			<div class="form-element">
+				<span><i class="fa fa-envelope"></i></span><input type="email"
+					class="email" placeholder="請輸入Email" />
+			</div>
+			<div class="form-element">
+				<span><i class="fa fa-lock"></i></span><input type="password"
+					class="password" placeholder="密碼" />
+			</div>
+			<div class="form-element">
+				<span><i class="fa fa-lock"></i></span><input type="password"
+					class="confirm-password" placeholder="重新輸入密碼" />
+			</div>
+
+
+			<div class="form-element">
+				<span><i class="fa fa-map-marker"></i></span><input type="text"
+					class="address" placeholder="輸入地址" />
+			</div>
+
+			<div class="form-element">
+				<span><i class="fa fa-mobile"></i></span><input type="text"
+					class="phone" placeholder="電話" />
+			</div>
+
+			<div class="form-element">
+				<span><i class="fa fa-venus-mars"></i></span> <select class="gender">
+					<option value="M">男</option>
+					<option value="F">女</option>
+				</select>
+			</div>
+
+
+
+			<div class="form-element">
+				<span><i class="fa fa-credit-card"></i></span><input type="text"
+					class="id" placeholder="身分證號" />
+			</div>
+
+			<div class="form-element">
+				<span><i class="fa fa-birthday-cake"></i></span><input type="date"
+					class="birthday" placeholder="生日" />
+			</div>
+
+
+
+
+
+
+			<button class="btn-register">註冊</button>
+		</div>
+
+		<div class="login-view-toggle">
+			<div class="forget-password">
+				<a href="#">無法登入?</a>
+			</div>
+			<div class="sign-up-toggle is-active">
+				沒有帳號嗎? <a href="#">註冊</a>
+			</div>
+			<div class="login-toggle">
+				已有帳號? <a href="#">登入</a>
+			</div>
+		</div>
+
+	
+		<div class="forget" style="display: none;">
+			<div class="form-element">
+				<span><i class="fa fa-birthday-cake"></i></span><input type="text" id="forget-password" class="forget-password1" placeholder="輸入email" />
+			</div>
+			<button id="btn-forget" class="btn-forget">發送至信箱</button>
+
+
+		</div>
+		
+		<button class="morning-code" onclick="redirectTo('index2')" >morning code</button>
+		
+		
+	</div>
+		<!-- partial -->
+		<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+		<script th:src="@{/js/signup.js}"></script>
+
+
+
+		<!-- ================================================================================================== -->
+
+		<script th:inline="javascript">
+			$(function() {
+				// 註冊按鈕
+				$('.btn-register').on('click', function() {
+					var account = {
+						memName : $('.name').val(),
+						memEmail : $('.email').val(),
+						memPassword : $('.password').val(),
+						memAddress : $('.address').val(),
+						memPhone : $('.phone').val(),
+						memSex : $('.gender').val(),
+						memUid : $('.id').val(),
+						memDob : $('.birthday').val()
+					};
+
+					// 簡單驗證
+					if (account.memPassword !== $('.confirm-password').val()) {
+						alert("密碼不匹配");
+						return;
+					}
+
+					// 發送AJAX请求
+					$.ajax({
+						type : "POST",
+						url :  /*[[@{/api/register}]]*/ "",
+						contentType : "application/json",
+						data : JSON.stringify(account),
+						success : function(response) {
+							alert(response);
+							window.location.href = /*[[@{/index2}]]*/ "";
+						},
+						error : function(xhr) {
+							alert("註冊失敗: " + xhr.responseText);
+						}
+					});
+				});
+
+				//登入
+				$('.btn-login').on('click', function() {
+					var login = {
+						memEmail : $('.login-email').val(),
+						memPassword : $('.login-password').val()
+					};
+
+					//簡單驗證
+					if (!login.memEmail) {
+						alert("帳號呢?");
+						return;
+					}
+					if (!login.memPassword) {
+						alert("我帶著善意做這個網頁,你連密碼都不打?");
+						return;
+					}
+
+					//發送ajax請求
+					$.ajax({
+						type : "POST",
+						url :  /*[[@{/api/login}]]*/ "",
+						contentType : "application/json",
+						data : JSON.stringify(login),
+						success : function(response) {
+							alert("啾咪");
+							 window.location.href = /*[[@{/index2}]]*/ "";
+						},
+						error : function(xhr) {
+							if (xhr.status === 401) {
+								alert("親,帳號密碼有誤喔!");
+							} else {
+								alert("登入失敗: " + xhr.responseText);
+							}
+						}
+					});
+
+				});
+				
+				
+				//忘記密碼
+				$('#btn-forget').on('click',function(){
+				    var email = $('#forget-password').val().trim();
+				    
+				    if (!email) {
+				        alert("请输入Email");
+				        return;
+				    }
+
+				    $.ajax({
+				        type : "POST",
+				    	url :  /*[[@{/api/forgot-password}]]*/ "",
+				        contentType : "application/json",
+				        data: JSON.stringify({ "email": email }),
+				        success: function(response) {
+				            alert(response.message);
+				        },
+				        error: function(xhr, status, error) {
+				            var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : "發送失敗";
+				            alert(errorMessage);
+				        }
+				    });
+				});
+
+			});
+		</script>
+		<script>
+      function redirectTo(url) {
+          window.location.href = url;
+      }
+  </script>
+</body>
+</html>

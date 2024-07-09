@@ -1,0 +1,68 @@
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>員工資料 - listOneEmp.html</title>
+
+<head th:insert="~{/back-end/emp/included-fragment}"></head>
+<style type="text/css">
+	
+    span {
+		display: inline-block;
+		width: 150px;
+		text-align: left;
+		font-weight: bold;
+	}
+	#formContent {
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+  background: #fff;
+  margin: 100px auto;
+
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+  padding: 0px;
+  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+		 <div align="center"> <h2>員工個人資料 - listOneEmp.html</h2>
+		 <h3><a class="navbar-brand" th:href="@{/back-end/emp/listAllEmp}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3></div>
+</nav>
+
+	<div align="center" th:fragment="listOneEmp-div" id="formContent"> <!-- 此div被select_page.html第158行insert用 -->
+		<h3><span>查詢結果 :</span></h3>
+		<span>員工編號:</span><span th:text="${empVO.empId}"></span><br/>
+		<span>員工姓名:</span><span th:text="${empVO.empName}"></span><br/>
+		<span>帳號:</span><span th:text="${empVO.empAccount}"></span><br/>
+		<span>密碼:</span><span th:text="${empVO.empPassword}"></span><br/>
+		<span>電話:</span><span th:text="${empVO.empPhone}"></span><br/>
+		<span>地址:</span><span th:text="${empVO.empAddress}"></span><br/>
+		<span>email:</span><span th:text="${empVO.empEmail}"></span><br/>
+		<span>雇用日期:</span><span th:text="${empVO.empHiredate}"></span><br/>
+		<span>狀態:</span><span th:text="${empVO.empStatus ==0? '奴':'割'}"></span><br/>
+		<span>照片:</span><span><img th:src="@{/emp/DBGifReader} + '?empid=' + ${empVO.empId}" width="100px"></span><br/>
+		 <h3>員工權限</h3>
+        <div>
+            <ul>
+                <li th:each="func : ${empVO.functions}">
+                    <span th:text="${func.functionName}"></span>
+                </li>
+            </ul>
+        </div>
+	</div>
+	 
+	  
+
+</body>
+</html>

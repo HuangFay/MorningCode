@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>G by C</title>
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+<link rel="stylesheet" th:href="@{/css/index2.css}" />
+<link rel="stylesheet" th:href="@{/css/customSettings.css}" />
+<link rel='stylesheet'
+	href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'>
+</head>
+<body>
+    <div class="main-container">
+     <div th:replace="fragments/header-items :: navigation"></div>
+        <div class="customSettings">
+            <div class="form-section">
+                <h2>會員資料</h2>
+                <form id="updateForm" th:object="${memVO}">
+                    <div>
+                        <label for="memName">姓名:</label> <input type="text" id="memName" name="memName" th:value="${memVO.memName}" />
+                    </div>
+                    <div>
+                        <label for="memEmail">Email:</label> <input type="text" id="memEmail" name="memEmail" th:value="${memVO.memEmail}" />
+                    </div>
+                    <div>
+                        <label for="memPassword">密碼:</label> <input type="password" id="memPassword" name="memPassword" th:value="${memVO.memPassword}" />
+                         <button type="button" onclick="togglePasswordVisibility()">wink~wink~</button>
+                    </div>
+                    <div>
+                        <label for="memAddress">地址:</label> <input type="text" id="memAddress" name="memAddress" th:value="${memVO.memAddress}" />
+                    </div>
+                    <div>
+                        <label for="memPhone">電話:</label> <input type="text" id="memPhone" name="memPhone" th:value="${memVO.memPhone}" />
+                    </div>
+                    <div>
+                        <label for="memUid">身分證字號:</label> <input type="text" id="memUid" name="memUid" th:value="${memVO.memUid}" />
+                    </div>
+                    <div>
+                        <label for="memSex">性別:</label> <select id="memSex" name="memSex">
+                            <option value="M" th:selected="${memVO.memSex == 'M'}">男</option>
+                            <option value="F" th:selected="${memVO.memSex == 'F'}">女</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="memDob">生日:</label> <input type="date" id="memDob" name="memDob" th:value="${memVO.memDob}" />
+                    </div>
+                    
+                    
+                    <button type="button" onclick="updateMember()">更新資料</button>
+                </form>
+            </div>
+            
+           
+         		<div>
+    <label for="memVerified">驗證狀態:</label>
+    <span th:if="${memVO.memVerified == 0}">
+        <i class="fa fa-times"></i> 未驗證
+    </span> 
+    <span th:if="${memVO.memVerified == 1}">
+        <i class="fa fa-check"></i> 已驗證
+    </span>
+</div>
+
+            
+            
+            <div class="image-section">
+                <div>
+                    <label for="upFiles">圖片:</label>
+                    <input type="file" id="upFiles" name="upFiles" />
+                </div>
+                <div>
+                    <!-- 顯示會員圖片 -->
+                    <img th:if="${memVO.upFiles != null}" id="currentImage" th:src="@{'/api/memberImage/' + ${memVO.memNo}}" style="max-width: 200px; max-height: 200px;" />
+                    <img id="previewImage" style="max-width: 200px; max-height: 200px; display: none;" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+
+    <script th:inline="javascript">
+        function redirectTo(url) {
+            window.location.href = url;
+        }
+
+        document.getElementById('upFiles').addEventListener('change', function() {
+            previewImage();
+        });
+
+        function previewImage() {
+            var fileInput = document.getElementById('upFiles');
+            var previewImg = document.getElementById('previewImage');
+
+            if (fileInput.files && fileInput.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = 'block'; // 顯示預覽圖片
+                    currentImage.style.display = 'none'; // 顯示預覽圖片
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+
+        function updateMember() {
+            var updatedMember = {
+                memName: document.getElementById('memName').value,
+                memEmail: document.getElementById('memEmail').value,
+                memPassword: document.getElementById('memPassword').value,
+                memAddress: document.getElementById('memAddress').value,
+                memPhone: document.getElementById('memPhone').value,
+                memUid: document.getElementById('memUid').value,
+                memSex: document.getElementById('memSex').value,
+                memDob: document.getElementById('memDob').value,
+            };
+            var fileInput = document.getElementById('upFiles');
+            
+            if(!updatedMember.memName){
+            	alert("名字不可為空");
+            	return;
+            }
+            
+            if (fileInput.files.length > 0) {
+                var file = fileInput.files[0];
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    updatedMember.upFiles = reader.result.split(',')[1]; // Base64 data
+                    sendUpdateRequest(updatedMember);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                sendUpdateRequest(updatedMember);
+            }
+        }
+
+        function sendUpdateRequest(updatedMember) {
+            $.ajax({
+                type: "PUT",
+                url :  /*[[@{/api/updateMember}]]*/ "",
+                contentType: "application/json",
+                data: JSON.stringify(updatedMember),
+                success: function(response) {
+                    alert("資料更新成功");
+                    location.reload(); // 更新刷新畫面
+                },
+                error: function(xhr) {
+                    alert("資料更新失敗: " + xhr.responseText);
+                }
+            });
+        }
+        
+        
+        
+        
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById('memPassword');
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text"; // 切換為顯示密碼
+            } else {
+                passwordInput.type = "password"; // 切換為隱藏密碼
+            }
+        }
+        
+        
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>所有員工資料 - listAllEmp.html</title>
+<link rel="stylesheet" th:href="@{/css/index3.css}">
+
+
+<!-- dataTables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<!-- dataTables -->
+
+
+<style>
+.right-pane {
+	width: 79%; /* 调整頁面的寬度 */
+}
+
+
+
+
+
+
+   img.small {
+        width: 30px; 
+        height: 30px; 
+    }
+
+</style>
+</head>
+<body>
+<div class="main-container">
+		<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+
+
+
+
+		<div class="right-pane">
+		<!-- star -->
+		<div align="center">
+		
+			<h3>所有會員資料 - listAllMem.html
+				<a class="navbar-brand" th:href="@{/back-end/mem/listAllMem}"><img
+					th:src="@{/images/hihihi.gif}" class="small" >回查詢頁<label th:text="${success}"></label></a>
+			</h3>
+		</div>
+		
+		
+					<!-- 新增會員按鈕 -->
+	<div id="table-controls" style="display: flex;">
+    <div id="addMemButton" class="addmem">
+       <a th:href="@{/mem/addMem}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">新增盤子</a>
+    </div>
+</div>
+		
+		
+		
+		
+		<table id="example" class="display" style="width: 5%">
+		<thead>
+		<tr style="background-color: #CCCCFF">
+				
+				<th>會員編號</th>
+				<th>會員帳號</th>
+				<th>會員姓名</th>
+				<th>員工密碼</th>
+				<th>地址</th>
+				<th>電話</th>
+				<th>身分證</th>
+				<th>性別</th>
+				<th>生日</th>
+				<th>驗證</th>
+				<th>照騙</th>
+	
+
+				<th>功能</th>
+			
+			</tr>
+		</thead>
+			
+		<tbody>
+			<th:block th:each="memVO : ${memListData}">
+				<tr>
+					
+					<td th:text="${memVO.memNo}"></td>
+					<td th:text="${memVO.memEmail}"></td>
+					<td th:text="${memVO.memName}"></td>
+					<td th:text="${memVO.memPassword}"></td>
+					<td th:text="${memVO.memAddress}"></td>
+					<td th:text="${memVO.memPhone}"></td>
+					<td th:text="${memVO.memUid}"></td>
+					<td th:text="${memVO.memSex}"></td>
+					<td th:text="${memVO.memDob}"></td>
+					
+					
+					<td><span th:if="${memVO.memVerified == 0}">未驗證</span>
+					 <span th:if="${memVO.memVerified == 1}">已驗證</span></td>
+					
+					
+					<td><img th:src="@{/mem/DBGifReader1} + '?memno=' + ${memVO.memNo}" width="100px" height="100px" ></td>
+					
+					<td>
+						<form method="post" th:action="@{/mem/getOne_For_Update}"
+							style="margin-bottom: 0px;">
+							<input type="submit" value="修改"> <input type="hidden"
+								name="memNo" th:value="${memVO.memNo}">
+						</form>
+
+					
+						<form method="post" th:action="@{/mem/delete}"
+							style="margin-bottom: 0px;">
+							<input type="submit" value="刪除"> <input type="hidden"
+								name="memNo" th:value="${memVO.memNo}">
+						</form>
+					</td>
+					
+				</tr>
+			</th:block>
+		</tbody>
+		</table>
+		<!-- end -->
+		</div>
+</div>		
+
+
+</body>
+<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<script th:inline="javascript">
+$(document).ready(
+		function() {
+
+$("a.aa").on("click", function() {
+	console.log(this);
+	var $li = $(this).closest("li");
+	$li.find("div.menu-item-1").slideToggle();
+	$li.siblings().find(".menu-item-1").slideUp();
+});
+
+function redirectTo(url) {
+	window.location.href = url;
+}
+
+
+new DataTable('#example', {
+	
+	"lengthMenu" : [ 3, 5, 10, 20, 50,
+			100 ],
+	"searching" : true, //搜尋功能, 預設是開啟
+	"paging" : true, //分頁功能, 預設是開啟
+	"ordering" : true, //排序功能, 預設是開啟
+	"language" : {
+		"processing" : "處理中...",
+		"loadingRecords" : "載入中...",
+		"lengthMenu" : "顯示 _MENU_ 筆結果",
+		"zeroRecords" : "沒有符合的結果",
+		"info" : "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+		"infoEmpty" : "顯示第 0 至 0 筆結果，共 0 筆",
+		"infoFiltered" : "(從 _MAX_ 筆結果中過濾)",
+		"infoPostFix" : "",
+		"search" : "搜尋:",
+		"paginate" : {
+			"first" : "第一頁",
+			"previous" : "上一頁",
+			"next" : "下一頁",
+			"last" : "最後一頁"
+		},
+		"aria" : {
+			"sortAscending" : ": 升冪排列",
+			"sortDescending" : ": 降冪排列"
+		}
+	}
+});
+
+
+
+
+		});
+</script>
+</html>

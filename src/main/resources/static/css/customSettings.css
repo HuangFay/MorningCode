@@ -1,0 +1,35 @@
+.customSettings {
+    width: 100%;
+    max-width: 1000px;
+    max-height: 400px; /* 設置最大高度 */
+    -webkit-backface-visibility: hidden;/*關閉背面可見性  帥帥帥*/
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    color: #47525d;
+    -webkit-box-shadow: 1px 5px 6px 0px black;
+    box-shadow: 1px 5px 6px 0px black;
+    border-radius: 22px;
+    position: absolute;
+    top: 17%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: space-between; /* 彼此的空間 */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.form-section {
+    width: 35%; /* 左邊部分的寬度 */
+}
+
+.image-section {
+    width: 30%; /* 右邊部分的寬度 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.customSettings div {
+    margin-bottom: 10px;
+}

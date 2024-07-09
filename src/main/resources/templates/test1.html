@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>G by C</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&display=swap" />
+   <link rel="stylesheet" th:href="@{/css/index3.css}">
+   <link rel="stylesheet" th:href="@{/css/emplogin.css}">
+  </head>
+  <body>
+    <div class="main-container">
+      <div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+      <div class="right-pane">
+      
+<h1>12</h1>
+</div>
+</div>
+
+   <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script>
+     $("a.aa").on("click",function(){
+        console.log(this);
+       
+        var $li = $(this).closest("li"); 
+        $li.find("div.menu-item-1").slideToggle();
+        $li.siblings().find(".menu-item-1").slideUp();
+      });
+     function redirectTo(url) {
+			window.location.href = url;
+		}
+     </script>
+</body>
+</html>

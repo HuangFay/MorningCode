@@ -1,0 +1,53 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>員工資料 - listOneEmp.html</title>
+
+<head th:insert="~{/back-end/mem/included-fragment}"></head>
+<style type="text/css">
+	
+    span {
+		display: inline-block;
+		width: 200px;
+		text-align: left;
+		font-weight: bold;
+	}
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+		 <div align="center"> <h2>會員個人資料 - listOneMem.html</h2>
+		 <h3><a class="navbar-brand" th:href="@{/back-end/mem/listAllMem}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3></div>
+</nav>
+
+	<div align="center" th:fragment="listOneMem-div"> <!-- 此div被select_page.html第158行insert用 -->
+		<h3><span>查詢結果 :</span></h3>
+		<span>會員編號:</span><span th:text="${memVO.memNo}"></span><br/>
+		<span>會員email:</span><span th:text="${memVO.memEmail}"></span><br/>
+		<span>會員姓名:</span><span th:text="${memVO.memName}"></span><br/>
+		<span>會員密碼:</span><span th:text="${memVO.memPassword}"></span><br/>
+		<span>會員地址:</span><span th:text="${memVO.memAddress}"></span><br/>
+		<span>會員電話:</span><span th:text="${memVO.memPhone}"></span><br/>
+		<span>會員身分證:</span><span th:text="${memVO.memUid}"></span><br/>
+		<span>會員性別:</span><span th:text="${memVO.memSex}"></span><br/>
+		<span>會員生日:</span><span th:text="${memVO.memDob}"></span><br/>
+		<span>驗證狀態:</span><span th:text="${memVO.memVerified}"></span><br/>
+		<span>會員註冊日期:</span><span th:text="${memVO.memUpdate}"></span><br/>
+		<span>照騙:</span><span><img th:src="@{/mem/DBGifReader1} + '?memno=' + ${memVO.memNo}" width="100px"></span><br/>
+	</div>
+
+
+</body>
+</html>

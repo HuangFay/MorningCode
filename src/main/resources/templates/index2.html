@@ -1,0 +1,114 @@
+
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>G by C</title>
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+<link rel="stylesheet" th:href="@{/css/index2.css}" />
+</head>
+<body>
+
+	<div class="main-container">
+		<div th:replace="fragments/header-items :: navigation"></div>
+
+
+		<div class="heading">
+			<span class="about">關於</span><span class="morning-code-3">每天清晨，Morning
+				Code
+				都致力於為顧客提供清新、悠閒、舒適的用餐體驗。我們選用新鮮的食材，精心設計每一道菜品，讓每一位顧客都能享受到健康、美味的早餐時光。<br />來到
+				Morning Code，讓我們用美味和健康喚醒您的每一天。
+			</span>
+		</div>
+
+
+		<div class="cards">
+			<div class="customer-quote">
+				<span class="meal-review">餐點評價</span>
+				<div class="avatar">
+					<div class="avatar-4"></div>
+					<div class="frame">
+						<span class="name">Name</span><span class="description">Description</span>
+					</div>
+				</div>
+			</div>
+			<div class="customer-quote">
+				<span class="latest-articles">最新文章</span>
+				<div class="avatar-b">
+					<div class="avatar-7"></div>
+					<div class="frame-8">
+						<span class="name-9">Name</span><span class="description-a">Description</span>
+					</div>
+				</div>
+			</div>
+			<div class="customer-quote">
+				<span class="glowing-review">“A”</span>
+				<div class="avatar-c">
+					<div class="avatar-d"></div>
+					<div class="frame-e">
+						<span class="name-f">Name</span><span class="description-10">Description</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="navigation-footer">
+			<div class="flex-column-bbd">
+				<div class="divider"></div>
+				<span class="phone">電話:3345678</span><span class="contact-address">聯絡地址:320桃園市中壢區復興路46號8樓</span>
+			</div>
+
+
+			<div class="flex-column-e">
+				<span class="site-name">Site name</span>
+				<div class="social-icons">
+					<div class="buttons-icon">
+						<div class="icon">
+							<div class="icon-11"></div>
+						</div>
+					</div>
+					<div class="buttons-icon-12">
+						<div class="icon-13">
+							<div class="icon-14"></div>
+						</div>
+					</div>
+					<div class="buttons-icon-15">
+						<div class="icon-16">
+							<div class="icon-17"></div>
+						</div>
+					</div>
+					<div class="buttons-icon-18">
+						<div class="icon-19">
+							<div class="icon-1a"></div>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+
+
+		</div>
+
+
+		<div class="image"></div>
+		<!-- 最外圈 -->
+	</div>
+
+
+
+
+	<script>
+		function redirectTo(url) {
+			window.location.href = url;
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+
+<div th:fragment="sidebar1">
+	<div class="sidebar">
+
+		<a class="read-test-version" th:href="@{/index3}">已讀亂回測試版</a>
+		<ul class="list">
+
+			<div th:if="${empVO != null}" class="welcome-message">
+				<span class="admin-account-management">您好： <span
+					th:text="${empVO.empName}"></span></span> <span>
+					<p th:text="${#lists.size(session.empPermissions)}"></p>
+					<ul>
+						<li th:each="permission : ${session.empPermissions}"
+							th:text="${permission.functionId}"></li>
+					</ul>
+				</span>
+
+			</div>
+
+
+
+
+
+
+
+
+
+			<form th:if="${empVO == null}" th:action="@{/back-end/emplogin}"
+				method="post">
+				<button type="submit" class="emp-login btn-1">
+					<span class="login-register">我跳進來啦!</span>
+				</button>
+			</form>
+			<form th:if="${empVO != null}" th:action="@{/back-end/emplogout}"
+				method="post">
+				<button type="submit" class="emp-login btn-1">
+					<span class="login-register">我又跳出去啦!</span>
+				</button>
+			</form>
+
+
+			<li><a class="aa">
+					<button class="menu-item">
+						<span class="employee-management">員工管理</span>
+					</button>
+			</a>
+				
+					<div class="menu-item-1">
+						<a class="admin-account-management"
+							th:href="@{/back-end/emp/listAllEmp}">管理員帳號管理</a>
+					</div>
+					<div class="menu-item-1">
+						<a class="schedule-edit" href="/test1">排班編輯</a>
+					</div>
+					<div class="menu-item-1">
+						<a class="leave-approval" th:href="@{/back-end/test2}">請假核准</a>
+					</div>
+				</li>
+
+
+			<li><a class="aa">
+					<button class="menu-item">
+						<span class="front-end-customer-management">前台客戶相關管理</span>
+					</button>
+			</a>
+					<div class="menu-item-1">
+
+						<a class="member-management" th:href="@{/back-end/mem/listAllMem}">會員管理</a>
+					</div>
+					<div class="menu-item-1">
+						<span class="order-management">訂單管理</span>
+					</div>
+					<div class="menu-item-1">
+						<span class="meal-collection">領餐作業</span>
+					</div>
+				</li>
+
+			<li><a class="aa">
+					<button class="menu-item">
+						<span class="latest-news-management">最新消息管理</span>
+					</button>
+			</a></li>
+
+			<li><a class="aa">
+					<button class="menu-item">
+						<span class="customer-service-related-management">客服相關管理</span>
+					</button>
+			</a>
+		
+				<div class="menu-item-1">
+					<span class="forum-report-management">討論區檢舉管理</span>
+				</div>
+				<div class="menu-item-1">
+					<span class="customer-service-function-management">客服功能管理</span>
+				</div></li>
+
+			<li><a class="aa">
+					<button class="menu-item">
+						<span class="menu-related-settings">菜單相關設定</span>
+					</button>
+			</a>
+			
+				<div class="menu-item-1">
+					<span class="menu-management">菜單管理</span>
+				</div>
+				<div class="menu-item-1">
+					<span class="meal-project-management">餐點項目管理</span>
+				</div></li>
+
+			<li><a class="aa">
+					<button class="menu-item">
+						<span class="reservation-related-management">訂位相關管理</span>
+					</button>
+			</a>
+	
+				<div class="menu-item-1">
+					<span class="reservation-management">訂位管理</span>
+				</div>
+				<div class="menu-item-1">
+					<span class="set-table-type">設定桌位種類</span>
+				</div>
+				<div class="menu-item-1">
+					<span class="set-opening-hours">設定開放時段</span>
+				</div></li>
+		</ul>
+	</div>
+</div>

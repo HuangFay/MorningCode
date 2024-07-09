@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>驗證成功</title>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+    <link rel="stylesheet" th:href="@{/css/index2.css}" />
+    
+   
+</head>
+<body>
+    <div class="main-container">
+        <div th:replace="fragments/header-items :: navigation"></div>
+       <div class="image"></div>
+    </div>
+    
+    
+    
+     <script th:inline="javascript">
+        function displayMessage(message) {
+            alert(message); 
+        }
+
+       
+        document.addEventListener("DOMContentLoaded", function() {
+            var message = /*[[${message}]]*/ ''; 
+            displayMessage(message);
+        });
+        function redirectTo(url) {
+			window.location.href = url;
+		}
+    </script>
+</body>
+</html>

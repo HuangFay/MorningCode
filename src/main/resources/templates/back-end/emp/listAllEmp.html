@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>所有員工資料 - listAllEmp.html</title>
+<link rel="stylesheet" th:href="@{/css/index3.css}">
+
+<!-- dataTables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<!-- dataTables -->
+
+
+<style>
+.right-pane {
+	width: 79%; /* 调整頁面的寬度 */
+}
+
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+	background-color: #fefefe;
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
+	max-width: 500px;
+}
+
+.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.close:hover, .close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+
+.emp-permission {
+  width: 50px;
+  height: 50px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px 15px ;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: #FFA500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+}
+   img.small {
+        width: 30px; 
+        height: 30px; 
+    }
+    
+
+
+</style>
+</head>
+<body>
+	<div class="main-container">
+		<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+
+
+
+
+		<div class="right-pane">
+			<!-- star -->
+
+			<div align="center">
+				
+				<h3>所有員工資料 - listAllEmp.html
+					<a class="navbar-brand" th:href="@{/back-end/emp/listAllEmp}"><img
+						th:src="@{/images/hihihi.gif}" class="small">回查詢頁<label
+						th:text="${success}"></label></a>
+				</h3>
+			</div>
+			
+			
+			<!-- 新增員工按鈕 -->
+	<div id="table-controls" style="display: flex;">
+    <div id="addEmpButton" class="addemp">
+        <a th:href="@{/emp/addEmp}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">新增員工</a>
+    </div>
+</div>
+
+			
+
+			<table id="example" class="display" style="width: 5%">
+				<thead>
+					<tr style="background-color: #CCCCFF">
+						
+						<th>員工編號</th>
+						<th>員工姓名</th>
+						<th>員工帳號</th>
+						<th>員工密碼</th>
+						<th>電話</th>
+						<th>地址</th>
+						<th>email</th>
+						<th>雇用日期</th>
+						<th>狀態</th>
+						<th>照片</th>
+						<th>狀態</th>
+
+
+
+						<th>功能</th>
+
+						<th>權限</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<th:block th:each="empVO : ${empListData}">
+						<tr>
+						
+							<td th:text="${empVO.empId}"></td>
+							<td th:text="${empVO.empName}"></td>
+							<td th:text="${empVO.empAccount}"></td>
+							<td th:text="${empVO.empPassword}"></td>
+							<td th:text="${empVO.empPhone}"></td>
+							<td th:text="${empVO.empAddress}"></td>
+							<td th:text="${empVO.empEmail}"></td>
+							<td th:text="${empVO.empHiredate}"></td>
+							<td th:text="${empVO.empStatus}"></td>
+							<td><img
+								th:src="@{/emp/DBGifReader} + '?empid=' + ${empVO.empId}"
+								width="100px" height="100px"></td>
+							<td><span th:if="${empVO.empStatus == 0}">在職</span> <span
+								th:if="${empVO.empStatus == 1}">離職</span></td>
+
+
+							<td>
+								<form method="post" th:action="@{/emp/getOne_For_Update}"
+									style="margin-bottom: 0px;">
+									<input type="submit" value="修改"> <input type="hidden"
+										name="empId" th:value="${empVO.empId}">
+								</form>
+
+
+								<form method="post" th:action="@{/emp/delete}"
+									style="margin-bottom: 0px;">
+									<input type="submit" value="刪除"> <input type="hidden"
+										name="empId" th:value="${empVO.empId}">
+								</form>
+							</td>
+
+
+							<td>
+								<button type="button" class="emp-permission  permission-btn"
+									th:data-empid="${empVO.empId}">權限</button>
+							</td>
+
+
+
+
+						</tr>
+					</th:block>
+				</tbody>
+			</table>
+			<!-- 框框代碼 -->
+			<div id="permissionModal" class="modal">
+				<div class="modal-content">
+					<span class="close">&times;</span>
+					<h2>員工權限</h2>
+					<div id="empPermissionsContent"></div>
+				</div>
+			</div>
+			<!-- end -->
+		</div>
+	</div>
+
+	
+	
+	<!-- JavaScript函數顯示員工權限 -->
+	<script th:inline="javascript">
+		$(document).ready(
+				function() {
+
+					var $modal = $('#permissionModal');
+					var $content = $('#empPermissionsContent');
+
+					// 綁定按鈕點擊
+					$(document).on('click', '.permission-btn', function() {
+						var empId = $(this).data('empid');
+						showPermissions(empId);
+					});
+
+					// 關閉小黑牢
+					$('.close').click(function() {
+						$modal.hide();
+					});
+
+					// 點小黑牢外面會關閉
+					$(window).click(function(event) {
+						if ($(event.target).is($modal)) {
+							$modal.hide();
+						}
+					});
+
+					function showPermissions(empId) {
+						$.ajax({
+							url :  /*[[@{/emp/loadPermissions}]]*/ "",
+							
+							method : 'GET',
+							data : {
+								empId : empId
+							},
+							dataType : 'json',
+							success : function(data) {
+								$content.empty();
+								if (data.length > 0) {
+									$.each(data, function(index, permission) {
+										$content.append($('<p>').text(
+												permission.functionName));
+									});
+								} else {
+									$content.html('<p>沒有權限資料</p>');
+								}
+								$modal.show();
+							},
+							error : function(jqXHR, textStatus, errorThrown) {
+								console.error('AJAX error:', textStatus,
+										errorThrown);
+								alert('讀取員工權限失敗，請稍後再試。');
+							}
+						});
+					}
+
+					$("a.aa").on("click", function() {
+						console.log(this);
+						var $li = $(this).closest("li");
+						$li.find("div.menu-item-1").slideToggle();
+						$li.siblings().find(".menu-item-1").slideUp();
+					});
+
+					function redirectTo(url) {
+						window.location.href = url;
+					}
+					
+					
+					
+					
+					
+					new DataTable('#example', {
+
+						
+								"lengthMenu" : [ 3, 5, 10, 20, 50,
+										100 ],
+								"searching" : true, //搜尋功能, 預設是開啟
+								"paging" : true, //分頁功能, 預設是開啟
+								"ordering" : true, //排序功能, 預設是開啟
+								"language" : {
+									"processing" : "處理中...",
+									"loadingRecords" : "載入中...",
+									"lengthMenu" : "顯示 _MENU_ 筆結果",
+									"zeroRecords" : "沒有符合的結果",
+									"info" : "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+									"infoEmpty" : "顯示第 0 至 0 筆結果，共 0 筆",
+									"infoFiltered" : "(從 _MAX_ 筆結果中過濾)",
+									"infoPostFix" : "",
+									"search" : "搜尋:",
+									"paginate" : {
+										"first" : "第一頁",
+										"previous" : "上一頁",
+										"next" : "下一頁",
+										"last" : "最後一頁"
+									},
+									"aria" : {
+										"sortAscending" : ": 升冪排列",
+										"sortDescending" : ": 降冪排列"
+									}
+								},
+								
+							 
+					
+								
+							});
+					
+				});
+	
+	</script>
+
+
+
+
+</body>
+</html>
