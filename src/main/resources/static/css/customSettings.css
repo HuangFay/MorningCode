@@ -14,17 +14,28 @@
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
-    justify-content: space-between; /* 彼此的空間 */
+    justify-content: space-between; 
     padding: 20px;
     box-sizing: border-box;
 }
 
-.form-section {
-    width: 35%; /* 左邊部分的寬度 */
-}
+ .form-section input,
+        .form-section select {
+            flex-grow: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        
+        .form-section label {
+            width: 100px; /* label寬度 */
+            margin-right: 10px;
+            text-align: right;
+        }
 
 .image-section {
-    width: 30%; /* 右邊部分的寬度 */
+    width: 30%; /* 右邊寬度 */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -32,4 +43,15 @@
 
 .customSettings div {
     margin-bottom: 10px;
+}
+        .form-section div,
+        .image-section div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+h2{
+	
+margin:5px ;	
 }
