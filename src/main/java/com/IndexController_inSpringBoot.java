@@ -264,6 +264,11 @@ public class IndexController_inSpringBoot  extends ViewController {
 	   return "test2";
    }
    
+   @GetMapping("/leave/select_page")
+	public String select_page3(Model model) {
+		return "back-end/leave/select_page";
+	}
+   
    @GetMapping("/back-end/leave/listAllLeave")
 	public String listAllLeave(HttpSession session,Model model) {
 	   EmpVO empVO = (EmpVO) session.getAttribute("empVO");
@@ -272,6 +277,9 @@ public class IndexController_inSpringBoot  extends ViewController {
        }
 		return "back-end/leave/listAllLeave";
 	}
+   
+  
+   
    @ModelAttribute("leaveListData")  // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
   	protected List<LeaveVO> referenceListData3(Model model) {
   		

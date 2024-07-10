@@ -136,7 +136,7 @@ public class LeaveController {
 	         } else if ("2".equals(leaveStatus)) {
 	             leaveVO.rejectLeave(); // 審核不通過
 	         }else {
-	        	 return "redirect:/leave/listAllLeave"; 
+	        	 return "redirect:/back-end/leave/listAllLeave"; 
 	         }
 		/*************************** 2.開始修改資料 *****************************************/
 		leaveSvc.updateLeave(leaveVO);
@@ -147,7 +147,7 @@ public class LeaveController {
 
 		model.addAttribute("leaveVO", leaveVO);
 		
-		return "redirect:/leave/listAllLeave"; 
+		return "redirect:/back-end/leave/listAllLeave"; 
 	}
 	
 
