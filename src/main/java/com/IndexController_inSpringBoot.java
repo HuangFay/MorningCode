@@ -19,9 +19,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.morning.emp.model.EmpService;
 import com.morning.emp.model.EmpVO;
+
 import com.morning.leave.model.LeaveService;
 import com.morning.leave.model.LeaveVO;
 import com.morning.mem.controller.ViewController;
+
 import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
 import com.reservation.model.ResService;
@@ -37,7 +39,7 @@ import com.tabletype.model.TableTypeVO;
 
 //@PropertySource("classpath:application.properties") // 於https://start.spring.io建立Spring Boot專案時, application.properties文件預設已經放在我們的src/main/resources 目錄中，它會被自動檢測到
 @Controller
-public class IndexController_inSpringBoot  extends ViewController {
+public class IndexController_inSpringBoot   {
 	
 	// @Autowired (●自動裝配)(Spring ORM 課程)
 	// 目前自動裝配了EmpService --> 供第66使用
@@ -83,7 +85,7 @@ public class IndexController_inSpringBoot  extends ViewController {
 //    session返回登入 
     @GetMapping("/index2")
     public String index2(HttpSession session, Model model) {
-        MemVO memVO = getMemVO(session);
+    	MemVO memVO = (MemVO) session.getAttribute("memVO");
         if (memVO != null) {
             model.addAttribute("memVO", memVO);
         }
@@ -119,7 +121,7 @@ public class IndexController_inSpringBoot  extends ViewController {
 //  個人資料管理
     @GetMapping("/customSettings")
     public String customSettings(HttpSession session, Model model) {
-//    	MemVO memVO = getMemVO(session);
+
     	MemVO memVO = (MemVO) session.getAttribute("memVO");
         if (memVO != null) {
             model.addAttribute("memVO", memVO);
