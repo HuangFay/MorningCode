@@ -71,6 +71,8 @@ public class EmpAuthenticationFilter implements Filter {
                 }
 
                 if (requestURI.contains("/back-end/leave") && permission.getFunctionId() == 1) {
+                	return true;
+                }
 
                 if (requestURI.contains("/back-end/res") && permission.getFunctionId() == 1) {
 
