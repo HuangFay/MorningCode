@@ -202,7 +202,7 @@ public class IndexController_inSpringBoot   {
 	}
    //首頁按登入跳到signup==============================================================================================================
    
-   @GetMapping("signup")
+   @GetMapping("/front-end/mem/signup")
    public String showSignUpPage() {
        
        return "front-end/mem/signup"; 

@@ -14,7 +14,7 @@
           
           
          
-          <button th:if="${memVO == null}" class="button" onclick="redirectTo('signup')">
+          <button th:if="${memVO == null}" class="button" onclick="redirectTo('/front-end/mem/signup')">
             <span class="login-register">登入/註冊</span>
           </button>
           <div class="dropdown" th:if="${memVO != null}" >
