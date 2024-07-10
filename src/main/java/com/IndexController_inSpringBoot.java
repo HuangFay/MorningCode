@@ -19,8 +19,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.morning.emp.model.EmpService;
 import com.morning.emp.model.EmpVO;
+
+import com.morning.leave.model.LeaveService;
+import com.morning.leave.model.LeaveVO;
+import com.morning.mem.controller.ViewController;
+
 import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
+import com.reservation.model.ResService;
+import com.reservation.model.ResVO;
+import com.reservationcontrol.model.ResCService;
+import com.reservationcontrol.model.ResCVO;
+import com.restime.model.ResTimeService;
+import com.restime.model.ResTimeVO;
+import com.tabletype.model.TableTypeService;
+import com.tabletype.model.TableTypeVO;
 
 
 
@@ -37,7 +50,22 @@ public class IndexController_inSpringBoot   {
 	@Autowired
 	MemService memSvc;
 	
+
+	@Autowired
+	LeaveService leaveSvc;
 	
+	
+
+//訂位autowired
+	@Autowired
+	ResTimeService resTimeSvc;
+	@Autowired
+	ResCService resCSvc;
+	@Autowired
+	TableTypeService tableSvc;
+	@Autowired
+	ResService resSvc;
+
 	
     // inject(注入資料) via application.properties
     @Value("${welcome.message}")
@@ -257,4 +285,126 @@ public class IndexController_inSpringBoot   {
 	   
 	   return "test2";
    }
+   
+
+   @GetMapping("/leave/select_page")
+	public String select_page3(Model model) {
+		return "back-end/leave/select_page";
+	}
+   
+   @GetMapping("/back-end/leave/listAllLeave")
+	public String listAllLeave(HttpSession session,Model model) {
+	   EmpVO empVO = (EmpVO) session.getAttribute("empVO");
+       if (empVO != null) {
+           model.addAttribute("empVO", empVO);
+       }
+		return "back-end/leave/listAllLeave";
+	}
+   
+  
+   
+   @ModelAttribute("leaveListData")  // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
+  	protected List<LeaveVO> referenceListData3(Model model) {
+  		
+      	List<LeaveVO> list = leaveSvc.getAll();
+      	
+  		return list;
+  	}
+
+   //訂位=============================
+	   //訂位時段資料
+	   @ModelAttribute("resTimeListData") // for select_page.html 第135行用
+		protected List<ResTimeVO> referenceListData_ResTime(Model model) {
+			model.addAttribute("resTImeVO", new ResTimeVO()); // for select_page.html 第133行用
+			List<ResTimeVO> list = resTimeSvc.getAll();
+			return list;
+		}
+	 //訂位時段選擇畫面
+	   @GetMapping("/restime/select_page")
+		public String select_pageResTime(Model model) {
+			return "back-end/restime/select_page";
+		}
+	 //訂位控制選擇畫面
+	    @GetMapping("/resc/select_page")
+		public String select_pageResc(Model model) {
+			return "back-end/resc/select_page";
+		}
+	    //訂位控制顯示全部畫面
+	    @GetMapping("/resc/listAllResC")
+		public String listAllResc(Model model) {
+			return "back-end/resc/listAllResC";
+		}
+	    
+	    @ModelAttribute("resCListData")  // for select_page.html 第97 109行用 // for listAllEmp.html 第117 133行用
+		protected List<ResCVO> resListData(Model model) {
+			
+	    	List<ResCVO> list = resCSvc.getAll();
+			return list;
+		}
+	    
+	    @GetMapping("/back-end/res/listAllRes")
+	  	public String listAllRes(HttpSession session,Model model) {
+	    	EmpVO empVO = (EmpVO) session.getAttribute("empVO");
+	        if (empVO != null) {
+	            model.addAttribute("empVO", empVO);
+	            
+	        }
+	  		return "back-end/res/listAllRes";
+	  	}
+	    //Res selectall 的listDate
+	    @ModelAttribute("resListData") // for select_page.html 第135行用
+		protected List<ResVO> referenceListData_Res(Model model) {
+			model.addAttribute("resVO", new ResVO()); // for select_page.html 第133行用
+			List<ResVO> list = resSvc.getAll();
+			return list;
+		}
+
+	    @ModelAttribute("tableTypeListData") // for select_page.html 第135行用
+		protected List<TableTypeVO> referenceListData_TableType(Model model) {
+			model.addAttribute("tableTypeVO", new TableTypeVO()); // for select_page.html 第133行用
+			List<TableTypeVO> list = tableSvc.getAll();
+			return list;
+		}
+	   
+	    
+	    //訂位按鈕跳轉mapping
+	    @GetMapping("/reservation")
+	    public String home() {
+	        return "back-end/res/addRes"; // 對應的Thymeleaf模板名稱
+	    }
+	    //訂位時段顯示全部畫面
+	    @GetMapping("/restime/listAllResTime")
+		public String listAllResTime(Model model) {
+			return "back-end/restime/listAllResTime";
+		}
+	    //桌型選擇畫面
+	    @GetMapping("/tabletype/select_page")
+		public String select_tabletype_page(Model model) {
+			return "back-end/tabletype/select_page";
+		}
+	    //桌型顯示全部畫面
+	    @GetMapping("/tabletype/listAllTableType")
+		public String listAllTableType(Model model) {
+			return "back-end/tabletype/listAllTableType2";
+		}
+	    
+	    
+
+	  //後台測試首頁畫面
+	    @GetMapping("/backIndex")
+		public String backIndex(Model model) {
+			return "backIndex";
+		}
+	    
+	   
+	    
+	    
+	    //訂位功能選擇畫面
+	    @GetMapping("/res/select_page")
+		public String resselect_page(Model model) {
+			return "back-end/res/select_page";
+		}
+   
+   
+
 }

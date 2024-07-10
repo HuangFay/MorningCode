@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>所有訂位控制 - listAllRes.html</title>
+<script th:src="@{/js/jquery-1.11.3.min.js}"></script> <!-- 左側jquery為table分頁用 -->
+
+<style type="text/css">
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+    }
+    .navbar {
+        background-color: #ffcc00;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .navbar h2, .navbar h3 {
+        margin: 0;
+        color: #333;
+    }
+    .navbar a.navbar-brand {
+        display: flex;
+        align-items: center;
+        color: #333;
+        text-decoration: none;
+    }
+    .navbar a.navbar-brand img {
+        margin-right: 10px;
+    }
+    .content {
+        padding-top: 100px;
+        text-align: center;
+    }
+    .content h3 {
+        margin-bottom: 20px;
+    }
+    table {
+        width: 90%;
+        background-color: white;
+        margin: 20px auto;
+        border-collapse: collapse;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    table, th, td {
+        border: 1px solid #dddddd;
+    }
+    th, td {
+        padding: 10px;
+        text-align: center;
+    }
+    th {
+        background-color: #ffcc00;
+        color: #333;
+    }
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+    }
+    .pagination a {
+        color: #333;
+        padding: 10px 15px;
+        text-decoration: none;
+        border: 1px solid #dddddd;
+        margin: 0 5px;
+    }
+    .pagination a:hover {
+        background-color: #ffcc00;
+        color: white;
+    }
+    .pagination a.active {
+        background-color: #ffcc00;
+        color: white;
+        border: 1px solid #ffcc00;
+    }
+</style>
+<script type="text/javascript">
+    //分頁顯示
+    $(function () {
+        var $table = $("table");
+        var currentPage = 0; //當前頁默認值為0  
+        var pageSize = 3; //每一頁顯示的數目  
+        $table.bind('paging', function () {
+            $table.find('tbody tr').hide().slice(currentPage * pageSize, (currentPage + 1) * pageSize).show();
+        });
+        var sumRows = $table.find('tbody tr').length;
+        var sumPages = Math.ceil(sumRows / pageSize); //總頁數  
+        document.getElementById("pageNumber").innerHTML = sumPages; //用於第114行
+        
+        var $pager = $('<div class="pagination"></div>');  //新建div，放入a標簽,顯示底部分頁碼  
+        for (var pageIndex = 0; pageIndex < sumPages; pageIndex++) {
+            $('<a href="#" id="pageStyle" onclick="changCss(this)"><span>' + (pageIndex + 1) + '</span></a>').bind("click", { "newPage": pageIndex }, function (event) {
+                currentPage = event.data["newPage"];
+                document.getElementById("currentPage").innerHTML = currentPage + 1; //用於第114行
+                $table.trigger("paging");
+                //觸發分頁函數  
+            }).appendTo($pager);
+            $pager.append(" ");
+        }
+        $pager.insertAfter($table);
+        $table.trigger("paging");
+
+        //默認第一頁的a標簽效果  
+        var $pagess = $('#pageStyle');
+        $pagess[0].style.backgroundColor = "#006B00";
+        $pagess[0].style.color = "#ffffff";
+    });
+
+    //a鏈接點擊變色，再點其他回復原色  
+    function changCss(obj) {
+        var arr = document.getElementsByTagName("a");
+        for (var i = 0; i < arr.length; i++) {
+            if (obj == arr[i]) {       //當前頁樣式  
+                obj.style.backgroundColor = "#006B00";
+                obj.style.color = "#ffffff";
+            } else {
+                arr[i].style.color = "";
+                arr[i].style.backgroundColor = "";
+            }
+        }
+    }
+</script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-light fixed-top justify-content-center">
+    <div align="center">
+        <h2>所有桌椅 - listAllRes.html</h2>
+        <h3>
+            <a class="navbar-brand" th:href="@{/resc/select_page}">
+                <img th:src="@{/images/try2.gif}" style="width: 50px; height: 50px;">
+                回查詢頁
+                <label th:text="${success}"></label>
+            </a>
+        </h3>
+    </div>
+</nav>
+
+<div class="content">
+    <b><font color=red>第<label id="currentPage">1</label>/<label id="pageNumber"></label>頁</font></b>
+    <b>● 符 合 查 詢 條 件 如 下 所 示 : 共 <font color=red th:text="${resCListData.size}"></font> 筆</b>
+</div>
+
+<table class="center">
+    <thead>
+        <tr>
+            <th>桌型編號</th>
+            <th>營業日期</th>
+            <th>每桌型訂位狀況</th>
+            <th>訂位控制編號</th>
+            <th>修改</th>
+        </tr>
+    </thead>
+    <tbody>
+        <th:block th:each="resCVO : ${resCListData}">
+            <tr>
+                <td th:text="${resCVO.reservationControlId}"></td>
+                <td th:text="${resCVO.reasrvationControlDate}"></td>
+                <td th:text="${resCVO.reasrvationControlTable}"></td>
+                <td th:text="${resCVO.tableTypeVO.tableId}"></td>
+                <td>
+                    <form method="post" th:action="@{/resc/getOne_For_Update}" style="margin-bottom: 0px;">
+                        <input type="submit" value="修改">
+                        <input type="hidden" name="reservationControlId" th:value="${resCVO.reservationControlId}">
+                    </form>
+                </td>
+            </tr>
+        </th:block>
+    </tbody>
+</table>
+
+</body>
+</html>
