@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>桌型控制新增</title>
+<head th:insert="~{/back-end/resc/included-fragment}"></head>
+<style type="text/css">
+	
+	button {
+		padding: 5px;
+	}
+	form {
+		display: table;
+	}
+	form div {
+		display: table-row;
+	}
+	label, input, span, select {
+		display: table-cell;
+		margin: 5px;
+		text-align: left;		
+	}
+	input[type=text], input[type=password], select, textarea {
+		width: 200px;
+		margin: 5px;
+	}
+	form div div {
+		display: table-cell;
+	}
+	.center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+		 <div align="center"> <h2>桌型控制新增</h2>
+		 <h3><a class="navbar-brand" th:href="@{/resc/select_page}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3></div>
+</nav>
+	<div align="center">
+		<h3><b>所有欄位皆為必填欄位</b></h3>
+		<form th:action="@{insert}" method="post" th:object="${resCVO}" enctype="multipart/form-data">
+			<div>
+			<label>營業時間:</label>
+			<input type="date" th:field="*{reasrvationControlDate}"  onclick="hideContent('reasrvationControlDate.errors');" /><br/>
+			<!-- <span  th:if="${#fields.hasErrors('ename')}" th:errors="*{ename}" class="error" id="ename.errors"></span> -->
+			</div>
+			<div>
+			<label>每桌型訂位狀況:</label>
+			<input type="text" th:field="*{reasrvationControlTable}"  /><br/>
+			<!-- <span  th:if="${#fields.hasErrors('ename')}" th:errors="*{ename}" class="error" id="ename.errors"></span> -->
+			</div>
+		
+	
+			<div>
+			<label>桌型人數:</label>
+			<select th:field="*{tableTypeVO.tableId}">
+				<option th:each="tableTypeVO : ${tableTypeListData}" th:value="${tableTypeVO.tableId}" th:text="${tableTypeVO.tableType}"></option>
+			</select> 人
+			<!-- <span th:if="${#fields.hasErrors('deptVO.deptno')}" th:errors="*{deptVO.deptno}" class="error" id="deptVO.deptno.errors"></span> -->
+			</div>
+			
+			<div>
+				<div></div>
+				<div><button type="submit" id="submit"> 送出新增 </button></div>
+				<div></div>
+			</div>	
+	
+			
+		</form>
+			
+	</div>
+
+</body>
+</html>

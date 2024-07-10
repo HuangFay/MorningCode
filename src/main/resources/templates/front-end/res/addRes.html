@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂位預約</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 10px 0 5px;
+            color: #333;
+        }
+        input, select, textarea {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById("date").setAttribute("min", today);
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>MorningCode訂位</h1>
+        <p>請填寫以下表單來預訂您的位置。</p>
+        <form th:action="@{insert}" method="post" th:object="${resVO}" enctype="multipart/form-data">
+       
+            <label for="name">姓名:</label>
+            <select th:field="*{memVO.memNo}">
+                <option th:each="memVO : ${memListData}" th:value="${memVO.memNo}" th:text="${memVO.memName}" id="name"  > </option>
+            </select>
+            <label for="phone">電話號碼:</label>
+            <input type="tel" th:field="*{reservationPhone}"  id="phone" name="phone" required>
+            
+            <label for="date">日期:</label>
+            <input type="date" th:field="*{reservationEatdate}" id="date" name="date" required>
+            
+            <label for="time">時段:</label>
+            <select th:field="*{resTimeVO.reservationTimeId}">
+                <option th:each="resTimeVO : ${resTimeListData}" th:value="${resTimeVO.reservationTimeId}" th:text="${resTimeVO.reservationTime}"></option>
+            </select>
+            
+            <label for="people">人數:</label>
+            <input type="number" th:field="*{reservationNum}" id="people" name="people" min="0" value="0" required>
+            
+            <label for="people">希望桌子數量:</label>
+            <input type="number" th:field="*{reservationTable}" id="table" name="table" min="0" value="0" required>
+            
+            <label for="name">桌型人數:</label>
+            <select th:field="*{tableTypeVO.tableId}">
+                <option th:each="tableTypeVO : ${tableTypeListData}" th:value="${tableTypeVO.tableId}" th:text="${tableTypeVO.tableType}" id="name"  > </option>
+            </select>
+            
+            <label for="notes">備註:</label>
+            <textarea id="notes" th:field="*{reservationNote}" name="notes" rows="4"></textarea>
+            
+            <button type="submit">提交訂位</button>
+        </form>
+    </div>
+</body>
+</html>
