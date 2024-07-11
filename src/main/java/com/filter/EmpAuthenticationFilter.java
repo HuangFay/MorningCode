@@ -50,9 +50,18 @@ public class EmpAuthenticationFilter implements Filter {
 //                }
             }
             chain.doFilter(request, response);
-        } else {
-            httpResponse.sendRedirect(loginURI);
+        } 
+    else {
+    	if (session == null) {
+    		//取得session
+            session = httpRequest.getSession(true);
+            
         }
+    	//存session 到變數
+        session.setAttribute("location", requestURI);
+        //傳球
+        httpResponse.sendRedirect(loginURI);
+    }
     }
 
     private boolean hasPermission(HttpSession session, String requestURI) {
@@ -66,6 +75,15 @@ public class EmpAuthenticationFilter implements Filter {
                     return true;
                 }
                 if (requestURI.contains("/back-end/mem") && permission.getFunctionId() == 2) {
+                    return true;
+                }
+
+                if (requestURI.contains("/back-end/leave") && permission.getFunctionId() == 1) {
+                	return true;
+                }
+
+                if (requestURI.contains("/back-end/res") && permission.getFunctionId() == 1) {
+
                     return true;
                 }
             }

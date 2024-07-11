@@ -21,7 +21,7 @@
   -webkit-border-radius: 10px 10px 10px 10px;
   border-radius: 10px 10px 10px 10px;
   background: #fff;
-  margin: 100px auto;
+  margin: 10px auto;
 
   width: 90%;
   max-width: 450px;
@@ -30,12 +30,16 @@
   -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
   box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
   text-align: center;
+  
 }
+ ul {
+        list-style-type: none; /* 移除li的marker */
+    }
 </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+<nav >
 		 <div align="center"> <h2>員工個人資料 - listOneEmp.html</h2>
 		 <h3><a class="navbar-brand" th:href="@{/back-end/emp/listAllEmp}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3></div>
 </nav>

@@ -33,7 +33,7 @@ public class PasswordResetController {
             if (memService.emailExists(email)) {
                 String currentPassword = memService.getCurrentPassword(email);
                 emailService.sendCurrentPasswordEmail(email, currentPassword);
-                response.put("message", "您的當前密碼已發送到您的郵箱。");
+                response.put("message", "您的當前密碼已發送到您的Email。");
                 return ResponseEntity.ok(response);
             } else {
                 response.put("message", "該Email不存在。");
