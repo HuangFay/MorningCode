@@ -19,6 +19,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.morning.emp.model.EmpService;
 import com.morning.emp.model.EmpVO;
+import com.morning.meals.model.MealsService;
+import com.morning.meals.model.MealsVO;
+import com.morning.mealspic.model.MealsPicService;
+import com.morning.mealspic.model.MealsPicVO;
 import com.morning.mem.controller.ViewController;
 import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
@@ -34,9 +38,14 @@ public class IndexController_inSpringBoot  extends ViewController {
 	@Autowired
 	EmpService empSvc;
 	
-	
 	@Autowired
 	MemService memSvc;
+	
+	@Autowired
+	MealsService mealsSvc;
+	
+	@Autowired
+	MealsPicService mealspicSvc;
 	
 	
 	
@@ -258,4 +267,38 @@ public class IndexController_inSpringBoot  extends ViewController {
 	   
 	   return "test2";
    }
+   
+   //==meals============================================================
+   @GetMapping("/back-end/meals/listAllMeals")
+   public String listAllMeals(HttpSession session, Model model) {
+	   EmpVO empVO = (EmpVO) session.getAttribute("empVO");
+       if (empVO != null) {
+           model.addAttribute("empVO", empVO);
+       }
+       
+	   return "back-end/meals/listAllMeals";
+   }
+   @ModelAttribute("mealsListData")  // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
+   protected List<MealsVO> referenceListData_meals(Model model) {
+		
+   List<MealsVO> list = mealsSvc.getAll();
+		return list;
+	}
+   //==mealspic========================================================
+   @GetMapping("/back-end/mealspic/listAllMealsPic")
+ 	public String listAllMealsPic(HttpSession session, Model model) {
+	   EmpVO empVO = (EmpVO) session.getAttribute("empVO");
+       if (empVO != null) {
+           model.addAttribute("empVO", empVO);
+       }
+ 		return "back-end/mealspic/listAllMealsPic";
+ 	}
+     
+   @ModelAttribute("mealspicListData")  // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
+ 	protected List<MealsPicVO> referenceListData_mealspic(Model model) {
+ 		
+     	List<MealsPicVO> list = mealspicSvc.getAll();
+ 		return list;
+ 	}
+
 }
