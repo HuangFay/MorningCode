@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
@@ -129,11 +130,18 @@ public class RegistrationController {
 	            	 MemVO authenticatedMember = memSvc.getMemberByEmail(memVO.getMemEmail());
 //	            	 然後將上一行的接收到的memVO物件存儲在session,使用"memVO"作為KEY
 	            	 session.setAttribute("memVO", authenticatedMember);
+	            	 String redirectLogin = (String) session.getAttribute("location");
 //	            	session.setAttribute("memVO", memVO); 多餘的
-	                return ResponseEntity.ok("登入成功");
-	            } else {
+	            	 if(redirectLogin != null) {
+	            		 session.removeAttribute("redirectLogin");
+	            		 return ResponseEntity.ok(redirectLogin); 
+	            	 }else {
+	            		 String contextPath = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+	            		  return ResponseEntity.ok(contextPath + "/index2");
+	            	    }        	 
+	            	 } else {
 	                return ResponseEntity.status(401).body("帳號或密碼錯誤");
-	            }
+	            	 }
 	        } catch (Exception e) {
 	            return ResponseEntity.status(500).body("登入失敗：" + e.getMessage());
 	        }
