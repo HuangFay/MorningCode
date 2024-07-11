@@ -52,8 +52,16 @@ public class EmpAuthenticationFilter implements Filter {
             chain.doFilter(request, response);
         } 
     else {
-            httpResponse.sendRedirect(loginURI);
+    	if (session == null) {
+    		//取得session
+            session = httpRequest.getSession(true);
+            
         }
+    	//存session 到變數
+        session.setAttribute("location", requestURI);
+        //傳球
+        httpResponse.sendRedirect(loginURI);
+    }
     }
 
     private boolean hasPermission(HttpSession session, String requestURI) {

@@ -89,6 +89,8 @@ public class IndexController_inSpringBoot   {
         return "index2";
     }
     
+ 
+    
 //    登出 RedirectView 是Spring Framework的類 ,用來實現重新導向的功能
 //    tomcat使用這個方法不行
 //    @GetMapping("/logout")
