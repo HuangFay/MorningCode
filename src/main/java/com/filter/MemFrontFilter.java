@@ -30,6 +30,10 @@ public class MemFrontFilter implements Filter {
         if (isLoggedIn || requestURI.equals(loginURI)) {
             chain.doFilter(request, response); 
         } else {
+        	if(session == null) {
+        		session = httpRequest.getSession(true);
+        	}
+        	session.setAttribute("location", requestURI);
             httpResponse.sendRedirect(loginURI); 
         }
     }
