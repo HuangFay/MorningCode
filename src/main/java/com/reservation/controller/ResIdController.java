@@ -30,6 +30,7 @@ import com.tabletype.model.TableTypeVO;
 public class ResIdController {
 	@Autowired
 	ResService ResSvc;
+
 	@Autowired
 	MemService MemSvc;
 	@Autowired
