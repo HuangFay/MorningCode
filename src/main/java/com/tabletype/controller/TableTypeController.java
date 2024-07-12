@@ -1,5 +1,6 @@
 package com.tabletype.controller;
 
+
 import java.io.IOException;
 import java.util.List;
 
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.reservationcontrol.model.ResCVO;
-import com.restime.model.ResTimeVO;
 import com.tabletype.model.TableTypeService;
 import com.tabletype.model.TableTypeVO;
 
@@ -27,41 +26,41 @@ public class TableTypeController {
 	
 	@PostMapping("getOne_For_Display")
 	public String getOne_For_Display(
-		/***************************1.±µ¦¬½Ğ¨D°Ñ¼Æ - ¿é¤J®æ¦¡ªº¿ù»~³B²z*************************/
+		/***************************1.æ¥æ”¶è«‹æ±‚åƒæ•¸ - è¼¸å…¥æ ¼å¼çš„éŒ¯èª¤è™•ç†*************************/
 		
 		@RequestParam("tableId") String tableId,
 		ModelMap model) {
 		
-		/***************************2.¶}©l¬d¸ß¸ê®Æ*********************************************/
+		/***************************2.é–‹å§‹æŸ¥è©¢è³‡æ–™*********************************************/
 //		EmpService empSvc = new EmpService();
 		TableTypeVO tableTypeVO = TableTypeSvc.getOneTableType(Integer.valueOf(tableId));
 		
 		List<TableTypeVO> list = TableTypeSvc.getAll();
-		model.addAttribute("tableTypeListData", list); // for select_page.html ²Ä97 109¦æ¥Î
+		model.addAttribute("tableTypeListData", list); // for select_page.html ç¬¬97 109è¡Œç”¨
 		
 		if (tableTypeVO == null) {
-			model.addAttribute("errorMessage", "¬dµL¸ê®Æ");
+			model.addAttribute("errorMessage", "æŸ¥ç„¡è³‡æ–™");
 			return "back-end/tabletype/select_page";
 		}
 		
-		/***************************3.¬d¸ß§¹¦¨,·Ç³ÆÂà¥æ(Send the Success view)*****************/
+		/***************************3.æŸ¥è©¢å®Œæˆ,æº–å‚™è½‰äº¤(Send the Success view)*****************/
 		model.addAttribute("tableTypeVO", tableTypeVO);
-		model.addAttribute("getOne_For_Display", "true"); // ºX¼ĞgetOne_For_Display¨£select_page.htmlªº²Ä126¦æ -->
+		model.addAttribute("getOne_For_Display", "true"); // æ——æ¨™getOne_For_Displayè¦‹select_page.htmlçš„ç¬¬126è¡Œ -->
 		
 //		
-		return "back-end/tabletype/select_page"; // ¬d¸ß§¹¦¨«áÂà¥æselect_page.html¥Ñ¨ä²Ä128¦æinsert listOneEmp.html¤ºªºth:fragment="listOneEmp-div
+		return "back-end/tabletype/select_page"; // æŸ¥è©¢å®Œæˆå¾Œè½‰äº¤select_page.htmlç”±å…¶ç¬¬128è¡Œinsert listOneEmp.htmlå…§çš„th:fragment="listOneEmp-div
 	}
 	
 	@PostMapping("getOne_For_Update")
 	public String getOne_For_Update(@RequestParam("tableId") Integer tableId, ModelMap model) {
-		/*************************** 1.±µ¦¬½Ğ¨D°Ñ¼Æ - ¿é¤J®æ¦¡ªº¿ù»~³B²z ************************/
-		/*************************** 2.¶}©l¬d¸ß¸ê®Æ *****************************************/
+		/*************************** 1.æ¥æ”¶è«‹æ±‚åƒæ•¸ - è¼¸å…¥æ ¼å¼çš„éŒ¯èª¤è™•ç† ************************/
+		/*************************** 2.é–‹å§‹æŸ¥è©¢è³‡æ–™ *****************************************/
 		// EmpService empSvc = new EmpService(); //autowired
 		TableTypeVO tableTypeVO = TableTypeSvc.getOneTableType(Integer.valueOf(tableId));
 
-		/*************************** 3.¬d¸ß§¹¦¨,·Ç³ÆÂà¥æ(Send the Success view) **************/
+		/*************************** 3.æŸ¥è©¢å®Œæˆ,æº–å‚™è½‰äº¤(Send the Success view) **************/
 		model.addAttribute("tableTypeVO", tableTypeVO);
-		return "back-end/tabletype/update_tabletype_input"; // ¬d¸ß§¹¦¨«áÂà¥æupdate_emp_input.html
+		return "back-end/tabletype/update_tabletype_input"; // æŸ¥è©¢å®Œæˆå¾Œè½‰äº¤update_emp_input.html
 	}
 	
 	@PostMapping("update")
@@ -69,11 +68,11 @@ public class TableTypeController {
 //			,@RequestParam("upFiles") MultipartFile[] parts
 			) throws IOException {
 
-		/*************************** 1.±µ¦¬½Ğ¨D°Ñ¼Æ - ¿é¤J®æ¦¡ªº¿ù»~³B²z ************************/
-		// ¥h°£BindingResult¤¤upFilesÄæ¦ìªºFieldError¬ö¿ı --> ¨£²Ä172¦æ
+		/*************************** 1.æ¥æ”¶è«‹æ±‚åƒæ•¸ - è¼¸å…¥æ ¼å¼çš„éŒ¯èª¤è™•ç† ************************/
+		// å»é™¤BindingResultä¸­upFilesæ¬„ä½çš„FieldErrorç´€éŒ„ --> è¦‹ç¬¬172è¡Œ
 //		result = removeFieldError(resVO, result, "upFiles");
 //
-//		if (parts[0].isEmpty()) { // ¨Ï¥ÎªÌ¥¼¿ï¾Ü­n¤W¶Çªº·s¹Ï¤ù®É
+//		if (parts[0].isEmpty()) { // ä½¿ç”¨è€…æœªé¸æ“‡è¦ä¸Šå‚³çš„æ–°åœ–ç‰‡æ™‚
 //			// EmpService empSvc = new EmpService();
 //			byte[] upFiles = empSvc.getOneEmp(empVO.getEmpno()).getUpFiles();
 //			empVO.setUpFiles(upFiles);
@@ -86,15 +85,15 @@ public class TableTypeController {
 //		if (result.hasErrors()) {
 //			return "back-end/emp/update_emp_input";
 //		}
-		/*************************** 2.¶}©l­×§ï¸ê®Æ *****************************************/
+		/*************************** 2.é–‹å§‹ä¿®æ”¹è³‡æ–™ *****************************************/
 		// EmpService empSvc = new EmpService();
 		TableTypeSvc.updateTableType(tableTypeVO);
 
-		/*************************** 3.­×§ï§¹¦¨,·Ç³ÆÂà¥æ(Send the Success view) **************/
-		model.addAttribute("success", "- (­×§ï¦¨¥\)");
+		/*************************** 3.ä¿®æ”¹å®Œæˆ,æº–å‚™è½‰äº¤(Send the Success view) **************/
+		model.addAttribute("success", "- (ä¿®æ”¹æˆåŠŸ)");
 		tableTypeVO = TableTypeSvc.getOneTableType(Integer.valueOf(tableTypeVO.getTableId()));
 		model.addAttribute("tableTypeVO", tableTypeVO);
-		return "back-end/tabletype/listOneTableType"; // ­×§ï¦¨¥\«áÂà¥ælistOneEmp.html
+		return "back-end/tabletype/listOneTableType"; // ä¿®æ”¹æˆåŠŸå¾Œè½‰äº¤listOneEmp.html
 	}
 	@ModelAttribute("tableTypeListData")
 	protected List<TableTypeVO> referenceListData() {
