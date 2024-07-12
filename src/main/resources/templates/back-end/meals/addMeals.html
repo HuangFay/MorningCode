@@ -1,0 +1,150 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>餐點新增 - addEmp.html</title>
+
+
+
+<head th:insert="~{/back-end/meals/included-fragment}"></head>
+<style type="text/css">
+	
+	button {
+		padding: 5px;
+	}
+	form {
+		display: table;
+	}
+	form div {
+		display: table-row;
+	}
+	label, input, span, select {
+		display: table-cell;
+		margin: 5px;
+		text-align: left;		
+	}
+	input[type=text], input[type=password], select, textarea {
+		width: 200px;
+		margin: 5px;
+	}
+	form div div {
+		display: table-cell;
+	}
+	.center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+		 <div align="center"> <h2>餐點新增 - addMeals.html</h2>
+		 <h3><a class="navbar-brand" th:href="@{/back-end/meals/listAllMeals}">回查詢頁</a></h3></div>
+</nav>
+
+	<div align="center">
+		<h3><b>所有欄位皆為必填欄位</b></h3>
+		<form th:action="@{insert}" method="post" th:object="${mealsVO}" enctype="multipart/form-data">
+			
+			
+			
+						
+			<div>
+			<label>餐點類別:</label>
+			<select th:field="*{mealstypesVO.mealsTypesId}">
+				<option th:each="mealstypesVO : ${mealstypesListData}" th:value="${mealstypesVO.mealsTypesId}" th:text="${mealstypesVO.mealsTypesName}" />
+			</select>
+			<span th:if="${#fields.hasErrors('mealstypesVO.mealsTypesId')}" th:errors="*{mealstypesVO.mealsTypesId}" class="error" id="mealstypesVO.mealsTypesId.errors"></span>
+			</div>
+
+			<div>
+			<label>餐點名稱:</label>
+			<input type="text" th:field="*{mealsName}" onclick="hideContent('mealsName.errors');" /><br/>
+			<span  th:if="${#fields.hasErrors('mealsName')}" th:errors="*{mealsName}" class="error" id="mealsName.errors"></span>
+			</div>
+			
+			<div>
+			<label>餐點價格:</label>
+			<input type="text" th:field="*{mealsPrice}" onclick="hideContent('mealsPrice.errors');" /><br/>
+			<span  th:if="${#fields.hasErrors('mealsPrice')}" th:errors="*{mealsPrice}" class="error" id="mealsPrice.errors"></span>
+			</div>
+			
+			<div>
+			<label>餐點描述:</label>
+			<input type="text" th:field="*{mealsDescription}" onclick="hideContent('mealsDescription.errors');" /><br/>
+			<span  th:if="${#fields.hasErrors('mealsDescription')}" th:errors="*{mealsDescription}" class="error" id="mealsDescription.errors"></span>
+			</div>
+
+			<div>
+			<label>餐點控制:</label>
+			<select th:field="*{mealsControl}">
+				<option value="1" th:selected="${mealsVO.mealsControl == 1}">1 上架</option>
+       	   	    <option value="0" th:selected="${mealsVO.mealsControl == 0}">0 下架</option>
+            </select><br/>
+			<span  th:if="${#fields.hasErrors('mealsControl')}" th:errors="*{mealsControl}" class="error" id="mealsControl.errors"></span>
+			</div>	
+			
+			
+			<div>
+			<label>餐點圖片:</label>
+			<input type="file" name="picSet" id="pic" multiple="multiple" />
+			<span class="error" th:utext="${errorMessage}" id="upFiles.errors">${errorMessage}</span>
+<!-- 預覽圖片容器 -->
+    		<div id="preview" class="mt-2"></div>
+			</div>	
+
+			<div>
+				<div></div>
+				<div><button type="submit" id="submit"> 送出新增 </button></div>
+				<div></div>
+			</div>
+				
+		</form>
+	
+	
+	</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- JavaScript part -->
+<script type="text/javascript">
+$(document).ready(
+		   function() {
+		    // 預覽上傳圖片
+		    $('#pic').on(
+		      'change',
+		      function(event) {
+		       console.log('File input changed');
+		       var files = event.target.files;
+		       $('#preview').empty(); // 清空預覽容器
+		       for (var i = 0; i < files.length; i++) {
+		        var file = files[i];
+		        var reader = new FileReader();
+		        reader.onload = function(e) {
+		         var img = $('<img>').attr('src',
+		           e.target.result).addClass(
+		           'img-thumbnail mb-2').css({
+		          width : '150px',
+		          height : '150px'
+		         });
+		         $('#preview').append(img);
+		        };
+		        reader.readAsDataURL(file);
+		       }
+		      });
+		   });
+</script>
+
+</body>
+</html>

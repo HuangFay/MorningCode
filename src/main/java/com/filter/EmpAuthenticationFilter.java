@@ -31,7 +31,7 @@ public class EmpAuthenticationFilter implements Filter {
         boolean isLoggedIn = (session != null && session.getAttribute("empVO") != null);
         String loginURI = httpRequest.getContextPath() + "/back-end/emplogin";
         String logoutURI = httpRequest.getContextPath() + "/back-end/emplogout";
-        String noAccessURI = httpRequest.getContextPath() + "/no-access"; // 沒權限的轉跳
+//        String noAccessURI = httpRequest.getContextPath() + "/no-access"; // 沒權限的轉跳
         String requestURI = httpRequest.getRequestURI();
 
         if (isLoggedIn || requestURI.equals(loginURI) || requestURI.equals(logoutURI) || requestURI.endsWith("emplogin") || requestURI.contains("/api/")) {
@@ -44,10 +44,10 @@ public class EmpAuthenticationFilter implements Filter {
                     return;
                 }
 
-                if (empVO.getEmpStatus() != 0 || !hasPermission(session, requestURI)) {
-                    httpResponse.sendRedirect(noAccessURI);
-                    return;
-                }
+//                if (empVO.getEmpStatus() != 0 || !hasPermission(session, requestURI)) {
+//                    httpResponse.sendRedirect(noAccessURI);
+//                    return;
+//                }
             }
             chain.doFilter(request, response);
         } 
