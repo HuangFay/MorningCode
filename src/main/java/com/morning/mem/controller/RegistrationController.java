@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,6 +51,8 @@ public class RegistrationController {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private PasswordEncoder passwordEncoder; 
 
 	
 //	註冊=============================================================================================
@@ -84,8 +87,12 @@ public class RegistrationController {
   	            });
   	            return ResponseEntity.status(400).body(errorMessage.toString());
   	        }
-
+  	      if (!memVO.getMemPassword().matches("^[(a-zA-Z0-9_)]{2,15}$")) {
+  	        return ResponseEntity.status(400).body("密碼格式不正確");
+  	    }
   	        try {
+  	          String encodedPassword = passwordEncoder.encode(memVO.getMemPassword());
+              memVO.setMemPassword(encodedPassword);
   	            // 設置未驗證的狀態
   	            memVO.setMemVerified((byte)0);
   	            memSvc.registerMember(memVO);

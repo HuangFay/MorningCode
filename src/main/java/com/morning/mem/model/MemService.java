@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -18,7 +19,8 @@ public class MemService {
 		@Autowired
 		MemRepository repository;
 		
-		
+		 @Autowired
+		    private PasswordEncoder passwordEncoder; 
 		public MemVO getOneMem(Integer memno) {
 			Optional<MemVO> optional =repository.findById(memno);
 			return optional.orElse(null);
@@ -50,10 +52,12 @@ public class MemService {
 		}
 	//登入邏輯
 		public boolean authenticateMember(MemVO memVO) {
-	        MemVO existingMember = repository.findByMemEmail(memVO.getMemEmail());
-	        return existingMember != null && existingMember.getMemPassword().equals(memVO.getMemPassword());
-	    }
-		
+		    MemVO existingMember = repository.findByMemEmail(memVO.getMemEmail());
+		    if (existingMember == null) {
+		        return false;
+		    }
+		    return passwordEncoder.matches(memVO.getMemPassword(), existingMember.getMemPassword());
+		}
 		
 		
 		
