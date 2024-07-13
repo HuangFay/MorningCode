@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>客製化選項詳細資料 - listOneCust.html</title>
+
+<head th:insert="~{/back-end/cust/included-fragment}"></head>
+<style type="text/css">
+    
+    span {
+        display: inline-block;
+        width: 150px;
+        text-align: left;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+     <div align="center"> <h2>客製化選項詳細資料 - listOneCust.html</h2>
+     <h3>
+            <a class="navbar-brand" th:href="@{/cust/select_page}">
+                <img th:src="@{/images/back1.gif}">回查詢頁
+                <label th:text="${success}"></label>
+            </a>
+        </h3></div>
+</nav>
+
+<div align="center" th:fragment="listOneCustDiv"> <!-- 此div被selectPage.html第158行insert用 -->
+    <h3><span>查詢結果 :</span></h3>
+    <span>客製化選項編號:</span><span th:text="${custVO.custId}"></span><br/>
+    <span>名稱:</span><span th:text="${custVO.custName}"></span><br/>
+    <span>加價:</span><span th:text="${custVO.custPrice}"></span><br/>
+    <span>狀態:</span><span th:text="${custVO.custStatus == 1 ? '上架' : '下架'}"></span><br/>
+    <span>備註:</span><span th:text="${custVO.custNote}"></span><br/>
+</div>
+
+</body>
+</html>

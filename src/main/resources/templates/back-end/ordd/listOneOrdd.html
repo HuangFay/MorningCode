@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>訂單明細資料 - listOneOrdd.html</title>
+    <head th:insert="~{/back-end/ordd/included-fragment}"></head>
+    <style type="text/css">
+        span {
+            display: inline-block;
+            width: 150px;
+            text-align: left;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+    <div align="center">
+        <h2>每筆訂單明細資料 - listOneOrdd.html</h2>
+        <h3><a class="navbar-brand" th:href="@{/ordd/select_page}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3>
+    </div>
+</nav>
+
+<div align="center" th:fragment="listOneOrdd-div"> <!-- 此div被select_page.html第158行insert用 -->
+    <h3><span>訂單明細查詢結果 :</span></h3>
+    <span>訂單明細編號:</span><span th:text="${orddVO.orddId}"></span><br/>
+    <span>訂單編號:</span><span th:text="${orddVO.ordId}"></span><br/>
+    <span>餐點編號:</span><span th:text="${orddVO.mealsId}"></span><br/>
+    <span>訂單明細餐點數量:</span><span th:text="${orddVO.orddMealsQuantity}"></span><br/>
+    <span>訂單明細餐點總金額:</span><span th:text="${orddVO.orddMealsAmount}"></span><br/>
+    <span>訂單明細製作狀態:</span><span th:text="${orddVO.orddMealsStatus}"></span><br/>
+    <span>餐點評價編號:</span><span th:text="${orddVO.mealsCommentId}"></span><br/>
+    <span>餐點評價內容:</span><span th:text="${orddVO.mealsContent}"></span><br/>
+    <span>餐點評價評分:</span><span th:text="${orddVO.mealsScore}"></span><br/>
+    <span>餐點評價狀態:</span><span th:text="${orddVO.mealsStatus}"></span><br/>
+    <span>餐點評價時間:</span><span th:text="${orddVO.mealsTime}"></span><br/>
+</div>
+
+</body>
+</html>

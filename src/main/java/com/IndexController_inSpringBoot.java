@@ -17,16 +17,24 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.morning.cust.model.CustService;
+import com.morning.cust.model.CustVO;
 import com.morning.emp.model.EmpService;
 import com.morning.emp.model.EmpVO;
 import com.morning.leave.model.LeaveService;
 import com.morning.leave.model.LeaveVO;
+import com.morning.meal.model.MealService;
+import com.morning.meal.model.MealVO;
 import com.morning.meals.model.MealsService;
 import com.morning.meals.model.MealsVO;
 import com.morning.mealspic.model.MealsPicService;
 import com.morning.mealspic.model.MealsPicVO;
 import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
+import com.morning.ordd.model.OrddService;
+import com.morning.ordd.model.OrddVO;
+import com.morning.order.model.OrderService;
+import com.morning.order.model.OrderVO;
 import com.reservation.model.ResService;
 import com.reservation.model.ResVO;
 import com.reservationcontrol.model.ResCService;
@@ -58,6 +66,18 @@ public class IndexController_inSpringBoot   {
 	
 	@Autowired
 	LeaveService leaveSvc;	
+	
+	@Autowired
+	OrderService orderSvc;	
+	
+	@Autowired
+    OrddService orddSvc;
+    
+    @Autowired
+    CustService custSvc;
+    
+    @Autowired
+    MealService mealSvc;
 	
 
 //訂位autowired
@@ -442,6 +462,74 @@ public class IndexController_inSpringBoot   {
 		public String resselect_page(Model model) {
 			return "back-end/res/select_page";
 		}
+	    
+	    //訂單畫面
+	    @GetMapping("/order/select_page")
+	    public String select_page4(Model model) {
+	        return "back-end/order/select_page";
+	    }
+
+	    @GetMapping("/order/listAllOrder")
+	    public String listAllOrder(Model model) {
+	        return "back-end/order/listAllOrder";
+	    }
+
+	    @ModelAttribute("orderListData")
+	    protected List<OrderVO> referenceListData4(Model model) {
+	        List<OrderVO> list = orderSvc.getAll();
+	        return list;
+	    }
+	    
+	    //訂單明細畫面
+	    @GetMapping("/ordd/select_page")
+	    public String select_page5(Model model) {
+	        return "back-end/ordd/select_page";
+	    }
+
+	    @GetMapping("/ordd/listAllOrdd")
+	    public String listAllOrdd(Model model) {
+	        return "back-end/ordd/listAllOrdd";
+	    }
+
+	    @ModelAttribute("orddListData")
+	    protected List<OrddVO> referenceListData5(Model model) {
+	        List<OrddVO> list = orddSvc.getAll();
+	        return list;
+	    }
+	    
+	    //客製化餐點畫面
+	    @GetMapping("/cust/select_page")
+	    public String select_page6(Model model) {
+	        return "back-end/cust/select_page";
+	    }
+
+	    @GetMapping("/cust/listAllCust")
+	    public String listAllCust(Model model) {
+	        return "back-end/cust/listAllCust";
+	    }
+
+	    @ModelAttribute("custListData")
+	    protected List<CustVO> referenceListData6(Model model) {
+	        List<CustVO> list = custSvc.getAll();
+	        return list;
+	    }
+	    
+	    //餐點客製化明細畫面
+	    @GetMapping("/meal/select_page")
+	    public String select_page7(Model model) {
+	        return "back-end/meal/select_page";
+	    }
+
+	    @GetMapping("/meal/listAllMeal")
+	    public String listAllMeal(Model model) {
+	        return "back-end/meal/listAllMeal";
+	    }
+
+	    @ModelAttribute("mealListData")
+	    protected List<MealVO> referenceListData7(Model model) {
+	        List<MealVO> list = mealSvc.getAll();
+	        return list;
+	    }
    
 
 }
