@@ -26,12 +26,7 @@
 						<label for="memEmail">Email:</label> <input type="text"
 							id="memEmail" name="memEmail" th:value="${memVO.memEmail}" />
 					</div>
-					<div>
-						<label for="memPassword">密碼:</label> <input type="password"
-							id="memPassword" name="memPassword"
-							th:value="${memVO.memPassword}" />
-						<button type="button" onclick="togglePasswordVisibility()">wink~wink~</button>
-					</div>
+					
 					<div>
 						<label for="memAddress">地址:</label> <input type="text"
 							id="memAddress" name="memAddress" th:value="${memVO.memAddress}" />
@@ -120,7 +115,7 @@
 			var updatedMember = {
 				memName : document.getElementById('memName').value,
 				memEmail : document.getElementById('memEmail').value,
-				memPassword : document.getElementById('memPassword').value,
+				
 				memAddress : document.getElementById('memAddress').value,
 				memPhone : document.getElementById('memPhone').value,
 				memUid : document.getElementById('memUid').value,

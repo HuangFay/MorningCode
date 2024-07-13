@@ -172,7 +172,7 @@ public class RegistrationController {
 	        // 設定要更新的其他欄位值，排除memEmail欄位
 	        exMem.setMemName(updatedMember.getMemName());
 	        exMem.setMemEmail(updatedMember.getMemEmail());
-	        exMem.setMemPassword(updatedMember.getMemPassword());
+//	        exMem.setMemPassword(updatedMember.getMemPassword());
 	        exMem.setMemAddress(updatedMember.getMemAddress());
 	        exMem.setMemPhone(updatedMember.getMemPhone());
 	        exMem.setMemUid(updatedMember.getMemUid());
