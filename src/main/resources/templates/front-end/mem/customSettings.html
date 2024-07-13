@@ -57,14 +57,19 @@
 
 
 			<div>
-				<label for="memVerified">驗證狀態:</label> <span
+			<div>
+				<label for="memVerified">信箱驗證狀態:</label> <span
 					th:if="${memVO.memVerified == 0}"> <i class="fa fa-times" style="color:red;"></i>
 					未驗證
 				</span> <span th:if="${memVO.memVerified == 1}"> <i
 					class="fa fa-check" style="color:green;"></i> 已驗證
 				</span>
 			</div>
-
+			<div>
+			<button id="password-button" onclick="redirectTo('forgetPassword')">修改密碼</button>
+			</div>
+			
+</div>
 
 
 			<div class="image-section">

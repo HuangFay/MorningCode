@@ -55,3 +55,19 @@ h2{
 	
 margin:5px ;	
 }
+#password-button {
+    background-color: red; /* 背景顏色設置為紅色 */
+    color: white; /* 文字顏色設置為白色 */
+    padding: 10px 20px; /* 按鈕內邊距 */
+    border: none; /* 去除邊框 */
+    cursor: pointer; /* 鼠標懸停時顯示手型 */
+    border-radius: 5px; /* 圓角 */
+    font-size: 14px; /* 字體大小 */
+    text-align: center; /* 文字居中 */
+    text-decoration: none; /* 去除下劃線 */
+    width:100%;
+    margin-top: 100px;
+}
+#password-button:hover {
+    background-color: darkred; /* 滑鼠懸停時的背景顏色 */
+}
