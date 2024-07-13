@@ -5,7 +5,8 @@
 <div th:fragment="sidebar1">
 	<div class="sidebar">
 
-		<a class="read-test-version" th:href="@{/index3}">已讀亂回測試版</a>
+		<a class="read-test-version" th:href="@{/index3}"><img
+						th:src="@{/images/logo.png}" class="imgsmall"></a>
 		<ul class="list">
 
 			<div th:if="${empVO != null}" class="welcome-message">
