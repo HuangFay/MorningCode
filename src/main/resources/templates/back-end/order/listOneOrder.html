@@ -1,0 +1,47 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>訂單資料 - listOneOrder.html</title>
+
+<head th:insert="~{/back-end/order/included-fragment}"></head>
+<style type="text/css">
+        
+    span {
+                display: inline-block;
+                width: 150px;
+                text-align: left;
+                font-weight: bold;
+        }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+                 <div align="center"> <h2>每筆訂單資料 - listOneOrder.html</h2>
+                 <h3><a class="navbar-brand" th:href="@{/order/select_page}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3></div>
+</nav>
+
+        <div align="center" th:fragment="listOneOrder-div"> <!-- 此div被select_page.html第158行insert用 -->
+                <h3><span>查詢結果 :</span></h3>
+                <span>訂單編號:</span><span th:text="${orderVO.ordId}"></span><br/>
+                <span>訂單種類:</span><span th:text="${orderVO.ordType}"></span><br/>
+                <span>總金額:</span><span th:text="${orderVO.ordAmount}"></span><br/>
+                <span>製作狀態:</span><span th:text="${orderVO.ordStatus}"></span><br/>
+                <span>成立訂單日期:</span><span th:text="${orderVO.ordBuilddate}"></span><br/>
+                <span>預訂時間:</span><span th:text="${orderVO.ordReserveTime}"></span><br/>
+                <span>會員:</span><span th:text="${orderVO.memVO.memNo} + '-[' + ${orderVO.memVO.memName} + ']'"></span><br/>          
+        </div>
+
+</body>
+</html>

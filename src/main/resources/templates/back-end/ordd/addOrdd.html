@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>訂單明細資料新增 - addOrdd.html</title>
+    <head th:insert="~{/back-end/ordd/included-fragment}"></head>
+    <style type="text/css">
+        button {
+            padding: 5px;
+        }
+
+        form {
+            display: table;
+        }
+
+        form div {
+            display: table-row;
+        }
+
+        label, input, span, select {
+            display: table-cell;
+            margin: 5px;
+            text-align: left;
+        }
+
+        input[type=text], input[type=password], select, textarea {
+            width: 200px;
+            margin: 5px;
+        }
+
+        form div div {
+            display: table-cell;
+        }
+
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+    <div align="center">
+        <h2>訂單明細資料新增 - addOrdd.html</h2>
+        <h3><a class="navbar-brand" th:href="@{/ordd/select_page}"><img th:src="@{/images/back1.gif}">返回新增訂單明細頁</a></h3>
+    </div>
+</nav>
+
+<div align="center">
+    <h3><b>所有欄位皆為必填欄位</b></h3>
+    <form id="submitForm" th:action="@{/ordd/insert}" method="post" th:object="${orddVO}" enctype="multipart/form-data">
+
+        <div>
+            <label>訂單編號:</label>
+            <input type="text" th:field="*{ordId}" onclick="hideContent('ordId.errors');" />
+            <span th:if="${#fields.hasErrors('ordId')}" th:errors="*{ordId}" class="error" id="ordId.errors"></span>
+        </div>
+
+        <div>
+            <label>餐點編號:</label>
+            <input type="text" th:field="*{mealsId}" th:value="1" onclick="hideContent('mealsId.errors');" />
+            <span th:if="${#fields.hasErrors('mealsId')}" th:errors="*{mealsId}" class="error" id="mealsId.errors"></span>
+        </div>
+
+        <div>
+            <label>訂單明細餐點數量:</label>
+            <input type="text" th:field="*{orddMealsQuantity}" onclick="hideContent('orddMealsQuantity.errors');" />
+            <span th:if="${#fields.hasErrors('orddMealsQuantity')}" th:errors="*{orddMealsQuantity}" class="error" id="orddMealsQuantity.errors"></span>
+        </div>
+
+        <div>
+            <label>訂單明細餐點總金額:</label>
+            <input type="text" th:field="*{orddMealsAmount}" onclick="hideContent('orddMealsAmount.errors');" />
+            <span th:if="${#fields.hasErrors('orddMealsAmount')}" th:errors="*{orddMealsAmount}" class="error" id="orddMealsAmount.errors"></span>
+        </div>
+
+        <div>
+            <label>訂單明細製作狀態:</label>
+            <select th:field="*{orddMealsStatus}" onclick="hideContent('orddMealsStatus.errors');">
+                <option value="">請選擇</option>
+                <option value="0">未製作</option>
+                <option value="1">製作中</option>
+                <option value="2">製作完成</option>
+                <option value="3">已取餐</option>
+            </select>
+            <span th:if="${#fields.hasErrors('orddMealsStatus')}" th:errors="*{orddMealsStatus}" class="error" id="orddMealsStatus.errors"></span>
+        </div>
+
+        <div>
+            <label>餐點評價編號:</label>
+            <input type="text" th:field="*{mealsCommentId}" onclick="hideContent('mealsCommentId.errors');" />
+            <span th:if="${#fields.hasErrors('mealsCommentId')}" th:errors="*{mealsCommentId}" class="error" id="mealsCommentId.errors"></span>
+        </div>
+
+        <div>
+            <label>餐點評價內容:</label>
+            <input type="text" th:field="*{mealsContent}" onclick="hideContent('mealsContent.errors');" />
+            <span th:if="${#fields.hasErrors('mealsContent')}" th:errors="*{mealsContent}" class="error" id="mealsContent.errors"></span>
+        </div>
+
+        <div>
+		    <label>餐點評價評分:</label>
+		    <select th:field="*{mealsScore}" onclick="hideContent('mealsScore.errors');">
+		        <option value="1">一顆星</option>
+		        <option value="2">兩顆星</option>
+		        <option value="3">三顆星</option>
+		        <option value="4">四顆星</option>
+		        <option value="5">五顆星</option>
+		    </select>
+		    <span th:if="${#fields.hasErrors('mealsScore')}" th:errors="*{mealsScore}" class="error" id="mealsScore.errors"></span>
+		</div>
+
+        <div>
+            <label>餐點評價狀態:</label>
+            <select th:field="*{mealsStatus}" onclick="hideContent('mealsStatus.errors');">
+                <option value="">請選擇</option>
+                <option value="0">隱藏</option>
+                <option value="1">顯示</option>
+            </select>
+            <span th:if="${#fields.hasErrors('mealsStatus')}" th:errors="*{mealsStatus}" class="error" id="mealsStatus.errors"></span>
+        </div>
+
+         <div>
+            <label>餐點評價時間:</label>
+            <input type="text" th:field="*{mealsTime}" readonly="readonly" id="mealsTime" />
+            <span th:if="${#fields.hasErrors('mealsTime')}" th:errors="*{mealsTime}" class="error" id="mealsTime.errors"></span>
+        </div>
+
+        <div>
+            <button type="submit" id="submit">送出新增</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function hideContent(elementId) {
+        var element = document.getElementById(elementId);
+        if (element) {
+            element.style.display = 'none';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = ('0' + (now.getMonth() + 1)).slice(-2);
+        var day = ('0' + now.getDate()).slice(-2);
+        var hours = ('0' + now.getHours()).slice(-2);
+        var minutes = ('0' + now.getMinutes()).slice(-2);
+        var seconds = ('0' + now.getSeconds()).slice(-2);
+        var formattedTime = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+        document.getElementById('mealsTime').value = formattedTime;
+    });
+</script>
+
+</body>
+</html>
