@@ -137,14 +137,14 @@ public class IndexController_inSpringBoot   {
     }
     
 //  忘記密碼
-    @GetMapping("/forgetPassword")
+    @GetMapping("/restPassword")
     public String forgetPassword(HttpSession session,Model model) {
     	MemVO memVO = (MemVO) session.getAttribute("memVO");
         if (memVO != null) {
             model.addAttribute("memVO", memVO);
            
         }
-        return "front-end/mem/forgetPassword";
+        return "front-end/mem/restPassword";
     }
    
  
