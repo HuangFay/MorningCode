@@ -31,7 +31,7 @@ public class EmpAuthenticationFilter implements Filter {
         boolean isLoggedIn = (session != null && session.getAttribute("empVO") != null);
         String loginURI = httpRequest.getContextPath() + "/back-end/emplogin";
         String logoutURI = httpRequest.getContextPath() + "/back-end/emplogout";
-        String noAccessURI = httpRequest.getContextPath() + "/no-access"; // 沒權限的轉跳
+//        String noAccessURI = httpRequest.getContextPath() + "/no-access"; // 沒權限的轉跳
         String requestURI = httpRequest.getRequestURI();
 
         if (isLoggedIn || requestURI.equals(loginURI) || requestURI.equals(logoutURI) || requestURI.endsWith("emplogin") || requestURI.contains("/api/")) {
@@ -44,16 +44,24 @@ public class EmpAuthenticationFilter implements Filter {
                     return;
                 }
 
-                if (empVO.getEmpStatus() != 0 || !hasPermission(session, requestURI)) {
-                    httpResponse.sendRedirect(noAccessURI);
-                    return;
-                }
+//                if (empVO.getEmpStatus() != 0 || !hasPermission(session, requestURI)) {
+//                    httpResponse.sendRedirect(noAccessURI);
+//                    return;
+//                }
             }
             chain.doFilter(request, response);
         } 
     else {
-            httpResponse.sendRedirect(loginURI);
+    	if (session == null) {
+    		//取得session
+            session = httpRequest.getSession(true);
+            
         }
+    	//存session 到變數
+        session.setAttribute("location", requestURI);
+        //傳球
+        httpResponse.sendRedirect(loginURI);
+    }
     }
 
     private boolean hasPermission(HttpSession session, String requestURI) {
@@ -71,6 +79,8 @@ public class EmpAuthenticationFilter implements Filter {
                 }
 
                 if (requestURI.contains("/back-end/leave") && permission.getFunctionId() == 1) {
+                	return true;
+                }
 
                 if (requestURI.contains("/back-end/res") && permission.getFunctionId() == 1) {
 

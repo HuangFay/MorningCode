@@ -15,6 +15,45 @@
 
 
 <style>
+
+table {
+	background: #f5f5f5;
+	border-collapse: separate;
+	box-shadow: inset 0 1px 0 #fff;
+	font-size: 12px;
+	line-height: 15px;
+	margin: 30px auto;
+	text-align: left;
+	width: 800px;
+}
+
+th {
+	background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
+	border-left: 1px solid #555;
+	border-right: 1px solid #777;
+	border-top: 1px solid #555;
+	border-bottom: 1px solid #333;
+	box-shadow: inset 0 1px 0 #999;
+	color: #fff;
+	font-weight: bold;
+	padding: 10px 15px;
+	position: relative;
+	text-shadow: 0 1px 0 #000;	
+}	
+
+th:after {
+	background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,.08));
+	content: '';
+	display: block;
+	height: 25%;
+	left: 0;
+	margin: 1px 0 0 0;
+	position: absolute;
+	top: 25%;
+	width: 100%;
+}
+
+
 .right-pane {
 	width: 79%; /* 调整頁面的寬度 */
 }
@@ -79,7 +118,6 @@
     }
     
 
-
 </style>
 </head>
 <body>
@@ -123,7 +161,7 @@
 						<th>地址</th>
 						<th>email</th>
 						<th>雇用日期</th>
-						<th>狀態</th>
+						
 						<th>照片</th>
 						<th>狀態</th>
 
@@ -147,7 +185,7 @@
 							<td th:text="${empVO.empAddress}"></td>
 							<td th:text="${empVO.empEmail}"></td>
 							<td th:text="${empVO.empHiredate}"></td>
-							<td th:text="${empVO.empStatus}"></td>
+							
 							<td><img
 								th:src="@{/emp/DBGifReader} + '?empid=' + ${empVO.empId}"
 								width="100px" height="100px"></td>
@@ -272,13 +310,13 @@
 						
 								"lengthMenu" : [ 3, 5, 10, 20, 50,
 										100 ],
-								"searching" : true, //搜尋功能, 預設是開啟
+								"searching" : false, //搜尋功能, 預設是開啟
 								"paging" : true, //分頁功能, 預設是開啟
 								"ordering" : true, //排序功能, 預設是開啟
 								"language" : {
 									"processing" : "處理中...",
 									"loadingRecords" : "載入中...",
-									"lengthMenu" : "顯示 _MENU_ 筆結果",
+									"lengthMenu" : "",
 									"zeroRecords" : "沒有符合的結果",
 									"info" : "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
 									"infoEmpty" : "顯示第 0 至 0 筆結果，共 0 筆",

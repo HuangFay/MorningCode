@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>餐點客製化明細資料新增 - addMeal.html</title>
+    <head th:insert="~{/back-end/meal/included-fragment}"></head>
+    <style type="text/css">
+        button {
+            padding: 5px;
+        }
+
+        form {
+            display: table;
+        }
+
+        form div {
+            display: table-row;
+        }
+
+        label, input, span, select {
+            display: table-cell;
+            margin: 5px;
+            text-align: left;
+        }
+
+        input[type=text], select, textarea {
+            width: 200px;
+            margin: 5px;
+        }
+
+        form div div {
+            display: table-cell;
+        }
+
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+    <div align="center">
+        <h2>餐點客製化明細資料新增 - addMeal.html</h2>
+        <h3><a class="navbar-brand" th:href="@{/meal/select_page}"><img th:src="@{/images/back1.gif}">返回新增餐點客製化明細頁</a></h3>
+    </div>
+</nav>
+
+<div align="center">
+    <h3><b>所有欄位皆為必填欄位</b></h3>
+    <form id="submitForm" th:action="@{/meal/insert}" method="post" th:object="${mealVO}" enctype="multipart/form-data">
+
+        <div>
+            <label>訂單明細編號:</label>
+            <input type="text" th:field="*{orddId}" onclick="hideContent('orddId.errors');" />
+            <span th:if="${#fields.hasErrors('orddId')}" th:errors="*{orddId}" class="error" id="orddId.errors"></span>
+        </div>
+
+        <div>
+            <label>客製化選項編號:</label>
+            <input type="text" th:field="*{custId}" onclick="hideContent('custId.errors');" />
+            <span th:if="${#fields.hasErrors('custId')}" th:errors="*{custId}" class="error" id="custId.errors"></span>
+        </div>
+
+        <div>
+            <button type="submit" id="submit">送出新增</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function hideContent(elementId) {
+        var element = document.getElementById(elementId);
+        if (element) {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>

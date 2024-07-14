@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>客製化選項修改</title>
+
+<head th:insert="~{/back-end/cust/included-fragment}"></head>
+<style type="text/css">
+    button {
+        padding: 5px;
+    }
+    form {
+        display: table;
+    }
+    form div {
+        display: table-row;
+    }
+    label, input, span, select {
+        display: table-cell;
+        margin: 5px;
+        text-align: left;        
+    }
+    input[type=text], select, textarea {
+        width: 200px;
+        margin: 5px;
+    }
+    form div div {
+        display: table-cell;
+    }
+    .center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+     <div align="center"> 
+         <h2>客製化選項修改</h2>
+         <h3><a class="navbar-brand" th:href="@{/cust/select_page}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3>
+     </div>
+</nav>
+
+<div align="center">
+    <h3><b>所有欄位皆為必填欄位</b></h3>
+    <form th:action="@{update}" method="post" th:object="${custVO}">
+        
+        <div>
+            <label>客製化選項名稱:</label>
+            <input type="text" th:field="*{custName}" onclick="hideContent('custName.errors');" /><br/>
+            <span th:if="${#fields.hasErrors('custName')}" th:errors="*{custName}" class="error" id="custName.errors"></span>
+        </div>
+        
+        <div>
+            <label>客製化選項加價:</label>
+            <input type="text" th:field="*{custPrice}" onclick="hideContent('custPrice.errors');" /><br/>
+            <span th:if="${#fields.hasErrors('custPrice')}" th:errors="*{custPrice}" class="error" id="custPrice.errors"></span>
+        </div>
+        
+        <div>
+            <label>客製化選項狀態:</label>
+            <select th:field="*{custStatus}">
+                <option value="0">下架</option>
+                <option value="1">上架</option>
+            </select>
+            <span th:if="${#fields.hasErrors('custStatus')}" th:errors="*{custStatus}" class="error" id="custStatus.errors"></span>
+        </div>
+        
+        <div>
+            <label>客製化選項備註內容:</label>
+            <input type="text" th:field="*{custNote}" onclick="hideContent('custNote.errors');" /><br/>
+            <span th:if="${#fields.hasErrors('custNote')}" th:errors="*{custNote}" class="error" id="custNote.errors"></span>
+        </div>
+        
+        <div>
+            <div></div>
+            <div><button type="submit" id="submit">送出修改</button></div>
+            <div></div>
+        </div>      
+    </form>
+</div>
+
+<!-- JavaScript part -->
+<script type="text/javascript">
+// 清除提示信息
+function hideContent(d) {
+    document.getElementById(d).style.display = "none";
+}
+</script>
+
+</body>
+</html>

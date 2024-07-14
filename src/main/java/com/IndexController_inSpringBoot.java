@@ -17,13 +17,26 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.morning.cust.model.CustService;
+import com.morning.cust.model.CustVO;
 import com.morning.emp.model.EmpService;
 import com.morning.emp.model.EmpVO;
 import com.morning.leave.model.LeaveService;
 import com.morning.leave.model.LeaveVO;
-import com.morning.mem.controller.ViewController;
+import com.morning.meal.model.MealService;
+import com.morning.meal.model.MealVO;
+import com.morning.meals.model.MealsService;
+import com.morning.meals.model.MealsVO;
+import com.morning.mealspic.model.MealsPicService;
+import com.morning.mealspic.model.MealsPicVO;
+import com.morning.mealstypes.model.MealsTypesService;
+import com.morning.mealstypes.model.MealsTypesVO;
 import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
+import com.morning.ordd.model.OrddService;
+import com.morning.ordd.model.OrddVO;
+import com.morning.order.model.OrderService;
+import com.morning.order.model.OrderVO;
 import com.reservation.model.ResService;
 import com.reservation.model.ResVO;
 import com.reservationcontrol.model.ResCService;
@@ -37,21 +50,39 @@ import com.tabletype.model.TableTypeVO;
 
 //@PropertySource("classpath:application.properties") // 於https://start.spring.io建立Spring Boot專案時, application.properties文件預設已經放在我們的src/main/resources 目錄中，它會被自動檢測到
 @Controller
-public class IndexController_inSpringBoot  extends ViewController {
+public class IndexController_inSpringBoot   {
 	
 	// @Autowired (●自動裝配)(Spring ORM 課程)
 	// 目前自動裝配了EmpService --> 供第66使用
 	@Autowired
 	EmpService empSvc;
 	
-	
 	@Autowired
 	MemService memSvc;
 	
-
 	@Autowired
-	LeaveService leaveSvc;
+	MealsService mealsSvc;
 	
+	@Autowired
+	MealsPicService mealspicSvc;
+	
+	@Autowired
+	MealsTypesService mealstypesSvc;
+	
+	@Autowired
+	LeaveService leaveSvc;	
+	
+	@Autowired
+	OrderService orderSvc;	
+	
+	@Autowired
+    OrddService orddSvc;
+    
+    @Autowired
+    CustService custSvc;
+    
+    @Autowired
+    MealService mealSvc;
 	
 
 //訂位autowired
@@ -83,12 +114,14 @@ public class IndexController_inSpringBoot  extends ViewController {
 //    session返回登入 
     @GetMapping("/index2")
     public String index2(HttpSession session, Model model) {
-        MemVO memVO = getMemVO(session);
+    	MemVO memVO = (MemVO) session.getAttribute("memVO");
         if (memVO != null) {
             model.addAttribute("memVO", memVO);
         }
         return "index2";
     }
+    
+ 
     
 //    登出 RedirectView 是Spring Framework的類 ,用來實現重新導向的功能
 //    tomcat使用這個方法不行
@@ -119,13 +152,24 @@ public class IndexController_inSpringBoot  extends ViewController {
 //  個人資料管理
     @GetMapping("/customSettings")
     public String customSettings(HttpSession session, Model model) {
-//    	MemVO memVO = getMemVO(session);
+
     	MemVO memVO = (MemVO) session.getAttribute("memVO");
         if (memVO != null) {
             model.addAttribute("memVO", memVO);
            
         }
         return "front-end/mem/customSettings";
+    }
+    
+//  忘記密碼
+    @GetMapping("/restPassword")
+    public String forgetPassword(HttpSession session,Model model) {
+    	MemVO memVO = (MemVO) session.getAttribute("memVO");
+        if (memVO != null) {
+            model.addAttribute("memVO", memVO);
+           
+        }
+        return "front-end/mem/restPassword";
     }
    
  
@@ -203,7 +247,7 @@ public class IndexController_inSpringBoot  extends ViewController {
 	}
    //首頁按登入跳到signup==============================================================================================================
    
-   @GetMapping("signup")
+   @GetMapping("/front-end/mem/signup")
    public String showSignUpPage() {
        
        return "front-end/mem/signup"; 
@@ -284,6 +328,54 @@ public class IndexController_inSpringBoot  extends ViewController {
 	   return "test2";
    }
    
+   //==meals============================================================
+   @GetMapping("/back-end/meals/listAllMeals")
+   public String listAllMeals(HttpSession session, Model model) {
+	   EmpVO empVO = (EmpVO) session.getAttribute("empVO");
+       if (empVO != null) {
+           model.addAttribute("empVO", empVO);
+       }
+       
+	   return "back-end/meals/listAllMeals";
+   }
+   @ModelAttribute("mealsListData")
+   protected List<MealsVO> referenceListData_meals(Model model) {
+		
+   List<MealsVO> list = mealsSvc.getAll();
+		return list;
+	}
+   //==mealspic========================================================
+   @GetMapping("/back-end/mealspic/listAllMealsPic")
+ 	public String listAllMealsPic(HttpSession session, Model model) {
+	   EmpVO empVO = (EmpVO) session.getAttribute("empVO");
+       if (empVO != null) {
+           model.addAttribute("empVO", empVO);
+       }
+ 		return "back-end/mealspic/listAllMealsPic";
+ 	}
+     
+   @ModelAttribute("mealspicListData")
+ 	protected List<MealsPicVO> referenceListData_mealspic(Model model) {
+ 		
+     	List<MealsPicVO> list = mealspicSvc.getAll();
+ 		return list;
+ 	}
+   //==mealstypes=======================================================
+   @GetMapping("/back-end/mealstypes/listAllMealsTypes")
+   public String listAllMealsTypes(HttpSession session, Model model) {
+	   EmpVO empVO = (EmpVO) session.getAttribute("empVO");
+       if (empVO != null) {
+           model.addAttribute("empVO", empVO);
+       }
+ 		return "back-end/mealstypes/listAllMealsTypes";
+   }
+   
+   @ModelAttribute("mealstypesListData")
+	protected List<MealsTypesVO> referenceListData_mealstypes(Model model) {
+		
+    	List<MealsTypesVO> list = mealstypesSvc.getAll();
+		return list;
+	}
 
    @GetMapping("/leave/select_page")
 	public String select_page3(Model model) {
@@ -402,7 +494,74 @@ public class IndexController_inSpringBoot  extends ViewController {
 		public String resselect_page(Model model) {
 			return "back-end/res/select_page";
 		}
-   
+	    
+	    //訂單畫面
+	    @GetMapping("/order/select_page")
+	    public String select_page4(Model model) {
+	        return "back-end/order/select_page";
+	    }
+
+	    @GetMapping("/order/listAllOrder")
+	    public String listAllOrder(Model model) {
+	        return "back-end/order/listAllOrder";
+	    }
+
+	    @ModelAttribute("orderListData")
+	    protected List<OrderVO> referenceListData4(Model model) {
+	        List<OrderVO> list = orderSvc.getAll();
+	        return list;
+	    }
+	    
+	    //訂單明細畫面
+	    @GetMapping("/ordd/select_page")
+	    public String select_page5(Model model) {
+	        return "back-end/ordd/select_page";
+	    }
+
+	    @GetMapping("/ordd/listAllOrdd")
+	    public String listAllOrdd(Model model) {
+	        return "back-end/ordd/listAllOrdd";
+	    }
+
+	    @ModelAttribute("orddListData")
+	    protected List<OrddVO> referenceListData5(Model model) {
+	        List<OrddVO> list = orddSvc.getAll();
+	        return list;
+	    }
+	    
+	    //客製化餐點畫面
+	    @GetMapping("/cust/select_page")
+	    public String select_page6(Model model) {
+	        return "back-end/cust/select_page";
+	    }
+
+	    @GetMapping("/cust/listAllCust")
+	    public String listAllCust(Model model) {
+	        return "back-end/cust/listAllCust";
+	    }
+
+	    @ModelAttribute("custListData")
+	    protected List<CustVO> referenceListData6(Model model) {
+	        List<CustVO> list = custSvc.getAll();
+	        return list;
+	    }
+	    
+	    //餐點客製化明細畫面
+	    @GetMapping("/meal/select_page")
+	    public String select_page7(Model model) {
+	        return "back-end/meal/select_page";
+	    }
+
+	    @GetMapping("/meal/listAllMeal")
+	    public String listAllMeal(Model model) {
+	        return "back-end/meal/listAllMeal";
+	    }
+
+	    @ModelAttribute("mealListData")
+	    protected List<MealVO> referenceListData7(Model model) {
+	        List<MealVO> list = mealSvc.getAll();
+	        return list;
+	    }
    
 
 }

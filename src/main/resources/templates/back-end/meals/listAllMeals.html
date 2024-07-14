@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>所有餐點 - listAllMeals.html</title>
+<link rel="stylesheet" th:href="@{/css/index3.css}">
+
+
+<!-- dataTables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<!-- dataTables -->
+
+
+<style>
+body {
+    background-color: #8BC34A; /* 草綠色背景 */
+}
+
+.right-pane {
+    width:calc(100%-21%); /* 調整頁面寬度 */
+    margin: 20px auto; /* 水平居中 */
+    background-color: #fff; /* 右側內容區域背景色 */
+    padding: 20px; /* 內邊距 */
+    border-radius: 10px; /* 圓角邊框 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 陰影 */
+}
+
+h2, h3 {
+    text-align: center; /* 標題居中 */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* 邊框重疊處單一化 */
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd; /* 表格邊框 */
+    padding: 8px;
+    text-align: center;
+}
+
+table th {
+    background-color: #4CAF50; /* 表頭背景色 */
+    color: white;
+}
+img.small {
+    width: 40px; 
+    height: 40px; 
+}
+
+body > div > div.right-pane {
+margin-left: 280px;
+padding-left:10px;
+padding-right:10px;
+}
+
+body > div > div.right-pane > div:nth-child(1) > h2{
+margin-top: 0px;
+margin-bottom: 0px;
+}
+
+</style>
+</head>
+<body>
+<div class="main-container">
+		<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+
+
+		
+		
+		<div class="right-pane">
+		
+		<div align="center">
+			
+			<h2>所有餐點 - listAllMeals.html
+				<a class="navbar-brand" th:href="@{/back-end/meals/listAllMeals}"><img
+					th:src="@{/images/upload.gif}" class="small" >回查詢頁<label th:text="${success}"></label></a>
+			</h2>
+		</div>
+		
+<!-- 新增餐點按鈕 -->
+	<div id="table-controls" style="display: flex;">
+    <div id="addMealsButton" class="addmeals">
+       <a th:href="@{/meals/addMeals}" style="display: inline-block; padding: 10px 20px; background-color: #8BC34A; color: white; text-decoration: none; border-radius: 5px;">新增餐點</a>
+    </div>
+	</div>		
+
+	<table id="example" class="display" style="width: 100%">
+		<thead>
+			<tr style="background-color: #CCCCFF">
+				
+				<th>餐點編號</th>
+				<th>餐點類別編號</th>
+				<th>餐點名稱</th>
+				<th>圖片</th>
+				<th>價格</th>
+				<th>描述</th>
+				<th>控制</th>
+				<th>餐點評價總評分</th>
+				
+				<th>修改</th>
+<!-- 				<th>刪除</th> -->
+
+			</tr>
+		</thead>
+
+		<tbody>
+			<th:block th:each="mealsVO : ${mealsListData}">
+			
+				<tr>
+					<td th:text="${mealsVO.mealsId}"></td>
+					<td
+						th:text="${mealsVO.mealstypesVO.mealsTypesId} + '-[' + ${mealsVO.mealstypesVO.mealsTypesName} + ']'"></td>
+					<td th:text="${mealsVO.mealsName}"></td>
+					
+					<td>
+					 <img th:src="@{/meals/DBGifReader2} + '?mealsId=' + ${mealsVO.mealsId}"
+                     width="100px" height="100px"></td>
+                                 
+					<td th:text="${mealsVO.mealsPrice}"></td>
+					<td th:text="${mealsVO.mealsDescription}"></td>
+					<td th:text="${mealsVO.mealsControl}"></td>
+					<td th:text="${mealsVO.mealsTotalScore}"></td>
+
+					<td>
+						<form method="post" th:action="@{/meals/getOne_For_Update}"
+							style="margin-bottom: 0px;">
+							<input type="submit" value="修改"> <input type="hidden"
+								name="mealsId" th:value="${mealsVO.mealsId}">
+						</form>
+
+					</td>
+<!-- 					<td> -->
+<!-- 						<form method="post" th:action="@{/meals/delete}" -->
+<!-- 							style="margin-bottom: 0px;"> -->
+<!-- 							<input type="submit" value="刪除"> <input type="hidden" -->
+<!-- 								name="mealsId" th:value="${mealsVO.mealsId}"> -->
+<!-- 						</form> -->
+
+<!-- 					</td> -->
+					
+				</tr>
+			</th:block>
+		</tbody>
+	</table>
+	</div>
+</div>
+</body>
+<script th:inline="javascript">
+$(document).ready(
+		function() {
+
+$("a.aa").on("click", function() {
+	console.log(this);
+	var $li = $(this).closest("li");
+	$li.find("div.menu-item-1").slideToggle();
+	$li.siblings().find(".menu-item-1").slideUp();
+});
+
+function redirectTo(url) {
+	window.location.href = url;
+}
+
+
+new DataTable('#example', {
+	
+	"lengthMenu" : [ 5, 10, 20],
+	"searching" : true, //搜尋功能, 預設是開啟
+	"paging" : true, //分頁功能, 預設是開啟
+	"ordering" : true, //排序功能, 預設是開啟
+	"language" : {
+		"processing" : "處理中...",
+		"loadingRecords" : "載入中...",
+		"lengthMenu" : "顯示 _MENU_ 筆結果",
+		"zeroRecords" : "沒有符合的結果",
+		"info" : "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+		"infoEmpty" : "顯示第 0 至 0 筆結果，共 0 筆",
+		"infoFiltered" : "(從 _MAX_ 筆結果中過濾)",
+		"infoPostFix" : "",
+		"search" : "搜尋:",
+		"paginate" : {
+			"first" : "第一頁",
+			"previous" : "上一頁",
+			"next" : "下一頁",
+			"last" : "最後一頁"
+		},
+		"aria" : {
+			"sortAscending" : ": 升冪排列",
+			"sortDescending" : ": 降冪排列"
+		}
+	}
+});
+
+
+
+
+		});
+</script>
+</html>

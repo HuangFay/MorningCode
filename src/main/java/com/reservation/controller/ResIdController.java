@@ -30,6 +30,7 @@ import com.tabletype.model.TableTypeVO;
 public class ResIdController {
 	@Autowired
 	ResService ResSvc;
+
 	@Autowired
 	MemService MemSvc;
 	@Autowired
@@ -60,7 +61,7 @@ public class ResIdController {
 		List<ResVO> list = ResSvc.getAll();
 		model.addAttribute("resListData", list);
 		model.addAttribute("success", "- (新增成功)");
-		return "redirect:/res/listAllRes"; // 新增成功後重導至IndexController_inSpringBoot.java的第50行@GetMapping("/emp/listAllEmp")
+		return "redirect:/index2"; // 新增成功後重導至
 	
 		
 		

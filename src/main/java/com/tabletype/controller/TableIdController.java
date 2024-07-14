@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.restime.model.ResTimeVO;
 import com.tabletype.model.TableTypeService;
 import com.tabletype.model.TableTypeVO;
 
@@ -32,22 +31,17 @@ public class TableIdController {
 //	@GetMapping("insert")
 	@PostMapping("insert")
 	public String insert(@Valid TableTypeVO tableTypeVO, BindingResult result, ModelMap model) throws IOException{
-		/*************************** 1.±µ¦¬½Ğ¨D°Ñ¼Æ - ¿é¤J®æ¦¡ªº¿ù»~³B²z ************************/
+		/*************************** 1.æ¥æ”¶è«‹æ±‚åƒæ•¸ - è¼¸å…¥æ ¼å¼çš„éŒ¯èª¤è™•ç† ************************/
 		
-		/*************************** 2.¶}©l·s¼W¸ê®Æ *****************************************/
+		/*************************** 2.é–‹å§‹æ–°å¢è³‡æ–™ *****************************************/
 		// EmpService empSvc = new EmpService();
 		TableTypeSvc.addTableType(tableTypeVO);
-		/*************************** 3.·s¼W§¹¦¨,·Ç³ÆÂà¥æ(Send the Success view) **************/
+		/*************************** 3.æ–°å¢å®Œæˆ,æº–å‚™è½‰äº¤(Send the Success view) **************/
 		List<TableTypeVO> list = TableTypeSvc.getAll();
 		model.addAttribute("tableTypeListData", list);
-		model.addAttribute("success", "- (·s¼W¦¨¥\)");
-		return "redirect:/tabletype/listAllTableType"; // ·s¼W¦¨¥\«á­«¾É¦ÜIndexController_inSpringBoot.javaªº²Ä50¦æ@GetMapping("/emp/listAllEmp")
+		model.addAttribute("success", "- (æ–°å¢æˆåŠŸ)");
+		return "redirect:/tabletype/listAllTableType"; // æ–°å¢æˆåŠŸå¾Œé‡å°è‡³IndexController_inSpringBoot.javaçš„ç¬¬50è¡Œ@GetMapping("/emp/listAllEmp")
 		
 		
 		
-	}
-	
-	
-	
-	
-}
+	}}
