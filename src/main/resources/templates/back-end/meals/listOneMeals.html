@@ -1,12 +1,3 @@
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -14,35 +5,104 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>餐點資料 - listOneMeals.html</title>
 
-<head th:insert="~{/back-end/meals/included-fragment}"></head>
-<style type="text/css">
-	
-    span {
-		display: inline-block;
-		width: 150px;
-		text-align: left;
-		font-weight: bold;
-	}
+
+<style>
+body {
+    background-color: #8BC34A; /* 草綠色背景 */
+}
+
+.right-pane {
+    width:calc(100%-21%); /* 調整頁面寬度 */
+    margin: 20px auto; /* 水平居中 */
+    background-color: #fff; /* 右側內容區域背景色 */
+    padding: 20px; /* 內邊距 */
+    border-radius: 10px; /* 圓角邊框 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 陰影 */
+}
+
+h2, h3 {
+    text-align: center; /* 標題居中 */
+}
+
+img.small {
+    width: 40px; 
+    height: 40px; 
+}
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd; /* 表格框線 */
+}
+
+table th {
+    background-color: #4CAF50; /* 表頭背景色 */
+    color: white;
+}
+body > div:nth-child(2){
+width:600px;
+margin: 0 auto; /* 水平居中 */
+}
 </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-		 <div align="center"> <h2>餐點資料 - listOneMeals.html</h2>
-		 <h3><a class="navbar-brand" th:href="@{/meals/select_page}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3></div>
-</nav>
+		 <div align="center"> 
+		 <h2>餐點資料 - listOneMeals.html</h2>
+		 
+		 <h3>
+		 <a class="navbar-brand" th:href="@{/back-end/meals/listAllMeals}"><img th:src="@{/images/upload.gif}" class="small">回查詢頁<label th:text="${success}"></label></a>
+		 </h3>
+		 </div>
 
-	<div align="center" th:fragment="listOneMeals-div"> <!-- 此div被select_page.html第158行insert用 -->
-		<h3><span>查詢結果 :</span></h3>
-		<span>餐點編號:</span><span th:text="${mealsVO.mealsId}"></span><br/>
-		<span>餐點類別編號:</span><span th:text="${mealsVO.mealstypesVO.mealsTypesId} + '-[' + ${mealsVO.mealstypesVO.mealsTypesName} + ']'"></span><br/>
-		<span>餐點名稱:</span><span th:text="${mealsVO.mealsName}"></span><br/>
-		<span>價格:</span><span th:text="${mealsVO.mealsPrice}"></span><br/>
-		<span>描述:</span><span th:text="${mealsVO.mealsDescription}"></span><br/>
-		<span>控制:</span><span th:text="${mealsVO.mealsControl}"></span><br/>
-		<span>餐點評價總評分:</span><span th:text="${mealsVO.mealsTotalScore}"></span><br/>
-		<span>餐點評價總人數:</span><span th:text="${mealsVO.mealsTotalPeople}"></span><br/>
-		<!-- <span>圖片</span><span th:text="${mealspicVO.mealsPic}"></span><br/> -->
+
+	<div align="center">
+		<h3><b>修改結果 :</b></h3>
+		
+	<table>
+		
+		<tr>
+			<td>餐點編號:</td>
+			<td th:text="${mealsVO.mealsId}"></td>
+		</tr>
+		
+		<tr>
+			<td>餐點類別編號:</td>
+			<td th:text="${mealsVO.mealstypesVO.mealsTypesId} + '-[' + ${mealsVO.mealstypesVO.mealsTypesName} + ']'"></td>
+		</tr>
+		
+		<tr>
+			<td>餐點名稱:</td>
+			<td th:text="${mealsVO.mealsName}"></td>
+		</tr>
+		
+		<tr>
+			<td>價格:</td>
+			<td th:text="${mealsVO.mealsPrice}"></td>
+		</tr>
+		
+		<tr>
+			<td>描述:</td>
+			<td th:text="${mealsVO.mealsDescription}"></td>
+		</tr>
+		
+		<tr>
+			<td>控制:</td>
+			<td th:text="${mealsVO.mealsControl}"></td>
+		</tr>
+		
+		<tr>
+			<td>圖片</td>
+			<td><img th:src="@{/meals/DBGifReader2} + '?mealsId=' + ${mealsVO.mealsId}"
+                     width="100px" height="100px"></td>
+		</tr>
+	</table>
 	
 	</div>
 

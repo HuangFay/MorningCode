@@ -54,7 +54,7 @@ public class MealsTypesController {
 		List<MealsTypesVO> list = mealstypesSvc.getAll();
 		model.addAttribute("mealstypesListData", list);
 		model.addAttribute("success", "- (新增成功)");
-		return "redirect:/mealstypes/listAllMealsTypes";
+		return "/back-end/mealstypes/listAllMealsTypes";
 	}
 
 	// 修改
@@ -92,7 +92,7 @@ public class MealsTypesController {
 		model.addAttribute("success", "- (修改成功)");
 		mealstypesVO = mealstypesSvc.getOneMealsTypes(Integer.valueOf(mealstypesVO.getMealsTypesId()));
 		model.addAttribute("mealstypesVO", mealstypesVO);
-		return "back-end/mealstypes/listOneMealsTypes";
+		return "back-end/mealstypes/listAllMealsTypes";
 	}
 
 	// 全資料

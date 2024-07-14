@@ -29,6 +29,8 @@ import com.morning.meals.model.MealsService;
 import com.morning.meals.model.MealsVO;
 import com.morning.mealspic.model.MealsPicService;
 import com.morning.mealspic.model.MealsPicVO;
+import com.morning.mealstypes.model.MealsTypesService;
+import com.morning.mealstypes.model.MealsTypesVO;
 import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
 import com.morning.ordd.model.OrddService;
@@ -63,6 +65,9 @@ public class IndexController_inSpringBoot   {
 	
 	@Autowired
 	MealsPicService mealspicSvc;
+	
+	@Autowired
+	MealsTypesService mealstypesSvc;
 	
 	@Autowired
 	LeaveService leaveSvc;	
@@ -333,7 +338,7 @@ public class IndexController_inSpringBoot   {
        
 	   return "back-end/meals/listAllMeals";
    }
-   @ModelAttribute("mealsListData")  // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
+   @ModelAttribute("mealsListData")
    protected List<MealsVO> referenceListData_meals(Model model) {
 		
    List<MealsVO> list = mealsSvc.getAll();
@@ -349,12 +354,28 @@ public class IndexController_inSpringBoot   {
  		return "back-end/mealspic/listAllMealsPic";
  	}
      
-   @ModelAttribute("mealspicListData")  // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
+   @ModelAttribute("mealspicListData")
  	protected List<MealsPicVO> referenceListData_mealspic(Model model) {
  		
      	List<MealsPicVO> list = mealspicSvc.getAll();
  		return list;
  	}
+   //==mealstypes=======================================================
+   @GetMapping("/back-end/mealstypes/listAllMealsTypes")
+   public String listAllMealsTypes(HttpSession session, Model model) {
+	   EmpVO empVO = (EmpVO) session.getAttribute("empVO");
+       if (empVO != null) {
+           model.addAttribute("empVO", empVO);
+       }
+ 		return "back-end/mealstypes/listAllMealsTypes";
+   }
+   
+   @ModelAttribute("mealstypesListData")
+	protected List<MealsTypesVO> referenceListData_mealstypes(Model model) {
+		
+    	List<MealsTypesVO> list = mealstypesSvc.getAll();
+		return list;
+	}
 
    @GetMapping("/leave/select_page")
 	public String select_page3(Model model) {

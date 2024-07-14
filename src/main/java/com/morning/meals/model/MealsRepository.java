@@ -8,9 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface MealsRepository extends JpaRepository<MealsVO, Integer> {
 
-	@Modifying
-	@Query(value="delete from meals where meals_id =?1", nativeQuery = true)
-	void deleteByMealsId(int mealsId);
+	
 	
 	@Query(value="SELECT COUNT(*) FROM meals;" , nativeQuery = true)
 	Integer getmealsnumber(); 
