@@ -138,7 +138,9 @@ img.imgsmall {
 .meal-project-management,
 .reservation-management,
 .set-table-type,
-.set-opening-hours {
+.set-opening-hours,
+.leave-apply,
+.check-shift {
   flex-grow: 1;
   flex-shrink: 0;
   flex-basis: auto;

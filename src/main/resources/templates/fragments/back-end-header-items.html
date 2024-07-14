@@ -6,7 +6,7 @@
 	<div class="sidebar">
 
 		<a class="read-test-version" th:href="@{/index3}"><img
-						th:src="@{/images/logo.png}" class="imgsmall"></a>
+			th:src="@{/images/logo.png}" class="imgsmall"></a>
 		<ul class="list">
 
 			<div th:if="${empVO != null}" class="welcome-message">
@@ -48,18 +48,17 @@
 						<span class="employee-management">員工管理</span>
 					</button>
 			</a>
-				
-					<div class="menu-item-1">
-						<a class="admin-account-management"
-							th:href="@{/back-end/emp/listAllEmp}">管理員帳號管理</a>
-					</div>
-					<div class="menu-item-1">
-						<a class="schedule-edit" href="/test1">排班編輯</a>
-					</div>
-					<div class="menu-item-1">
-						<a class="leave-approval" th:href="@{/back-end/leave/listAllLeave}">請假核准</a>
-					</div>
-				</li>
+
+				<div class="menu-item-1">
+					<a class="admin-account-management"
+						th:href="@{/back-end/emp/listAllEmp}">管理員帳號管理</a>
+				</div>
+				<div class="menu-item-1">
+					<a class="schedule-edit" href="/test1">排班編輯</a>
+				</div>
+				<div class="menu-item-1">
+					<a class="leave-approval" th:href="@{/back-end/leave/listAllLeave}">請假核准</a>
+				</div></li>
 
 
 			<li><a class="aa">
@@ -67,17 +66,16 @@
 						<span class="front-end-customer-management">前台客戶相關管理</span>
 					</button>
 			</a>
-					<div class="menu-item-1">
+				<div class="menu-item-1">
 
-						<a class="member-management" th:href="@{/back-end/mem/listAllMem}">會員管理</a>
-					</div>
-					<div class="menu-item-1">
-						<span class="order-management">訂單管理</span>
-					</div>
-					<div class="menu-item-1">
-						<span class="meal-collection">領餐作業</span>
-					</div>
-				</li>
+					<a class="member-management" th:href="@{/back-end/mem/listAllMem}">會員管理</a>
+				</div>
+				<div class="menu-item-1">
+					<span class="order-management">訂單管理</span>
+				</div>
+				<div class="menu-item-1">
+					<span class="meal-collection">領餐作業</span>
+				</div></li>
 
 			<li><a class="aa">
 					<button class="menu-item">
@@ -90,7 +88,7 @@
 						<span class="customer-service-related-management">客服相關管理</span>
 					</button>
 			</a>
-		
+
 				<div class="menu-item-1">
 					<span class="forum-report-management">討論區檢舉管理</span>
 				</div>
@@ -103,12 +101,12 @@
 						<span class="menu-related-settings">菜單相關設定</span>
 					</button>
 			</a>
-			
+
 				<div class="menu-item-1">
-					<a class="menu-management"  
-					th:href="@{/back-end/meals/listAllMeals}">菜單管理</a>
+					<a class="menu-management"
+						th:href="@{/back-end/meals/listAllMeals}">菜單管理</a>
 				</div>
-				
+
 				<div class="menu-item-1">
 					<span class="meal-project-management">餐點項目管理</span>
 				</div></li>
@@ -118,9 +116,9 @@
 						<span class="reservation-related-management">訂位相關管理</span>
 					</button>
 			</a>
-	
+
 				<div class="menu-item-1">
-					
+
 					<a class="member-management" th:href="@{/back-end/res/listAllRes}">訂位管理</a>
 				</div>
 				<div class="menu-item-1">
@@ -129,6 +127,18 @@
 				<div class="menu-item-1">
 					<span class="set-opening-hours">設定開放時段</span>
 				</div></li>
+				
+				<li><a class="aa">
+					<button class="menu-item">
+						<span class="leave-apply">請假申請</span>
+					</button>
+			</a></li>
+				
+				<li><a class="aa">
+					<button class="menu-item">
+						<span class="check-shift">查看排班</span>
+					</button>
+			</a></li>
 		</ul>
 	</div>
 </div>
