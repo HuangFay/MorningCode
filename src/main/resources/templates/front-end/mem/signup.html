@@ -179,7 +179,8 @@
 						data : JSON.stringify(login),
 						success : function(response) {
 							alert("啾咪");
-							 window.location.href = /*[[@{/index2}]]*/ "";
+							 
+							 window.location.href = response;
 						},
 						error : function(xhr) {
 							if (xhr.status === 401) {

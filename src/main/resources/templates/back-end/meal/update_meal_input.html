@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>餐點客製化明細資料修改</title>
+
+<head th:insert="~{/back-end/meal/included-fragment}"></head>
+<style type="text/css">
+        
+        button {
+                padding: 5px;
+        }
+        form {
+                display: table;
+        }
+        form div {
+                display: table-row;
+        }
+        label, input, span, select {
+                display: table-cell;
+                margin: 5px;
+                text-align: left;                
+        }
+        input[type=text], input[type=password], select, textarea {
+                width: 200px;
+                margin: 5px;
+        }
+        form div div {
+                display: table-cell;
+        }
+        .center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+                 <div align="center"> <h2>餐點客製化明細資料修改</h2>
+                 <h3><a class="navbar-brand" th:href="@{/meal/select_page}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3></div>
+</nav>
+
+        <div align="center">
+		<h3>
+			<b>所有欄位皆為必填欄位</b>
+		</h3>
+		<form id="submitForm" th:action="@{/meal/update}" method="post" th:object="${mealVO}"
+			enctype="multipart/form-data">
+			<div>
+				<label>餐點客製化明細編號:</label> <input type="text" th:field="*{customId}"
+					style="border: 0px; font-weight: bold;" readonly /><br />
+			</div>
+
+			<div>
+			    <label>訂單明細編號:</label>
+			    <input type="text" th:field="*{orddId}" onclick="hideContent('orddId.errors');" /><br />
+			    <span th:if="${#fields.hasErrors('orddId')}" th:errors="*{orddId}" class="error" id="orddId.errors"></span>
+			</div>
+
+			<div>
+			    <label>客製化選項編號:</label>
+			    <input type="text" th:field="*{custId}" onclick="hideContent('custId.errors');" /><br />
+			    <span th:if="${#fields.hasErrors('custId')}" th:errors="*{custId}" class="error" id="custId.errors"></span>
+			</div>
+
+			<div>
+				<div></div>
+				<div>
+					<button type="submit" id="submit">送出修改</button>
+				</div>
+				<div></div>
+			</div>
+		</form>
+
+	</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>    
+<script>
+    function hideContent(elementId) {
+        var element = document.getElementById(elementId);
+        if (element) {
+            element.style.display = 'none';
+        }
+    }
+</script>
+</html>
