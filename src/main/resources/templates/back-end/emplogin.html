@@ -28,7 +28,7 @@
           <h3>員工密碼:</h3>
           <input type="password" class="Password" placeholder="Password"/>
           <br>
-          <input type="button" value="登登登登" class="login-button"/>
+          <input type="button" value="登入" class="login-button"/>
           <br>
           
         </div>
@@ -68,11 +68,11 @@
     	 
      //簡單驗證
      if(!emplogin.empAccount){
-    	 alert("蝦嗎?");
+    	 alert("請輸入帳號");
     	 return;
      }
      if(!emplogin.empPassword){
-    	 alert("蝦啊?");
+    	 alert("請輸入密碼");
     	 return;
      }
      
@@ -86,13 +86,13 @@
 			contentType : "application/json",
 			data : JSON.stringify(emplogin),
     	 success : function(response){
-    		 alert("准奏");
+    		 alert("登入成功");
     		 
     		 window.location.href = response;
     	 },
     	 error : function(xhr){
     		 if(xhr.status === 401 ){
-    			 alert("還敢皮啊?");
+    			 alert("帳號或密碼有誤");
     			   $('.login').slideUp(500);
       		     $('.error-page').slideDown(1000);
     		 }else{
