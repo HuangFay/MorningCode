@@ -48,6 +48,9 @@
         button:hover {
             background-color: #4cae4c;
         }
+        .container {
+            margin-top: 150px; /* 新增的 CSS 屬性 */
+        }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -55,26 +58,31 @@
             document.getElementById("date").setAttribute("min", today);
         });
     </script>
+    <link rel="stylesheet" th:href="@{/css/index2.css}" />
 </head>
 <body>
+
     <div class="container">
+    <div th:replace="fragments/header-items :: navigation"></div>
+    	<div class= "reserve">
         <h1>MorningCode訂位</h1>
         <p>請填寫以下表單來預訂您的位置。</p>
         <form th:action="@{insert}" method="post" th:object="${resVO}" enctype="multipart/form-data">
        
-            <label for="name">姓名:</label>
-            <select th:field="*{memVO.memNo}">
-                <option th:each="memVO : ${memListData}" th:value="${memVO.memNo}" th:text="${memVO.memName}" id="name"  > </option>
-            </select>
+             <div>
+                <label for="memName">姓名:</label> 
+                <input type="text" id="memName" name="memName" th:value="${session.memVO.memName}" readonly />
+            </div>
             <label for="phone">電話號碼:</label>
-            <input type="tel" th:field="*{reservationPhone}"  id="phone" name="phone" required>
+            <input type="tel" th:field="*{reservationPhone}" id="phone" name="phone"  required>
             
             <label for="date">日期:</label>
             <input type="date" th:field="*{reservationEatdate}" id="date" name="date" required>
             
             <label for="time">時段:</label>
             <select th:field="*{resTimeVO.reservationTimeId}">
-                <option th:each="resTimeVO : ${resTimeListData}" th:value="${resTimeVO.reservationTimeId}" th:text="${resTimeVO.reservationTime}"></option>
+                <option th:each="resTimeVO,iterStat : ${resTimeListData}" th:value="${resTimeVO.reservationTimeId}" th:text="${resTimeVO.reservationTime}"
+                 th:if="${10<iterStat.index &&  iterStat.index< 31}"></option>
             </select>
             
             <label for="people">人數:</label>
@@ -93,6 +101,23 @@
             
             <button type="submit">提交訂位</button>
         </form>
+    	</div>
     </div>
+   <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var today = new Date();
+            today.setDate(today.getDate() + 1); // 明天
+            var maxDate = new Date();
+            maxDate.setDate(today.getDate() + 30); // 明天的30天后
+
+            var tomorrow = today.toISOString().split('T')[0];
+            var maxLimit = maxDate.toISOString().split('T')[0];
+
+            var dateInput = document.getElementById("date");
+            dateInput.setAttribute("min", tomorrow);
+            dateInput.setAttribute("max", maxLimit);
+            dateInput.value = tomorrow; // 預設選項為明天
+        });
+    </script>
 </body>
 </html>
