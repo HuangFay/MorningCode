@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>morningcode</title>
+
+<!-- 引入 Font Awesome 图标库 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+<style>
+body {
+    background-color: #F5F5DC; /* 淺米白色 */
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.menu-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px;
+}
+
+.menu-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+}
+
+.menu-item img {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.menu-item .details {
+    text-align: left;
+    flex: 1;
+}
+
+.menu-item h3 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.menu-item p {
+    color: #666;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.menu-item .price {
+    color: #ff5722;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.menu-item .buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.menu-item button {
+    background-color: #F5F5DC;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.menu-item button:hover {
+    background-color: #e0e0e0;
+}
+
+img.small {
+    width: 40px; 
+    height: 40px; 
+}
+
+
+</style>
+
+</head>
+<body>
+
+    <div align="center">
+        <h2>morningcode</h2>
+        <a class="navbar-brand" th:href="@{/index2}">
+        <img th:src="@{/images/upload.gif}" class="small" >回首頁<label th:text="${success}"></label></a>
+    </div>
+
+<div class="menu-container" id="menu-container">
+    <th:block th:each="mealsVO : ${mealsListData}">
+    
+        <div class="menu-item" th:data-meals-type-id="${mealsVO.mealstypesVO.mealsTypesId}">
+   			<img th:src="@{|/meals/DBGifReader2?mealsId=${mealsVO.mealsId}|}" alt="meals" width="100px" height="100px">
+        <div class="datails">
+            <h3 th:text="${mealsVO.mealsName}"></h3>
+            <p th:text="${mealsVO.mealsDescription}"></p>
+            <p class="star"><i class="fas fa-star"></i><span th:text="${mealsVO.mealsTotalScore}"></span></p>
+            <p class="price"><i class="fas fa-dollar-sign"></i><span th:text="${mealsVO.mealsPrice}"></span></p>
+		  <div class="buttons">
+            <button th:if="${mealsVO.mealsControl == 1}" th:onclick="'addToCart(' + ${mealsVO.mealsId} + ')'" >加入購物車</button>
+            <button th:if="${mealsVO.mealsControl == 0}" class="disabled">已售完</button>
+            <button th:onclick="'addToFavorites(' + ${mealsVO.mealsId} + ')'">加入最愛</button>
+		  </div>	
+        </div>    
+        </div>
+    </th:block>
+</div>
+
+<script>
+function addToCart(mealsId) {
+    // 假設加入購物車的功能
+    console.log("加入購物車: " + mealsId);
+}
+
+function addToFavorites(mealsId) {
+    // 假設加入最愛的功能
+    console.log("加入最愛: " + mealsId);
+}
+//排序函數
+function sortMenuItems() {
+    const menuContainer = document.getElementById('menu-container');
+    const menuItems = Array.from(menuContainer.getElementsByClassName('menu-item'));
+
+    menuItems.sort((a, b) => {
+        return parseInt(a.getAttribute('data-meals-type-id')) - parseInt(b.getAttribute('data-meals-type-id'));
+    });
+
+    menuItems.forEach(item => {
+        menuContainer.appendChild(item);
+    });
+}
+
+// 在页面加载完成后执行排序
+document.addEventListener('DOMContentLoaded', sortMenuItems);
+</script>
+
+</body>
+</html>
