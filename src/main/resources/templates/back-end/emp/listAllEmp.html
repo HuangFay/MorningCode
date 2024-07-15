@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>所有員工資料 - listAllEmp.html</title>
+<title>所有員工資料 </title>
 <link rel="stylesheet" th:href="@{/css/index3.css}">
 
 <!-- dataTables -->
@@ -26,7 +26,12 @@ table {
 	text-align: left;
 	max-width: 600px;
 }
-th, td {
+
+
+th{
+min-width:75px;
+}
+td {
 	
 	max-width:100px;
 	min-width:65px;
@@ -142,7 +147,7 @@ th:after {
 
 			<div align="center">
 				
-				<h3>所有員工資料 - listAllEmp.html
+				<h3>所有員工資料 
 					<a class="navbar-brand" th:href="@{/back-end/emp/listAllEmp}"><img
 						th:src="@{/images/hihihi.gif}" class="small">回查詢頁<label
 						th:text="${success}"></label></a>
@@ -151,7 +156,7 @@ th:after {
 			
 			
 			<!-- 新增員工按鈕 -->
-	<div id="table-controls" style="display: flex; margin:0px 0px 0px 65px;">
+	<div id="table-controls" style="display: flex; ">
     <div id="addEmpButton" class="addemp">
         <a th:href="@{/emp/addEmp}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">新增員工</a>
     </div>
@@ -159,26 +164,23 @@ th:after {
 
 			
 
-			<table id="example" class="display" >
+			<table id="example" class="display"  >
 				<thead>
 					<tr style="background-color: #CCCCFF">
 						
 						<th>員工編號</th>
-						<th>員工姓名</th>
 						<th>員工帳號</th>
+						<th>員工姓名</th>
 						<th>員工密碼</th>
 						<th>電話</th>
 						<th>地址</th>
 						<th>email</th>
 						<th>雇用日期</th>
-						
 						<th>照片</th>
 						<th>狀態</th>
 
 
-
 						<th>功能</th>
-
 						<th>權限</th>
 					</tr>
 				</thead>
@@ -188,8 +190,8 @@ th:after {
 						<tr>
 						
 							<td th:text="${empVO.empId}"></td>
-							<td th:text="${empVO.empName}"></td>
 							<td th:text="${empVO.empAccount}"></td>
+							<td th:text="${empVO.empName}"></td>
 							<td th:text="${empVO.empPassword}"></td>
 							<td th:text="${empVO.empPhone}"></td>
 							<td th:text="${empVO.empAddress}"></td>
@@ -243,7 +245,7 @@ th:after {
 		</div>
 	</div>
 
-	
+	</body>
 	
 	<!-- JavaScript函數顯示員工權限 -->
 	<script th:inline="javascript">
@@ -343,7 +345,7 @@ th:after {
 										"sortAscending" : ": 升冪排列",
 										"sortDescending" : ": 降冪排列"
 									}
-								},
+								}
 								
 							 
 								
@@ -353,9 +355,4 @@ th:after {
 				});
 	
 	</script>
-
-
-
-
-</body>
 </html>
