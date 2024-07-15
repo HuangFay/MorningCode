@@ -99,6 +99,18 @@ public class IndexController_inSpringBoot   {
     // inject(注入資料) via application.properties
     @Value("${welcome.message}")
     private String message;
+    
+  //================================================================================
+    
+    @ModelAttribute
+    public void addAttributes(HttpSession session, Model model) {
+        MemVO memVO = (MemVO) session.getAttribute("memVO");
+        if (memVO != null) {
+            model.addAttribute("memVO", memVO);
+        }
+    }
+    
+  //================================================================================
 	
     private List<String> myList = Arrays.asList("Spring Boot Quickstart 官網 : https://start.spring.io", "IDE 開發工具", "直接使用(匯入)官方的 Maven Spring-Boot-demo Project + pom.xml", "直接使用官方現成的 @SpringBootApplication + SpringBootServletInitializer 組態檔", "依賴注入(DI) HikariDataSource (官方建議的連線池)", "Thymeleaf", "Java WebApp (<font color=red>快速完成 Spring Boot Web MVC</font>)");
     @GetMapping("/")
@@ -113,11 +125,11 @@ public class IndexController_inSpringBoot   {
     
 //    session返回登入 
     @GetMapping("/index2")
-    public String index2(HttpSession session, Model model) {
-    	MemVO memVO = (MemVO) session.getAttribute("memVO");
-        if (memVO != null) {
-            model.addAttribute("memVO", memVO);
-        }
+    public String index2( ) {
+//    	MemVO memVO = (MemVO) session.getAttribute("memVO");
+//        if (memVO != null) {
+//            model.addAttribute("memVO", memVO);
+//        }
         return "index2";
     }
     
@@ -151,24 +163,14 @@ public class IndexController_inSpringBoot   {
     
 //  個人資料管理
     @GetMapping("/customSettings")
-    public String customSettings(HttpSession session, Model model) {
-
-    	MemVO memVO = (MemVO) session.getAttribute("memVO");
-        if (memVO != null) {
-            model.addAttribute("memVO", memVO);
-           
-        }
+    public String customSettings() {
         return "front-end/mem/customSettings";
     }
-    
-//  忘記密碼
+//    
+//  修改密碼
     @GetMapping("/restPassword")
-    public String forgetPassword(HttpSession session,Model model) {
-    	MemVO memVO = (MemVO) session.getAttribute("memVO");
-        if (memVO != null) {
-            model.addAttribute("memVO", memVO);
-           
-        }
+    public String forgetPassword() {
+    	
         return "front-end/mem/restPassword";
     }
    
