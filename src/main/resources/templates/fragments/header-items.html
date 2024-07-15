@@ -5,15 +5,12 @@
 <div th:fragment="navigation">
  
         <div class="items">
-          <span class="page"onclick="redirectTo('test1')">最新消息</span>
-          <span class="page">瀏覽餐點</span>
+         <span class="page" onclick="redirectTo('test1')"><i class="fas fa-newspaper"></i> 最新消息</span>
+<span class="page"><i class="fas fa-utensils"></i> 瀏覽餐點</span>
+<span class="page"><i class="fas fa-comments"></i> 討論區</span>
+<span class="page" onclick="redirectTo(baseUrl + 'front-end/res/addRes')"><i class="fas fa-calendar-alt"></i> 訂位</span>
+<span class="page"><i class="fas fa-shopping-cart"></i> 購物車</span>
 
-          <span class="page">討論區</span>
-          <span class="page" onclick="redirectTo(baseUrl + 'front-end/res/addRes')">訂位</span>
-
-          <span class="page">購物車</span>
-          
-          
           
          
           <button th:if="${session.memVO == null}" class="button" onclick="redirectTo(baseUrl + 'front-end/mem/signup')">

@@ -24,8 +24,17 @@ table {
 	line-height: 15px;
 	margin: 30px auto;
 	text-align: left;
-	width: 800px;
+	max-width: 600px;
 }
+th, td {
+	
+	max-width:100px;
+	min-width:65px;
+  
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+
 
 th {
 	background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
@@ -52,6 +61,7 @@ th:after {
 	top: 25%;
 	width: 100%;
 }
+
 
 
 .right-pane {
@@ -141,7 +151,7 @@ th:after {
 			
 			
 			<!-- 新增員工按鈕 -->
-	<div id="table-controls" style="display: flex;">
+	<div id="table-controls" style="display: flex; margin:0px 0px 0px 65px;">
     <div id="addEmpButton" class="addemp">
         <a th:href="@{/emp/addEmp}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">新增員工</a>
     </div>
@@ -149,7 +159,7 @@ th:after {
 
 			
 
-			<table id="example" class="display" style="width: 5%">
+			<table id="example" class="display" >
 				<thead>
 					<tr style="background-color: #CCCCFF">
 						
@@ -336,7 +346,7 @@ th:after {
 								},
 								
 							 
-					
+								
 								
 							});
 					

@@ -43,12 +43,12 @@ button {
   align-items: center;
   justify-content: flex-end;
   flex-wrap: nowrap;
-  gap: 30px;
+  gap: 25px;
   position: absolute;
   width: 678px;
   height: 52px;
   top: 56px;
-  right: 80px;
+  right: 30px;
   z-index: 27;
 }
 
