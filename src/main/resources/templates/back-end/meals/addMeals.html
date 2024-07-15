@@ -1,12 +1,3 @@
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -15,105 +6,130 @@
 <title>餐點新增 - addEmp.html</title>
 
 
+<style>
+body {
+    background-color: #8BC34A; /* 草綠色背景 */
+}
 
-<head th:insert="~{/back-end/meals/included-fragment}"></head>
-<style type="text/css">
-	
-	button {
-		padding: 5px;
-	}
-	form {
-		display: table;
-	}
-	form div {
-		display: table-row;
-	}
-	label, input, span, select {
-		display: table-cell;
-		margin: 5px;
-		text-align: left;		
-	}
-	input[type=text], input[type=password], select, textarea {
-		width: 200px;
-		margin: 5px;
-	}
-	form div div {
-		display: table-cell;
-	}
-	.center {
-        margin-left: auto;
-        margin-right: auto;
-    }
+.right-pane {
+    width:calc(100%-21%); /* 調整頁面寬度 */
+    margin: 20px auto; /* 水平居中 */
+    background-color: #fff; /* 右側內容區域背景色 */
+    padding: 20px; /* 內邊距 */
+    border-radius: 10px; /* 圓角邊框 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 陰影 */
+}
+
+h2, h3 {
+    text-align: center; /* 標題居中 */
+}
+
+img.small {
+    width: 40px; 
+    height: 40px; 
+}
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd; /* 表格框線 */
+}
+
+table th {
+    background-color: #4CAF50; /* 表頭背景色 */
+    color: white;
+}
+body > div:nth-child(2) > form{
+width:600px;
+}
 </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-		 <div align="center"> <h2>餐點新增 - addMeals.html</h2>
-		 <h3><a class="navbar-brand" th:href="@{/back-end/meals/listAllMeals}">回查詢頁</a></h3></div>
-</nav>
+		 <div align="center">
+
+		 <h2>餐點新增 - addMeals.html</h2>
+
+		 <h3>
+		 <a class="navbar-brand" th:href="@{/back-end/meals/listAllMeals}"><img th:src="@{/images/upload.gif}" class="small">回查詢頁</a>
+		 </h3>
+		 </div>
+
 
 	<div align="center">
 		<h3><b>所有欄位皆為必填欄位</b></h3>
 		<form th:action="@{insert}" method="post" th:object="${mealsVO}" enctype="multipart/form-data">
 			
 			
-			
-						
-			<div>
-			<label>餐點類別:</label>
+	<table>
+		<tr>
+			<td><label>餐點類別:</label></td>
+			<td>
 			<select th:field="*{mealstypesVO.mealsTypesId}">
 				<option th:each="mealstypesVO : ${mealstypesListData}" th:value="${mealstypesVO.mealsTypesId}" th:text="${mealstypesVO.mealsTypesName}" />
 			</select>
 			<span th:if="${#fields.hasErrors('mealstypesVO.mealsTypesId')}" th:errors="*{mealstypesVO.mealsTypesId}" class="error" id="mealstypesVO.mealsTypesId.errors"></span>
-			</div>
-
-			<div>
-			<label>餐點名稱:</label>
+			</td>
+		</tr>
+		
+		<tr>
+			<td><label>餐點名稱:</label></td>
+			<td>		
 			<input type="text" th:field="*{mealsName}" onclick="hideContent('mealsName.errors');" /><br/>
 			<span  th:if="${#fields.hasErrors('mealsName')}" th:errors="*{mealsName}" class="error" id="mealsName.errors"></span>
-			</div>
-			
-			<div>
-			<label>餐點價格:</label>
-			<input type="text" th:field="*{mealsPrice}" onclick="hideContent('mealsPrice.errors');" /><br/>
-			<span  th:if="${#fields.hasErrors('mealsPrice')}" th:errors="*{mealsPrice}" class="error" id="mealsPrice.errors"></span>
-			</div>
-			
-			<div>
-			<label>餐點描述:</label>
+			</td>
+		</tr>
+		
+		<tr>
+			<td><label>餐點價格:</label></td>
+            <td>
+            <input type="text" th:field="*{mealsPrice}" onclick="hideContent('mealsPrice.errors');" /><br/>
+            <span th:if="${#fields.hasErrors('mealsPrice')}" th:errors="*{mealsPrice}" class="error" id="mealsPrice.errors"></span>
+            </td>
+       </tr>
+
+		<tr>
+			<td><label>餐點描述:</label></td>
+			<td>
 			<input type="text" th:field="*{mealsDescription}" onclick="hideContent('mealsDescription.errors');" /><br/>
 			<span  th:if="${#fields.hasErrors('mealsDescription')}" th:errors="*{mealsDescription}" class="error" id="mealsDescription.errors"></span>
-			</div>
-
-			<div>
-			<label>餐點控制:</label>
+			</td>		
+		</tr>
+		
+		<tr>
+			<td><label>餐點控制:</label></td>
+			<td>
 			<select th:field="*{mealsControl}">
 				<option value="1" th:selected="${mealsVO.mealsControl == 1}">1 上架</option>
        	   	    <option value="0" th:selected="${mealsVO.mealsControl == 0}">0 下架</option>
             </select><br/>
 			<span  th:if="${#fields.hasErrors('mealsControl')}" th:errors="*{mealsControl}" class="error" id="mealsControl.errors"></span>
-			</div>	
-			
-			
-			<div>
-			<label>餐點圖片:</label>
+			</td>	
+		</tr>
+		
+		<tr>
+			<td><label>餐點圖片:</label></td>
+			<td>
 			<input type="file" name="picSet" id="pic" multiple="multiple" />
 			<span class="error" th:utext="${errorMessage}" id="upFiles.errors">${errorMessage}</span>
 <!-- 預覽圖片容器 -->
     		<div id="preview" class="mt-2"></div>
-			</div>	
-
-			<div>
-				<div></div>
-				<div><button type="submit" id="submit"> 送出新增 </button></div>
-				<div></div>
-			</div>
-				
-		</form>
-	
-	
-	</div>
+			</td>	
+		</tr>
+		
+		<tr>
+		<td></td>
+		<td><button type="submit" id="submit"> 送出新增 </button></td>
+		</tr>
+		</table>
+	</form>
+</div>
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

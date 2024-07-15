@@ -1,7 +1,9 @@
 package com.morning.mealspic.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.morning.meals.model.MealsService;
@@ -127,6 +130,28 @@ public class MealsPicController {
 		model.addAttribute("success", "- (刪除成功)");
 		return "back-end/mealspic/listAllMealsPic"; // 刪除完成後轉交
 	}
+	
+	// 修改，刪除圖片
+		@PostMapping("deletepic")
+		@ResponseBody
+		public Map<String, Object> deleteMealPic(@RequestParam("mealPicId") Integer mealPicId) {
+			Map<String, Object> response = new HashMap<>();
+			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+			/*************************** 2.開始刪除資料 *****************************************/
+			boolean success = mealspicSvc.deleteMealPics(mealPicId);
+			
+			/*************************** 3.刪除完成,準備轉交(Send the Success view) **************/
+			if(success) {
+				response.put("success", true);
+				System.out.println("成功");
+				
+			}else {
+				response.put("success", false);
+				response.put("message", "失敗");
+			}
+
+			return response; // 刪除完成後轉交
+		}
 
 	@ModelAttribute("mealsListData")
 	protected List<MealsVO> referenceListData() {

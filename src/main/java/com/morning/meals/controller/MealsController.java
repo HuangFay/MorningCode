@@ -2,7 +2,9 @@ package com.morning.meals.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.morning.meals.model.MealsService;
@@ -86,7 +89,7 @@ public class MealsController {
 		model.addAttribute("mealsListData", list);	
 		model.addAttribute("success", "- (新增成功)");
 		System.out.println("ok");
-		return "back-end/meals/listAllMeals";
+		return "back-end/meals/listOneMeals";
 	}
 
 	// 修改
@@ -104,13 +107,32 @@ public class MealsController {
 	}
 
 	@PostMapping("update")
-	public String update(@Valid MealsVO mealsVO, BindingResult result, ModelMap model) throws IOException {
+	public String update(@Valid MealsVO mealsVO, BindingResult result, ModelMap model,
+			@RequestParam("picSet") MultipartFile[] parts ) throws IOException {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 		result = removeFieldError(mealsVO, result, "mealsId");
 
-		if (result.hasErrors()) {
-			return "back-end/meals/update_meals_input";
+		if (parts[0].isEmpty()) { // 使用者未選擇要上傳的圖片時
+			model.addAttribute("errorMessage", "餐點圖片: 請上傳");
+		} else {
+			List<MealsPicVO> picSet = new ArrayList<>();
+			
+			for (MultipartFile multipartFile : parts) {
+				byte[] buf = multipartFile.getBytes();
+				
+				MealsPicVO mealspicVO = new MealsPicVO();
+				mealspicVO.setMealPic(buf);
+				mealspicVO.setMealsVO(mealsVO);
+				
+				picSet.add(mealspicVO);
+			}
+			mealsVO.setMealspics(picSet);
 		}
+		
+//		if (result.hasErrors() || parts[0].isEmpty()) {
+//		
+//			return "back-end/meals/update_meals_input";
+//		}
 
 		/*************************** 2.開始修改資料 *****************************************/
 		mealsSvc.updateMeals(mealsVO);
@@ -119,23 +141,33 @@ public class MealsController {
 		model.addAttribute("success", "- (修改成功)");
 		mealsVO = mealsSvc.getOneMeals(Integer.valueOf(mealsVO.getMealsId()));
 		model.addAttribute("mealsVO", mealsVO);
+		System.out.println("來了");
 		return "back-end/meals/listOneMeals";
 	}
 
-	// 刪除
-	@PostMapping("delete")
-	public String delete(@RequestParam("mealsId") String mealsId, ModelMap model) {
-		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-		/*************************** 2.開始刪除資料 *****************************************/
+//	// 修改，刪除圖片
+//	@PostMapping("deletepic")
+//	@ResponseBody
+//	public Map<String, Object> deleteMealPic(@RequestParam("mealPicId") Integer mealPicId) {
+//		Map<String, Object> response = new HashMap<>();
+//		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+//		/*************************** 2.開始刪除資料 *****************************************/
+//		boolean success = mealsSvc.deleteMealPics(mealPicId);
+//		
+//		/*************************** 3.刪除完成,準備轉交(Send the Success view) **************/
+//		if(success) {
+//			response.put("success", true);
+//			System.out.println("成功");
+//			
+//		}else {
+//			response.put("success", false);
+//			response.put("message", "失敗");
+//		}
+//
+//		return response; // 刪除完成後轉交
+//	}
 
-		mealsSvc.deleteMeals(Integer.valueOf(mealsId));
-		/*************************** 3.刪除完成,準備轉交(Send the Success view) **************/
-		List<MealsVO> list = mealsSvc.getAll();
-		model.addAttribute("empListData", list);
-		model.addAttribute("success", "- (刪除成功)");
-		return "back-end/meals/listAllMeals"; // 刪除完成後轉交listAllEmp.html
-	}
-
+	
 	@ModelAttribute("mealstypesListData")
 	protected List<MealsTypesVO> referenceListData() {
 		List<MealsTypesVO> list = mealstypesSvc.getAll();
