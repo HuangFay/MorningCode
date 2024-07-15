@@ -138,6 +138,12 @@
 </dependency>
 	<!-- ============================================================================================ -->
 	
+		<!-- Bootstrap CSS and JS -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>5.3.3</version>
+        </dependency>
 
     
   </dependencies>
