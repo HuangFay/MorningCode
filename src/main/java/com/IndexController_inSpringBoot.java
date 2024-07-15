@@ -378,6 +378,11 @@ public class IndexController_inSpringBoot   {
     	List<MealsTypesVO> list = mealstypesSvc.getAll();
 		return list;
 	}
+   //==menu=============================================================
+   @GetMapping("/front-end/menu/menu")
+   public String menu (Model model) {
+	   return "/front-end/menu/menu";
+   }
 
    @GetMapping("/leave/select_page")
 	public String select_page3(Model model) {
