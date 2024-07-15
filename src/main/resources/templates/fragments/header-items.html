@@ -36,8 +36,8 @@
         
           
        
-        <div th:if="${memVO != null}" class="welcome-message">
-             <span class="page">歡迎會員： <span th:text="${memVO.memName}"></span></span>
+        <div th:if="${session.memVO != null}" class="welcome-message">
+             <span class="page">歡迎會員： <span th:text="${session.memVO.memName}"></span></span>
         </div>
           
           
