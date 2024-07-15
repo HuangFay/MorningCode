@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,17 +39,36 @@ public class ResIdController {
 	TableTypeService TableTypeSvc;
 	
 	@GetMapping("addRes")
-	public String addEmp(ModelMap model) {
-		ResVO resVO = new ResVO();
-		model.addAttribute("resVO", resVO);
-		return "front-end/res/addRes";
+	public String addEmp(HttpSession session,ModelMap model) {
+		// 從 session 中獲取 memVO
+	    MemVO memVO = (MemVO) session.getAttribute("memVO");
+	    if (memVO == null) {
+	        memVO = new MemVO();
+	        // 假設您有一個方法來初始化 memVO
+	        session.setAttribute("memVO", memVO);
+	    }
+
+	    // 創建 ResVO 對象並設置 memVO
+	    ResVO resVO = new ResVO();
+	    resVO.setMemVO(memVO);
+
+	    // 將 resVO 添加到模型中
+	    model.addAttribute("resVO", resVO);
+
+	    return "front-end/res/addRes";
 	}
 	
 	
 	@PostMapping("insert")
-	public String insert(@Valid ResVO resVO, BindingResult result, ModelMap model) throws IOException{
+	public String insert(HttpSession session,@Valid ResVO resVO, BindingResult result, ModelMap model) throws IOException{
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 		
+		MemVO memVO = (MemVO) session.getAttribute("memVO");
+	    if (memVO == null) {
+	        memVO = new MemVO();
+	        // 假設您有一個方法來初始化 memVO
+	        session.setAttribute("memVO", memVO);
+	    }
 		resVO.setReservationDate(LocalDateTime.now());
 	
 		
