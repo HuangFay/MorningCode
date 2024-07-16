@@ -3,13 +3,10 @@ package com.forum.controller;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
-import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +26,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.forum.model.ForumPostVO;
 import com.forum.model.ForumReplyVO;
-import com.forum.model.ForumReportVO;
 import com.forum.model.ForumService;
 import com.morning.mem.model.MemVO;
 
@@ -81,8 +77,6 @@ public class ForumController {
 	}
 	
 	/***** 畫面請求操作 *****/
-	
-	/* ========== 文章操作相關 ========== */
 	
 	@PostMapping("insert")
 	public String insert(@Valid ForumPostVO forumPostVO, 
@@ -151,39 +145,38 @@ public class ForumController {
 		return "redirect:/forum/";  // 導回文章列表
 	}
 	
-	/* ========== 回覆相關 ========== */
-	
     @PostMapping("addReply")
     public ResponseEntity<?> addReply(
 		 @RequestParam("postId") String postIdStr,
 		 @RequestParam("replyContent") String replyContent,
 		 HttpSession session) {
     	
-	    	MemVO memVO = (MemVO) session.getAttribute("memVO");
-	    	if ( memVO == null ) {
-	    		return ResponseEntity.status(HttpStatus.OK).body(null);
-	    	}
+    	MemVO memVO = (MemVO) session.getAttribute("memVO");
+    	if ( memVO == null ) {
+    		return ResponseEntity.status(HttpStatus.OK).body(null);
+    	}
 		
 		Integer postId = Integer.valueOf(postIdStr);
 		
 		// 回覆VO 設定文章編號
-	    	ForumReplyVO forumReplyVO = new ForumReplyVO();
-	    	forumReplyVO.setForumPostVO(new ForumPostVO());
-	    	forumReplyVO.getForumPostVO().setPostId(postId);
-	    	
-	    	forumReplyVO.setMemVO(memVO);
-	    	forumReplyVO.setReplyContent(replyContent);
-	    	
-	    	Date sqlDate = new Date(System.currentTimeMillis());
-	    	forumReplyVO.setReplyTime(sqlDate);
-	    	
-	    	ForumReplyVO savedForumReplyVO = forumSvc.addReply(forumReplyVO);
-	    	
-	    	if ( savedForumReplyVO != null ) {
-	    		return ResponseEntity.status(HttpStatus.OK).body(savedForumReplyVO);
-	    	}
-			
-	    	return ResponseEntity.status(HttpStatus.OK).body("fail");
+    	ForumReplyVO forumReplyVO = new ForumReplyVO();
+    	forumReplyVO.setForumPostVO(new ForumPostVO());
+    	forumReplyVO.getForumPostVO().setPostId(postId);
+    	
+    	forumReplyVO.setMemVO(memVO);
+    	forumReplyVO.setReplyContent(replyContent);
+    	
+    	Date sqlDate = new Date(System.currentTimeMillis());
+    	forumReplyVO.setReplyTime(sqlDate);
+    	
+    	ForumReplyVO savedForumReplyVO = forumSvc.addReply(forumReplyVO);
+    	
+//    	System.out.println("savedForumReplyVO = " + savedForumReplyVO.getForumPostVO().getMemVO().getMemName());
+    	if ( savedForumReplyVO != null ) {
+    		return ResponseEntity.status(HttpStatus.OK).body(savedForumReplyVO);
+    	}
+		
+    	return ResponseEntity.status(HttpStatus.OK).body("fail");
     }
 	
 	@PostMapping("deleteReply")
@@ -195,54 +188,6 @@ public class ForumController {
 		} else {
 			return ResponseEntity.status(HttpStatus.OK).body("fail");
 		}
-    }
-	
-	/* ========== 檢舉文章相關 ========== */
-	@PostMapping("sendPostReport")
-	public ResponseEntity<?> sendPostReport(
-			@RequestParam("reportId") String postIdStr,
-			@RequestParam("reportReason") String reportReason
-			, HttpSession session) {
-		
-		Integer postId = Integer.valueOf(postIdStr);
-		
-		MemVO memVO = (MemVO) session.getAttribute("memVO");
-	    	if ( memVO == null ) {
-	    		return ResponseEntity.status(HttpStatus.OK).body("登入後才能繼續操作");
-	    	}
-	    	
-	    	ForumReportVO forumReportVO = new ForumReportVO();
-	    	forumReportVO.setPostId(postId);
-	    	forumReportVO.setReportReason(reportReason);
-	    	forumReportVO.setMemNo(memVO.getMemNo());
-	    	forumReportVO.setReportStatus(1);
-	    	
-	    	// 儲存現在的日期
-		Date sqlDate = new Date(System.currentTimeMillis());
-		forumReportVO.setReportTime(sqlDate);
-		
-        Set<ConstraintViolation<ForumReportVO>> violations = validator.validate(forumReportVO);
-		if (!violations.isEmpty()) {
-
-            String errorMessage = violations.stream()
-            		.map(violation -> {
-            			return violation.getMessage();
-            		})
-            		.collect(Collectors.joining("\n"));
-            
-            return ResponseEntity.status(HttpStatus.OK).body(errorMessage.toString());
-        }
-		
-		boolean isSaved = forumSvc.addPostReport(forumReportVO);
-	    
-		return ResponseEntity.status(HttpStatus.OK).body(isSaved ? "success" : "fail");
-    }
-	
-    private final Validator validator;
-
-    @Autowired
-    public ForumController(Validator validator) {
-        this.validator = validator;
     }
 	
 	/***** 資料取得 *****/

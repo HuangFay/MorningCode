@@ -10,7 +10,7 @@
     box-shadow: 1px 5px 6px 0px black;
     border-radius: 22px;
     position: absolute;
-    top: 60%;
+    top: 17%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
@@ -70,9 +70,4 @@ margin:5px ;
 }
 #password-button:hover {
     background-color: darkred; /* 滑鼠懸停時的背景顏色 */
-}
-.main-container {
- 
-  height: 600px;
- 
 }

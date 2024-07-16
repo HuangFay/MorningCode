@@ -21,7 +21,7 @@ import com.morning.mealspic.model.MealsPicVO;
 import com.morning.mem.model.MemService;
 
 @Controller
-@RequestMapping({"/emp","/mem","/meals","/menu"})
+@RequestMapping({"/emp","/mem","/meals"})
 public class DBGifReaderController {
 	
 	@Autowired

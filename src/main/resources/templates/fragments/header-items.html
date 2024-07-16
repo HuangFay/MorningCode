@@ -1,18 +1,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
-
+ 
  
 <div th:fragment="navigation">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+ 
         <div class="items">
+          <span class="page"onclick="redirectTo('test1')">最新消息</span>
+          <span class="page">瀏覽餐點</span>
 
-         <span class="page" onclick="redirectTo('test1')"><i class="fas fa-newspaper"></i> 最新消息</span>
-<span class="page"><i class="fas fa-utensils"></i> 瀏覽餐點</span>
-<span class="page"><i class="fas fa-comments"></i> 討論區</span>
-<span class="page" onclick="redirectTo(baseUrl + 'front-end/res/addRes')"><i class="fas fa-calendar-alt"></i> 訂位</span>
-<span class="page"><i class="fas fa-shopping-cart"></i> 購物車</span>
+          <span class="page">討論區</span>
+          <span class="page" onclick="redirectTo(baseUrl + 'front-end/res/addRes')">訂位</span>
 
-
+          <span class="page">購物車</span>
+          
+          
           
          
           <button th:if="${session.memVO == null}" class="button" onclick="redirectTo(baseUrl + 'front-end/mem/signup')">
@@ -34,17 +35,17 @@
          
         
           
-        <div th:if="${session.memVO != null}" class="welcome-message">
-             <span class="page">歡迎會員： <span th:text="${session.memVO.memName}"></span></span>
+       
+        <div th:if="${memVO != null}" class="welcome-message">
+             <span class="page">歡迎會員： <span th:text="${memVO.memName}"></span></span>
         </div>
-     
           
           
           
           
         </div>
         <!-- 以上是功能欄 -->
-        
+       
         
         <button class="morning-code" onclick="redirectTo(baseUrl + 'index2')" ><img
 						th:src="@{/images/logo.png}" class="imgsmall"></button>

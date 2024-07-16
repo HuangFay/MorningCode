@@ -17,11 +17,6 @@ public class ForumService {
 	
 	@Autowired
 	ForumReplyRepository replyRepository;
-	
-	@Autowired
-	ForumReportRepository forumReportRepository;
-	
-	/* ========== 文章操作相關 ========== */
 
 	public void addPost(ForumPostVO forumPostVO) {
 		postRepository.save(forumPostVO);
@@ -70,15 +65,6 @@ public class ForumService {
 			return !replyRepository.existsById(replyId);
 		}
 		return false;
-	}
-	
-	/* ========== 檢舉文章相關 ========== */
-	
-	public boolean addPostReport(ForumReportVO forumReportVO) {
-		
-		ForumReportVO srVO = forumReportRepository.save(forumReportVO);
-		
-		return forumReportRepository.existsById(srVO.getReportId());
 	}
 	
 }

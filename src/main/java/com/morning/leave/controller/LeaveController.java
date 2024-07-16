@@ -2,8 +2,9 @@ package com.morning.leave.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ import com.morning.leave.model.LeaveVO;
 
 
 @Controller
-@RequestMapping("/back-end/leave")
+@RequestMapping("/leave")
 public class LeaveController {
 
 	@Autowired
@@ -34,9 +35,9 @@ public class LeaveController {
 	EmpService empSvc;
 
 	/*
-	 * This method will serve as addEmp.html handler
+	 * This method will serve as addEmp.html handler.
 	 */
-	@GetMapping("/addLeave")
+	@GetMapping("addLeave")
 	public String addLeave(ModelMap model) {
 		LeaveVO leaveVO = new LeaveVO();
 		model.addAttribute("leaveVO", leaveVO);
@@ -46,27 +47,14 @@ public class LeaveController {
 	/*
 	 * This method will be called on addEmp.html form submission, handling POST request It also validates the user input
 	 */
-	@PostMapping("/insert")
-	public String insert(@Valid LeaveVO leaveVO, HttpSession session, BindingResult result, ModelMap model) throws IOException {
+	@PostMapping("insert")
+	public String insert(@Valid LeaveVO leaveVO, BindingResult result, ModelMap model) throws IOException {
 
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 
-
-		
 		if (result.hasErrors()) {
 			return "back-end/leave/addLeave";
 		}
-		
-		
-	    EmpVO loggedInEmp = (EmpVO) session.getAttribute("empVO");
-
-	    if (loggedInEmp != null) {
-	        Integer empId = loggedInEmp.getEmpId();
-	        List<LeaveVO> leaveListData = leaveSvc.getLeavesByEmpId(empId);
-	        model.addAttribute("leaveListData", leaveListData);
-	        model.addAttribute("loggedInEmp", loggedInEmp); // 增加這一行來傳遞登入員工資料到前端
-	    }
-
 		/*************************** 2.開始新增資料 *****************************************/
 		// EmpService assignSvc = new EmpService();
 		leaveSvc.addLeave(leaveVO);
@@ -74,7 +62,7 @@ public class LeaveController {
 		List<LeaveVO> list = leaveSvc.getAll();
 		model.addAttribute("leaveListData", list);
 		model.addAttribute("success", "- (新增成功)");
-		return "redirect:/back-end/leave/listAllLeaveforEmp"; // 新增成功後重導至IndexController_inSpringBoot.java的第58行@GetMapping("/emp/listAllEmp")
+		return "redirect:/leave/listAllLeave"; // 新增成功後重導至IndexController_inSpringBoot.java的第58行@GetMapping("/emp/listAllEmp")
 	}
 
 	/*
@@ -131,21 +119,22 @@ public class LeaveController {
 		List<LeaveVO> list = leaveSvc.getAll();
 		model.addAttribute("leaveListData", list);
 		model.addAttribute("success", "- (刪除成功)");
-		return "redirect:/back-end/leave/listAllLeaveforEmp"; // 刪除完成後轉交listAllEmp.html
+		return "back-end/leave/listAllLeave"; // 刪除完成後轉交listAllEmp.html
 	}
 	
 	@PostMapping("updateapproval")
-	public String updateApproval(@RequestParam("leaveId") Integer leaveId,
-            					 @RequestParam("leaveStatus") Byte leaveStatus,
-            					 ModelMap model) {
+	public String updateApproval(@RequestParam("leaveId") String leaveId,
+            @RequestParam("leaveStatus") String leaveStatus,
+			ModelMap model) {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 
-		LeaveVO leaveVO = leaveSvc.getOneLeave(leaveId);
+		LeaveVO leaveVO = leaveSvc.getOneLeave(Integer.valueOf(leaveId));
 	    if (leaveVO != null) {
-	        if (leaveStatus == 1) {
-	            leaveVO.approveLeave(); // 審核通過
-	        } else if (leaveStatus == 2) {
-	            leaveVO.rejectLeave(); // 審核不通過
+	    	leaveVO.approveLeave();
+	    	 if ("1".equals(leaveStatus)) {
+	              // 審核通過
+	         } else if ("2".equals(leaveStatus)) {
+	             leaveVO.rejectLeave(); // 審核不通過
 	         }else {
 	        	 return "redirect:/back-end/leave/listAllLeave"; 
 	         }
@@ -161,18 +150,6 @@ public class LeaveController {
 		return "redirect:/back-end/leave/listAllLeave"; 
 	}
 	
-//	@GetMapping("/listAllLeaveforEmp")
-//    public String listAllLeaveforEmp(HttpSession session, Model model) {
-//        // 從會話中獲取當前登入員工
-//        EmpVO loggedInEmp = (EmpVO) session.getAttribute("empVO");
-//
-//        if (loggedInEmp != null) {
-//            List<LeaveVO> leaveListData = leaveSvc.getLeavesByEmpId(loggedInEmp.getEmpId());
-//            model.addAttribute("leaveListData", leaveListData);
-//        }
-//
-//        return "back-end/leave/listAllLeaveforEmp";
-//    }
 
 
 	@ModelAttribute("empListData")
@@ -181,5 +158,12 @@ public class LeaveController {
 		return list;
 	}
 	
+//	@PostMapping("listleaves_ByCompositeQuery")
+//	public String listAllLeave(HttpServletRequest req, Model model) {
+//		Map<String, String[]> map = req.getParameterMap();
+//		List<LeaveVO> list = leaveSvc.getAll(map);
+//		model.addAttribute("leaveListData", list); // for listAllEmp.html 第85行用
+//		return "back-end/leave/listAllLeave";
+//	}
 
 }

@@ -48,7 +48,7 @@ public class MemController {
 		result = removeFieldError(memVO,result,"upFiles");
 		
 		if(parts[0].isEmpty()) {
-			model.addAttribute("errorMessage", "請選擇圖片");
+			model.addAttribute("errorMessage", "沒圖說個?");
 		}else {
 			for(MultipartFile multipartFile :parts) {
 				byte[] buf = multipartFile.getBytes();
@@ -107,7 +107,7 @@ public class MemController {
 		/*************************** 2.開始修改資料 *****************************************/
 		memSvc.updateMem(memVO);
 		/*************************** 3.修改完成,準備轉交(Send the Success view) **************/
-		model.addAttribute("success", "(修改完成)");
+		model.addAttribute("success", "(可)");
 		memVO=memSvc.getOneMem(Integer.valueOf(memVO.getMemNo()));//因為varchar 要轉整數
 		model.addAttribute("memVO", memVO);//顯示在畫面上
 		return "back-end/mem/listOneMem";
@@ -121,7 +121,7 @@ public class MemController {
 		/*************************** 3.刪除完成,準備轉交(Send the Success view) **************/
 		List<MemVO> list =memSvc.getAll();
 		model.addAttribute("memListData", list);
-		model.addAttribute("success", "(刪除完成)");
+		model.addAttribute("success", "(碰)");
 		return "back-end/mem/listAllMem";
 	}
 	

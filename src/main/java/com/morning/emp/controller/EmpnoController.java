@@ -37,7 +37,7 @@ public class EmpnoController {
 	@PostMapping("getOne_For_Display")
 	public String getOne_For_Display(
 			/***************************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-			@NotEmpty(message="編號:請勿空白")
+			@NotEmpty(message="編號:請勿空白1")
 			@Digits(integer = 3, fraction = 0,message ="員工編號: 請填數字-請勿超過{integer}位數")
 			@RequestParam("empid") String empid,
 			ModelMap model) {

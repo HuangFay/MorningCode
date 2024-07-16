@@ -1,114 +1,70 @@
 
 
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>會員資料修改 </title>
+<title>會員資料修改 - update_mem_input.html</title>
 <head th:insert="~{/back-end/mem/included-fragment}"></head>
 <style type="text/css">
- body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-        }
+button {
+	padding: 5px;
+}
 
-        nav {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px;
-            text-align: center;
-        }
 
-        nav h2, nav h3 {
-            margin: 0;
-        }
 
-        nav h3 a {
-            color: white;
-            text-decoration: none;
-        }
+label, input, span, select {
+	display: table-cell;
+	margin: 5px;
+	text-align: left;
+}
 
-        #formContent {
-            border-radius: 10px;
-            background: #fff;
-            margin: 20px auto;
-            width: 90%;
-            max-width: 600px;
-            padding: 20px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-            text-align: center;
-        }
+input[type=text], input[type=password], select, textarea {
+	margin-right: 8px;
+  box-shadow:  inset 2px 2px 5px #BABECC, inset -5px -5px 10px  #FFF;
+  width: 97%;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+  appearance: none;
+  -webkit-appearance: none;
+}
 
-        h3 {
-            color: #333;
-            margin-bottom: 20px;
-        }
 
-        input,label, select, textarea {
-            display: block;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        
-        input[type=text], input[type=password], input[type=date],select{
-        
-        width: 97%;
-        }
-        
-        
 
-        input[type=text], input[type=password], input[type=date], select, textarea {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: inset 2px 2px 5px #BABECC, inset -5px -5px 10px #FFF;
-            transition: all 0.2s ease-in-out;
-            box-sizing: border-box;
-        }
+.center {
+	margin-left: auto;
+	margin-right: auto;
+}
 
-        input[type=file] {
-            padding: 5px;
-            border: none;
-            box-shadow: none;
-        }
 
-        .hidden-input {
-            border: none;
-            background-color: transparent;
-        }
+.error {
 
-        .error {
-            color: red;
-            text-align: left;
-        }
+    color: red; 
+}
 
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        #blob_holder img {
-            margin-top: 10px;
-            border-radius: 5px;
-        }
+#formContent {
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+  background: #fff;
+  margin: 10px auto;
+	
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+  padding: 0px;
+  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  text-align: center;
+}
 </style>
 </head>
 <body>
@@ -116,7 +72,7 @@
 	<nav
 		class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
 		<div align="center">
-			<h2>會員資料修改</h2>
+			<h2>會員資料修改 - update_mem_input.html</h2>
 			<h3>
 				<a class="navbar-brand" th:href="@{/back-end/mem/listAllMem}"><img
 					th:src="@{/images/back1.gif}">回查詢頁</a>
@@ -154,7 +110,7 @@
 
 			<div>
 				<label>會員密碼:</label> <input type="text" th:field="*{memPassword}"
-					onclick="hideContent('memPassword.errors');" readonly/><br /> <span
+					onclick="hideContent('memPassword.errors');" /><br /> <span
 					th:if="${#fields.hasErrors('memPassword')}"
 					th:errors="*{memPassword}" class="error" id="memPassword.errors"></span>
 			</div>

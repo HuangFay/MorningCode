@@ -57,7 +57,7 @@ public class EmpController {
 		result = removeFieldError(empVO,result,"upFiles");
 		 
 		if (parts[0].isEmpty()) { // 使用者未選擇要上傳的圖片時
-			model.addAttribute("errorMessage", "請選擇圖片");
+			model.addAttribute("errorMessage", "圖呢?");
 		} else {
 			for (MultipartFile multipartFile : parts) {
 				byte[] buf = multipartFile.getBytes();
@@ -73,7 +73,7 @@ public class EmpController {
 		/*************************** 3.新增完成,準備轉交(Send the Success view) **************/
 		List<EmpVO> list=empSvc.getAll();
 		model.addAttribute("empListData", list);
-		model.addAttribute("success", "員工新增成功");
+		model.addAttribute("success", "入監手續辦理成功");
 		return "back-end/emp/listAllEmp";  //重導,防止重複提交
 	}
 	
@@ -118,7 +118,7 @@ public class EmpController {
 		/*************************** 2.開始修改資料 *****************************************/
 		empSvc.updateEmp(empVO);
 		/*************************** 3.修改完成,準備轉交(Send the Success view) **************/
-		model.addAttribute("success", "(修改完成)");
+		model.addAttribute("success", "(完全可以)");
 		empVO =empSvc.getOneEmp(Integer.valueOf(empVO.getEmpId())); // 因為varchar 要轉整數
 		model.addAttribute("empVO", empVO); //顯示在畫面上
 		model.addAttribute("allFunctions", funcSvc.getAll());
@@ -134,7 +134,7 @@ public class EmpController {
 		/*************************** 3.刪除完成,準備轉交(Send the Success view) **************/
 		List<EmpVO> list =empSvc.getAll();
 		model.addAttribute("empListData", list);
-		model.addAttribute("success", "(刪除完成)");
+		model.addAttribute("success", "(已被消失)");
 		return "back-end/emp/listAllEmp";
 	}
 	
