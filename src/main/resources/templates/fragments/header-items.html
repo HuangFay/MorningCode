@@ -8,7 +8,7 @@
 
          <span class="page" onclick="redirectTo('test1')"><i class="fas fa-newspaper"></i> 最新消息</span>
 <span class="page"><i class="fas fa-utensils"></i> 瀏覽餐點</span>
-<span class="page"><i class="fas fa-comments"></i> 討論區</span>
+<span class="page" onclick="redirectTo(baseUrl + 'forum')"><i class="fas fa-comments"></i> 討論區</span>
 <span class="page" onclick="redirectTo(baseUrl + 'front-end/res/addRes')"><i class="fas fa-calendar-alt"></i> 訂位</span>
 <span class="page"><i class="fas fa-shopping-cart"></i> 購物車</span>
 
@@ -46,8 +46,8 @@
         <!-- 以上是功能欄 -->
         
         
-        <button class="morning-code" onclick="redirectTo(baseUrl + 'index2')" ><img
-						th:src="@{/images/logo.png}" class="imgsmall"></button>
+        <a class="morning-code" onclick="redirectTo(baseUrl + 'index2')" ><img
+						th:src="@{/images/logo.png}" class="imgsmall"></a>
       </div>
       
      
