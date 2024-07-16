@@ -65,6 +65,12 @@ public class EmpAuthenticationFilter implements Filter {
     }
 
     private boolean hasPermission(HttpSession session, String requestURI) {
+    	
+    	 if (requestURI.contains("/back-end/leave/listAllLeaveforEmp") || requestURI.contains("/back-end/assign/listAllAssign")||
+    			 requestURI.contains("/back-end/assign/api/")||requestURI.contains("/back-end/leave/addLeave")||requestURI.contains("/back-end/leave/insert")) {
+             return true;
+         }
+    	
         @SuppressWarnings("unchecked")
         Set<FuncVO> permissions = (Set<FuncVO>) session.getAttribute("empPermissions");
 
@@ -74,12 +80,15 @@ public class EmpAuthenticationFilter implements Filter {
                 if (requestURI.contains("/back-end/emp") && permission.getFunctionId() == 1 ) {
                     return true;
                 }
-                if (requestURI.contains("/back-end/mem") && permission.getFunctionId() == 2) {
-                    return true;
-                }
 
                 if (requestURI.contains("/back-end/leave") && permission.getFunctionId() == 1) {
                 	return true;
+                }
+                if (requestURI.contains("/back-end/assign") && permission.getFunctionId() == 1) {
+                	return true;
+                }
+                if (requestURI.contains("/back-end/mem") && permission.getFunctionId() == 2) {
+                    return true;
                 }
 
                 if (requestURI.contains("/back-end/res") && permission.getFunctionId() == 1) {
