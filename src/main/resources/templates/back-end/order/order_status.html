@@ -2,7 +2,7 @@
 <html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>後台-領餐作業</title>
+    <title>領餐作業</title>
    <style>
         body {
             font-family: Arial, sans-serif;
@@ -59,31 +59,40 @@
 <body>
 
 <!-- 使用Thymeleaf迭代訂單 -->
-<div th:each="order : ${orders}" class="order-details">
+<div th:each="orderVO : ${orders}" class="order-details">
     <div class="details">
-        <h3>訂單編號: <span th:text="${order.orderNumber}"></span></h3>
-        <p>取餐時間: <span th:text="${order.pickupTime}"></span></p>
-        <p>訂購餐點: <span th:text="${order.items}"></span></p>
+        <h3>訂單編號: <span th:text="${orderVO.ordId}"></span></h3>
+        <p>取餐時間: <span th:text="${#dates.format(orderVO.ordReserveTime, 'yyyy-MM-dd HH:mm')}"></span></p>
+
+        <!-- 使用Thymeleaf迭代訂單中的餐點 -->
+        <p>訂購餐點:</p>
+        <ul>
+            <li th:each="orddVO : ${orderVO.orddList}">
+                <span th:text="${orddVO.mealsVO.mealsName}"></span> x <span th:text="${orddVO.orddMealsQuantity}"></span>
+            </li>
+        </ul>
+
         <!-- 訂單狀態按鈕 -->
         <div class="status">
-            製作中
+            <span th:text="${orderVO.ordStatus == 1 ? '製作中' : orderVO.ordStatus == 2 ? '製作完成' : orderVO.ordStatus == 3 ? '已取餐' : '未製作'}"></span>
         </div>
         <!-- 倒數計時 -->
-        <div class="countdown" th:id="'countdown-' + ${order.orderId}"></div>
+        <div class="countdown" th:id="'countdown-' + ${orderVO.ordId}"></div>
         <!-- 更新訂單狀態表單 -->
         <form th:action="@{/updateOrderStatus}" method="post">
-            <input type="hidden" th:name="orderId" th:value="${order.orderId}">
+            <input type="hidden" th:name="ordId" th:value="${orderVO.ordId}">
             <label for="status">更新狀態:</label>
             <select id="status" name="status">
-                <option value="notStarted">未製作</option>
-                <option selected value="inProgress">製作中</option>
-                <option value="completed">製作完成</option>
-                <option value="collected">已取餐</option>
+                <option value="0" th:selected="${orderVO.ordStatus == 0}">未製作</option>
+                <option value="1" th:selected="${orderVO.ordStatus == 1}">製作中</option>
+                <option value="2" th:selected="${orderVO.ordStatus == 2}">製作完成</option>
+                <option value="3" th:selected="${orderVO.ordStatus == 3}">已取餐</option>
             </select>
             <button type="submit">更新</button>
         </form>
     </div>
 </div>
+
 
 <!-- 第一筆假設訂單 -->
 <div class="order-details">
