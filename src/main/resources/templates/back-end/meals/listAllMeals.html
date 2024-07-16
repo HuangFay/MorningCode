@@ -16,54 +16,19 @@
 
 
 <style>
-body {
-    background-color: #8BC34A; /* 草綠色背景 */
-}
-
 .right-pane {
-    width:calc(100%-21%); /* 調整頁面寬度 */
-    margin: 20px auto; /* 水平居中 */
-    background-color: #fff; /* 右側內容區域背景色 */
-    padding: 20px; /* 內邊距 */
-    border-radius: 10px; /* 圓角邊框 */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 陰影 */
+	width: 79%; /* 调整頁面的寬度 */
 }
 
-h2, h3 {
-    text-align: center; /* 標題居中 */
-}
 
-table {
-    width: 100%;
-    border-collapse: collapse; /* 邊框重疊處單一化 */
-    margin-top: 20px;
-}
 
-table th, table td {
-    border: 1px solid #ddd; /* 表格邊框 */
-    padding: 8px;
-    text-align: center;
-}
 
-table th {
-    background-color: #4CAF50; /* 表頭背景色 */
-    color: white;
-}
-img.small {
-    width: 40px; 
-    height: 40px; 
-}
 
-body > div > div.right-pane {
-margin-left: 280px;
-padding-left:10px;
-padding-right:10px;
-}
 
-body > div > div.right-pane > div:nth-child(1) > h2{
-margin-top: 0px;
-margin-bottom: 0px;
-}
+   img.small {
+        width: 30px; 
+        height: 30px; 
+    }
 
 </style>
 </head>
@@ -80,16 +45,18 @@ margin-bottom: 0px;
 			
 			<h2>所有餐點 - listAllMeals.html
 				<a class="navbar-brand" th:href="@{/back-end/meals/listAllMeals}"><img
-					th:src="@{/images/upload.gif}" class="small" >回查詢頁<label th:text="${success}"></label></a>
+					th:src="@{/images/hihihi.gif}" class="small" >回查詢頁<label th:text="${success}"></label></a>
 			</h2>
 		</div>
 		
 <!-- 新增餐點按鈕 -->
 	<div id="table-controls" style="display: flex;">
     <div id="addMealsButton" class="addmeals">
-       <a th:href="@{/meals/addMeals}" style="display: inline-block; padding: 10px 20px; background-color: #8BC34A; color: white; text-decoration: none; border-radius: 5px;">新增餐點</a>
+       <a th:href="@{/meals/addMeals}" style="display: inline-block; padding: 10px 20px; background-color: #7ea1d7; color: white; text-decoration: none; border-radius: 5px;">新增餐點</a>
     </div>
 	</div>		
+	<br>	
+
 
 	<table id="example" class="display" style="width: 100%">
 		<thead>
@@ -105,7 +72,7 @@ margin-bottom: 0px;
 				<th>餐點評價總評分</th>
 				
 				<th>修改</th>
-<!-- 				<th>刪除</th> -->
+				<th>刪除</th>
 
 			</tr>
 		</thead>
@@ -122,7 +89,10 @@ margin-bottom: 0px;
 					<td>
 					 <img th:src="@{/meals/DBGifReader2} + '?mealsId=' + ${mealsVO.mealsId}"
                      width="100px" height="100px"></td>
-                                 
+                     
+<!--                     <td><img th:src="@{/shop/DBGifReader} + '?prodNo=' + ${shopProductVO.prodNo} " -->
+<!--       			 width="80px"></td> -->
+                                
 					<td th:text="${mealsVO.mealsPrice}"></td>
 					<td th:text="${mealsVO.mealsDescription}"></td>
 					<td th:text="${mealsVO.mealsControl}"></td>
@@ -136,14 +106,14 @@ margin-bottom: 0px;
 						</form>
 
 					</td>
-<!-- 					<td> -->
-<!-- 						<form method="post" th:action="@{/meals/delete}" -->
-<!-- 							style="margin-bottom: 0px;"> -->
-<!-- 							<input type="submit" value="刪除"> <input type="hidden" -->
-<!-- 								name="mealsId" th:value="${mealsVO.mealsId}"> -->
-<!-- 						</form> -->
+					<td>
+						<form method="post" th:action="@{/meals/delete}"
+							style="margin-bottom: 0px;">
+							<input type="submit" value="刪除"> <input type="hidden"
+								name="mealsId" th:value="${mealsVO.mealsId}">
+						</form>
 
-<!-- 					</td> -->
+					</td>
 					
 				</tr>
 			</th:block>

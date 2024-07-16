@@ -16,12 +16,6 @@ public class MealsPicService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	//修改取多張圖片
-	public List<MealsPicVO> getPicsByMealsId(Integer mealPicId) {
-		return repository.getPicsByMealsId(mealPicId);
-	}
-	
-	//取一張圖片
 	public MealsPicVO getPicByMealsId(Integer mealsId) {
 		return repository.getPicByMealsId(mealsId);
 	}
@@ -46,15 +40,6 @@ public class MealsPicService {
 	
 	public List<MealsPicVO> getAll(){
 		return repository.findAll();
-	}
-	
-	public boolean deleteMealPics(Integer mealPicId) {
-		if(repository.existsById(mealPicId)) {
-			repository.deleteByMealsPicId(mealPicId);
-			return true;
-		}else {
-			return false;
-		}
 	}
 
 }

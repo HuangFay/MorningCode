@@ -26,7 +26,12 @@
 						<label for="memEmail">Email:</label> <input type="text"
 							id="memEmail" name="memEmail" th:value="${memVO.memEmail}" />
 					</div>
-					
+					<div>
+						<label for="memPassword">密碼:</label> <input type="password"
+							id="memPassword" name="memPassword"
+							th:value="${memVO.memPassword}" />
+						<button type="button" onclick="togglePasswordVisibility()">wink~wink~</button>
+					</div>
 					<div>
 						<label for="memAddress">地址:</label> <input type="text"
 							id="memAddress" name="memAddress" th:value="${memVO.memAddress}" />
@@ -57,19 +62,14 @@
 
 
 			<div>
-			<div>
-				<label for="memVerified">信箱驗證狀態:</label> <span
+				<label for="memVerified">驗證狀態:</label> <span
 					th:if="${memVO.memVerified == 0}"> <i class="fa fa-times" style="color:red;"></i>
 					未驗證
 				</span> <span th:if="${memVO.memVerified == 1}"> <i
 					class="fa fa-check" style="color:green;"></i> 已驗證
 				</span>
 			</div>
-			<div>
-			<button id="password-button" onclick="redirectTo('restPassword')">修改密碼</button>
-			</div>
-			
-</div>
+
 
 
 			<div class="image-section">
@@ -92,8 +92,6 @@
 	<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
 
 	<script th:inline="javascript">
-	var baseUrl = /*[[@{/}]]*/ '/';
-	
 	function redirectTo(url) {
 		window.location.href = url;
 	}
@@ -122,7 +120,7 @@
 			var updatedMember = {
 				memName : document.getElementById('memName').value,
 				memEmail : document.getElementById('memEmail').value,
-				
+				memPassword : document.getElementById('memPassword').value,
 				memAddress : document.getElementById('memAddress').value,
 				memPhone : document.getElementById('memPhone').value,
 				memUid : document.getElementById('memUid').value,

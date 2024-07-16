@@ -1,3 +1,12 @@
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -5,94 +14,67 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>餐點修改 - update_meals_input.html</title>
 
-
-<style>
-body {
-    background-color: #8BC34A; /* 草綠色背景 */
-}
-
-.right-pane {
-    width:calc(100%-21%); /* 調整頁面寬度 */
-    margin: 20px auto; /* 水平居中 */
-    background-color: #fff; /* 右側內容區域背景色 */
-    padding: 20px; /* 內邊距 */
-    border-radius: 10px; /* 圓角邊框 */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 陰影 */
-}
-
-h2, h3 {
-    text-align: center; /* 標題居中 */
-}
-
-img.small {
-    width: 40px; 
-    height: 40px; 
-}
-
-table {
-    width: 80%;
-    margin: 20px auto;
-    border-collapse: collapse;
-}
-
-table th, table td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd; /* 表格框線 */
-}
-
-table th {
-    background-color: #4CAF50; /* 表頭背景色 */
-    color: white;
-}
-
-body > div:nth-child(2) > form{
-width:600px;
-}
+<head th:insert="~{/back-end/meals/included-fragment}"></head>
+<style type="text/css">
+	
+	button {
+		padding: 5px;
+	}
+	form {
+		display: table;
+	}
+	form div {
+		display: table-row;
+	}
+	label, input, span, select {
+		display: table-cell;
+		margin: 5px;
+		text-align: left;		
+	}
+	input[type=text], input[type=password], select, textarea {
+		width: 200px;
+		margin: 5px;
+	}
+	form div div {
+		display: table-cell;
+	}
+	.center {
+        margin-left: auto;
+        margin-right: auto;
+    }
 </style>
 </head>
 <body>
 
-		 <div align="center"> 
-		 <h2>餐點類別修改 - update_mealstypes_input.html</h2>
-		 
-		 <h3>
-		  <a class="navbar-brand" th:href="@{/back-end/mealstypes/listAllMealsTypes}"><img th:src="@{/images/upload.gif}" class="small">回查詢頁</a>
-		 </h3>
-		 </div>
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+		 <div align="center"> <h2>餐點類別修改 - update_mealstypes_input.html</h2>
+		 <h3><a class="navbar-brand" th:href="@{/meals/select_page}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3></div>
+</nav>
 
 	<div align="center">
 		<h3><b>所有欄位皆為必填欄位</b></h3>
 		<form th:action="@{/mealstypes/update}" method="post" th:object="${mealstypesVO}">
-	
-	<table>
 		
-		<tr>
-			<td><label>餐點類別編號:</label></td>
-			<td>
+			<div>
+			<label>餐點類別編號:</label>
 			<input type="text" th:field="*{mealsTypesId}" style="border:0px ; font-weight: bold;" readonly="readonly" /><br/>
-			</td>
-		</tr>
-		
-		<tr>
-			<td><label>餐點類別名稱:</label></td>
-			<td>
+			</div>
+			
+			<div>
+			<label>餐點類別名稱:</label>
 			<input type="text" th:field="*{mealsTypesName}" onclick="hideContent('mealsTypesName.errors');" /><br/>
 			<span th:if="${#fields.hasErrors('mealsTypesName')}" th:errors="*{mealsTypesName}" class="error" id="mealsTypesName.errors"></span>
-			</td>
-		</tr>
+			</div>
 		
-		<tr>
-		<td></td>
-		<td><button type="submit" id="submit"> 送出修改 </button></td>
-		</tr>
-		
-		</table>		
-	</form>	
-</div>
+			<div>
+				<div></div>
+				<div><button type="submit" id="submit"> 送出修改 </button></div>
+				<div></div>
+			</div>		
+		</form>
+	
+	</div>
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <!-- JavaScript part -->
 <script type="text/javascript">

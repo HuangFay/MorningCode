@@ -20,10 +20,8 @@
 }
 
 img.imgsmall {
-        width: 100px; 
-        height: 70px; 
-        margin-left: 50px;
-        margin-top: -20px;
+        width: 50px; 
+        height: 50px; 
     }
 
 .sidebar {
@@ -138,9 +136,7 @@ img.imgsmall {
 .meal-project-management,
 .reservation-management,
 .set-table-type,
-.set-opening-hours,
-.leave-apply,
-.check-shift {
+.set-opening-hours {
   flex-grow: 1;
   flex-shrink: 0;
   flex-basis: auto;
@@ -226,4 +222,7 @@ body {
   font-family: 'Ubuntu', sans-serif;
 	background-size: 100% 110%;
 }
-
+/* ul.list>li.-on{
+ 
+  display: none;
+} */

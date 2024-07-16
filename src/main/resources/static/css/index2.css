@@ -23,7 +23,7 @@ button {
 
 .main-container {
   position: relative;
-  max-width: 1280px;
+  width: 1280px;
   height: 2077px;
   margin: 0 auto;
   background: #ffffff;
@@ -43,7 +43,7 @@ button {
   align-items: center;
   justify-content: flex-end;
   flex-wrap: nowrap;
-  gap: 30px;
+  gap: 48px;
   position: absolute;
   width: 678px;
   height: 52px;
@@ -51,29 +51,6 @@ button {
   right: 80px;
   z-index: 27;
 }
-
-.welcome-message{
-	
-   flex-shrink: 0;
-  flex-basis: auto;
-  position: relative;
-  height: 30px;
-  color: #000000;
-  font-family: Inter, var(--default-font-family);
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 30px;
-  text-align: left;
-  white-space: nowrap;
-  z-index: 28;
-   cursor: pointer;
-  
- 
-  
-}
-
-
-
 .page {
   flex-shrink: 0;
   flex-basis: auto;

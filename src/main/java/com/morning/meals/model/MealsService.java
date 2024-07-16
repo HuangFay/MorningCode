@@ -26,7 +26,10 @@ public class MealsService {
 		repository.save(mealsVO);
 	}
 	
-	
+	public void deleteMeals(Integer mealsId) {
+		if(repository.existsById(mealsId))
+			repository.deleteByMealsId(mealsId);
+	}
 	
 	public MealsVO getOneMeals(Integer mealsId) {
 		Optional<MealsVO> optional = repository.findById(mealsId);
