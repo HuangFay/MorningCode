@@ -1,0 +1,102 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f7f7f7; /* 更淺的背景色提高對比 */
+}
+
+.container {
+    max-width: 1000px;
+    margin: 20px auto; /* 加上上下外边距 */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px; /* 更圓滑的邊角 */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* 更深的陰影增加立體感 */
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 24px; /* 增加字體大小 */
+    margin-bottom: 30px; /* 增加下邊距以分隔內容 */
+}
+
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 15px; /* 增加格間距 */
+    margin-top: 20px; /* 增加頂部外边距 */
+}
+
+.day {
+    border: 1px solid #ccc; /* 更淺的邊框色 */
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #fff; /* 背景色改为白色以增加亮度 */
+    border-radius: 10px; /* 圓滑邊角 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* 添加淡淡的陰影 */
+}
+
+.day-header {
+    font-weight: bold;
+    background-color: #e9ecef; /* 更現代的灰色 */
+    padding: 10px;
+    border-radius: 10px; /* 圓滑邊角 */
+    color: #333; /* 文字顏色保持深色 */
+}
+
+.day-label {
+    background-color: #92afd6;
+    color: white; /* 文字顏色改为白色以增强可读性 */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px; /* 调整间距 */
+}
+
+#yearSelect, #monthSelect {
+    width: auto; /* 自動寬度適應內容 */
+    padding: 8px;
+    margin-top: 10px;
+    border-radius: 5px;
+    background-color: #f8f9fa; /* 輕微的背景色差異 */
+    border: 1px solid #ddd; /* 细边框 */
+}
+
+.month-selector {
+    margin: 20px 0; /* 增加上下外边距 */
+    text-align: center;
+}
+
+.month-selector select {
+    padding: 8px 15px; /* 增加内边距 */
+    margin: 0 5px; /* 调整间距 */
+    font-size: 16px; /* 维持字体大小 */
+    border-radius: 5px; /* 圓滑邊角 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* 添加淡淡的陰影 */
+}
+
+.empName {
+    font-size: 16px;
+    color: #555;
+    padding: 2px;
+}
+
+.empName.styled {
+    font-size: 18px;
+    color: #000000;
+    font-weight: bold;
+    padding: 4px 8px;
+    background-color: #e2ebf3;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+	
