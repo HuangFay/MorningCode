@@ -50,4 +50,9 @@ public class MealsService {
 		repository.updateMealsScore(mealsTotalScore, mealsId);
 	}
 	
+//  菜單
+	public List<MealsVO> getAllMeals(){
+		return repository.findAll();
+	}
+	
 }
