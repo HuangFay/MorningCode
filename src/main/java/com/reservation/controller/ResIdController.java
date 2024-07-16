@@ -10,6 +10,8 @@ import javax.validation.Valid;
 
 import com.reservationcontrol.model.ResCService;
 import com.reservationcontrol.model.ResCVO;
+import com.sysargument.model.SysArgService;
+import com.sysargument.model.SysArgVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -43,6 +45,8 @@ public class ResIdController {
 	ResTimeService ResTimeSvc;
 	@Autowired
 	TableTypeService TableTypeSvc;
+	@Autowired
+	SysArgService SysArgSvc;
 	
 	@GetMapping("addRes")
 	public String addRes(HttpSession session,ModelMap model) {
@@ -79,7 +83,8 @@ public class ResIdController {
 			resCVO.setReservationControlTable(resVO.getReservationTable().toString());
 			// Additional logic here
 		}
-
+		//取得設定桌位數
+		List<SysArgVO> sysArgVOList = SysArgSvc.findByColumns("2persontable");
 
 //		ResCVO resCVO = (ResCVO) ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
 //		resCVO.setReservationControlTable(resVO.getReservationTable().toString());
@@ -90,7 +95,7 @@ public class ResIdController {
 //		{resCVO.setReservationControlDate(resVO.getReservationEatdate());}
 		System.out.println("日期"+resVO.getReservationEatdate());
 		System.out.println("數量" +resVO.getReservationTable());
-
+		System.out.println("訂位字串"+sysArgVOList.get(0).getSysArgument());
 
 		System.out.println("編號"+resCVOList.get(0).getReservationControlId());
 		System.out.println("日期"+resCVOList.get(0).getReservationControlDate());
