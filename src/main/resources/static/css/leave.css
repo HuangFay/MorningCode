@@ -22,9 +22,8 @@ body {
     padding: 10px 15px;
     cursor: pointer;
     border: 1px solid #f1f1f1;
-    background-color: #e6e6e6;
+    background-color: #f1f1f1;
     margin-right: 5px;
-    border-radius: 5px 5px 0 0;
 }
 
 .tab-button.active {
@@ -83,27 +82,8 @@ body {
 .submit:hover {
     background-color: #9e9789;
 
-}
-.morandi-style {
-    background-color: #976666; 
-    color: white;
-    border: none;
-    padding: 10px 15px; 
-    margin-right: 5px; 
-    cursor: pointer; 
-    min-width: 100px; 
-    border-radius: 5px;
-    font-size: 16px; 
-    font-weight: bold; 
-    display: inline-block; 
-    text-align: center;
-    text-decoration: none; 
-}
 
-.morandi-style:hover {
-    background-color: #b08a8a; 
 }
-
 
 
 .schedule-table {

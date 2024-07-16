@@ -11,8 +11,14 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <style>
 .right-pane {
-	width: 79%; /* 调整頁面的寬度 */
-	margin-right: 20px;
+	width: 78%; /* 调整頁面的寬度 */
+	margin-right: 10px;
+}
+@media (max-width: 768px) {
+    .right-pane {
+        width: 100%; /* 小屏設備上全寬顯示 */
+        padding: 20px; /* 減少內距以適應小屏幕 */
+    }
 }
 </style>
 </head>

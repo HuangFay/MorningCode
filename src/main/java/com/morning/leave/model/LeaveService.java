@@ -49,10 +49,5 @@ public class LeaveService {
         return repository.findByLeaveEmpId(empId);
     }
 
-//	public List<LeaveVO> getLeavesByEmpAccount(String empAccount) {
-//
-//		return repository.getLeavesByEmpAccount(empAccount);
-//	}
-
 
 }

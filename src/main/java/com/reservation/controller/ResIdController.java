@@ -3,15 +3,10 @@ package com.reservation.controller;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import com.reservationcontrol.model.ResCService;
-import com.reservationcontrol.model.ResCVO;
-import com.sysargument.model.SysArgService;
-import com.sysargument.model.SysArgVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -30,37 +25,32 @@ import com.restime.model.ResTimeVO;
 import com.tabletype.model.TableTypeService;
 import com.tabletype.model.TableTypeVO;
 
-
-
 @Controller
 @RequestMapping("/front-end/res")
 public class ResIdController {
 	@Autowired
 	ResService ResSvc;
-	@Autowired
-	ResCService ResCSvc;
+
 	@Autowired
 	MemService MemSvc;
 	@Autowired
 	ResTimeService ResTimeSvc;
 	@Autowired
 	TableTypeService TableTypeSvc;
-	@Autowired
-	SysArgService SysArgSvc;
 	
 	@GetMapping("addRes")
-	public String addRes(HttpSession session,ModelMap model) {
+	public String addEmp(HttpSession session,ModelMap model) {
 		// 從 session 中獲取 memVO
+	    MemVO memVO = (MemVO) session.getAttribute("memVO");
+	    if (memVO == null) {
+	        memVO = new MemVO();
+	        // 假設您有一個方法來初始化 memVO
+	        session.setAttribute("memVO", memVO);
+	    }
 
-		MemVO memVO = (MemVO) session.getAttribute("memVO");
-		if (memVO == null) {
-			return "redirect:/front-end/mem/signup";
-		}
-		ResVO resVO = new ResVO();
-		resVO.setMemVO(memVO);
-		model.addAttribute("memName", memVO.getMemName());
 	    // 創建 ResVO 對象並設置 memVO
-
+	    ResVO resVO = new ResVO();
+	    resVO.setMemVO(memVO);
 
 	    // 將 resVO 添加到模型中
 	    model.addAttribute("resVO", resVO);
@@ -70,39 +60,20 @@ public class ResIdController {
 	
 	
 	@PostMapping("insert")
-	public String insert(@Valid ResVO resVO, BindingResult result, ModelMap model) throws IOException{
+	public String insert(HttpSession session,@Valid ResVO resVO, BindingResult result, ModelMap model) throws IOException{
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+		
+		MemVO memVO = (MemVO) session.getAttribute("memVO");
+	    if (memVO == null) {
+	        memVO = new MemVO();
+	        // 假設您有一個方法來初始化 memVO
+	        session.setAttribute("memVO", memVO);
+	    }
 		resVO.setReservationDate(LocalDateTime.now());
-		resVO.getTableTypeVO().getTableId();
-		resVO.getReservationTable();
-
-
-		List<ResCVO> resCVOList = ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
-		if (!resCVOList.isEmpty()) {
-			ResCVO resCVO = resCVOList.get(0); // Assuming you want the first element
-			resCVO.setReservationControlTable(resVO.getReservationTable().toString());
-			// Additional logic here
-		}
-		//取得設定桌位數
-		List<SysArgVO> sysArgVOList = SysArgSvc.findByColumns("2persontable");
-
-//		ResCVO resCVO = (ResCVO) ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
-//		resCVO.setReservationControlTable(resVO.getReservationTable().toString());
-
-
-//		if (resVO.getTableTypeVO().getTableId()==resCVO.getTableTypeVO().getTableId()
-//				&& resVO.getReservationEatdate() == resCVO.getReservationControlDate())
-//		{resCVO.setReservationControlDate(resVO.getReservationEatdate());}
-		System.out.println("日期"+resVO.getReservationEatdate());
-		System.out.println("數量" +resVO.getReservationTable());
-		System.out.println("訂位字串"+sysArgVOList.get(0).getSysArgument());
-
-		System.out.println("編號"+resCVOList.get(0).getReservationControlId());
-		System.out.println("日期"+resCVOList.get(0).getReservationControlDate());
-		System.out.println("數量" +resCVOList.get(0).getReservationControlTable());
-
+	
+		
+		
 		/*************************** 2.開始新增資料 *****************************************/
-
 		// EmpService empSvc = new EmpService();
 		ResSvc.addRes(resVO);
 		/*************************** 3.新增完成,準備轉交(Send the Success view) **************/
@@ -111,25 +82,9 @@ public class ResIdController {
 		model.addAttribute("success", "- (新增成功)");
 		return "redirect:/index2"; // 新增成功後重導至
 	
+		
+		
 	}
-	
-	//--------------------------------------------------------------------
-//	//轉道自己所發的文章的mapping
-//    @GetMapping("listMyArticles")
-//    public String listMyArticles(HttpSession session, Model model) {
-//      MemberVO loggedInMember = (MemberVO) session.getAttribute("loggedInMember");
-//         if (loggedInMember == null) {
-//             return "redirect:/front-end/member/loginMem";
-//         }
-//
-//         List<ArticleVO> myArticles = articleSvc.getAllIncludingStatusZero().stream()
-//                 .filter(article -> article.getMemberVO().getMemNo().equals(loggedInMember.getMemNo()))
-//                 .collect(Collectors.toList());
-//
-//         model.addAttribute("myArticles", myArticles);
-//         return "front-end/article/listMyArticles";
-//    }
-	//--------------------------------------------------------------------
 	
 	@ModelAttribute("memListData")
 	protected List<MemVO> referenceListData() {

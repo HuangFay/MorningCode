@@ -1,12 +1,12 @@
 package com.sysargument.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+@Transactional
 
+public interface SysArgRepository extends JpaRepository<SysArgumentVO, Integer> {
 
-public interface SysArgRepository extends JpaRepository<SysArgVO, Integer> {
-
-    List<SysArgVO> findBysysArgument(String sysArgument);
 
 }

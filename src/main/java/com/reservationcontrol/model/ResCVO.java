@@ -30,9 +30,9 @@ public class ResCVO implements java.io.Serializable {
 	private TableTypeVO tableTypeVO;
 	@Column(name="reservation_control_date")
 //	@DateTimeFormat(pattern="yyyy-MM-dd") 
-	private Date reservationControlDate;
+	private Date reasrvationControlDate;
 	@Column(name="reservation_control_table")
-	private String reservationControlTable;
+	private String reasrvationControlTable;
 	
 	
 	public Integer getReservationControlId() {
@@ -42,17 +42,17 @@ public class ResCVO implements java.io.Serializable {
 		this.reservationControlId = reservationControlId;
 	}
 
-	public Date getReservationControlDate() {
-		return reservationControlDate;
+	public Date getReasrvationControlDate() {
+		return reasrvationControlDate;
 	}
-	public void setReservationControlDate(Date reservationControlDate) {
-		this.reservationControlDate = reservationControlDate;
+	public void setReasrvationControlDate(Date reasrvationControlDate) {
+		this.reasrvationControlDate = reasrvationControlDate;
 	}
-	public String getReservationControlTable() {
-		return reservationControlTable;
+	public String getReasrvationControlTable() {
+		return reasrvationControlTable;
 	}
-	public void setReservationControlTable(String reservationControlTable) {
-		this.reservationControlTable = reservationControlTable;
+	public void setReasrvationControlTable(String reasrvationControlTable) {
+		this.reasrvationControlTable = reasrvationControlTable;
 	}
 	public TableTypeVO getTableTypeVO() {
 		return tableTypeVO;
