@@ -37,6 +37,8 @@ import com.morning.ordd.model.OrddService;
 import com.morning.ordd.model.OrddVO;
 import com.morning.order.model.OrderService;
 import com.morning.order.model.OrderVO;
+import com.morning.shop.model.ShopService;
+import com.morning.shop.model.ShopVO;
 import com.reservation.model.ResService;
 import com.reservation.model.ResVO;
 import com.reservationcontrol.model.ResCService;
@@ -83,6 +85,9 @@ public class IndexController_inSpringBoot   {
     
     @Autowired
     MealService mealSvc;
+    
+    @Autowired
+    ShopService shopSvc;
 	
 
 //訂位autowired
@@ -568,6 +573,31 @@ public class IndexController_inSpringBoot   {
 	    protected List<MealVO> referenceListData7(Model model) {
 	        List<MealVO> list = mealSvc.getAll();
 	        return list;
+	    }
+	    
+	    @GetMapping("/user/listAllOrder")
+	    public String listAllUserOrders(Model model) {
+	        List<OrddVO> orddList = orddSvc.getAll();
+	        model.addAttribute("orddListData", orddList);
+	        return "back-end/user/listAllOrder";
+	    }
+	    
+	    @GetMapping("/user/cart")
+	    public String showCartPage(Model model) {
+	        // 這裡可以添加獲取購物車數據的邏輯
+	        List<ShopVO> cartItems = shopSvc.getAllItems();
+	        model.addAttribute("cartItems", cartItems);
+
+	        // 計算總價和稅費等
+	        double subtotal = cartItems.stream().mapToDouble(ShopVO::getTotalPrice).sum();
+	        double tax = subtotal * 0.1; // 假設稅費為總價的10%
+	        double total = subtotal + tax;
+
+	        model.addAttribute("subtotal", subtotal);
+	        model.addAttribute("tax", tax);
+	        model.addAttribute("total", total);
+
+	        return "back-end/user/cart";
 	    }
    
 

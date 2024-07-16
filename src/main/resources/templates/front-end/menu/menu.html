@@ -7,7 +7,7 @@
 
 <!-- 引入 Font Awesome 图标库 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 <style>
 body {
@@ -93,8 +93,6 @@ img.small {
     width: 40px; 
     height: 40px; 
 }
-
-
 </style>
 
 </head>
@@ -117,7 +115,7 @@ img.small {
             <p class="star"><i class="fas fa-star"></i><span th:text="${mealsVO.mealsTotalScore}"></span></p>
             <p class="price"><i class="fas fa-dollar-sign"></i><span th:text="${mealsVO.mealsPrice}"></span></p>
 		  <div class="buttons">
-            <button th:if="${mealsVO.mealsControl == 1}" th:onclick="'addToCart(' + ${mealsVO.mealsId} + ')'" >加入購物車</button>
+            <button th:if="${mealsVO.mealsControl == 1}" th:onclick="'showCustomizationOptions(' + ${mealsVO.mealsId} + ')'" >加入購物車</button>
             <button th:if="${mealsVO.mealsControl == 0}" class="disabled">已售完</button>
             <button th:onclick="'addToFavorites(' + ${mealsVO.mealsId} + ')'">加入最愛</button>
 		  </div>	
@@ -126,33 +124,101 @@ img.small {
     </th:block>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="customizationModal" tabindex="-1" role="dialog" aria-labelledby="customizationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="customizationModalLabel">客製化選項</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="customizationOptionsContainer"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="addToCartWithCustomization()">加入購物車</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <script>
-function addToCart(mealsId) {
-    // 假設加入購物車的功能
-    console.log("加入購物車: " + mealsId);
-}
+    function showCustomizationOptions(mealsId) {
+        $.ajax({
+            url: '/cust/getOptionsByMealId',
+            method: 'GET',
+            data: { mealsId: mealsId },
+            success: function(response) {
+                var optionsContainer = $('#customizationOptionsContainer');
+                optionsContainer.empty();
+                response.forEach(function(option) {
+                    var note = option.custNote ? ' - ' + option.custNote : '';
+                    optionsContainer.append(
+                        '<div class="custom-option">' +
+                            '<input type="checkbox" id="option-' + option.custId + '" value="' + option.custId + '">' +
+                            '<label for="option-' + option.custId + '">' + option.custName + ' (+ NT$' + option.custPrice + ')' + note + '</label>' +
+                        '</div>'
+                    );
+                });
+                $('#customizationModal').modal('show');
+            },
+            error: function() {
+                alert('無法獲取客製化選項，請稍後再試。');
+            }
+        });
+    }
 
-function addToFavorites(mealsId) {
-    // 假設加入最愛的功能
-    console.log("加入最愛: " + mealsId);
-}
-//排序函數
-function sortMenuItems() {
-    const menuContainer = document.getElementById('menu-container');
-    const menuItems = Array.from(menuContainer.getElementsByClassName('menu-item'));
+    function addToCartWithCustomization() {
+        var selectedOptions = [];
+        $('#customizationOptionsContainer input:checked').each(function() {
+            selectedOptions.push($(this).val());
+        });
 
-    menuItems.sort((a, b) => {
-        return parseInt(a.getAttribute('data-meals-type-id')) - parseInt(b.getAttribute('data-meals-type-id'));
-    });
+        var mealsId = $('#customizationOptionsContainer').data('meals-id');
 
-    menuItems.forEach(item => {
-        menuContainer.appendChild(item);
-    });
-}
+        $.ajax({
+            url: '/cart/add',
+            method: 'POST',
+            data: {
+                mealsId: mealsId,
+                options: selectedOptions
+            },
+            success: function(response) {
+                alert('已加入購物車');
+                $('#customizationModal').modal('hide');
+            },
+            error: function() {
+                alert('加入購物車失敗');
+            }
+        });
+    }
 
-// 在页面加载完成后执行排序
-document.addEventListener('DOMContentLoaded', sortMenuItems);
-</script>
+    function addToFavorites(mealsId) {
+        console.log("加入最愛: " + mealsId);
+    }
+
+    function sortMenuItems() {
+        const menuContainer = document.getElementById('menu-container');
+        const menuItems = Array.from(menuContainer.getElementsByClassName('menu-item'));
+
+        menuItems.sort((a, b) => {
+            return parseInt(a.getAttribute('data-meals-type-id')) - parseInt(b.getAttribute('data-meals-type-id'));
+        });
+
+        menuItems.forEach(item => {
+            menuContainer.appendChild(item);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', sortMenuItems);
+    </script>
 
 </body>
 </html>
