@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>MorningCode 員工排班</title>
+<link rel="stylesheet" href="/css/assign.css">
+<link rel="stylesheet" th:href="@{/css/index3.css}">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<style>
+.right-pane {
+	width: 79%; /* 调整頁面的寬度 */
+	margin-right: 20px;
+}
+</style>
+</head>
+<body>
+	<div align="center">
+		<nav
+			class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center"></nav>
+	
+		<div class="main-container">
+			<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+			<div class="right-pane">
+				<h1>MorningCode 員工排班</h1>
+
+				<div class="month-selector">
+					<select id="yearSelect"></select> <select id="monthSelect"></select>
+				</div>
+				<form id="assignForm" method="post">
+					<div id="calendar"></div>
+				</form>
+
+				<button type="button" id="editButton" class="btn edit"
+					style="margin: 10px 10px;">編輯排班</button>
+				<button id="saveButton" class="btn save" style="margin-top: 10px;">送出排班</button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let employeeData;
+
+            fetch('/back-end/assign/api/employees')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Received employee data:", data);
+                    employeeData = data; 
+                    initializeYearAndMonthSelectors();
+                    fetchMonthlyAssignments(new Date().getFullYear(), new Date().getMonth() + 1);
+                })
+                .catch(error => console.error('Error loading the employees:', error));
+
+            function initializeYearAndMonthSelectors() {
+                const yearSelect = document.getElementById('yearSelect');
+                const monthSelect = document.getElementById('monthSelect');
+                
+                const currentYear = new Date().getFullYear();
+                for (let year = currentYear - 10; year <= currentYear; year++) {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year + '年';
+                    yearSelect.appendChild(option);
+                }
+                yearSelect.value = currentYear;
+
+                for (let month = 1; month <= 12; month++) {
+                    const option = document.createElement('option');
+                    option.value = month;
+                    option.textContent = month + '月';
+                    monthSelect.appendChild(option);
+                }
+                monthSelect.value = new Date().getMonth() + 2;
+
+                yearSelect.addEventListener('change', updateCalendar);
+                monthSelect.addEventListener('change', updateCalendar);
+            }
+
+            function fetchMonthlyAssignments(year, month) {
+                console.log(`Fetching assignments for ${year}-${month}`);
+                fetch(`/back-end/assign/api/getMonthlyAssign?year=${year}&month=${month}`)
+                    .then(response => response.text())
+                    .then(text => {
+                        try {
+                            const assignments = JSON.parse(text);
+                            console.log("Received assignment data:", assignments);
+                            initializeCalendar(employeeData, assignments);
+                            const saveButton = document.getElementById('saveButton');
+                            const editButton = document.getElementById('editButton');
+                            if (assignments.length > 0) {
+                                saveButton.disabled = true;
+                                saveButton.style.backgroundColor = 'gray';
+                                saveButton.style.cursor = 'not-allowed';
+                                editButton.disabled = false;
+                                document.getElementById('assignForm').setAttribute('action', '/back-end/assign/update');
+                            } else {
+                                saveButton.disabled = false;
+                                saveButton.style.backgroundColor = '';
+                                saveButton.style.cursor = '';
+                                editButton.disabled = true;
+                                document.getElementById('assignForm').setAttribute('action', '/back-end/assign/insert');
+                            }
+                        } catch (e) {
+                            console.error('Error parsing JSON:', e);
+                            console.error('Response text:', text); 
+                            initializeCalendar(employeeData, []);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading the assignments:', error);
+                        initializeCalendar(employeeData, []);
+                    });
+            }
+
+            function initializeCalendar(employeeData, assignments) {
+                console.log("Initializing calendar with employee data and assignments", employeeData, assignments);
+
+                if (!employeeData || !employeeData.employees) {
+                    console.error('Employee data is undefined or missing employees property');
+                    return;
+                }
+
+                const calendar = document.getElementById('calendar');
+                calendar.innerHTML = '';
+
+                const yearSelect = document.getElementById('yearSelect');
+                const monthSelect = document.getElementById('monthSelect');
+
+                const year = parseInt(yearSelect.value);
+                const month = parseInt(monthSelect.value);
+
+                const daysInMonth = new Date(year, month, 0).getDate();
+                const firstDay = new Date(year, month - 1, 1).getDay();
+                const dayNames = ['日', '一', '二', '三', '四', '五', '六'];
+
+                dayNames.forEach(day => {
+                    const dayHeader = document.createElement('div');
+                    dayHeader.className = 'day day-header';
+                    dayHeader.textContent = day;
+                    calendar.appendChild(dayHeader);
+                });
+
+                for (let i = 0; i < firstDay; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.className = 'day empty';
+                    calendar.appendChild(emptyDay);
+                }
+
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const dateStr = `${year}-${month.toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
+                    const assignment = assignments.find(a => a.assignDate === dateStr);
+                    const selectedEmpId = assignment ? assignment.empVO.empId : '';
+                    const dayCell = document.createElement('div');
+                    dayCell.className = 'day';
+                    dayCell.innerHTML = `
+                    <div class="day-label">${i}</div>
+                    <br>
+                    <select name="employees[]" required ${assignments.length === 0 ? '' : 'disabled'}>
+                        <option value="">選擇員工</option>
+                        ${employeeData.employees.map(emp => `<option value="${emp.empId}" ${emp.empId === selectedEmpId ? 'selected' : ''}>${emp.empName}</option>`).join('')}
+                    </select>
+                    <input type="hidden" name="dates[]" value="${dateStr}">
+                    `;
+                    calendar.appendChild(dayCell);
+                }
+            }
+
+            function updateCalendar() {
+                const yearSelect = document.getElementById('yearSelect');
+                const monthSelect = document.getElementById('monthSelect');
+                const selectedYear = parseInt(yearSelect.value);
+                const selectedMonth = parseInt(monthSelect.value);
+                fetchMonthlyAssignments(selectedYear, selectedMonth);
+            }
+
+            document.getElementById('saveButton').addEventListener('click', function(e) {
+                e.preventDefault();
+                const form = document.getElementById('assignForm');
+                const selects = form.querySelectorAll('select[name="employees[]"]');
+                let allSelected = true;
+                selects.forEach(select => {
+                    if (!select.value) {
+                        allSelected = false;
+                    }
+                });
+                if (!allSelected) {
+                    alert('所有日期必須選擇員工');
+                    return;
+                }
+                const formData = new FormData(form);
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(data.message);
+                    }
+                    if (data.error) {
+                        alert(data.error);
+                    }
+                    const saveButton = document.getElementById('saveButton');
+                    saveButton.disabled = true;
+                    saveButton.style.backgroundColor = 'gray';
+                    saveButton.style.cursor = 'not-allowed';
+                    const editButton = document.getElementById('editButton');
+                    editButton.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('保存失敗，請重試');
+                });
+            });
+
+            document.getElementById('editButton').addEventListener('click', function() {
+                const selects = document.querySelectorAll('#calendar select');
+                selects.forEach(select => {
+                    select.disabled = false;
+                });
+                const saveButton = document.getElementById('saveButton');
+                saveButton.disabled = false;
+                saveButton.style.backgroundColor = '';
+                saveButton.style.cursor = '';
+                document.getElementById('assignForm').setAttribute('action', '/back-end/assign/update');
+            });
+        });
+        
+        //header-item
+
+    </script>
+    
+    <script>
+    $("a.aa").on("click", function() {
+		console.log(this);
+		var $li = $(this).closest("li");
+		$li.find("div.menu-item-1").slideToggle();
+		$li.siblings().find(".menu-item-1").slideUp();
+	});
+
+	function redirectTo(url) {
+		window.location.href = url;
+	}
+    </script>
+    
+
+</body>
+</html>

@@ -9,7 +9,7 @@
 			th:src="@{/images/logo.png}" class="imgsmall"></a>
 		<ul class="list">
 
-			<div th:if="${empVO != null}" class="welcome-message">
+			<div th:if="${session.empVO != null}" class="welcome-message">
 				<span class="admin-account-management">您好： <span
 					th:text="${empVO.empName}"></span></span> <span>
 					<p th:text="${#lists.size(session.empPermissions)}"></p>
@@ -29,16 +29,16 @@
 
 
 
-			<form th:if="${empVO == null}" th:action="@{/back-end/emplogin}"
+			<form th:if="${session.empVO == null}" th:action="@{/back-end/emplogin}"
 				method="post">
 				<button type="submit" class="emp-login btn-1">
-					<span class="login-register">我跳進來啦!</span>
+					<span class="login-register">登入</span>
 				</button>
 			</form>
-			<form th:if="${empVO != null}" th:action="@{/back-end/emplogout}"
+			<form th:if="${session.empVO != null}" th:action="@{/back-end/emplogout}"
 				method="post">
 				<button type="submit" class="emp-login btn-1">
-					<span class="login-register">我又跳出去啦!</span>
+					<span class="login-register">登出</span>
 				</button>
 			</form>
 
@@ -54,7 +54,7 @@
 						th:href="@{/back-end/emp/listAllEmp}">管理員帳號管理</a>
 				</div>
 				<div class="menu-item-1">
-					<a class="schedule-edit" href="/test1">排班編輯</a>
+						<a class="schedule-edit" th:href="@{/back-end/assign/addAssign}">排班編輯</a>
 				</div>
 				<div class="menu-item-1">
 					<a class="leave-approval" th:href="@{/back-end/leave/listAllLeave}">請假核准</a>
@@ -129,13 +129,15 @@
 					<span class="set-opening-hours">設定開放時段</span>
 				</div></li>
 				
-				<li><a class="aa">
+
+				<li><a class="aa" th:href="@{/back-end/leave/listAllLeaveforEmp}">
+
 					<button class="menu-item">
 						<span class="leave-apply">請假申請</span>
 					</button>
 			</a></li>
 				
-				<li><a class="aa">
+				<li><a class="aa" th:href="@{/back-end/assign/listAllAssign}">
 					<button class="menu-item">
 						<span class="check-shift">查看排班</span>
 					</button>

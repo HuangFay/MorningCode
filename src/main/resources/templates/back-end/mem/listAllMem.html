@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>所有員工資料 - listAllEmp.html</title>
+<title>所有會員資料 </title>
 <link rel="stylesheet" th:href="@{/css/index3.css}">
 
 
@@ -16,13 +16,67 @@
 
 
 <style>
-.right-pane {
-	width: 79%; /* 调整頁面的寬度 */
+
+table {
+	background: #f5f5f5;
+	border-collapse: separate;
+	box-shadow: inset 0 1px 0 #fff;
+	font-size: 12px;
+	line-height: 15px;
+	margin: 10px 100px 10px 50px;
+	text-align: left;
+	max-width: 600px;
+}
+
+th{
+min-width:70px;
+}
+td {
+	
+	max-width:115px;
+	min-width:65px;
+  
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+table th, table td {
+    border: 1px solid #ddd; /* 表格邊框 */
+    padding: 8px;
+    text-align: center; /* 文字居中 */
+}
+th {
+	background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
+	border-left: 1px solid #555;
+	border-right: 1px solid #777;
+	border-top: 1px solid #555;
+	border-bottom: 1px solid #333;
+	box-shadow: inset 0 1px 0 #999;
+	color: #fff;
+	font-weight: bold;
+	padding: 10px 15px;
+	position: relative;
+	text-shadow: 0 1px 0 #000;	
+}	
+
+th:after {
+	background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,.08));
+	content: '';
+	display: block;
+	height: 25%;
+	left: 0;
+	margin: 1px 0 0 0;
+	position: absolute;
+	top: 25%;
+	width: 100%;
 }
 
 
-
-
+.right-pane {
+	width: 1000px; /* 调整頁面的寬度 */
+ margin: 20px 10px; 
+	padding: 25px; /* 內邊距 */
+	
+}
 
 
    img.small {
@@ -43,24 +97,24 @@
 		<!-- star -->
 		<div align="center">
 		
-			<h3>所有會員資料 - listAllMem.html
-				<a class="navbar-brand" th:href="@{/back-end/mem/listAllMem}"><img
-					th:src="@{/images/hihihi.gif}" class="small" >回查詢頁<label th:text="${success}"></label></a>
-			</h3>
+			<h1>所有會員資料 
+				<img
+					th:src="@{/images/hihihi.gif}" class="small" ><label th:text="${success}"></label>
+			</h1>
 		</div>
 		
 		
 					<!-- 新增會員按鈕 -->
-	<div id="table-controls" style="display: flex;">
+	<div id="table-controls" style="display: flex; ">
     <div id="addMemButton" class="addmem">
-       <a th:href="@{/mem/addMem}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">新增盤子</a>
+       <a th:href="@{/mem/addMem}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">新增會員</a>
     </div>
 </div>
 		
 		
 		
 		
-		<table id="example" class="display" style="width: 5%">
+		<table id="example" class="display" >
 		<thead>
 		<tr style="background-color: #CCCCFF">
 				
@@ -68,13 +122,13 @@
 				<th>會員帳號</th>
 				<th>會員姓名</th>
 				<th>員工密碼</th>
-				<th>地址</th>
+				
 				<th>電話</th>
 				<th>身分證</th>
 				<th>性別</th>
 				<th>生日</th>
 				<th>驗證</th>
-				<th>照騙</th>
+				<th>照片</th>
 	
 
 				<th>功能</th>
@@ -90,7 +144,7 @@
 					<td th:text="${memVO.memEmail}"></td>
 					<td th:text="${memVO.memName}"></td>
 					<td th:text="${memVO.memPassword}"></td>
-					<td th:text="${memVO.memAddress}"></td>
+				
 					<td th:text="${memVO.memPhone}"></td>
 					<td th:text="${memVO.memUid}"></td>
 					<td th:text="${memVO.memSex}"></td>
@@ -128,7 +182,7 @@
 
 
 </body>
-<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+
 <script th:inline="javascript">
 $(document).ready(
 		function() {

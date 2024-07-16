@@ -1,14 +1,8 @@
 body {
-    font-family: Arial, sans-serif;
-
+    font-family:Arial, sans-serif;
+	background-color: #fcfcfc;
 }
 
-.container {
-    width: 90%;
-    margin: auto;
-    margin-top: 20px;
-
-}
 .form{
     display:inline;
 
@@ -23,12 +17,14 @@ body {
 
 .tab-button {
     color: #bebcbc;
+    font-size: 16px;
     font-weight: bold;
     padding: 10px 15px;
     cursor: pointer;
     border: 1px solid #f1f1f1;
-    background-color: #f1f1f1;
+    background-color: #e6e6e6;
     margin-right: 5px;
+    border-radius: 5px 5px 0 0;
 }
 
 .tab-button.active {
@@ -71,8 +67,8 @@ body {
 
 }
 
-.btn_yes {
-    background-color: #1a79c4;
+.submit {
+    background-color: #bfbab0;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -80,43 +76,35 @@ body {
     cursor: pointer;
     min-width: 90px;
     border-radius: 5px;
+    font-size: 14px;
     font-weight: bold;
 
 }
-.btn_no {
-    background-color: #ff4800;
+.submit:hover {
+    background-color: #9e9789;
+
+}
+.morandi-style {
+    background-color: #976666; 
     color: white;
     border: none;
-    padding: 10px 15px;
-    margin-right: 5px;
-    cursor: pointer;
-    min-width: 90px;
+    padding: 10px 15px; 
+    margin-right: 5px; 
+    cursor: pointer; 
+    min-width: 100px; 
     border-radius: 5px;
-    font-weight: bold;
-    
-
+    font-size: 16px; 
+    font-weight: bold; 
+    display: inline-block; 
+    text-align: center;
+    text-decoration: none; 
 }
 
-.btn_confirm {
-    background-color: #1a79c4;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    margin-right: 5px;
-    cursor: pointer;
-    min-width: 90px;
-    border-radius: 5px;
-    font-weight: bold;
+.morandi-style:hover {
+    background-color: #b08a8a; 
 }
 
 
-.btn_yes:hover, .btn_confirm:hover {
-    background-color: #0056b3;
-}
-
-.btn_no:hover {
-    background-color: #e34000;
-}
 
 .schedule-table {
     width: 100%;

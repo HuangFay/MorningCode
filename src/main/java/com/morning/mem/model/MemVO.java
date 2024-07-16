@@ -25,41 +25,41 @@ public class MemVO implements Serializable{
 	@Column(name ="mem_no")
 	private Integer memNo;
 	
-	@NotEmpty(message="少給我亂打")
+	@NotEmpty(message="會員Email: 請勿空白")
 	@Pattern(regexp = "^[a-zA-Z0-9._%+-]+@gmail\\.com$", message = "員工email:必需@gmail.com結尾")
 	@Column(name ="mem_email" ,unique = true)
 	private String memEmail;
 	
-	@NotEmpty(message="姓名: 請勿空白")
+	@NotEmpty(message="會員姓名: 請勿空白")
 	@Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$", message = "姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間")
 	@Column(name ="mem_name")
 	private String memName;
 	
-	@NotEmpty(message="別空白")
+	@NotEmpty(message="會員密碼: 請勿空白")
 //	@Pattern(regexp = "^[(a-zA-Z0-9_)]{2,15}$", message = "密碼: 只能是英文字母、數字和_ , 且長度必需在2到15之間")
 	@Column(name ="mem_password")
 	private String memPassword;
 	
-	@NotEmpty(message="你到底為什麼要給我空白")
+	@NotEmpty(message="會員地址: 請勿空白")
 	@Column(name ="mem_address")
 	private String memAddress;
 	
-	@NotEmpty(message="你又有什麼問題了?")
+	@NotEmpty(message="會員電話: 請勿空白")
 	@Pattern(regexp = "\\d{10}", message = "員工電話:長度必需在10")
 	@Column(name ="mem_phone")
 	private String memPhone;
 	
-	@NotEmpty(message="你腦子空白?")
+	@NotEmpty(message="會員身分證號碼: 請勿空白")
 	@Pattern(regexp = "^[A-Z]\\d{9}$", message = "首位英文,後9位為數字")
 	@Column(name ="mem_uid")
 	private String memUid;
 	
-	@NotEmpty(message="空白是什麼意思")
+	@NotEmpty(message="會員性別: 請勿空白")
 	@Pattern(regexp = "^[MmFf]{1}$", message = "性別只能是'M'或'F'")
 	@Column(name ="mem_sex")
 	private String memSex;
 	
-	@NotNull(message="日期!!!!!!!!!!!!!!!!!!!!!!!!")
+	@NotNull(message="會員日期: 請勿空白")
 	@Column(name ="mem_dob")
 	private Date memDob;
 	

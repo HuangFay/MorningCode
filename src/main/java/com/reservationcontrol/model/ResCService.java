@@ -1,8 +1,10 @@
 package com.reservationcontrol.model;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.tabletype.model.TableTypeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +36,13 @@ public class ResCService {
 	public List<ResCVO>getAll(){
 		return repository.findAll();
 	}
+
+	// 新增搜尋方法
+	public List<ResCVO> findByColumns(Date reservationControlDate, TableTypeVO tableTypeVO) {
+		return repository.findByreservationControlDateAndTableTypeVO(reservationControlDate,tableTypeVO);
+
+	}
+
+
 
 }
