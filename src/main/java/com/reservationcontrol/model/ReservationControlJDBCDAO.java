@@ -37,8 +37,8 @@ public class ReservationControlJDBCDAO implements ReservationControlDAO_interfac
 			pstmt = con.prepareStatement(INSERT_STMT);
 		
 			pstmt.setInt(1, reservationControlVO.getTableTypeVO().getTableId());
-			pstmt.setDate(2, reservationControlVO.getReasrvationControlDate());
-			pstmt.setString(3, reservationControlVO.getReasrvationControlTable());
+			pstmt.setDate(2, reservationControlVO.getReservationControlDate());
+			pstmt.setString(3, reservationControlVO.getReservationControlTable());
 			
 			pstmt.executeUpdate();
 		} catch (ClassNotFoundException e) {
@@ -81,8 +81,8 @@ public class ReservationControlJDBCDAO implements ReservationControlDAO_interfac
 			pstmt = con.prepareStatement(UPDATE);
 		
 			pstmt.setInt(1, reservationControlVO.getTableTypeVO().getTableId());
-			pstmt.setDate(2, reservationControlVO.getReasrvationControlDate());
-			pstmt.setString(3, reservationControlVO.getReasrvationControlTable());
+			pstmt.setDate(2, reservationControlVO.getReservationControlDate());
+			pstmt.setString(3, reservationControlVO.getReservationControlTable());
 			
 			pstmt.executeUpdate();
 		} catch (ClassNotFoundException e) {
@@ -178,8 +178,8 @@ public class ReservationControlJDBCDAO implements ReservationControlDAO_interfac
 				reservationControlVO = new ResCVO();
 				reservationControlVO.setReservationControlId(rs.getInt("reservationControlId"));
 				reservationControlVO.getTableTypeVO().setTableId(rs.getInt("table_Id"));;
-				reservationControlVO.setReasrvationControlDate(rs.getDate("reservation_control_date"));
-				reservationControlVO.setReasrvationControlTable(rs.getString("reservation_control_table"));
+				reservationControlVO.setReservationControlDate(rs.getDate("reservation_control_date"));
+				reservationControlVO.setReservationControlTable(rs.getString("reservation_control_table"));
 				
 			}
 
@@ -239,8 +239,8 @@ public class ReservationControlJDBCDAO implements ReservationControlDAO_interfac
 				reservationControlVO.setReservationControlId(rs.getInt("reservationControlId"));
 				reservationControlVO.getTableTypeVO().setTableId(rs.getInt("table_id"));;
 				;
-				reservationControlVO.setReasrvationControlDate(rs.getDate("reservation_control_date"));
-				reservationControlVO.setReasrvationControlTable(rs.getString("reservation_control_table"));
+				reservationControlVO.setReservationControlDate(rs.getDate("reservation_control_date"));
+				reservationControlVO.setReservationControlTable(rs.getString("reservation_control_table"));
 				
 				list.add(reservationControlVO); // Store the row in the list
 			}
