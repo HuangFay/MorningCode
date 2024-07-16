@@ -1,4 +1,4 @@
-package com.morning.leave.model;
+	package com.morning.leave.model;
 
 import java.util.List;
 import java.util.Map;
@@ -7,8 +7,7 @@ import java.util.Optional;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("leaveService")
@@ -45,12 +44,15 @@ public class LeaveService {
 	public List<LeaveVO> getAll() {
 		return repository.findAll();
 	}
-
-
 	
-//	public List<LeaveVO> getAll(Map<String, String[]> map) {
-//		return HibernateUtil_CompositeQuery_Emp3.getAllC(map,sessionFactory.openSession());
+	public List<LeaveVO> getLeavesByEmpId(Integer empId) {
+        return repository.findByLeaveEmpId(empId);
+    }
+
+//	public List<LeaveVO> getLeavesByEmpAccount(String empAccount) {
+//
+//		return repository.getLeavesByEmpAccount(empAccount);
 //	}
-//	
+
 
 }
