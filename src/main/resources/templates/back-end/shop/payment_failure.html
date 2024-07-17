@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>付款失敗 - payment_failure.html</title>
+    <head th:insert="~{/back-end/shop/included-fragment}"></head>
+    <style type="text/css">
+        body {
+            margin: 1rem 12rem 2rem 12rem;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+    <div align="center">
+        <h2>付款失敗</h2>
+        <h3><a class="navbar-brand" th:href="@{/user/cart}"><img th:src="@{/images/back1.gif}">哈囉！回到購物車囉</a></h3>
+    </div>
+</nav>
+
+<div align="center">
+    <h3><span>付款失敗，搞什麼啦?</span></h3>
+    <span th:text="${errorMessage}"></span><br>
+</div>
+
+</body>
+</html>
