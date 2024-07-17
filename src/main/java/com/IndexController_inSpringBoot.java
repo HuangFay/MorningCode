@@ -383,6 +383,11 @@ public class IndexController_inSpringBoot   {
    public String menu (Model model) {
 	   return "/front-end/menu/menu";
    }
+   //==listfavorite=====================================================
+   @GetMapping("/front-end/menu/listfavorite")
+   public String listfavorite (Model model) {
+	   return "/front-end/menu/listfavorite";
+   }
 
    @GetMapping("/leave/select_page")
 	public String select_page3(Model model) {
