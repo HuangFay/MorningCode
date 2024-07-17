@@ -602,6 +602,7 @@ public class IndexController_inSpringBoot   {
 	        return list;
 	    }
 	    
+	    //前台購物車畫面
 	    @GetMapping("/user/cart")
 	    public String showCartPage(@RequestParam("memNo") Integer memNo, Model model) {
 	        List<CartVO> cartItems = cartSvc.getCartItemsByMem(memNo);
