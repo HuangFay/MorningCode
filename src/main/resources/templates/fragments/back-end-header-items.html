@@ -11,7 +11,7 @@
 
 			<div th:if="${session.empVO != null}" class="welcome-message">
 				<span class="admin-account-management">您好： <span
-					th:text="${empVO.empName}"></span></span> <span>
+					th:text="${session.empVO.empName}"></span></span> <span>
 					<p th:text="${#lists.size(session.empPermissions)}"></p>
 					<ul>
 						<li th:each="permission : ${session.empPermissions}"

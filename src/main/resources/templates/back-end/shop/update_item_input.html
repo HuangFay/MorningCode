@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>修改購物車項目 - update_item_input.html</title>
+    <head th:insert="~{/back-end/shop/included-fragment}"></head>
+    <style type="text/css">
+        button {
+            padding: 5px;
+        }
+        form {
+            display: table;
+        }
+        form div {
+            display: table-row;
+        }
+        label, input, span, select {
+            display: table-cell;
+            margin: 2px;
+            text-align: left;
+        }
+        input[type=text], select, textarea {
+            width: 200px;
+            margin: 2px;
+        }
+        form div div {
+            display: table-cell;
+        }
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        span {
+            display: inline-block;
+            width: 150px;
+            text-align: left;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+    <div align="center">
+        <h2>修改購物車項目 - update_item_input.html</h2>
+        <h3><a class="navbar-brand" th:href="@{/shop/select_page}"><img th:src="@{/images/back1.gif}">返回查詢頁</a></h3>
+    </div>
+</nav>
+
+<div align="center">
+    <h3><b>所有欄位皆為必填欄位</b></h3>
+    <form id="submitForm" th:action="@{/shop/update}" method="post" th:object="${shopVO}" enctype="multipart/form-data">
+        <div>
+            <label>項目編號:</label>
+            <input type="text" th:field="*{itemId}" style="border: 0px; font-weight: bold;" readonly><br>
+        </div>
+
+        <div>
+            <label>餐點編號:</label>
+            <input type="text" th:field="*{mealsId}" onclick="hideContent('mealsId.errors');"><br>
+            <span th:if="${#fields.hasErrors('mealsId')}" th:errors="*{mealsId}" class="error" id="mealsId.errors"></span>
+        </div>
+
+        <div>
+            <label>會員編號:</label>
+            <input type="text" th:field="*{memNo}" onclick="hideContent('memNo.errors');"><br>
+            <span th:if="${#fields.hasErrors('memNo')}" th:errors="*{memNo}" class="error" id="memNo.errors"></span>
+        </div>
+
+        <div>
+            <label>數量:</label>
+            <input type="text" th:field="*{quantity}" onclick="hideContent('quantity.errors');"><br>
+            <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="error" id="quantity.errors"></span>
+        </div>
+
+        <div>
+            <label>單價:</label>
+            <input type="text" th:field="*{unitPrice}" onclick="hideContent('unitPrice.errors');"><br>
+            <span th:if="${#fields.hasErrors('unitPrice')}" th:errors="*{unitPrice}" class="error" id="unitPrice.errors"></span>
+        </div>
+
+        <div>
+            <label>總價:</label>
+            <input type="text" th:field="*{totalPrice}" onclick="hideContent('totalPrice.errors');"><br>
+            <span th:if="${#fields.hasErrors('totalPrice')}" th:errors="*{totalPrice}" class="error" id="totalPrice.errors"></span>
+        </div>
+
+        <div>
+            <div></div>
+            <div>
+                <button type="submit" id="submit">送出修改</button>
+            </div>
+            <div></div>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    function hideContent(elementId) {
+        var element = document.getElementById(elementId);
+        if (element) {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
