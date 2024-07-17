@@ -8,7 +8,7 @@
 
 <!-- 引入 Font Awesome 图标库 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 <style>
 
@@ -90,17 +90,8 @@ img.small {
     width: 40px; 
     height: 40px; 
 }
-.modal {
-    display: none; /* 隐藏弹窗 */
-    position: fixed; /* 固定位置 */
-    z-index: 1; /* 确保在最前面 */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto; /* 可以滚动 */
-    background-color: rgba(0, 0, 0, 0.5); /* 背景半透明黑色 */
-}
+
+
 
 .modal-content {
     background-color: #fefefe;
@@ -130,6 +121,7 @@ img.small {
 body > div{
 padding-top: 150px;
 }
+
 </style>
 
 </head>
@@ -155,7 +147,7 @@ padding-top: 150px;
             <p class="star"><i class="fas fa-star"></i><span th:text="${mealsVO.mealsTotalScore}"></span></p>
             <p class="price"><i class="fas fa-dollar-sign"></i><span th:text="${mealsVO.mealsPrice}"></span></p>
 		  <div class="buttons">
-            <button th:if="${mealsVO.mealsControl == 1}" th:onclick="'addToCart(' + ${mealsVO.mealsId} + ')'" >加入購物車</button>
+            <button th:if="${mealsVO.mealsControl == 1}" th:onclick="'showCustomizationOptions(' + ${mealsVO.mealsId} + ')'" >加入購物車</button>
             <button th:if="${mealsVO.mealsControl == 0}" class="disabled">已售完</button>
             <button th:onclick="'toggleFavorite(this, ' + ${mealsVO.mealsId} + ')'">加入收藏</button>
 <!--             <button th:onclick="'toggleFavorite(' + ${mealsVO.mealsId} + ')'">加入最愛</button> -->
@@ -164,6 +156,103 @@ padding-top: 150px;
         </div>
     </th:block>
 </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="customizationModal" tabindex="-1" role="dialog" aria-labelledby="customizationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="customizationModalLabel">客製化選項</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="customizationOptionsContainer"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="addToCartWithCustomization()">加入購物車</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    function showCustomizationOptions(mealsId) {
+        $.ajax({
+            url: '/cust/getOptionsByMealId',
+            method: 'GET',
+            data: { mealsId: mealsId },
+            success: function(response) {
+                var optionsContainer = $('#customizationOptionsContainer');
+                optionsContainer.empty();
+                response.forEach(function(option) {
+                    var note = option.custNote ? ' - ' + option.custNote : '';
+                    optionsContainer.append(
+                        '<div class="custom-option">' +
+                            '<input type="checkbox" id="option-' + option.custId + '" value="' + option.custId + '">' +
+                            '<label for="option-' + option.custId + '">' + option.custName + ' (+ NT$' + option.custPrice + ')' + note + '</label>' +
+                        '</div>'
+                    );
+                });
+                $('#customizationModal').modal('show');
+            },
+            error: function() {
+                alert('無法獲取客製化選項，請稍後再試。');
+            }
+        });
+    }
+
+    function addToCartWithCustomization() {
+        var selectedOptions = [];
+        $('#customizationOptionsContainer input:checked').each(function() {
+            selectedOptions.push($(this).val());
+        });
+
+        var mealsId = $('#customizationOptionsContainer').data('meals-id');
+
+        $.ajax({
+            url: '/cart/add',
+            method: 'POST',
+            data: {
+                mealsId: mealsId,
+                options: selectedOptions
+            },
+            success: function(response) {
+                alert('已加入購物車');
+                $('#customizationModal').modal('hide');
+            },
+            error: function() {
+                alert('加入購物車失敗');
+            }
+        });
+    }
+
+    function addToFavorites(mealsId) {
+        console.log("加入最愛: " + mealsId);
+    }
+
+    function sortMenuItems() {
+        const menuContainer = document.getElementById('menu-container');
+        const menuItems = Array.from(menuContainer.getElementsByClassName('menu-item'));
+
+        menuItems.sort((a, b) => {
+            return parseInt(a.getAttribute('data-meals-type-id')) - parseInt(b.getAttribute('data-meals-type-id'));
+        });
+
+        menuItems.forEach(item => {
+            menuContainer.appendChild(item);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', sortMenuItems);
+    </script>
 
 <!-- 弹窗HTML -->
 <div id="myModal" class="modal">
@@ -197,31 +286,53 @@ function sortMenuItems() {
 document.addEventListener('DOMContentLoaded', sortMenuItems);
 
 //收藏功能
-function toggleFavorite(button, mealsId) {
-	if (button.innerText.trim() === "加入收藏") {
-        button.innerText = "取消收藏";
-        showModal("已加入收藏");
-//         console.log("加入收藏: " + mealsId);
-    } else {
-        button.innerText = "加入收藏";
-        showModal("已取消收藏");
-//         console.log("取消收藏: " + mealsId);
+ function toggleFavorite(button, mealsId) {
+        if (!isLoggedIn()) {
+            showModal("請先登入以使用收藏功能");
+            return;
+        }
+
+        var action = button.innerText.trim() === "加入收藏" ? "add" : "remove";
+
+        $.ajax({
+            url: '/collect/' + action,
+            method: 'POST',
+            data: { mealsId: mealsId },
+            success: function(response) {
+                if (response.success) {
+                    if (action === "add") {
+                        button.innerText = "取消收藏";
+                        showModal("已加入收藏");
+                    } else {
+                        button.innerText = "加入收藏";
+                        showModal("已取消收藏");
+                    }
+                } else {
+                    showModal(response.message || "操作失敗，請稍後再試");
+                }
+            },
+            error: function() {
+                showModal("操作失敗，請稍後再試");
+            }
+        });
     }
-}
 
-//顯示彈窗
-function showModal(message) {
-    var modal = document.getElementById("myModal");
-    var modalMessage = document.getElementById("modalMessage");
-    modalMessage.textContent = message;
-    modal.style.display = "block";
-}
+    function isLoggedIn() {
+       
+        return true; 
+    }
 
-//關閉彈窗
-function closeModal() {
-    var modal = document.getElementById("myModal");
-    modal.style.display = "none";
-}
+    function showModal(message) {
+        var modal = document.getElementById("myModal");
+        var modalMessage = document.getElementById("modalMessage");
+        modalMessage.textContent = message;
+        modal.style.display = "block";
+    }
+
+    function closeModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
 
 //點擊任意位置關閉彈窗
 window.onclick = function(event) {
@@ -231,7 +342,41 @@ window.onclick = function(event) {
     }
 }
 
+let userFavorites = [];
+
+function loadUserFavorites() {
+    $.ajax({
+        url: '/collect/getUserFavorites',
+        method: 'GET',
+        success: function(response) {
+            userFavorites = response;
+            updateFavoriteButtons();
+        },
+        error: function() {
+            console.error('無法獲取用戶收藏列表');
+        }
+    });
+}
+
+function updateFavoriteButtons() {
+    $('.menu-item').each(function() {
+        const mealsId = $(this).find('button:last').attr('onclick').match(/\d+/)[0];
+        const button = $(this).find('button:last');
+        if (userFavorites.includes(parseInt(mealsId))) {
+            button.text('取消收藏');
+        } else {
+            button.text('加入收藏');
+        }
+    });
+}
+
+// 在頁面加載完成後執行
+$(document).ready(function() {
+    loadUserFavorites();
+});
+
 </script>
+
 
 <!-- 最上行js -->
 <script th:inline="javascript">

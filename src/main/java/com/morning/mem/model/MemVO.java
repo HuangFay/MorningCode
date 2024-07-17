@@ -59,7 +59,7 @@ public class MemVO implements Serializable{
 	@Column(name ="mem_sex")
 	private String memSex;
 	
-	@NotNull(message="會員日期: 請勿空白")
+	@NotNull(message="會員生日: 請勿空白")
 	@Column(name ="mem_dob")
 	private Date memDob;
 	
