@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <span th:text="${reportVO.reportId}"></span>
+  <span th:text="${reportVO.forumPostVO.postTitle}"></span>
+  <span th:text="${reportVO.forumPostVO.postContent}"></span>
+
+  <form method="post" th:action="@{review/submit}">
+    <button type="submit">檢舉成立</button>
+    <input type="hidden" name="reportId" th:value="${reportVO.reportId}">
+    <input type="hidden" name="result" value="approve">
+  </form>
+  <form method="post" th:action="@{review/submit}">
+    <button type="submit">檢舉失敗</button>
+    <input type="hidden" name="reportId" th:value="${reportVO.reportId}">
+    <input type="hidden" name="result" value="reject">
+  </form>
+
+  
+</body>
+</html>
