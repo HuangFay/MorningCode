@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>每月排班查看</title>
-<link rel="stylesheet" href="/css/assignforEmp.css">
+<link rel="stylesheet" th:href="@{/css/assignforEmp.css}">
 <link rel="stylesheet" th:href="@{/css/index3.css}">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -34,11 +34,11 @@
 		</div>
 	</div>
 
-	<script>
+	<script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function() {
             let employeeData;
 
-            fetch('/back-end/assign/api/employees')
+            fetch(/*[[@{/back-end/assign/api/employees}]]*/ '')
                 .then(response => response.json())
                 .then(data => {
                     console.log("Received employee data:", data);
@@ -75,7 +75,7 @@
 
             function fetchMonthlyAssignments(year, month) {
                 console.log(`Fetching assignments for ${year}-${month}`);
-                fetch(`/back-end/assign/api/getMonthlyAssign?year=${year}&month=${month}`)
+                fetch(/*[[@{/back-end/assign/api/getMonthlyAssign}]]*/ '' + `?year=${year}&month=${month}`)
                     .then(response => response.json())
                     .then(assignments => {
                         console.log("Received assignment data:", assignments);
@@ -85,8 +85,9 @@
                         console.error('Error loading the assignments:', error);
                         initializeCalendar(employeeData, []);
                     });
-            }
+            
 
+            }
             function initializeCalendar(employeeData, assignments) {
                 console.log("Initializing calendar with employee data and assignments", employeeData, assignments);
 
