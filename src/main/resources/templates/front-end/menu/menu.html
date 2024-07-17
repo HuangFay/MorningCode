@@ -158,14 +158,13 @@ padding-top: 150px;
             <button th:if="${mealsVO.mealsControl == 1}" th:onclick="'addToCart(' + ${mealsVO.mealsId} + ')'" >加入購物車</button>
             <button th:if="${mealsVO.mealsControl == 0}" class="disabled">已售完</button>
             <button th:onclick="'toggleFavorite(this, ' + ${mealsVO.mealsId} + ')'">加入收藏</button>
-<!--             <button th:onclick="'toggleFavorite(' + ${mealsVO.mealsId} + ')'">加入最愛</button> -->
 		  </div>	
         </div>    
         </div>
     </th:block>
 </div>
 
-<!-- 弹窗HTML -->
+<!-- 彈窗HTML -->
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
