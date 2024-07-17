@@ -388,6 +388,11 @@ public class IndexController_inSpringBoot   {
    public String menu (Model model) {
 	   return "/front-end/menu/menu";
    }
+   //==listfavorite=====================================================
+   @GetMapping("/front-end/menu/listfavorite")
+   public String listfavorite (Model model) {
+	   return "/front-end/menu/listfavorite";
+   }
 
    @GetMapping("/leave/select_page")
 	public String select_page3(Model model) {
@@ -403,6 +408,21 @@ public class IndexController_inSpringBoot   {
 		return "back-end/leave/listAllLeave";
 	}
    
+   @GetMapping("/back-end/leave/listAllLeaveforEmp")
+   public String listAllLeaveforEmp(HttpSession session, Model model) {
+       // 从会话中获取当前登录员工
+       EmpVO loggedInEmp = (EmpVO) session.getAttribute("empVO");
+
+       if (loggedInEmp != null) {
+           Integer empId = loggedInEmp.getEmpId();
+           List<LeaveVO> leaveListData = leaveSvc.getLeavesByEmpId(empId);
+           model.addAttribute("leaveListData", leaveListData);
+           model.addAttribute("loggedInEmp", loggedInEmp); // 增加這一行來傳遞登入員工資料到前端
+
+       }
+
+       return "back-end/leave/listAllLeaveforEmp";
+   }
   
    
    @ModelAttribute("leaveListData")  // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
@@ -412,6 +432,13 @@ public class IndexController_inSpringBoot   {
       	
   		return list;
   	}
+   
+   //排班=======================================================================
+   @GetMapping("/back-end/assign/listAllAssign")
+	public String listAllAssign(Model model) {
+		return "back-end/assign/listAllAssign";
+	}
+   
 
    //訂位=============================
 	   //訂位時段資料

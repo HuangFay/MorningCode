@@ -4,16 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>morningcode</title>
+<link rel="stylesheet" th:href="@{/css/index2.css}" />
 
 <!-- 引入 Font Awesome 图标库 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 <style>
-body {
-    background-color: #F5F5DC; /* 淺米白色 */
-    font-family: Arial, sans-serif;
-}
 
 .navbar {
     margin-bottom: 20px;
@@ -32,7 +29,7 @@ body {
     border-radius: 5px;
     margin: 10px;
     padding: 20px;
-    width: 300px;
+    width: 350px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     display: flex;
 }
@@ -93,16 +90,62 @@ img.small {
     width: 40px; 
     height: 40px; 
 }
+
+=======
+.modal {
+    display: none; /* 隐藏弹窗 */
+    position: fixed; /* 固定位置 */
+    z-index: 1; /* 确保在最前面 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* 可以滚动 */
+    background-color: rgba(0, 0, 0, 0.5); /* 背景半透明黑色 */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 300px; /* 最大宽度 */
+    text-align: center; /* 文字居中 */
+    border-radius: 10px; /* 圆角 */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+body > div{
+padding-top: 150px;
+}
+
 </style>
 
 </head>
 <body>
+<div class="main-container">
+		<div th:replace="fragments/header-items :: navigation"></div>
 
-    <div align="center">
-        <h2>morningcode</h2>
-        <a class="navbar-brand" th:href="@{/index2}">
-        <img th:src="@{/images/upload.gif}" class="small" >回首頁<label th:text="${success}"></label></a>
-    </div>
+
+<!--     <div align="center"> -->
+<!--         <h2>morningcode</h2> -->
+<!--         <a class="navbar-brand" th:href="@{/index2}"> -->
+<!--         <img th:src="@{/images/upload.gif}" class="small" >回首頁<label th:text="${success}"></label></a> -->
+<!--     </div> -->
 
 <div class="menu-container" id="menu-container">
     <th:block th:each="mealsVO : ${mealsListData}">
@@ -117,12 +160,14 @@ img.small {
 		  <div class="buttons">
             <button th:if="${mealsVO.mealsControl == 1}" th:onclick="'showCustomizationOptions(' + ${mealsVO.mealsId} + ')'" >加入購物車</button>
             <button th:if="${mealsVO.mealsControl == 0}" class="disabled">已售完</button>
-            <button th:onclick="'addToFavorites(' + ${mealsVO.mealsId} + ')'">加入最愛</button>
+            <button th:onclick="'toggleFavorite(this, ' + ${mealsVO.mealsId} + ')'">加入收藏</button>
+<!--             <button th:onclick="'toggleFavorite(' + ${mealsVO.mealsId} + ')'">加入最愛</button> -->
 		  </div>	
         </div>    
         </div>
     </th:block>
 </div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="customizationModal" tabindex="-1" role="dialog" aria-labelledby="customizationModalLabel" aria-hidden="true">
@@ -219,6 +264,85 @@ img.small {
 
     document.addEventListener('DOMContentLoaded', sortMenuItems);
     </script>
+=======
+<!-- 弹窗HTML -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <p id="modalMessage"></p>
+    </div>
+</div>
+
+<script>
+function addToCart(mealsId) {
+    // 假設加入購物車的功能
+    console.log("加入購物車: " + mealsId);
+}
+
+//餐點區塊排序
+function sortMenuItems() {
+    const menuContainer = document.getElementById('menu-container');
+    const menuItems = Array.from(menuContainer.getElementsByClassName('menu-item'));
+
+    menuItems.sort((a, b) => {
+        return parseInt(a.getAttribute('data-meals-type-id')) - parseInt(b.getAttribute('data-meals-type-id'));
+    });
+
+    menuItems.forEach(item => {
+        menuContainer.appendChild(item);
+    });
+}
+
+// 在頁面加载完成後执行排序
+document.addEventListener('DOMContentLoaded', sortMenuItems);
+
+//收藏功能
+function toggleFavorite(button, mealsId) {
+	if (button.innerText.trim() === "加入收藏") {
+        button.innerText = "取消收藏";
+        showModal("已加入收藏");
+//         console.log("加入收藏: " + mealsId);
+    } else {
+        button.innerText = "加入收藏";
+        showModal("已取消收藏");
+//         console.log("取消收藏: " + mealsId);
+    }
+}
+
+//顯示彈窗
+function showModal(message) {
+    var modal = document.getElementById("myModal");
+    var modalMessage = document.getElementById("modalMessage");
+    modalMessage.textContent = message;
+    modal.style.display = "block";
+}
+
+//關閉彈窗
+function closeModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+}
+
+//點擊任意位置關閉彈窗
+window.onclick = function(event) {
+    var modal = document.getElementById("myModal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+</script>
+
+
+<!-- 最上行js -->
+<script th:inline="javascript">
+    var baseUrl = /*[[@{/}]]*/ '/';
+
+	 
+    function redirectTo(url) {
+			window.location.href = url;
+		}
+	</script>
 
 </body>
 </html>
