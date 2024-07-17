@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Line Pay</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script type="text/javascript">
+        function validateForm() {
+            var lineId = document.getElementById("lineId").value.trim();
+            var linePassword = document.getElementById("linePassword").value.trim();
+            
+            // 检查帐号是否包含中文并且长度符合要求
+            if (containsChinese(lineId) || lineId.length < 5 || lineId.length > 8) {
+                showAlert("帳號格式錯誤", "帳號必須是5到8個字的英文或數字組合。");
+                return false;
+            }       
+      
+            return true;
+        }
+        
+        // 检查字符串是否包含中文
+        function containsChinese(str) {
+            return /[\u4E00-\u9FA5]/.test(str);
+        }
+        
+        // 显示Bootstrap警告框
+        function showAlert(title, message) {
+            var alertDiv = document.createElement("div");
+            alertDiv.classList.add("alert", "alert-danger", "mt-3");
+            alertDiv.innerHTML = `<strong>${title}</strong>: ${message}`;
+            
+            var container = document.querySelector(".container");
+            container.appendChild(alertDiv);
+            
+            // 自动消失的延时效果
+            setTimeout(function() {
+                alertDiv.remove();
+            }, 5000); // 5秒后自动移除
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-5">Line Pay</h2>
+        <form id="linePayForm" th:action="@{/cart/line_pay_process}" method="post" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label for="lineId">Line Pay 帳號:</label>
+                <input type="text" id="lineId" name="lineId" class="form-control" th:value="'etr50323'" required>
+            </div>
+            <div class="form-group">
+                <label for="linePassword">Line Pay 密碼:</label>
+                <input type="password" id="linePassword" name="linePassword" class="form-control" th:value="'***********'" required>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">提交</button>
+        </form>
+    </div>
+</body>
+</html>

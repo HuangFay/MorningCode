@@ -15,8 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.morning.cart.model.CartService;
+import com.morning.cart.model.CartVO;
 import com.morning.cust.model.CustService;
 import com.morning.cust.model.CustVO;
 import com.morning.emp.model.EmpService;
@@ -37,8 +40,6 @@ import com.morning.ordd.model.OrddService;
 import com.morning.ordd.model.OrddVO;
 import com.morning.order.model.OrderService;
 import com.morning.order.model.OrderVO;
-import com.morning.shop.model.ShopService;
-import com.morning.shop.model.ShopVO;
 import com.reservation.model.ResService;
 import com.reservation.model.ResVO;
 import com.reservationcontrol.model.ResCService;
@@ -87,9 +88,8 @@ public class IndexController_inSpringBoot   {
     MealService mealSvc;
     
     @Autowired
-    ShopService shopSvc;
-	
-
+    CartService cartSvc;
+    
 //訂位autowired
 	@Autowired
 	ResTimeService resTimeSvc;
@@ -602,30 +602,14 @@ public class IndexController_inSpringBoot   {
 	        return list;
 	    }
 	    
-	    @GetMapping("/user/listAllOrder")
-	    public String listAllUserOrders(Model model) {
-	        List<OrddVO> orddList = orddSvc.getAll();
-	        model.addAttribute("orddListData", orddList);
-	        return "back-end/user/listAllOrder";
-	    }
-	    
 	    @GetMapping("/user/cart")
-	    public String showCartPage(Model model) {
-	        // 這裡可以添加獲取購物車數據的邏輯
-	        List<ShopVO> cartItems = shopSvc.getAllItems();
+	    public String showCartPage(@RequestParam("memNo") Integer memNo, Model model) {
+	        List<CartVO> cartItems = cartSvc.getCartItemsByMem(memNo);
 	        model.addAttribute("cartItems", cartItems);
-
-	        // 計算總價和稅費等
-	        double subtotal = cartItems.stream().mapToDouble(ShopVO::getTotalPrice).sum();
-	        double tax = subtotal * 0.1; // 假設稅費為總價的10%
-	        double total = subtotal + tax;
-
-	        model.addAttribute("subtotal", subtotal);
-	        model.addAttribute("tax", tax);
-	        model.addAttribute("total", total);
-
+	        model.addAttribute("memNo", memNo);
 	        return "back-end/user/cart";
 	    }
-   
+	    
+	     
 
 }
