@@ -129,23 +129,29 @@
                     const dateStr = `${year}-${month.toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
                     const assignment = assignments.find(a => a.assignDate === dateStr);
                     const empNameText = assignment ? employeeData.employees.find(emp => emp.empId === assignment.empVO.empId).empName : '未安排';
+                    const empNameText1 = assignment && assignment.empVO1 ? employeeData.employees.find(emp => emp.empId === assignment.empVO1.empId).empName : '未安排'; // 确保 empVO1 存在
+
                     const dayCell = document.createElement('div');
                     dayCell.className = 'day';
                     const dayLabel = document.createElement('div');
                     dayLabel.className = 'day-label';
                     dayLabel.textContent = i;
                     const shiftLabel = document.createElement('div');
-                    shiftLabel.textContent = '早班'; // 添加“早班”标签
+                    shiftLabel.textContent = '早班';
                     shiftLabel.className = 'shift-label';
 
                     const empName = document.createElement('span');
                     empName.className = 'empName' + (empNameText !== '未安排' ? ' styled' : '');
                     empName.textContent = empNameText;
+                    const empName1 = document.createElement('span');
+                    empName1.className = 'empName' + (empNameText1 !== '未安排' ? ' styled' : '');
+                    empName1.textContent = empNameText1;
+
                     dayCell.appendChild(dayLabel);
                     dayCell.appendChild(document.createElement('br'));
-                    dayCell.appendChild(shiftLabel); // 将“早班”标签加入单元格
-
+                    dayCell.appendChild(shiftLabel);
                     dayCell.appendChild(empName);
+                    dayCell.appendChild(empName1);
                     calendar.appendChild(dayCell);
                 }
             }

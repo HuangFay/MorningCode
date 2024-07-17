@@ -103,10 +103,7 @@ public class LeaveController {
 		return "back-end/leave/update_leave_input"; // 查詢完成後轉交update_emp_input.html
 	}
 
-	/*
-	 * This method will be called on update_emp_input.html form submission, handling
-	 * POST request It also validates the user input
-	 */
+
 	@PostMapping("update")
 	public String update(@Valid LeaveVO leaveVO, BindingResult result, ModelMap model) throws IOException {
 //
@@ -125,7 +122,7 @@ public class LeaveController {
 		leaveVO = leaveSvc.getOneLeave(Integer.valueOf(leaveVO.getLeaveId()));
 		model.addAttribute("leaveVO", leaveVO);
 
-		return "back-end/leave/listOneLeave"; // 修改成功後轉交listOneEmp.html
+		return "back-end/leave/listOneLeave"; 
 	}
 
 	//撤回申請表單
@@ -154,10 +151,16 @@ public class LeaveController {
 				List<AssignVO> assignList = assignSvc.getAssignmentsByDate(leaveVO.getLeaveDate());
 				for (AssignVO assign : assignList) {
 					if (assign.getAssignDate().equals(leaveVO.getLeaveDate())) { // 確保日期完全匹配
+						if(assign.getEmpVO().equals(leaveVO.getLeaveEmpId())) {
 						assign.setEmpVO(leaveVO.getLeaveAssigneeId());
 						assignSvc.updateAssign(assign);
+						}else if(assign.getEmpVO1().equals(leaveVO.getLeaveEmpId())){
+							assign.setEmpVO1(leaveVO.getLeaveAssigneeId());
+							assignSvc.updateAssign(assign);	
+						}
 					}
 				}
+				
 			} else if (leaveStatus == 2) {
 				leaveVO.rejectLeave(); // 審核不通過
 			} else {
