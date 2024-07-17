@@ -55,7 +55,7 @@ public class AssignController {
 	    return "back-end/assign/addAssign";
 	}
 
-	
+	//取得每月的排班資料
 	@GetMapping("/api/getMonthlyAssign")
 	@ResponseBody
 	public ResponseEntity<List<Map<String, Object>>> getMonthlyAssign(@RequestParam("year") int year, @RequestParam("month") int month) {
@@ -66,6 +66,7 @@ public class AssignController {
 	            Map<String, Object> assignMap = new HashMap<>();
 	            assignMap.put("assignDate", assign.getAssignDate().toString());
 	            assignMap.put("empVO", assign.getEmpVO());
+	            assignMap.put("empVO1", assign.getEmpVO1());
 	            response.add(assignMap);
 	        }
 	        return ResponseEntity.ok(response);
@@ -85,16 +86,22 @@ public class AssignController {
 	@PostMapping("/insert")
 	@ResponseBody
 	public ResponseEntity<Map<String, String>> insertAssignments(@RequestParam("dates[]") List<String> dates, 
-	                                                             @RequestParam("employees[]") List<Integer> employees) {
+	                                                             @RequestParam("employees1[]") List<Integer> employees1,
+	                                                             @RequestParam("employees2[]") List<Integer> employees2) {
 	    Map<String, String> response = new HashMap<>();
 	    try {
-	        // 這裡加上你的業務邏輯，如創建AssignVO對象並設置屬性
 	        for (int i = 0; i < dates.size(); i++) {
 	            AssignVO assignVO = new AssignVO();
 	            assignVO.setAssignDate(Date.valueOf(dates.get(i)));  // 轉換日期格式
-	            EmpVO empVO = new EmpVO();
-	            empVO.setEmpId(employees.get(i));
-	            assignVO.setEmpVO(empVO);
+
+	            EmpVO empVO1 = new EmpVO();
+	            empVO1.setEmpId(employees1.get(i));
+	            assignVO.setEmpVO(empVO1);
+
+	            EmpVO empVO2 = new EmpVO();
+	            empVO2.setEmpId(employees2.get(i));
+	            assignVO.setEmpVO1(empVO2);
+
 	            assignSvc.addAssign(assignVO);
 	        }
 	        response.put("message", "排班保存成功");
@@ -128,17 +135,23 @@ public class AssignController {
 	@PostMapping("/update")
     @ResponseBody
     public ResponseEntity<Map<String, String>> updateAssignments(@RequestParam("dates[]") List<String> dates, 
-                                                                 @RequestParam("employees[]") List<Integer> employees) {
+                                                                 @RequestParam("employees1[]") List<Integer> employees1,
+                                                                 @RequestParam("employees2[]") List<Integer> employees2) {
         Map<String, String> response = new HashMap<>();
         try {
             for (int i = 0; i < dates.size(); i++) {
-                List<AssignVO> assignVOList = assignSvc.getAssignByDate(Date.valueOf(dates.get(i)));
-                for (AssignVO assignVO : assignVOList) {
-                    EmpVO empVO = new EmpVO();
-                    empVO.setEmpId(employees.get(i));
-                    assignVO.setEmpVO(empVO);
-                    assignSvc.updateAssign(assignVO);
-                }
+                AssignVO assignVO = assignSvc.getAssignByDate(Date.valueOf(dates.get(i))).get(0); // 假設每個日期只有一條記錄
+                
+                	 EmpVO empVO = new EmpVO();
+                     empVO.setEmpId(employees1.get(i));
+                     assignVO.setEmpVO(empVO);
+
+                     EmpVO empVO1 = new EmpVO();
+                     empVO1.setEmpId(employees2.get(i));
+                     assignVO.setEmpVO1(empVO1);
+
+                     assignSvc.updateAssign(assignVO);
+                
             }
             response.put("message", "排班更新成功");
             return ResponseEntity.ok(response);
