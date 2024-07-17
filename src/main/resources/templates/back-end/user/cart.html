@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -112,7 +112,7 @@
         <!-- 使用Thymeleaf迭代購物車商品 -->
         <div class="cart-item" data-item-id="1">
             <div class="cart-item-details d-flex align-items-start">
-                <img src="/images/1/11.png" alt="商品圖片">
+                <img th:src="@{/images/1/11.png}" alt="商品圖片">
                 <div>
                     <p>黑胡椒鐵板麵</p>
                     <small>備註: 蛋可以全熟嗎?</small>

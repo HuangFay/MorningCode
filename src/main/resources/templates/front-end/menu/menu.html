@@ -91,62 +91,31 @@ img.small {
     height: 40px; 
 }
 
-.customizationModal { 
-    display: none; /* 隱藏彈窗 */
-    position: fixed; /* 固定位置 */
-    z-index: 1; /* 確保在最前面 */ 
-    left: 50%; 
-    top: 50%; 
-    transform: translate(-50%, -50%);
-    background-color: #fefefe; /* 彈窗背景色 */
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px; /* 最大寬度 */
-    text-align: center; /* 文字居中 */
-    border-radius: 10px; /* 圓角 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 隱藏彈窗 */
-} 
 
-#favoriteModal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4); /* 背景半透明黑色 */
-}
 
-#favoriteModal .modal-content {
-    background-color: #F5F5DC; /* 彈窗背景色，與按鈕相同 */
+.modal-content {
+    background-color: #fefefe;
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    max-width: 200px; /* 最大寬度 */
+    max-width: 300px; /* 最大宽度 */
     text-align: center; /* 文字居中 */
-    border-radius: 10px; /* 圓角 */
-    position: relative;
+    border-radius: 10px; /* 圆角 */
 }
 
 .close {
     color: #aaa;
+    float: right;
     font-size: 28px;
     font-weight: bold;
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    cursor: pointer;
 }
 
 .close:hover,
 .close:focus {
     color: black;
     text-decoration: none;
+    cursor: pointer;
 }
 
 body > div{
@@ -159,6 +128,13 @@ padding-top: 150px;
 <body>
 <div class="main-container">
 		<div th:replace="fragments/header-items :: navigation"></div>
+
+
+<!--     <div align="center"> -->
+<!--         <h2>morningcode</h2> -->
+<!--         <a class="navbar-brand" th:href="@{/index2}"> -->
+<!--         <img th:src="@{/images/upload.gif}" class="small" >回首頁<label th:text="${success}"></label></a> -->
+<!--     </div> -->
 
 <div class="menu-container" id="menu-container">
     <th:block th:each="mealsVO : ${mealsListData}">
@@ -174,14 +150,13 @@ padding-top: 150px;
             <button th:if="${mealsVO.mealsControl == 1}" th:onclick="'showCustomizationOptions(' + ${mealsVO.mealsId} + ')'" >加入購物車</button>
             <button th:if="${mealsVO.mealsControl == 0}" class="disabled">已售完</button>
             <button th:onclick="'toggleFavorite(this, ' + ${mealsVO.mealsId} + ')'">加入收藏</button>
+<!--             <button th:onclick="'toggleFavorite(' + ${mealsVO.mealsId} + ')'">加入最愛</button> -->
 		  </div>	
         </div>    
         </div>
     </th:block>
 </div>
 </div>
-
-<!-- 彈窗HTML -->
 
 <!-- Modal -->
 <div class="modal fade" id="customizationModal" tabindex="-1" role="dialog" aria-labelledby="customizationModalLabel" aria-hidden="true">
@@ -201,14 +176,6 @@ padding-top: 150px;
                 <button type="button" class="btn btn-primary" onclick="addToCartWithCustomization()">加入購物車</button>
             </div>
         </div>
-    </div>
-</div>
-
-<!-- 收藏訊息彈窗 -->
-<div id="favoriteModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeFavoriteModal()">&times;</span>
-        <p id="favoriteModalMessage"></p>
     </div>
 </div>
 
@@ -267,6 +234,9 @@ padding-top: 150px;
         });
     }
 
+    function addToFavorites(mealsId) {
+        console.log("加入最愛: " + mealsId);
+    }
 
     function sortMenuItems() {
         const menuContainer = document.getElementById('menu-container');
@@ -284,7 +254,19 @@ padding-top: 150px;
     document.addEventListener('DOMContentLoaded', sortMenuItems);
     </script>
 
+<!-- 弹窗HTML -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <p id="modalMessage"></p>
+    </div>
+</div>
+
 <script>
+function addToCart(mealsId) {
+    // 假設加入購物車的功能
+    console.log("加入購物車: " + mealsId);
+}
 
 //餐點區塊排序
 function sortMenuItems() {
@@ -304,37 +286,94 @@ function sortMenuItems() {
 document.addEventListener('DOMContentLoaded', sortMenuItems);
 
 //收藏功能
-function toggleFavorite(button, mealsId) {
-	if (button.innerText.trim() === "加入收藏") {
-        button.innerText = "取消收藏";
-        showFavoriteModal("已加入收藏");
-    } else {
-        button.innerText = "加入收藏";
-        showFavoriteModal("已取消收藏");
+ function toggleFavorite(button, mealsId) {
+        if (!isLoggedIn()) {
+            showModal("請先登入以使用收藏功能");
+            return;
+        }
+
+        var action = button.innerText.trim() === "加入收藏" ? "add" : "remove";
+
+        $.ajax({
+            url: '/collect/' + action,
+            method: 'POST',
+            data: { mealsId: mealsId },
+            success: function(response) {
+                if (response.success) {
+                    if (action === "add") {
+                        button.innerText = "取消收藏";
+                        showModal("已加入收藏");
+                    } else {
+                        button.innerText = "加入收藏";
+                        showModal("已取消收藏");
+                    }
+                } else {
+                    showModal(response.message || "操作失敗，請稍後再試");
+                }
+            },
+            error: function() {
+                showModal("操作失敗，請稍後再試");
+            }
+        });
     }
-}
 
-//顯示彈窗
-function showFavoriteModal(message) {
-    var modal = document.getElementById("favoriteModal");
-    var modalMessage = document.getElementById("favoriteModalMessage");
-    modalMessage.textContent = message;
-    modal.style.display = "block";
-}
+    function isLoggedIn() {
+       
+        return true; 
+    }
 
-//關閉彈窗
-function closeFavoriteModal() {
-    var modal = document.getElementById("favoriteModal");
-    modal.style.display = "none";
-}
+    function showModal(message) {
+        var modal = document.getElementById("myModal");
+        var modalMessage = document.getElementById("modalMessage");
+        modalMessage.textContent = message;
+        modal.style.display = "block";
+    }
+
+    function closeModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
 
 //點擊任意位置關閉彈窗
 window.onclick = function(event) {
-    var modal = document.getElementById("favoriteModal");
+    var modal = document.getElementById("myModal");
     if (event.target == modal) {
         modal.style.display = "none";
     }
 }
+
+let userFavorites = [];
+
+function loadUserFavorites() {
+    $.ajax({
+        url: '/collect/getUserFavorites',
+        method: 'GET',
+        success: function(response) {
+            userFavorites = response;
+            updateFavoriteButtons();
+        },
+        error: function() {
+            console.error('無法獲取用戶收藏列表');
+        }
+    });
+}
+
+function updateFavoriteButtons() {
+    $('.menu-item').each(function() {
+        const mealsId = $(this).find('button:last').attr('onclick').match(/\d+/)[0];
+        const button = $(this).find('button:last');
+        if (userFavorites.includes(parseInt(mealsId))) {
+            button.text('取消收藏');
+        } else {
+            button.text('加入收藏');
+        }
+    });
+}
+
+// 在頁面加載完成後執行
+$(document).ready(function() {
+    loadUserFavorites();
+});
 
 </script>
 
