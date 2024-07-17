@@ -91,42 +91,62 @@ img.small {
     height: 40px; 
 }
 
-=======
-.modal {
-    display: none; /* 隐藏弹窗 */
+.customizationModal { 
+    display: none; /* 隱藏彈窗 */
     position: fixed; /* 固定位置 */
-    z-index: 1; /* 确保在最前面 */
+    z-index: 1; /* 確保在最前面 */ 
+    left: 50%; 
+    top: 50%; 
+    transform: translate(-50%, -50%);
+    background-color: #fefefe; /* 彈窗背景色 */
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px; /* 最大寬度 */
+    text-align: center; /* 文字居中 */
+    border-radius: 10px; /* 圓角 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 隱藏彈窗 */
+} 
+
+#favoriteModal {
+    display: none;
+    position: fixed;
+    z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto; /* 可以滚动 */
-    background-color: rgba(0, 0, 0, 0.5); /* 背景半透明黑色 */
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4); /* 背景半透明黑色 */
 }
 
-.modal-content {
-    background-color: #fefefe;
+#favoriteModal .modal-content {
+    background-color: #F5F5DC; /* 彈窗背景色，與按鈕相同 */
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    max-width: 300px; /* 最大宽度 */
+    max-width: 200px; /* 最大寬度 */
     text-align: center; /* 文字居中 */
-    border-radius: 10px; /* 圆角 */
+    border-radius: 10px; /* 圓角 */
+    position: relative;
 }
 
 .close {
     color: #aaa;
-    float: right;
     font-size: 28px;
     font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
 }
 
 .close:hover,
 .close:focus {
     color: black;
     text-decoration: none;
-    cursor: pointer;
 }
 
 body > div{
@@ -139,13 +159,6 @@ padding-top: 150px;
 <body>
 <div class="main-container">
 		<div th:replace="fragments/header-items :: navigation"></div>
-
-
-<!--     <div align="center"> -->
-<!--         <h2>morningcode</h2> -->
-<!--         <a class="navbar-brand" th:href="@{/index2}"> -->
-<!--         <img th:src="@{/images/upload.gif}" class="small" >回首頁<label th:text="${success}"></label></a> -->
-<!--     </div> -->
 
 <div class="menu-container" id="menu-container">
     <th:block th:each="mealsVO : ${mealsListData}">
@@ -161,13 +174,14 @@ padding-top: 150px;
             <button th:if="${mealsVO.mealsControl == 1}" th:onclick="'showCustomizationOptions(' + ${mealsVO.mealsId} + ')'" >加入購物車</button>
             <button th:if="${mealsVO.mealsControl == 0}" class="disabled">已售完</button>
             <button th:onclick="'toggleFavorite(this, ' + ${mealsVO.mealsId} + ')'">加入收藏</button>
-<!--             <button th:onclick="'toggleFavorite(' + ${mealsVO.mealsId} + ')'">加入最愛</button> -->
 		  </div>	
         </div>    
         </div>
     </th:block>
 </div>
+</div>
 
+<!-- 彈窗HTML -->
 
 <!-- Modal -->
 <div class="modal fade" id="customizationModal" tabindex="-1" role="dialog" aria-labelledby="customizationModalLabel" aria-hidden="true">
@@ -187,6 +201,14 @@ padding-top: 150px;
                 <button type="button" class="btn btn-primary" onclick="addToCartWithCustomization()">加入購物車</button>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- 收藏訊息彈窗 -->
+<div id="favoriteModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeFavoriteModal()">&times;</span>
+        <p id="favoriteModalMessage"></p>
     </div>
 </div>
 
@@ -245,9 +267,6 @@ padding-top: 150px;
         });
     }
 
-    function addToFavorites(mealsId) {
-        console.log("加入最愛: " + mealsId);
-    }
 
     function sortMenuItems() {
         const menuContainer = document.getElementById('menu-container');
@@ -264,20 +283,8 @@ padding-top: 150px;
 
     document.addEventListener('DOMContentLoaded', sortMenuItems);
     </script>
-=======
-<!-- 弹窗HTML -->
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <p id="modalMessage"></p>
-    </div>
-</div>
 
 <script>
-function addToCart(mealsId) {
-    // 假設加入購物車的功能
-    console.log("加入購物車: " + mealsId);
-}
 
 //餐點區塊排序
 function sortMenuItems() {
@@ -300,32 +307,30 @@ document.addEventListener('DOMContentLoaded', sortMenuItems);
 function toggleFavorite(button, mealsId) {
 	if (button.innerText.trim() === "加入收藏") {
         button.innerText = "取消收藏";
-        showModal("已加入收藏");
-//         console.log("加入收藏: " + mealsId);
+        showFavoriteModal("已加入收藏");
     } else {
         button.innerText = "加入收藏";
-        showModal("已取消收藏");
-//         console.log("取消收藏: " + mealsId);
+        showFavoriteModal("已取消收藏");
     }
 }
 
 //顯示彈窗
-function showModal(message) {
-    var modal = document.getElementById("myModal");
-    var modalMessage = document.getElementById("modalMessage");
+function showFavoriteModal(message) {
+    var modal = document.getElementById("favoriteModal");
+    var modalMessage = document.getElementById("favoriteModalMessage");
     modalMessage.textContent = message;
     modal.style.display = "block";
 }
 
 //關閉彈窗
-function closeModal() {
-    var modal = document.getElementById("myModal");
+function closeFavoriteModal() {
+    var modal = document.getElementById("favoriteModal");
     modal.style.display = "none";
 }
 
 //點擊任意位置關閉彈窗
 window.onclick = function(event) {
-    var modal = document.getElementById("myModal");
+    var modal = document.getElementById("favoriteModal");
     if (event.target == modal) {
         modal.style.display = "none";
     }
