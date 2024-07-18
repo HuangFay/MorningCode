@@ -11,211 +11,215 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 <style>
-
 .navbar {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .menu-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 20px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin: 20px;
 }
 
 .menu-item {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin: 10px;
-    padding: 20px;
-    width: 350px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	margin: 10px;
+	padding: 20px;
+	width: 350px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	display: flex;
 }
 
 .menu-item img {
-    max-width: 100px;
-    max-height: 100px;
-    border-radius: 5px;
-    margin-right: 10px;
+	max-width: 100px;
+	max-height: 100px;
+	border-radius: 5px;
+	margin-right: 10px;
 }
 
 .menu-item .details {
-    text-align: left;
-    flex: 1;
+	text-align: left;
+	flex: 1;
 }
 
 .menu-item h3 {
-    margin-top: 0;
-    font-size: 18px;
-    color: #333;
+	margin-top: 0;
+	font-size: 18px;
+	color: #333;
 }
 
 .menu-item p {
-    color: #666;
-    font-size: 14px;
-    margin: 5px 0;
+	color: #666;
+	font-size: 14px;
+	margin: 5px 0;
 }
 
 .menu-item .price {
-    color: #ff5722;
-    font-size: 16px;
-    font-weight: bold;
+	color: #ff5722;
+	font-size: 16px;
+	font-weight: bold;
 }
 
 .menu-item .buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
+	display: flex;
+	justify-content: space-between;
+	margin-top: 10px;
 }
 
 .menu-item button {
-    background-color: #F5F5DC;
-    color: #333;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px 20px;
-    margin-top: 10px;
-    cursor: pointer;
-    padding-left: 10px;
-    padding-right: 10px;
+	background-color: #F5F5DC;
+	color: #333;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	padding: 10px 20px;
+	margin-top: 10px;
+	cursor: pointer;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
 .menu-item button:hover {
-    background-color: #e0e0e0;
+	background-color: #e0e0e0;
 }
 
 img.small {
-    width: 40px; 
-    height: 40px; 
+	width: 40px;
+	height: 40px;
 }
 
-.customizationModal { 
-    display: none; /* 隱藏彈窗 */
-    position: fixed; /* 固定位置 */
-    z-index: 1; /* 確保在最前面 */ 
-    left: 50%; 
-    top: 50%; 
-    transform: translate(-50%, -50%);
-    background-color: #fefefe; /* 彈窗背景色 */
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px; /* 最大寬度 */
-    text-align: center; /* 文字居中 */
-    border-radius: 10px; /* 圓角 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 隱藏彈窗 */
-} 
+.customizationModal {
+	display: none; /* 隱藏彈窗 */
+	position: fixed; /* 固定位置 */
+	z-index: 1; /* 確保在最前面 */
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #fefefe; /* 彈窗背景色 */
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
+	max-width: 600px; /* 最大寬度 */
+	text-align: center; /* 文字居中 */
+	border-radius: 10px; /* 圓角 */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 隱藏彈窗 */
+}
 
 #favoriteModal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4); /* 背景半透明黑色 */
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.4); /* 背景半透明黑色 */
 }
 
 #favoriteModal .modal-content {
-    background-color: #F5F5DC; /* 彈窗背景色，與按鈕相同 */
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 200px; /* 最大寬度 */
-    text-align: center; /* 文字居中 */
-    border-radius: 10px; /* 圓角 */
-    position: relative;
+	background-color: #F5F5DC; /* 彈窗背景色，與按鈕相同 */
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
+	max-width: 200px; /* 最大寬度 */
+	text-align: center; /* 文字居中 */
+	border-radius: 10px; /* 圓角 */
+	position: relative;
 }
 
 .close {
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    cursor: pointer;
+	color: #aaa;
+	font-size: 28px;
+	font-weight: bold;
+	position: absolute;
+	top: 10px;
+	right: 15px;
+	cursor: pointer;
 }
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
+.close:hover, .close:focus {
+	color: black;
+	text-decoration: none;
 }
 
-body > div{
-padding-top: 150px;
+body>div {
+	padding-top: 150px;
 }
-
 </style>
 
 </head>
 <body>
-<div class="main-container">
+
+	<!-- 餐點方塊 -->
+	<div class="main-container">
 		<div th:replace="fragments/header-items :: navigation"></div>
 
-<div class="menu-container" id="menu-container">
-    <th:block th:each="mealsVO : ${mealsListData}">
-    
-        <div class="menu-item" th:data-meals-type-id="${mealsVO.mealstypesVO.mealsTypesId}">
-   			<img th:src="@{|/meals/DBGifReader2?mealsId=${mealsVO.mealsId}|}" alt="meals" width="100px" height="100px">
-        <div class="datails">
-            <h3 th:text="${mealsVO.mealsName}"></h3>
-            <p th:text="${mealsVO.mealsDescription}"></p>
-            <p class="star"><i class="fas fa-star"></i><span th:text="${mealsVO.mealsTotalScore}"></span></p>
-            <p class="price"><i class="fas fa-dollar-sign"></i><span th:text="${mealsVO.mealsPrice}"></span></p>
-		  <div class="buttons">
-            <button th:if="${mealsVO.mealsControl == 1}" th:onclick="'showCustomizationOptions(' + ${mealsVO.mealsId} + ')'" >加入購物車</button>
-            <button th:if="${mealsVO.mealsControl == 0}" class="disabled">已售完</button>
-            <button th:onclick="'toggleFavorite(this, ' + ${mealsVO.mealsId} + ')'">加入收藏</button>
-		  </div>	
-        </div>    
-        </div>
-    </th:block>
-</div>
-</div>
+		<div class="menu-container" id="menu-container">
+			<th:block th:each="mealsVO : ${mealsListData}">
 
-<!-- 彈窗HTML -->
+				<div class="menu-item" th:data-meals-type-id="${mealsVO.mealstypesVO.mealsTypesId}">
+					<img th:src="@{|/meals/DBGifReader2?mealsId=${mealsVO.mealsId}|}" alt="meals" width="100px" height="100px">
+					<div class="datails">
+						<h3 th:text="${mealsVO.mealsName}"></h3>
+						<p th:text="${mealsVO.mealsDescription}"></p>
+						<p class="star">
+							<i class="fas fa-star"></i>
+							<span th:text="${mealsVO.mealsTotalScore}"></span>
+						</p>
+						<p class="price">
+							<i class="fas fa-dollar-sign"></i>
+							<span th:text="${mealsVO.mealsPrice}"></span>
+						</p>
+						<div class="buttons">
+							<button th:if="${mealsVO.mealsControl == 1}" th:onclick="'showCustomizationOptions(' + ${mealsVO.mealsId} + ')'">加入購物車</button>
+							<button th:if="${mealsVO.mealsControl == 0}" class="disabled">已售完</button>
+							<button th:onclick="'toggleFavorite(this, ' + ${mealsVO.mealsId} + ')'">加入收藏</button>
+						</div>
+					</div>
+				</div>
+			</th:block>
+		</div>
+	</div>
 
-<!-- Modal -->
-<div class="modal fade" id="customizationModal" tabindex="-1" role="dialog" aria-labelledby="customizationModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="customizationModalLabel">客製化選項</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="customizationOptionsContainer"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" onclick="addToCartWithCustomization()">加入購物車</button>
-            </div>
-        </div>
-    </div>
-</div>
+	<!-- 客製化彈窗 Modal -->
+	<div class="modal fade" id="customizationModal" tabindex="-1" role="dialog" aria-labelledby="customizationModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="customizationModalLabel">客製化選項</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div id="customizationOptionsContainer"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-primary" onclick="addToCartWithCustomization()">加入購物車</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<!-- 收藏訊息彈窗 -->
-<div id="favoriteModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeFavoriteModal()">&times;</span>
-        <p id="favoriteModalMessage"></p>
-    </div>
-</div>
+	<!-- 收藏訊息彈窗 -->
+	<div id="favoriteModal" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="closeFavoriteModal()">&times;</span>
+			<p id="favoriteModalMessage"></p>
+		</div>
+	</div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+<!-- 加入購物車按鈕-客製化 -->
 <script>
     function showCustomizationOptions(mealsId) {
         $.ajax({
@@ -266,24 +270,9 @@ padding-top: 150px;
             }
         });
     }
+</script>
 
-
-    function sortMenuItems() {
-        const menuContainer = document.getElementById('menu-container');
-        const menuItems = Array.from(menuContainer.getElementsByClassName('menu-item'));
-
-        menuItems.sort((a, b) => {
-            return parseInt(a.getAttribute('data-meals-type-id')) - parseInt(b.getAttribute('data-meals-type-id'));
-        });
-
-        menuItems.forEach(item => {
-            menuContainer.appendChild(item);
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', sortMenuItems);
-    </script>
-
+<!-- 菜單區塊 -->
 <script>
 
 //餐點區塊排序
@@ -303,16 +292,72 @@ function sortMenuItems() {
 // 在頁面加载完成後执行排序
 document.addEventListener('DOMContentLoaded', sortMenuItems);
 
-//收藏功能
+//收藏功能==============================================================
 function toggleFavorite(button, mealsId) {
-	if (button.innerText.trim() === "加入收藏") {
-        button.innerText = "取消收藏";
-        showFavoriteModal("已加入收藏");
-    } else {
-        button.innerText = "加入收藏";
-        showFavoriteModal("已取消收藏");
+	if (!isLoggedIn()) {
+		showFavoriteModal("清先登入以使用收藏功能");
+        return;
     }
+	
+	var action = button.innerText.trim() === "加入收藏" ? "add" : "remove";
+	
+	$.ajax({
+		url: '/collect/' + action,
+		method: 'POST',
+		data: {mealsId: mealsId},
+		success: function(response){
+			if(response.success){
+				if(action === "add"){
+					button.innerText = "取消收藏";
+					showFavoriteModal("已加入收藏");
+				}else{
+					button.innerText = "加入收藏";
+					showFavoriteModal("已取消收藏");
+				}
+			}else{
+				showFavoriteModal(response.message || "操作失敗，請稍後再試");
+			}
+		},
+		error: function(){
+			showFavoriteModal("操作失敗，請稍後再試");
+		}
+	});
 }
+function isLoggedIn(){
+	return true;
+}
+let userFavorites = [];
+
+function loadUserFavorites() {
+    $.ajax({
+        url: '/collect/getUserFavorites',
+        method: 'GET',
+        success: function(response) {
+            userFavorites = response;
+            updateFavoriteButtons();
+        },
+        error: function() {
+            console.error('無法獲取用戶收藏列表');
+        }
+    });
+}
+
+function updateFavoriteButtons() {
+    $('.menu-item').each(function() {
+        const mealsId = $(this).find('button:last').attr('onclick').match(/\d+/)[0];
+        const button = $(this).find('button:last');
+        if (userFavorites.includes(parseInt(mealsId))) {
+            button.text('取消收藏');
+        } else {
+            button.text('加入收藏');
+        }
+    });
+}
+
+// 在頁面加載完成後執行
+$(document).ready(function() {
+    loadUserFavorites();
+});
 
 //顯示彈窗
 function showFavoriteModal(message) {
@@ -338,16 +383,15 @@ window.onclick = function(event) {
 
 </script>
 
-
 <!-- 最上行js -->
 <script th:inline="javascript">
-    var baseUrl = /*[[@{/}]]*/ '/';
+   var baseUrl = /*[[@{/}]]*/ '/';
 
-	 
-    function redirectTo(url) {
-			window.location.href = url;
-		}
-	</script>
+ 
+   function redirectTo(url) {
+		window.location.href = url;
+	}
+</script>
 
 </body>
 </html>
