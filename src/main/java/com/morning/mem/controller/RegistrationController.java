@@ -37,8 +37,8 @@ import com.morning.mem.model.MemVO;
 public class RegistrationController {
 
 	// 驗證信地址是動態 ,記得要在application.properties修改
-	@Value("${app.url}")
-	private String appUrl;
+//	@Value("${app.url}")
+//	private String appUrl;
 
 	@Autowired
 	private MemService memSvc;
@@ -112,7 +112,8 @@ public class RegistrationController {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setTo(toEmail);
 		message.setSubject("請驗證您的郵箱");
-		message.setText("請點擊以下連結驗證您的郵箱：" + appUrl + "/verify.html?token=" + uuid);
+//		message.setText("請點擊以下連結驗證您的郵箱：" + appUrl + "/verify.html?token=" + uuid);
+		message.setText("請點擊以下連結驗證您的郵箱：" +  "/verify.html?token=" + uuid);
 		mailSender.send(message);
 	}
 

@@ -30,8 +30,8 @@ public class PasswordResetController {
     
     
  // 驗證信地址是動態 ,記得要在application.properties修改
-    @Value("${app.url}")
-    private String appUrl;
+//    @Value("${app.url}")
+//    private String appUrl;
     
     @Autowired
 	private RedisTemplate<String, String> redisTemplate;
@@ -67,7 +67,8 @@ public class PasswordResetController {
             if (memService.emailExists(email)) {
                 String token = UUID.randomUUID().toString();
                 redisTemplate.opsForValue().set("reset:" + token, email, 1, TimeUnit.HOURS);
-                String resetLink = appUrl + "/reset-password.html?token=" + token;
+//                String resetLink = appUrl + "/reset-password.html?token=" + token;
+                String resetLink = "/reset-password.html?token=" + token;
                 emailService.sendResetPasswordEmail(email, resetLink);
                 
                 response.put("message", "重置密碼的URL已發送到您的Email。");
