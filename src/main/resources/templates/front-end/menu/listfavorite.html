@@ -90,7 +90,7 @@ padding-top: 150px;
 				<tr>
 
 					<td>
-						<button type="button" th:data-id="${collectVO.id}"
+						<button type="button" th:data-id="${collectVO.mealsVO.mealsId}"
 							onclick="remove(this)">取消收藏</button>
 					</td>
 
@@ -105,29 +105,26 @@ padding-top: 150px;
 		</tbody>
 	</table>
 	</div>
-
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script>
 	function remove(button) {
-		var id = $(button).data("id");
+	    var id = $(button).data("id");
 
-		$.ajax({
-			type : "POST",
-			url : "/collect/remove",
-			data : JSON.stringify({
-				id : id
-			}),
-			contentType : "application/json",
-			success : function(response) {
-				if (response.success) {
-					$(button).closest("tr").remove(); // 移除對應的表格行
-				} else {
-					alert("無法移除收藏，請稍後再試。");
-				}
-			},
-			error : function() {
-				alert("發生錯誤，請稍後再試。");
-			}
-		});
+	    $.ajax({
+	        type: "POST",
+	        url: "/collect/remove",
+	        data: { mealsId: id },
+	        success: function(response) {
+	            if (response.success) {
+	                $(button).closest("tr").remove(); // 移除對應的表格行
+	            } else {
+	                alert("無法移除收藏，請稍後再試。");
+	            }
+	        },
+	        error: function() {
+	            alert("發生錯誤，請稍後再試。");
+	        }
+	    });
 	}
 	</script>
 	<script th:inline="javascript">

@@ -31,7 +31,7 @@ public class CollectController {
 	CollectService collectSvc;
 	
 	
-	@GetMapping("remove")
+	@GetMapping("listfavorite")
 	public String addToFavorite(HttpSession session, Model model, String memNo) {
 		
 		MemVO loginid = (MemVO) session.getAttribute("memVO");
