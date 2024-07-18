@@ -1,16 +1,14 @@
 package com.morning.cust.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Column;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.morning.meals.model.MealsVO;
+
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.DecimalMax;
+import java.util.List;
 
 @Entity
 @Table(name = "customization_options")
@@ -22,6 +20,7 @@ public class CustVO implements java.io.Serializable {
     private Integer custPrice;
     private Byte custStatus;
     private String custNote;
+    private List<MealsVO> mealCustomizationDetailsVOList;
 
     public CustVO() {
     }
@@ -78,5 +77,14 @@ public class CustVO implements java.io.Serializable {
 
     public void setCustNote(String custNote) {
         this.custNote = custNote;
+    }
+
+    @OneToMany(mappedBy = "custVO", cascade = CascadeType.ALL)
+    public List<MealsVO> getMealCustomizationDetailsVOList() {
+        return mealCustomizationDetailsVOList;
+    }
+
+    public void setMealCustomizationDetailsVOList(List<MealsVO> mealCustomizationDetailsVOList) {
+        this.mealCustomizationDetailsVOList = mealCustomizationDetailsVOList;
     }
 }

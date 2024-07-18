@@ -1,12 +1,10 @@
 package com.morning.meal.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Column;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import com.morning.ordd.model.OrddVO;
+import com.morning.cust.model.CustVO;
 
 @Entity
 @Table(name = "meal_customization_details")
@@ -16,6 +14,8 @@ public class MealVO implements java.io.Serializable {
     private Integer customId;
     private Integer orddId;
     private Integer custId;
+    private OrddVO orddVO;
+    private CustVO custVO;
 
     public MealVO() {
     }
@@ -31,8 +31,7 @@ public class MealVO implements java.io.Serializable {
         this.customId = customId;
     }
 
-    @NotNull(message = "訂單明細編號: 請勿空白")
-    @Column(name = "ordd_id")
+    @Column(name = "ordd_id", insertable = false, updatable = false)
     public Integer getOrddId() {
         return this.orddId;
     }
@@ -41,13 +40,32 @@ public class MealVO implements java.io.Serializable {
         this.orddId = orddId;
     }
 
-    @NotNull(message = "客製化選項編號: 請勿空白")
-    @Column(name = "cust_id")
+    @Column(name = "cust_id", insertable = false, updatable = false)
     public Integer getCustId() {
         return this.custId;
     }
 
     public void setCustId(Integer custId) {
         this.custId = custId;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ordd_id", insertable = false, updatable = false)
+    public OrddVO getOrddVO() {
+        return orddVO;
+    }
+
+    public void setOrddVO(OrddVO orddVO) {
+        this.orddVO = orddVO;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cust_id", insertable = false, updatable = false)
+    public CustVO getCustVO() {
+        return custVO;
+    }
+
+    public void setCustVO(CustVO custVO) {
+        this.custVO = custVO;
     }
 }
