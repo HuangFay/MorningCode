@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>新增購物車項目 - addItem.html</title>
+    <head th:insert="~{/back-end/cart/included-fragment}"></head>
+    <style type="text/css">
+        button {
+            padding: 5px;
+        }
+        form {
+            display: table;
+        }
+        form div {
+            display: table-row;
+        }
+        label, input, span, select {
+            display: table-cell;
+            margin: 2px;
+            text-align: left;
+        }
+        input[type=text], select, textarea {
+            width: 200px;
+            margin: 2px;
+        }
+        form div div {
+            display: table-cell;
+        }
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        span {
+            display: inline-block;
+            width: 150px;
+            text-align: left;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+    <div align="center">
+        <h2>新增購物車項目 - addItem.html</h2>
+        <h3><a class="navbar-brand" th:href="@{/cart/listAllItems}"><img th:src="@{/images/back1.gif}">返回查詢頁</a></h3>
+    </div>
+</nav>
+
+<div align="center">
+    <h3><b>所有欄位皆為必填欄位</b></h3>
+    <form id="submitForm" th:action="@{/cart/addItem}" method="post" th:object="${cartVO}">
+        <div>
+            <label>餐點編號:</label>
+            <select th:field="*{mealsId}" onclick="hideContent('mealsId.errors')">
+                <option th:each="meal : ${mealsList}" th:value="${meal.mealsId}" th:text="${meal.mealsName}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('mealsId')}" th:errors="*{mealsId}" class="error" id="mealsId.errors"></span>
+        </div>
+
+        <div>
+            <label>會員編號:</label>
+            <select th:field="*{memNo}" onclick="hideContent('memNo.errors')">
+                <option th:each="member : ${membersList}" th:value="${member.memNo}" th:text="${member.memName}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('memNo')}" th:errors="*{memNo}" class="error" id="memNo.errors"></span>
+        </div>
+
+        <div>
+            <label>數量:</label>
+            <input type="text" th:field="*{quantity}" onclick="hideContent('quantity.errors')">
+            <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="error" id="quantity.errors"></span>
+        </div>
+
+        <div>
+            <button type="submit" id="submit">送出新增</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function hideContent(elementId) {
+        var element = document.getElementById(elementId);
+        if (element) {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
