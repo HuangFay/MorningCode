@@ -12,6 +12,7 @@ import javax.validation.constraints.Pattern;
 import com.morning.mealspic.model.MealsPicVO;
 import com.morning.mealstypes.model.MealsTypesVO;
 import com.morning.ordd.model.OrddVO;
+import com.morning.cust.model.CustVO;
 
 @Entity
 @Table(name = "meals")
@@ -20,6 +21,7 @@ public class MealsVO implements java.io.Serializable {
 
     private Integer mealsId;
     private MealsTypesVO mealstypesVO;
+    private CustVO custVO;
     private String mealsName;
     private Integer mealsPrice;
     private String mealsDescription;
@@ -29,7 +31,6 @@ public class MealsVO implements java.io.Serializable {
     private List<MealsPicVO> mealspics = new ArrayList<>();
     private List<OrddVO> orderDetails = new ArrayList<>();
 
-    // 必需有一個不傳參數建構子
     public MealsVO() {
     }
 
@@ -52,6 +53,16 @@ public class MealsVO implements java.io.Serializable {
 
     public void setMealstypesVO(MealsTypesVO mealstypesVO) {
         this.mealstypesVO = mealstypesVO;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "cust_id")
+    public CustVO getCustVO() {
+        return this.custVO;
+    }
+
+    public void setCustVO(CustVO custVO) {
+        this.custVO = custVO;
     }
 
     @Column(name = "meals_name")
@@ -77,7 +88,6 @@ public class MealsVO implements java.io.Serializable {
     }
 
     @Column(name = "meals_description")
-    @NotEmpty(message = "餐點描述不能空白")
     public String getMealsDescription() {
         return mealsDescription;
     }

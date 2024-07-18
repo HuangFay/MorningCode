@@ -611,6 +611,18 @@ public class IndexController_inSpringBoot   {
 	        return "back-end/user/cart";
 	    }
 	    
+	    @GetMapping("/front-end/order/orderHistory")
+	    public String orderHistory(HttpSession session, Model model) {
+	        MemVO memVO = (MemVO) session.getAttribute("memVO");
+	        if (memVO != null) {
+	            model.addAttribute("memVO", memVO);
+	            List<OrderVO> orderList = orderSvc.getOrdersByMemNo(memVO.getMemNo());
+	            model.addAttribute("orderHistory", orderList);
+	        }
+	        return "front-end/order/orderHistory";
+	    }
+
+
 	     
 
 }

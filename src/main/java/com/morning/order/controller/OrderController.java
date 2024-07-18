@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ import com.morning.mem.model.MemVO;
 import com.morning.order.model.OrderService;
 import com.morning.order.model.OrderVO;
 import com.morning.ordd.model.OrddVO;
+import com.morning.cart.model.CartService;
+import com.morning.cart.model.CartVO;
 import com.morning.meals.model.MealsVO;
 
 @Controller
@@ -43,6 +46,9 @@ public class OrderController {
 
     @Autowired
     MemService memSvc;
+    
+    @Autowired
+    CartService cartSvc;
 
     @GetMapping("addOrder")
     public String addOrder(ModelMap model) {
@@ -150,13 +156,6 @@ public class OrderController {
         return "back-end/order/order_status";
     }
 
-    @GetMapping("/detail/{ordId}")
-    public String getOrderDetail(@PathVariable("ordId") Integer ordId, Model model) {
-        OrderVO order = orderSvc.getOneOrder(ordId);
-        model.addAttribute("order", order);
-        return "order_detail";
-    }
-    
     @GetMapping("/all_orders")
     public String showAllOrdersPage(Model model) {
         List<OrderVO> orders = orderSvc.getAll();
@@ -215,4 +214,53 @@ public class OrderController {
         orderSvc.addOrder(orderVO);
         return "success";
     }
+    
+    //查看歷史訂單
+    @GetMapping("/history")
+    public String orderHistory(HttpSession session, Model model) {
+        MemVO member = (MemVO) session.getAttribute("memVO");
+        if (member == null) {
+            return "redirect:/login";  // 重定向到登錄頁面
+        }
+
+        List<OrderVO> orderHistory = orderSvc.getOrdersByMemNo(member.getMemNo());
+        model.addAttribute("orderHistory", orderHistory);
+        return "front-end/order/orderHistory";  // 返回前台歷史訂單頁面
+    }
+    
+    //再買一次
+    @PostMapping("/reorder/{ordId}")
+    @ResponseBody
+    public String reorder(@PathVariable("ordId") Integer ordId, HttpSession session) {
+        MemVO member = (MemVO) session.getAttribute("memVO");
+        if (member == null) {
+            return "未登入";  // 返回錯誤信息
+        }
+
+        OrderVO order = orderSvc.getOneOrder(ordId);
+        if (order == null) {
+            return "訂單不存在";
+        }
+
+        List<OrddVO> orderDetails = order.getOrderDetails();
+        for (OrddVO item : orderDetails) {
+            CartVO cartVO = new CartVO();
+            cartVO.setMemNo(member.getMemNo());
+            cartVO.setMealsId(item.getMealsVO().getMealsId());
+            cartVO.setQuantity(item.getOrddMealsQuantity());
+            cartSvc.addCartItem(cartVO);
+        }
+
+        return "success";
+    }
+    
+    //訂單詳情
+    @GetMapping("/detail/{ordId}")
+    public String getOrderDetail(@PathVariable("ordId") Integer ordId, Model model) {
+        OrderVO order = orderSvc.getOneOrder(ordId);
+        model.addAttribute("order", order);
+        return "order_detail";
+    }
+   
+    
 }
