@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>訂單詳情</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="main-container">
+    <div th:replace="fragments/header-items :: navigation"></div>
+    <div class="container mt-5">
+        <h1 class="text-center">訂單詳情</h1>
+        <div class="card">
+            <div class="card-header">
+                訂單編號: <span th:text="${order.ordId}"></span>
+            </div>
+            <div class="card-body">
+                <p>訂單日期: <span th:text="${#dates.format(order.ordBuilddate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+                <p>總金額: <span th:text="${order.ordAmount}"></span></p>
+                <p>訂單狀態: <span th:text="${order.ordStatus}"></span></p>
+                <h5>餐點資訊:</h5>
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>餐點名稱</th>
+                        <th>餐點圖片</th>
+                        <th>數量</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${order.orderDetails}">
+                        <td th:text="${item.mealsVO.mealsName}">餐點名稱</td>
+                        <td>
+                            <img th:src="@{|/meals/DBGifReader2?mealsId=${item.mealsVO.mealsId}|}" alt="meals" width="100px" height="100px">
+                        </td>
+                        <td th:text="${item.orddMealsQuantity}">數量</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>  
+</div>
+</body>
+</html>
