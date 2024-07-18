@@ -10,9 +10,7 @@
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+  
 
     html {
       /* font-size: 62.5%; */
@@ -271,7 +269,10 @@
       });
 
     })
-
+var baseUrl = /*[[@{/}]]*/ '/';
+     function redirectTo(url) {
+			window.location.href = url;
+		}
   </script>
 
 </body>
