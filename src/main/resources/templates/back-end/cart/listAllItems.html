@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>購物車項目列表 - listAllItems.html</title>
+    <head th:insert="~{/back-end/cart/included-fragment}"></head>
+    <style type="text/css">
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+    <div align="center">
+        <h2>購物車項目列表 - listAllItems.html</h2>
+        <h3><a class="navbar-brand" th:href="@{/cart/addItem}"><img th:src="@{/images/back1.gif}">返回查詢頁</a></h3>
+    </div>
+</nav>
+
+<div align="center">
+    <h3>購物車項目</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>購物車項目ID</th>
+                <th>會員名稱</th>
+                <th>餐點名稱</th>
+                <th>數量</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="cart : ${cartListData}">
+                <td th:text="${cart.cartItemId}">1</td>
+                <td th:text="${cart.memVO.memName}">周子瑜</td>
+                <td th:text="${cart.mealsVO.mealsName}">餐點名稱</td>
+                <td th:text="${cart.quantity}">2</td>
+                <td>
+                    <a th:href="@{'/cart/getOne_For_Update?cartItemId=' + ${cart.cartItemId}}">修改</a> |
+					<form th:action="@{'/cart/delete?cartItemId=' + ${cart.cartItemId}}" method="post" style="display:inline;">
+					    <button type="submit">刪除</button>
+					</form>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

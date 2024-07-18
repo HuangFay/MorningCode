@@ -66,14 +66,6 @@ padding-top: 150px;
 <div class="main-container">
 		<div th:replace="fragments/header-items :: navigation"></div>
 
-
-<!-- 	<div> -->
-<!-- 		<h1>我的收藏</h1> -->
-<!-- 		<a class="navbar-brand" th:href="@{/index2}">  -->
-<!-- 		<img th:src="@{/images/upload.gif}" class="small">回首頁<label th:text="${success}"></label></a> -->
-<!-- 	</div> -->
-
-
 	<table>
 
 		<thead>
@@ -108,6 +100,7 @@ padding-top: 150px;
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script>
 	function remove(button) {
+
 	    var id = $(button).data("id");
 
 	    $.ajax({
@@ -125,6 +118,7 @@ padding-top: 150px;
 	            alert("發生錯誤，請稍後再試。");
 	        }
 	    });
+
 	}
 	</script>
 	<script th:inline="javascript">
