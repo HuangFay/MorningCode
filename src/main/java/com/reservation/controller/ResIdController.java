@@ -124,7 +124,7 @@ public class ResIdController {
 					resVO.getResTimeVO().getReservationTimeId()
 			));
 		}
-		//取得設定桌位數
+
 
 
 

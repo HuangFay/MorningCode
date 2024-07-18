@@ -53,7 +53,7 @@ public class MealsController {
 	// 新增
 	@PostMapping("insert")
 	public String insert(@Valid MealsVO mealsVO, BindingResult result, ModelMap model,
-			@RequestParam("mealPic") MultipartFile[] parts ) throws IOException {
+			@RequestParam("picSet") MultipartFile[] parts ) throws IOException {
 
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 		result = removeFieldError(mealsVO, result, "mealPic");
@@ -106,9 +106,9 @@ public class MealsController {
 
 	@PostMapping("update")
 	public String update(@Valid MealsVO mealsVO, BindingResult result, ModelMap model,
-			@RequestParam("mealPic") MultipartFile[] parts ) throws IOException {
+			@RequestParam("picSet") MultipartFile[] parts ) throws IOException {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-		result = removeFieldError(mealsVO, result, "mealPic");
+		result = removeFieldError(mealsVO, result, "mealsId");
 
 		if (parts[0].isEmpty()) { // 使用者未選擇要上傳的圖片時
 			model.addAttribute("errorMessage", "餐點圖片: 請上傳");
@@ -127,10 +127,10 @@ public class MealsController {
 			mealsVO.setMealspics(picSet);
 		}
 		
-		if (result.hasErrors()) {
-		
-			return "back-end/meals/update_meals_input";
-		}
+//		if (result.hasErrors() || parts[0].isEmpty()) {
+//		
+//			return "back-end/meals/update_meals_input";
+//		}
 
 		/*************************** 2.開始修改資料 *****************************************/
 		mealsSvc.updateMeals(mealsVO);
@@ -139,6 +139,7 @@ public class MealsController {
 		model.addAttribute("success", "- (修改成功)");
 		mealsVO = mealsSvc.getOneMeals(Integer.valueOf(mealsVO.getMealsId()));
 		model.addAttribute("mealsVO", mealsVO);
+		System.out.println("來了");
 		return "back-end/meals/listOneMeals";
 	}
 

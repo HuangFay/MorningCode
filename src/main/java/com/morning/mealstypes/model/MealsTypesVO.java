@@ -1,5 +1,6 @@
 package com.morning.mealstypes.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
