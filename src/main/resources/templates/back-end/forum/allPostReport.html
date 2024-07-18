@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>審核檢舉文章</title>
+</head>
+
+<body>
+  <h3>審核檢舉文章</h3>
+
+  <div th:if="${forumPostReportListData == null or #lists.isEmpty(forumPostReportListData)}">
+    <h1>目前尚無待處理的檢舉。</h1>
+  </div>
+  <div th:unless="${forumPostReportListData == null or #lists.isEmpty(forumPostReportListData)}">
+    <table>
+      <thead>
+        <tr>
+          <td>被檢舉文章編號</td>
+          <td>被檢舉文章標題</td>
+          <td>檢舉人</td>
+          <td>檢舉理由</td>
+          <td>檢舉時間</td>
+          <td>狀態</td>
+          <td>審核</td>
+        </tr>
+      </thead>
+      <tbody>
+        <th:block th:each="reportVO : ${forumPostReportListData}">
+          <tr>
+            <td th:text="${reportVO.forumPostVO.postId}"></td>
+            <td th:text="${reportVO.forumPostVO.postTitle}"></td>
+            <td th:text="${reportVO.memVO.memName}"></td>
+            <td th:text="${reportVO.reportReason}"></td>
+            <td th:text="${reportVO.reportTime}"></td>
+            <td th:text="${reportVO.reportStatus}"></td>
+            <td>
+              <form method="post" th:action="@{review}">
+                <button type="submit">審核</button>
+                <input type="hidden" name="reportId" th:value="${reportVO.reportId}">
+              </form>
+            </td>
+          </tr>
+        </th:block>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+
+</html>

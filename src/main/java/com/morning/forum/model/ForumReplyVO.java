@@ -1,4 +1,4 @@
-package com.forum.model;
+package com.morning.forum.model;
 
 import java.sql.Date;
 
@@ -53,6 +53,15 @@ public class ForumReplyVO implements java.io.Serializable {
 	public void setReplyTime(Date replyTime) {
 		this.replyTime = replyTime;
 	}
+	
+	@ManyToOne
+	@JoinColumn(name="mem_no")
+	public MemVO getMemVO() {
+		return memVO;
+	}
+	public void setMemVO(MemVO memVO) {
+		this.memVO = memVO;
+	}
 
 	@ManyToOne
 	@JoinColumn(name = "post_id", referencedColumnName = "post_id")
@@ -62,15 +71,6 @@ public class ForumReplyVO implements java.io.Serializable {
 
 	public void setForumPostVO(ForumPostVO forumPostVO) {
 		this.forumPostVO = forumPostVO;
-	}
-	
-	@ManyToOne
-	@JoinColumn(name="mem_no")
-	public MemVO getMemVO() {
-		return memVO;
-	}
-	public void setMemVO(MemVO memVO) {
-		this.memVO = memVO;
 	}
 	
 

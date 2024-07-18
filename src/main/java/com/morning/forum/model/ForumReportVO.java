@@ -1,4 +1,4 @@
-package com.forum.model;
+package com.morning.forum.model;
 
 import java.util.Date;
 
@@ -7,10 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.morning.mem.model.MemVO;
 
 @Entity
 @Table(name = "post_reports")
@@ -21,17 +25,17 @@ public class ForumReportVO implements java.io.Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "report_id")
     private Integer reportId;
-
-    @NotNull
-    @Column(name = "mem_no")
-    private Integer memNo;
+    
+    @ManyToOne
+	@JoinColumn(name="mem_no")
+    private MemVO memVO;
     
     @Column(name = "emp_id")
     private Integer empId;
-
-    @NotNull
-    @Column(name = "post_id")
-    private Integer postId;
+    
+    @ManyToOne
+	@JoinColumn(name="postId")
+    ForumPostVO forumPostVO;
 
     @NotNull
     @NotEmpty(message="請填寫檢舉原因。")
@@ -46,7 +50,6 @@ public class ForumReportVO implements java.io.Serializable {
     @NotNull
     @Column(name = "report_status")
     private Integer reportStatus;
-    
     
 
     public Integer getReportId() {
@@ -63,22 +66,6 @@ public class ForumReportVO implements java.io.Serializable {
 
     public void setEmpId(Integer empId) {
         this.empId = empId;
-    }
-
-    public Integer getMemNo() {
-        return memNo;
-    }
-
-    public void setMemNo(Integer memNo) {
-        this.memNo = memNo;
-    }
-
-    public Integer getPostId() {
-        return postId;
-    }
-
-    public void setPostId(Integer postId) {
-        this.postId = postId;
     }
 
     public String getReportReason() {
@@ -104,14 +91,27 @@ public class ForumReportVO implements java.io.Serializable {
     public void setReportStatus(Integer reportStatus) {
         this.reportStatus = reportStatus;
     }
+    
+    public ForumPostVO getForumPostVO() {
+		return forumPostVO;
+	}
+
+	public void setForumPostVO(ForumPostVO forumPostVO) {
+		this.forumPostVO = forumPostVO;
+	}
+    
+	public MemVO getMemVO() {
+		return memVO;
+	}
+	public void setMemVO(MemVO memVO) {
+		this.memVO = memVO;
+	}
 
     @Override
     public String toString() {
         return "ReportVO{" +
                 "reportId=" + reportId +
                 ", empId=" + empId +
-                ", memNo=" + memNo +
-                ", postId=" + postId +
                 ", reportReason='" + reportReason + '\'' +
                 ", reportTime=" + reportTime +
                 ", reportStatus=" + reportStatus +

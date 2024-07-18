@@ -114,5 +114,4 @@ public class CollectController {
 		}
 		return collectSvc.getUserFavorites(loginMember.getMemNo());
 	}
-
 }
