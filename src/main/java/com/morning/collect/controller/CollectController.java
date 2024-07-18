@@ -26,92 +26,92 @@ import com.morning.mem.model.MemVO;
 @Validated
 @RequestMapping("/collect")
 public class CollectController {
-	
+
 	@Autowired
 	CollectService collectSvc;
-	
-	
+
+	// 顯示收藏清單
 	@GetMapping("remove")
 	public String addToFavorite(HttpSession session, Model model, String memNo) {
-		
+
 		MemVO loginid = (MemVO) session.getAttribute("memVO");
-		
+
 //不需要驗證
 //		if(loginid == null) {
 //			return "/front-end/mem/signup";
 //		}
-		
+
 		Integer loginidmemno = loginid.getMemNo();
-		
+
 		List<CollectVO> collectVO = collectSvc.showFavorite(loginidmemno);
-		
+
 		model.addAttribute("collectVO", collectVO);
 		return "/front-end/menu/listfavorite";
-		
-		
-		
 	}
-	 @PostMapping("add")
-	    @ResponseBody
-	    public Map<String, Object> addToFavorite(HttpSession session, @RequestParam Integer mealsId) {
-	        Map<String, Object> response = new HashMap<>();
-	        MemVO loginMember = (MemVO) session.getAttribute("memVO");
-	        
-	        if (loginMember == null) {
-	            response.put("success", false);
-	            response.put("message", "請先登入");
-	            return response;
-	        }
 
-	        try {
-	        	
-	            CollectVO collectVO = new CollectVO();
-	            collectVO.setMemVO(loginMember);
-	            MealsVO mealsVO = new MealsVO();
-	            mealsVO.setMealsId(mealsId);
-	            collectVO.setMealsVO(mealsVO);
-	            
-	            collectSvc.addFavorite(collectVO);
-	            
-	            response.put("success", true);
-	        } catch (Exception e) {
-	            response.put("success", false);
-	            response.put("message", "添加收藏失敗");
-	        }
-	        
-	        return response;
-	    }
+	// 加入收藏
+	@PostMapping("add")
+	@ResponseBody
+	public Map<String, Object> addToFavorite(HttpSession session, @RequestParam Integer mealsId) {
+		Map<String, Object> response = new HashMap<>();
+		MemVO loginMember = (MemVO) session.getAttribute("memVO");
 
-	    @PostMapping("remove")
-	    @ResponseBody
-	    public Map<String, Object> removeFromFavorite(HttpSession session, @RequestParam Integer mealsId) {
-	        Map<String, Object> response = new HashMap<>();
-	        MemVO loginMember = (MemVO) session.getAttribute("memVO");
-	        
-	        if (loginMember == null) {
-	            response.put("success", false);
-	            response.put("message", "請先登入");
-	            return response;
-	        }
+		if (loginMember == null) {
+			response.put("success", false);
+			response.put("message", "請先登入");
+			return response;
+		}
 
-	        try {
-	            collectSvc.deleteFavorite(loginMember.getMemNo(), mealsId);
-	            response.put("success", true);
-	        } catch (Exception e) {
-	            response.put("success", false);
-	            response.put("message", "移除收藏失敗");
-	        }
-	        
-	        return response;
-	    }
-	    
-	    @GetMapping("getUserFavorites")
-	    @ResponseBody
-	    public List<Integer> getUserFavorites(HttpSession session) {
-	        MemVO loginMember = (MemVO) session.getAttribute("memVO");
-	        if (loginMember == null) {
-	            return new ArrayList<>();
-	        }
-	        return collectSvc.getUserFavorites(loginMember.getMemNo());
-	    }
+		try {
+
+			CollectVO collectVO = new CollectVO();
+			collectVO.setMemVO(loginMember);
+			MealsVO mealsVO = new MealsVO();
+			mealsVO.setMealsId(mealsId);
+			collectVO.setMealsVO(mealsVO);
+
+			collectSvc.addFavorite(collectVO);
+
+			response.put("success", true);
+		} catch (Exception e) {
+			response.put("success", false);
+			response.put("message", "添加收藏失敗");
+		}
+
+		return response;
+	}
+
+	// 取消收藏
+	@PostMapping("remove")
+	@ResponseBody
+	public Map<String, Object> deleteFavorite(HttpSession session, @RequestParam Integer mealsId) {
+		Map<String, Object> response = new HashMap<>();
+
+		MemVO loginMember = (MemVO) session.getAttribute("memVO");
+
+		if (loginMember == null) {
+			response.put("success", false);
+			response.put("message", "請先登入");
+			return response;
+		}
+
+		try {
+			collectSvc.deleteFavorite(loginMember.getMemNo(), mealsId);
+			response.put("success", true);
+		} catch (Exception e) {
+			response.put("success", false);
+			response.put("message", "移除收藏失敗");
+		}
+		return response;
+	}
+
+	@GetMapping("getUserFavorites")
+	@ResponseBody
+	public List<Integer> getUserFavorites(HttpSession session) {
+		MemVO loginMember = (MemVO) session.getAttribute("memVO");
+		if (loginMember == null) {
+			return new ArrayList<>();
+		}
+		return collectSvc.getUserFavorites(loginMember.getMemNo());
+	}
 }

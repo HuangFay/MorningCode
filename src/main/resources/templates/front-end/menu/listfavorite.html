@@ -66,14 +66,6 @@ padding-top: 150px;
 <div class="main-container">
 		<div th:replace="fragments/header-items :: navigation"></div>
 
-
-<!-- 	<div> -->
-<!-- 		<h1>我的收藏</h1> -->
-<!-- 		<a class="navbar-brand" th:href="@{/index2}">  -->
-<!-- 		<img th:src="@{/images/upload.gif}" class="small">回首頁<label th:text="${success}"></label></a> -->
-<!-- 	</div> -->
-
-
 	<table>
 
 		<thead>
@@ -108,11 +100,11 @@ padding-top: 150px;
 
 	<script>
 	function remove(button) {
-		var id = $(button).data("id");
+		var id = $(button).data("mealsId");
 
 		$.ajax({
 			type : "POST",
-			url : "/collect/remove",
+			url : "/collect/delete",
 			data : JSON.stringify({
 				id : id
 			}),
