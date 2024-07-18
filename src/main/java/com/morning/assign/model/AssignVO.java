@@ -39,6 +39,11 @@ public class AssignVO implements java.io.Serializable {
 	@ManyToOne
 	@JoinColumn(name="emp_id")	
 	private EmpVO empVO;
+	
+	@ManyToOne
+	@JoinColumn(name="emp_id2")	
+	private EmpVO empVO1;
+
 
 
 	public Integer getAssignId() {
@@ -68,5 +73,13 @@ public class AssignVO implements java.io.Serializable {
 		this.empVO = empVO;
 	}
 
+	public EmpVO getEmpVO1() {
+		return empVO1;
+	}
+
+
+	public void setEmpVO1(EmpVO empVO1) {
+		this.empVO1 = empVO1;
+	}
 
 }

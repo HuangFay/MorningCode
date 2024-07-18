@@ -1,6 +1,6 @@
 // https://docs.spring.io/spring-data/jpa/docs/current/reference/html/
 
-package com.forum.model;
+package com.morning.forum.model;
 
 
 

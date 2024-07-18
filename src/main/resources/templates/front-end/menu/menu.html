@@ -91,18 +91,7 @@ img.small {
     height: 40px; 
 }
 
-=======
-.modal {
-    display: none; /* 隐藏弹窗 */
-    position: fixed; /* 固定位置 */
-    z-index: 1; /* 确保在最前面 */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto; /* 可以滚动 */
-    background-color: rgba(0, 0, 0, 0.5); /* 背景半透明黑色 */
-}
+
 
 .modal-content {
     background-color: #fefefe;
@@ -167,7 +156,7 @@ padding-top: 150px;
         </div>
     </th:block>
 </div>
-
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="customizationModal" tabindex="-1" role="dialog" aria-labelledby="customizationModalLabel" aria-hidden="true">
@@ -264,7 +253,7 @@ padding-top: 150px;
 
     document.addEventListener('DOMContentLoaded', sortMenuItems);
     </script>
-=======
+
 <!-- 弹窗HTML -->
 <div id="myModal" class="modal">
     <div class="modal-content">
@@ -297,31 +286,53 @@ function sortMenuItems() {
 document.addEventListener('DOMContentLoaded', sortMenuItems);
 
 //收藏功能
-function toggleFavorite(button, mealsId) {
-	if (button.innerText.trim() === "加入收藏") {
-        button.innerText = "取消收藏";
-        showModal("已加入收藏");
-//         console.log("加入收藏: " + mealsId);
-    } else {
-        button.innerText = "加入收藏";
-        showModal("已取消收藏");
-//         console.log("取消收藏: " + mealsId);
+ function toggleFavorite(button, mealsId) {
+        if (!isLoggedIn()) {
+            showModal("請先登入以使用收藏功能");
+            return;
+        }
+
+        var action = button.innerText.trim() === "加入收藏" ? "add" : "remove";
+
+        $.ajax({
+            url: '/collect/' + action,
+            method: 'POST',
+            data: { mealsId: mealsId },
+            success: function(response) {
+                if (response.success) {
+                    if (action === "add") {
+                        button.innerText = "取消收藏";
+                        showModal("已加入收藏");
+                    } else {
+                        button.innerText = "加入收藏";
+                        showModal("已取消收藏");
+                    }
+                } else {
+                    showModal(response.message || "操作失敗，請稍後再試");
+                }
+            },
+            error: function() {
+                showModal("操作失敗，請稍後再試");
+            }
+        });
     }
-}
 
-//顯示彈窗
-function showModal(message) {
-    var modal = document.getElementById("myModal");
-    var modalMessage = document.getElementById("modalMessage");
-    modalMessage.textContent = message;
-    modal.style.display = "block";
-}
+    function isLoggedIn() {
+       
+        return true; 
+    }
 
-//關閉彈窗
-function closeModal() {
-    var modal = document.getElementById("myModal");
-    modal.style.display = "none";
-}
+    function showModal(message) {
+        var modal = document.getElementById("myModal");
+        var modalMessage = document.getElementById("modalMessage");
+        modalMessage.textContent = message;
+        modal.style.display = "block";
+    }
+
+    function closeModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
 
 //點擊任意位置關閉彈窗
 window.onclick = function(event) {
@@ -330,6 +341,39 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+
+let userFavorites = [];
+
+function loadUserFavorites() {
+    $.ajax({
+        url: '/collect/getUserFavorites',
+        method: 'GET',
+        success: function(response) {
+            userFavorites = response;
+            updateFavoriteButtons();
+        },
+        error: function() {
+            console.error('無法獲取用戶收藏列表');
+        }
+    });
+}
+
+function updateFavoriteButtons() {
+    $('.menu-item').each(function() {
+        const mealsId = $(this).find('button:last').attr('onclick').match(/\d+/)[0];
+        const button = $(this).find('button:last');
+        if (userFavorites.includes(parseInt(mealsId))) {
+            button.text('取消收藏');
+        } else {
+            button.text('加入收藏');
+        }
+    });
+}
+
+// 在頁面加載完成後執行
+$(document).ready(function() {
+    loadUserFavorites();
+});
 
 </script>
 

@@ -1,4 +1,4 @@
-package com.forum.model;
+package com.morning.forum.model;
 
 import java.sql.Date;
 import java.util.Set;
@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 
 import com.morning.mem.model.MemVO;
@@ -24,12 +25,14 @@ public class ForumPostVO implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer postId;
+	
+	private MemVO memVO;
+	
 	private String postTitle;
 	private String postContent;
 	private Date postTime;
 	private Integer postStatus;
-
-	private MemVO memVO;
+	
 	private Set<ForumReplyVO> replies;
 	
 	@Id
@@ -72,6 +75,20 @@ public class ForumPostVO implements java.io.Serializable {
 		this.postContent = postContent;
 	}
 	
+	// 文章內容擷斷 (閱讀更多...)
+	@Transient
+    public String getShortenedContent() {
+        if (postContent == null) {
+            return null;
+        }
+        int maxLength = 150;
+        if (postContent.length() > maxLength) {
+            return postContent.substring(0, maxLength) + "...";
+        } else {
+            return postContent;
+        }
+    }
+	
 	@Column(name = "post_time")
 	public Date getPostTime() {
 		return postTime;
@@ -98,7 +115,6 @@ public class ForumPostVO implements java.io.Serializable {
 	public void setReplies(Set<ForumReplyVO> replies) {
 		this.replies = replies;
 	}
-	
 	
 	
 	@Override

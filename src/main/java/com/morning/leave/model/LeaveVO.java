@@ -11,6 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.morning.emp.model.EmpVO;
 
@@ -31,6 +35,7 @@ public class LeaveVO {
 	@JoinColumn(name="emp_id")
 	private EmpVO leaveEmpId;
 	
+	@NotNull(message="我是一堵牆")
 	@Column(name="leave_Date")
 	private Date leaveDate;
 	
