@@ -3,6 +3,7 @@ package com.morning.ordd.controller;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.morning.ordd.model.OrddService;
 import com.morning.ordd.model.OrddVO;
+import com.morning.order.model.OrderVO;
 
 @Controller
 @RequestMapping("/ordd")
@@ -110,12 +112,17 @@ public class OrddController {
     public String mealsStatus(Model model) {
         List<OrddVO> orddList = orddSvc.getAll();
         model.addAttribute("orddList", orddList);
+        
+        //預定時間
+        model.addAttribute("ordReserveTimeMap", orddList.stream().collect(Collectors.toMap(
+            OrddVO::getOrddId, orddVO -> orddVO.getOrderVO().getOrdReserveTime()
+        )));
         return "back-end/ordd/meals_status";
     }
 
-    @PostMapping("/updateStatus")
+    @PostMapping("/update_meals_status")
     @ResponseBody
-    public String updateOrderStatus(@RequestParam("orddId") Integer orddId, @RequestParam("status") Integer status) {
+    public String updateOrderStatus(@RequestParam("orddId") Integer orddId, @RequestParam("orddMealsStatus") Integer status) {
         OrddVO orddVO = orddSvc.getOneOrdd(orddId);
         if (orddVO != null) {
             orddVO.setOrddMealsStatus(status);
