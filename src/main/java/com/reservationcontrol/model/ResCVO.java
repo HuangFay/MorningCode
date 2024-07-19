@@ -32,7 +32,7 @@ public class ResCVO implements java.io.Serializable {
 //	@DateTimeFormat(pattern="yyyy-MM-dd") 
 	private Date reservationControlDate;
 	@Column(name="reservation_control_table")
-	private String reservationControlTable;
+	private String reservationControlTable="00000000000000000000000000000000000000000";
 	
 	
 	public Integer getReservationControlId() {

@@ -3,6 +3,7 @@ package com.reservation.model;
 import java.util.List;
 import java.util.Optional;
 
+import com.morning.mem.model.MemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,9 @@ public class ResService {
 		return optional.orElse(null);
 	}
 
-
+	public List<ResVO> getMemRes(MemVO memVO) {
+		return repository.findByMemVO(memVO);
+	}
 	public List<ResVO>getAll(){
 		return repository.findAll();
 	}

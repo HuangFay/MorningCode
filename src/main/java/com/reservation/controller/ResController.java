@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import com.reservation.model.ResService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
-import com.reservation.model.ResService;
 import com.reservation.model.ResVO;
 import com.restime.model.ResTimeService;
 import com.restime.model.ResTimeVO;
@@ -43,9 +43,11 @@ public class ResController {
 		if (memVO != null) {
 			List<ResVO> resListData = ResSvc.getMemRes(memVO);
 			model.addAttribute("resListData", resListData);
+			System.out.println(resListData);
 		} else {
-			// 處理未登入或未找到 memVO 的情況
+			return "front-end/mem/signup";
 		}
+
 		return "front-end/res/listMemRes"; // 返回對應的 Thymeleaf 模板名稱
 	}
 	
