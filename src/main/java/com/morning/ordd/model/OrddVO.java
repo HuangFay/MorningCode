@@ -1,12 +1,13 @@
 package com.morning.ordd.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import com.morning.meals.model.MealsVO;
-import com.morning.order.model.OrderVO;
-
-import java.sql.Timestamp;
+import javax.persistence.Column;
+import java.sql.Timestamp; // 导入Timestamp类
 
 @Entity
 @Table(name = "orddetails")
@@ -23,9 +24,7 @@ public class OrddVO implements java.io.Serializable {
     private String mealsContent;
     private Integer mealsScore;
     private Integer mealsStatus;
-    private Timestamp mealsTime;
-    private MealsVO mealsVO; // 餐點資訊關聯
-    private OrderVO orderVO; // 訂單資訊關聯
+    private Timestamp mealsTime; 
 
     public OrddVO() {
     }
@@ -42,7 +41,7 @@ public class OrddVO implements java.io.Serializable {
     }
 
     @NotNull
-    @Column(name = "ord_id", insertable = false, updatable = false)
+    @Column(name = "ord_id")
     public Integer getOrdId() {
         return ordId;
     }
@@ -52,7 +51,7 @@ public class OrddVO implements java.io.Serializable {
     }
 
     @NotNull
-    @Column(name = "meals_id", insertable = false, updatable = false)
+    @Column(name = "meals_id")
     public Integer getMealsId() {
         return mealsId;
     }
@@ -137,25 +136,5 @@ public class OrddVO implements java.io.Serializable {
 
     public void setMealsTime(Timestamp mealsTime) {
         this.mealsTime = mealsTime;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "meals_id", insertable = false, updatable = false)
-    public MealsVO getMealsVO() {
-        return mealsVO;
-    }
-
-    public void setMealsVO(MealsVO mealsVO) {
-        this.mealsVO = mealsVO;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ord_id", insertable = false, updatable = false)
-    public OrderVO getOrderVO() {
-        return orderVO;
-    }
-
-    public void setOrderVO(OrderVO orderVO) {
-        this.orderVO = orderVO;
     }
 }

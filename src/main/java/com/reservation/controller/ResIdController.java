@@ -73,9 +73,15 @@ public class ResIdController {
 	public String insert(@Valid ResVO resVO, BindingResult result, ModelMap model) throws IOException{
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 		resVO.setReservationDate(LocalDateTime.now());
-		resVO.getTableTypeVO().getTableId();
-		resVO.getReservationTable();
-
+//		resVO.getTableTypeVO().getTableId();
+//		resVO.getReservationTable();
+		/*
+		 *前端給 吃飯日期  桌位數量 桌位類型 （ＯＫ）
+		 * 用吃飯時間+桌位類型 找出ResCVO的 控制桌位數量  如果無此天資料就創一個（ＯＫ）
+		 * 使用service 方法驗證數量 回傳字串儲存回資料庫
+		 *
+		 *
+		 */
 
 		List<ResCVO> resCVOList = ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
 		if (!resCVOList.isEmpty()) {
@@ -83,11 +89,13 @@ public class ResIdController {
 			resCVO.setReservationControlTable(resVO.getReservationTable().toString());
 			// Additional logic here
 		}
+
 		//取得設定桌位數
 		List<SysArgVO> sysArgVOList = SysArgSvc.findByColumns("2persontable");
 
 //		ResCVO resCVO = (ResCVO) ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
 //		resCVO.setReservationControlTable(resVO.getReservationTable().toString());
+
 
 
 //		if (resVO.getTableTypeVO().getTableId()==resCVO.getTableTypeVO().getTableId()
