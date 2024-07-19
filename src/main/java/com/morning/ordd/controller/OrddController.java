@@ -113,9 +113,9 @@ public class OrddController {
         return "back-end/ordd/meals_status";
     }
 
-    @PostMapping("/updateStatus")
+    @PostMapping("/update_meals_status")
     @ResponseBody
-    public String updateOrderStatus(@RequestParam("orddId") Integer orddId, @RequestParam("status") Integer status) {
+    public String updateOrderStatus(@RequestParam("orddId") Integer orddId, @RequestParam("orddMealsStatus") Integer status) {
         OrddVO orddVO = orddSvc.getOneOrdd(orddId);
         if (orddVO != null) {
             orddVO.setOrddMealsStatus(status);

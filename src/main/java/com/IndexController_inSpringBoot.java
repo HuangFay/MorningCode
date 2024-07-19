@@ -611,6 +611,7 @@ public class IndexController_inSpringBoot   {
 	        return "back-end/user/cart";
 	    }
 	    
+	    //前台查看歷史訂單畫面
 	    @GetMapping("/front-end/order/orderHistory")
 	    public String orderHistory(HttpSession session, Model model) {
 	        MemVO memVO = (MemVO) session.getAttribute("memVO");
@@ -622,6 +623,7 @@ public class IndexController_inSpringBoot   {
 	        return "front-end/order/orderHistory";
 	    }
 	       
+	    //後台領餐作業畫面
 	    @GetMapping("/meals_status")
 	    public String mealsStatus(Model model) {
 	        List<OrddVO> orddList = orddSvc.getAll();

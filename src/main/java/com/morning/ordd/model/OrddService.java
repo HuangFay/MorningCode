@@ -8,6 +8,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.morning.meal.model.MealService;
+import com.morning.meal.model.MealVO;
+
 import hibernate.util.CompositeQuery.HibernateUtil_CompositeQuery_Orddetails;
 
 @Service("orddService")
@@ -15,6 +18,9 @@ public class OrddService {
 
     @Autowired
     OrddRepository repository;
+
+    @Autowired
+    private MealService mealService;
     
     @Autowired
     private SessionFactory sessionFactory;
@@ -48,5 +54,15 @@ public class OrddService {
 
     public List<OrddVO> findByOrdId(Integer ordId) {
         return repository.findByOrdId(ordId);
+    }
+
+    // 新增的方法，查詢訂單明細及其對應的客製化選項
+    public List<OrddVO> getOrderDetailsWithCustomizations(int orderId) {
+        List<OrddVO> orderDetails = findByOrdId(orderId);
+        for (OrddVO detail : orderDetails) {
+            List<MealVO> customizations = mealService.findByOrderDetailId(detail.getOrddId());
+            detail.setMealCustomizationDetailsVOList(customizations);
+        }
+        return orderDetails;
     }
 }
