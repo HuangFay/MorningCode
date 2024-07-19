@@ -4,82 +4,46 @@
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>所有員工資料 </title>
-<link rel="stylesheet" th:href="@{/css/index3.css}">
-
+<title>所有員工資料</title>
 <!-- dataTables -->
-<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
+<link rel="stylesheet" th:href="@{/css/index3.css}">
 <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
-<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<script
+	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
 <!-- dataTables -->
 
 
 <style>
-
-
 table {
 	background: #f5f5f5;
-	  border-collapse: collapse; /* 邊框重疊處單一化 */
-	box-shadow: inset 0 1px 0 #fff;
-	font-size: 12px;
-	line-height: 15px;
-	margin: 30px auto;
-	text-align: left;
-	max-width: 600px;
-}
-
-
-th{
-width:100px;
-
-}
-td {
+	border-collapse: collapse; /* 邊框重疊處單一化 */
+	font-size: 14px;
+	min-width: 1000px;
 	
-	max-width:115px;
-	min-width:65px;
-  
-    overflow: hidden; 
-    text-overflow: ellipsis; 
-}
-table th, table td {
-    border: 1px solid #ddd; /* 表格邊框 */
-    padding: 8px;
-    text-align: center; /* 文字居中 */
 }
 
 th {
-	background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
-	border-left: 1px solid #555;
-	border-right: 1px solid #777;
-	border-top: 1px solid #555;
-	border-bottom: 1px solid #333;
-	box-shadow: inset 0 1px 0 #999;
-	color: #fff;
-	font-weight: bold;
-	padding: 10px 15px;
-	position: relative;
-	text-shadow: 0 1px 0 #000;	
-}	
+	width: 100px;
+}
 
-th:after {
-	background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,.08));
-	content: '';
-	display: block;
-	height: 25%;
-	left: 0;
-	margin: 1px 0 0 0;
-	position: absolute;
-	top: 25%;
-	width: 100%;
+td {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+table th, table td {
+	border: 1px solid #ddd; 
+	padding: 8px;
+	text-align: center; 
 }
 
 
-
 .right-pane {
-	width: 1000px; /* 调整頁面的寬度 */
-	margin: 0px 10px; 
-	padding: 0px 0px 0px 20px; /* 內邊距 */
-	
+	width: 77%; 
+	margin-right: 20px;
 }
 
 .modal {
@@ -117,31 +81,68 @@ th:after {
 	cursor: pointer;
 }
 
-
-.emp-permission {
-  width: 50px;
-  height: 50px;
-  color: #fff;
-  border-radius: 5px;
-  padding: 5px 15px ;
-  font-family: 'Lato', sans-serif;
-  font-weight: 500;
-  background: #FFA500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  display: inline-block;
-   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
-   7px 7px 20px 0px rgba(0,0,0,.1),
-   4px 4px 5px 0px rgba(0,0,0,.1);
-  outline: none;
+.emp-permission, .btnUpdate {
+	display: flex;
+	width: 50px;
+	height: 50px;
+	color: black;
+	border-radius: 5px;
+	padding: 5px 15px;
+	font-family: 'Lato', sans-serif;
+	font-weight: 500;
+	background: #f5f5f5;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5), 7px 7px 20px
+		0px rgba(0, 0, 0, .1), 4px 4px 5px 0px rgba(0, 0, 0, .1);
+	outline: none;
+	white-space: break-spaces;
 }
-   img.small {
-        width: 30px; 
-        height: 30px; 
-    }
-    
 
+.emp-permission:haver{
+	background-color: #0000009d;
+}
+
+
+img.small {
+	width: 30px;
+	height: 30px;
+}
+
+.dataTables_filter {
+	margin: 10px 0;
+}
+
+select {
+	margin: 15px 0;
+}
+
+table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>th.sorting_asc,
+	table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting_asc_disabled,
+	table.dataTable thead>tr>th.sorting_desc_disabled, table.dataTable thead>tr>td.sorting,
+	table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc,
+	table.dataTable thead>tr>td.sorting_asc_disabled, table.dataTable thead>tr>td.sorting_desc_disabled
+	{
+	cursor: pointer;
+	position: relative;
+	padding-right: 22px;
+}
+
+.addemp {
+	background-color: #976666;
+	color: white;
+	border: none;
+	padding: 10px 15px;
+	margin: 0 5px 10px; cursor : pointer;
+	min-width: 100px;
+	border-radius: 5px;
+	font-size: 16px;
+	font-weight: bold;
+	display: inline-block;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer
+}
 </style>
 </head>
 <body>
@@ -155,32 +156,34 @@ th:after {
 			<!-- star -->
 
 			<div align="center">
-				
-				<h1>所有員工資料 
-					<img
-						th:src="@{/images/hihihi.gif}" class="small"><label
+
+				<h1>
+					MorningCode 員工資料 <img th:src="@{/images/hihihi.gif}" class="small"><label
 						th:text="${success}"></label>
 				</h1>
 			</div>
-			
-			
+
+
 			<!-- 新增員工按鈕 -->
-	<div id="table-controls" style="display: flex; ">
-    <div id="addEmpButton" class="addemp">
-        <a th:href="@{/emp/addEmp}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">新增員工</a>
-    </div>
-</div>
+			<div id="table-controls"
+				style="display: flex; flex-direction: row-reverse;">
+				<div id="addEmpButton" class="addemp">
+					<a th:href="@{/emp/addEmp}"
+						style="display: inline-block; color: white; text-decoration: none;">+
+						新增員工</a>
+				</div>
+			</div>
 
-			
 
-			<table id="example" class="display"  >
+
+			<table id="example" class="display">
 				<thead>
-					<tr style="background-color: #CCCCFF">
-						
-						<th>員工編號</th>
-						<th>員工帳號</th>
-						<th>員工姓名</th>
-						<th>員工密碼</th>
+					<tr>
+
+						<th>編號</th>
+						<th>帳號</th>
+						<th>姓名</th>
+						<th>密碼</th>
 						<th>電話</th>
 						<th>地址</th>
 						<th>email</th>
@@ -197,16 +200,16 @@ th:after {
 				<tbody>
 					<th:block th:each="empVO : ${empListData}">
 						<tr>
-						
+
 							<td th:text="${empVO.empId}"></td>
 							<td th:text="${empVO.empAccount}"></td>
 							<td th:text="${empVO.empName}"></td>
 							<td th:text="${empVO.empPassword}"></td>
 							<td th:text="${empVO.empPhone}"></td>
-							<td th:text="${empVO.empAddress}"></td>							
+							<td th:text="${empVO.empAddress}"></td>
 							<td th:text="${empVO.empEmail}"></td>
 							<td th:text="${empVO.empHiredate}"></td>
-							
+
 							<td><img
 								th:src="@{/emp/DBGifReader} + '?empid=' + ${empVO.empId}"
 								width="100px" height="100px"></td>
@@ -217,16 +220,15 @@ th:after {
 							<td>
 								<form method="post" th:action="@{/emp/getOne_For_Update}"
 									style="margin-bottom: 0px;">
-									<input type="submit" value="修改"> <input type="hidden"
+									<input type="submit" class="btnUpdate" value="修改"></input> <input type="hidden"
 										name="empId" th:value="${empVO.empId}">
-								</form>
-
-
+								</form> <!-- 
 								<form method="post" th:action="@{/emp/delete}"
 									style="margin-bottom: 0px;">
 									<input type="submit" value="刪除"> <input type="hidden"
 										name="empId" th:value="${empVO.empId}">
 								</form>
+ -->
 							</td>
 
 
@@ -254,114 +256,95 @@ th:after {
 		</div>
 	</div>
 
-	</body>
-	
-	<!-- JavaScript函數顯示員工權限 -->
-	<script th:inline="javascript">
-		$(document).ready(
-				function() {
+</body>
 
-					var $modal = $('#permissionModal');
-					var $content = $('#empPermissionsContent');
+<!-- JavaScript函數顯示員工權限 -->
+<script th:inline="javascript">
+	$(document).ready(
+			function() {
 
-					// 綁定按鈕點擊
-					$(document).on('click', '.permission-btn', function() {
-						var empId = $(this).data('empid');
-						showPermissions(empId);
-					});
+				var $modal = $('#permissionModal');
+				var $content = $('#empPermissionsContent');
 
-					// 關閉小黑牢
-					$('.close').click(function() {
+				// 綁定按鈕點擊
+				$(document).on('click', '.permission-btn', function() {
+					var empId = $(this).data('empid');
+					showPermissions(empId);
+				});
+
+				// 關閉小黑牢
+				$('.close').click(function() {
+					$modal.hide();
+				});
+
+				// 點小黑牢外面會關閉
+				$(window).click(function(event) {
+					if ($(event.target).is($modal)) {
 						$modal.hide();
-					});
+					}
+				});
 
-					// 點小黑牢外面會關閉
-					$(window).click(function(event) {
-						if ($(event.target).is($modal)) {
-							$modal.hide();
+				function showPermissions(empId) {
+					$.ajax({
+						url : /*[[@{/emp/loadPermissions}]]*/"",
+
+						method : 'GET',
+						data : {
+							empId : empId
+						},
+						dataType : 'json',
+						success : function(data) {
+							$content.empty();
+							if (data.length > 0) {
+								$.each(data, function(index, permission) {
+									$content.append($('<p>').text(
+											permission.functionName));
+								});
+							} else {
+								$content.html('<p>沒有權限資料</p>');
+							}
+							$modal.show();
+						},
+						error : function(jqXHR, textStatus, errorThrown) {
+							console.error('AJAX error:', textStatus,
+									errorThrown);
+							alert('讀取員工權限失敗，請稍後再試。');
 						}
 					});
+				}
 
-					function showPermissions(empId) {
-						$.ajax({
-							url :  /*[[@{/emp/loadPermissions}]]*/ "",
-							
-							method : 'GET',
-							data : {
-								empId : empId
-							},
-							dataType : 'json',
-							success : function(data) {
-								$content.empty();
-								if (data.length > 0) {
-									$.each(data, function(index, permission) {
-										$content.append($('<p>').text(
-												permission.functionName));
-									});
-								} else {
-									$content.html('<p>沒有權限資料</p>');
-								}
-								$modal.show();
-							},
-							error : function(jqXHR, textStatus, errorThrown) {
-								console.error('AJAX error:', textStatus,
-										errorThrown);
-								alert('讀取員工權限失敗，請稍後再試。');
-							}
-						});
-					}
-
-					$("a.aa").on("click", function() {
-						console.log(this);
-						var $li = $(this).closest("li");
-						$li.find("div.menu-item-1").slideToggle();
-						$li.siblings().find(".menu-item-1").slideUp();
-					});
-
-					function redirectTo(url) {
-						window.location.href = url;
-					}
-					
-					
-					
-					
-					
-					new DataTable('#example', {
-
-						
-								"lengthMenu" : [ 3, 5, 10, 20, 50,
-										100 ],
-								"searching" : false, //搜尋功能, 預設是開啟
-								"paging" : true, //分頁功能, 預設是開啟
-								"ordering" : true, //排序功能, 預設是開啟
-								"language" : {
-									"processing" : "處理中...",
-									"loadingRecords" : "載入中...",
-									"lengthMenu" : "",
-									"zeroRecords" : "沒有符合的結果",
-									"info" : "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
-									"infoEmpty" : "顯示第 0 至 0 筆結果，共 0 筆",
-									"infoFiltered" : "(從 _MAX_ 筆結果中過濾)",
-									"infoPostFix" : "",
-									"search" : "搜尋:",
-									"paginate" : {
-										"first" : "第一頁",
-										"previous" : "上一頁",
-										"next" : "下一頁",
-										"last" : "最後一頁"
-									},
-									"aria" : {
-										"sortAscending" : ": 升冪排列",
-										"sortDescending" : ": 降冪排列"
-									}
-								}
-								
-							 
-								
-								
-							});
-					
+				$("a.aa").on("click", function() {
+					console.log(this);
+					var $li = $(this).closest("li");
+					$li.find("div.menu-item-1").slideToggle();
+					$li.siblings().find(".menu-item-1").slideUp();
 				});
-	
-	</script>
+
+				function redirectTo(url) {
+					window.location.href = url;
+				}
+
+				var table = $('#example').DataTable({
+					"order" : [ [ 0, "desc" ] ],
+					"language" : {
+						"lengthMenu" : "每頁顯示 _MENU_ 筆記錄",
+						"zeroRecords" : "沒有找到記錄",
+						"info" : "顯示第 _PAGE_ 頁，共 _PAGES_ 頁",
+						"infoEmpty" : "無可用記錄",
+						"infoFiltered" : "(從 _MAX_ 筆記錄中過濾)",
+						"search" : "搜尋:",
+						"paginate" : {
+							"first" : "第一頁",
+							"last" : "最後一頁",
+							"next" : "下一頁",
+							"previous" : "上一頁"
+						}
+					}
+				});
+
+			});
+</script>
+
+
+
 </html>
