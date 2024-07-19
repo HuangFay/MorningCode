@@ -5,63 +5,59 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>文章列表</title>
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
   <link rel="stylesheet" th:href="@{/css/index2.css}" />
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
   <style>
-  
-
     html {
       /* font-size: 62.5%; */
+      /*  */
       font-size: 100%;
-    }
-
-    body {
-      margin: 0;
     }
 
     main {
       position: absolute;
-      top: 15rem;
-      margin: auto 12rem;
+      top: 10rem;
+      margin: auto 7rem;
     }
 
     .article {
       border-radius: 10px;
+      /* border: 1px solid gray; */
+      /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      padding: 24px;
     }
 
     h1 {
-      font-size: 2.5rem;
-      color: #666;
+      font-size: 2rem;
+      /* color: #666; */
       margin: 0;
     }
 
     div.post_time {
-      font-size: 1.5rem;
+      font-size: 1rem;
       margin: 4px 0;
     }
 
     p.post_content {
       margin: 0;
       font-size: 1.2rem;
-    }
-
-    .fa-cog {
-      font-size: 40px;
+      text-align: justify;
+      /* border: 1px solid black; */
     }
 
     .show {
       display: none;
-
     }
 
     form {
       display: inline;
     }
 
-    form button {
+    button {
       background: none;
       border: none;
       color: blue;
@@ -71,6 +67,16 @@
       font-size: inherit;
       font-size: 1.2rem;
     }
+
+    .read_more_wrapper {
+      text-align: right;
+    }
+
+    .read_more_wrapper button {
+      font-size: 1rem;
+      color: #10706a;
+    }
+
 
     /* 自訂 Bootstrap 樣式 */
     .btn-primary {
@@ -114,7 +120,6 @@
     .btn-primary.active:focus,
     .show>.btn-primary.dropdown-toggle:focus {
       box-shadow: 0 0 0 0.2rem rgba(165, 42, 42, 0.5);
-      /* Semi-transparent Brown */
     }
   </style>
 </head>
@@ -124,52 +129,50 @@
     <div th:replace="fragments/header-items :: navigation"></div>
 
     <main>
-      <h1 th:text="${success}"></h1>
+      <!-- <h1 th:text="${successResult}"></h1> -->
+      <button onclick="redirectTo(baseUrl + 'forum/addPost')">新增文章</button>
       <th:block th:each="forumPostVO : ${forumPostListData}">
         <article class="article">
           <div class="content_area">
             <h1 th:text="${forumPostVO.postTitle}"></h1>
             <div class="post_time">
-              Posted on <span th:text="${forumPostVO.postTime}"></span> by <span
+              Posted on <span th:text="${#dates.format(forumPostVO.postTime, 'yyyy-MM-dd')}"></span> by <span
                 th:text="${forumPostVO.memVO.memName}"></span>
             </div>
 
-            <p class="post_content" th:text="${forumPostVO.postContent}"></p>
+            <p class="post_content" th:text="${forumPostVO.shortenedContent}"></p>
 
-            <!-- 點擊 閱讀更多 -->
-            <form method="get" th:action="@{/forum}">
-              <button class="btn_read_more">閱讀更多</button>
+            <div class="read_more_wrapper">
+              <!-- 點擊 閱讀更多 -->
+              <form method="get" th:action="@{/forum}">
+                <button>閱讀更多</button>
+                <input type="hidden" name="postId" th:value="${forumPostVO.postId}">
+              </form>
+            </div>
+          </div>
+
+          <div th:if="${memVO != null and memVO.memNo == forumPostVO.memVO.memNo}">
+            <!-- 點擊編輯 -->
+            <form method="post" th:action="@{/forum/editPost}">
+              <button class="btn_edit_post">編輯</button>
+              <input type="hidden" name="postId" th:value="${forumPostVO.postId}">
+            </form>
+
+            <!-- 點擊刪除 -->
+            <form method="post" th:action="@{/forum/delete}">
+              <button class="btn_delete_post">刪除</button>
               <input type="hidden" name="postId" th:value="${forumPostVO.postId}">
             </form>
           </div>
 
-          <div style="margin: 10px 0 0;"></div>
-
-          <!-- 點擊編輯 -->
-          <form method="post" th:action="@{/forum/editPost}">
-            <button class="btn_edit_post">編輯</button>
-            <input type="hidden" name="postId" th:value="${forumPostVO.postId}">
-          </form>
-
-          <span> | </span>
-
-          <!-- 點擊刪除 -->
-          <form method="post" th:action="@{/forum/delete}">
-            <button class="btn_delete_post">刪除</button>
-            <input type="hidden" name="postId" th:value="${forumPostVO.postId}">
-          </form>
-
-          <!-- 點擊檢舉 -->
-          <!-- <form method="post" th:action="@{/forum/report}">
-            <button class="">檢舉</button>
-            <input type="hidden" name="postId" th:value="${forumPostVO.postId}">
-          </form> -->
-
-          <button type="button" class="btn btn-primary btn_report_post" data-bs-toggle="modal" data-bs-target="#exampleModal"
-            th:value="${forumPostVO.postId}">檢舉</button>
-
+          <span th:if="${memVO != null and memVO.memNo != forumPostVO.memVO.memNo}">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+              class="btn_report_post" th:value="${forumPostVO.postId}">檢舉</button>
+          </span>
 
         </article>
+        <br>
+        <br>
       </th:block>
       <div th:if="${forumPostListData == null or #lists.isEmpty(forumPostListData)}">
         <h1>目前尚無文章。</h1>
@@ -203,10 +206,11 @@
 
   <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
   <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.min.js}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
   <script th:inline="javascript">
     $(document).ready(function () {
-
+      
       $(".btn_setting").on("click", function (e) {
         $(this).siblings(".setting_btn_collect").toggleClass("show");
       });
@@ -225,6 +229,20 @@
           $(this).closest('form').submit();
         }
       });
+
+      var successResult = /*[[${successResult}]]*/ "";
+      console.log(successResult);
+      if ( successResult != null ) {
+        Toastify({
+          text: successResult,
+          duration: 2000,
+          close: true,
+          gravity: "top",
+          position: "center",
+          backgroundColor: "linear-gradient(to right, #6F4E37, #D2B48C)",
+          stopOnFocus: true
+        }).showToast();
+      }
 
     });
 
@@ -270,10 +288,11 @@
       });
 
     })
-var baseUrl = /*[[@{/}]]*/ '/';
-     function redirectTo(url) {
-			window.location.href = url;
-		}
+
+    var baseUrl = /*[[@{/}]]*/ '/';
+    function redirectTo(url) {
+      window.location.href = url;
+    }
   </script>
 
 </body>

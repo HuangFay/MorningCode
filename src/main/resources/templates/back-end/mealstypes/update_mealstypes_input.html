@@ -63,7 +63,7 @@ width:600px;
 
 	<div align="center">
 		<h3><b>所有欄位皆為必填欄位</b></h3>
-		<form th:action="@{/mealstypes/update}" method="post" th:object="${mealstypesVO}">
+		<form class="updatemealstypes" th:action="@{/mealstypes/update}" method="post" th:object="${mealstypesVO}">
 	
 	<table>
 		
@@ -78,7 +78,8 @@ width:600px;
 			<td><label>餐點類別名稱:</label></td>
 			<td>
 			<input type="text" th:field="*{mealsTypesName}" onclick="hideContent('mealsTypesName.errors');" /><br/>
-			<span th:if="${#fields.hasErrors('mealsTypesName')}" th:errors="*{mealsTypesName}" class="error" id="mealsTypesName.errors"></span>
+<!-- 			<span th:if="${#fields.hasErrors('mealsTypesName')}" th:errors="*{mealsTypesName}" class="error" id="mealsTypesName.errors"></span> -->
+			<span id="mealsTypesName-error" class="error"></span>
 			</td>
 		</tr>
 		
@@ -100,6 +101,24 @@ width:600px;
 function hideContent(d) {
      document.getElementById(d).style.display = "none";
 }
+
+//表單提交檢查
+function mealstypes(event) {
+    var mealsTypesName = document.getElementById('mealsTypesName').value.trim();
+    var errorSpan = document.getElementById('mealsTypesName-error');
+    let success = true;
+    
+    if (mealsTypesName === "" || mealsTypesName.length >10 ) {
+    	errorSpan.textContent = "餐點類別名稱:請勿空白，只能是中英文數字，且長度必須小於10";
+        success = false;
+    }else{
+    	errorSpan.textContent = "";
+    }
+    if(!success){
+    	event.preventDefault(); // 阻止表單提交
+    }
+}
+document.querySelector('form.updatemealstypes').addEventListener('submit', mealstypes);
 
 
 </script>

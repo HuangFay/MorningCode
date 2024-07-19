@@ -89,7 +89,7 @@ public class ResController {
 
 		/*************************** 3.查詢完成,準備轉交(Send the Success view) **************/
 		model.addAttribute("resVO", resVO);
-		return "back-end/res/update_res_input"; // 查詢完成後轉交update_emp_input.html
+		return "front-end/res/update_res_input"; // 查詢完成後轉交update_emp_input.html
 	}
 	@PostMapping("update")
 	public String update(@Valid ResVO resVO, BindingResult result, ModelMap model
@@ -107,7 +107,7 @@ public class ResController {
 		model.addAttribute("success", "- (修改成功)");
 		resVO = ResSvc.getOneRes(Integer.valueOf(resVO.getReservationId()));
 		model.addAttribute("resVO", resVO);
-		return "back-end/res/listOneRes"; // 修改成功後轉交listOneEmp.html
+		return "front-end/res/listOneRes"; // 修改成功後轉交listOneEmp.html
 	}
 	
 

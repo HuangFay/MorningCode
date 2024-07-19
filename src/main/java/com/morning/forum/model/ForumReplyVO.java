@@ -1,6 +1,8 @@
 package com.morning.forum.model;
 
-import java.sql.Date;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +22,7 @@ public class ForumReplyVO implements java.io.Serializable {
 
 	private Integer replyId;
 	private String replyContent;
-	private Date replyTime;
+	private Timestamp replyTime;
 	
 	private MemVO memVO;
 	private ForumPostVO forumPostVO;
@@ -47,10 +49,10 @@ public class ForumReplyVO implements java.io.Serializable {
 
 
 	@Column(name = "reply_time")
-	public Date getReplyTime() {
+	public Timestamp getReplyTime() {
 		return replyTime;
 	}
-	public void setReplyTime(Date replyTime) {
+	public void setReplyTime(Timestamp replyTime) {
 		this.replyTime = replyTime;
 	}
 	
@@ -76,11 +78,15 @@ public class ForumReplyVO implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "ForumReplyVO{" +
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		String newDate = sdf.format(replyTime);
+		
+		return "{" +
                 "replyId=" + replyId +
                 ", replyContent='" + replyContent + '\'' +
-                ", replyTime=" + replyTime +
-                ", memName=" + (forumPostVO.getMemVO() != null ? forumPostVO.getMemVO().getMemName() : null) +
+                //", replyTime=" + replyTime 
+                ", replyTime=" + newDate +
+                ", memName=" + memVO.getMemName() +
                 '}';
 	}
 }

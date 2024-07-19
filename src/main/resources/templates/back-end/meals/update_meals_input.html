@@ -75,7 +75,7 @@ body>div:nth-child(2)>form {
 		<h3>
 			<b>所有欄位皆為必填欄位</b>
 		</h3>
-		<form th:action="@{/meals/update}" method="post"
+		<form class="updatemeals" th:action="@{/meals/update}" method="post"
 			th:object="${mealsVO}" enctype="multipart/form-data">
 
 			<table>
@@ -103,7 +103,9 @@ body>div:nth-child(2)>form {
 					<td><input type="text" th:field="*{mealsName}"
 						onclick="hideContent('mealsName.errors');" /><br /> <span
 						th:if="${#fields.hasErrors('mealsName')}" th:errors="*{mealsName}"
-						class="error" id="mealsName.errors"></span></td>
+						class="error" id="mealsName.errors"></span>
+						<span id="mealsName-error" class="error"></span>
+	</td>
 				</tr>
 
 				<tr>
@@ -112,6 +114,7 @@ body>div:nth-child(2)>form {
 						onclick="hideContent('mealsPrice.errors');" /><br /> <span
 						th:if="${#fields.hasErrors('mealsPrice')}"
 						th:errors="*{mealsPrice}" class="error" id="mealsPrice.errors"></span>
+					<span id="mealsPrice-error" class="error"></span>
 					</td>
 				</tr>
 
@@ -121,7 +124,8 @@ body>div:nth-child(2)>form {
 						onclick="hideContent('mealsDescription.errors');" /><br /> <span
 						th:if="${#fields.hasErrors('mealsDescription')}"
 						th:errors="*{mealsDescription}" class="error"
-						id="mealsDescription.errors"></span></td>
+						id="mealsDescription.errors"></span>
+						<span id="mealsDescription-error" class="error"></span></td>
 				</tr>
 
 				<tr>
@@ -227,6 +231,39 @@ $(document).ready(function() {
         });
     });
 });
+
+  //表單提交檢查
+    function meals(event) {
+        var mealsName = document.getElementById('mealsName').value.trim();
+        var mealsPrice = document.getElementById('mealsPrice').value.trim();
+        var mealsDescription = document.getElementById('mealsDescription').value.trim();
+     
+        var errorSpan1 = document.getElementById('mealsName-error');
+        var errorSpan2 = document.getElementById('mealsPrice-error');
+        var errorSpan3 = document.getElementById('mealsDescription-error');
+        
+        let success = true;
+        
+        if (mealsName === "" || mealsName.length >20 ) {
+        	errorSpan1.textContent = "餐點名稱:請勿空白，只能是中英文數字，且字數必須小於20";
+            success = false;
+        }
+        
+        if (mealsPrice === "" ) {
+        	errorSpan2.textContent = "餐點價格不能小於0";
+            success = false;
+        }
+        
+        if (mealsDescription === "" ) {
+        	errorSpan3.textContent = "餐點敘述:請勿空白";
+            success = false;
+        }
+        
+        if(!success){
+        	event.preventDefault(); // 阻止表單提交
+        }
+    }
+    document.querySelector('form.updatemeals').addEventListener('submit', meals);
 
 </script>
 

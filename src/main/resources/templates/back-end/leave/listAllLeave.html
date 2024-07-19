@@ -17,8 +17,9 @@
 
 <style type="text/css">
 .right-pane {
-	width: 79%; /* 调整頁面的寬度 */
+	width: 77%; /* 调整頁面的寬度 */
 	margin-right: 20px;
+	text-align: center;
 }
 
 
@@ -28,9 +29,6 @@
 </style>
 </head>
 <body>
-	<div align="center">
-		<nav
-			class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center"></nav>
 
 		<div class="main-container">
 			<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
@@ -190,7 +188,6 @@
 			</div>
 		</div>
 
-	</div>
 	<script th:inline="none">
 		$(document).ready(function() {
 			var table = $('.schedule-table').DataTable({

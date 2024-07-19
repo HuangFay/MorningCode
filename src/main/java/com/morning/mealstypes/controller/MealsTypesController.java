@@ -41,10 +41,11 @@ public class MealsTypesController {
 	public String insert(@Valid MealsTypesVO mealstypesVO, BindingResult result, ModelMap model) throws IOException {
 
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-		result = removeFieldError(mealstypesVO, result, "mealsTypesId");
+		result = removeFieldError(mealstypesVO, result, "mealsTypesName");
 
 		if (result.hasErrors()) {
-			return "back-end/mealstypes/addMealsTypes";
+			model.addAttribute("mealstypesVO", mealstypesVO);
+			return "redirect:mealstypes/addMealsTypes";
 		}
 
 		/*************************** 2.開始新增資料 *****************************************/

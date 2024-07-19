@@ -44,7 +44,7 @@ public class OrddVO implements java.io.Serializable {
     }
 
     @NotNull
-    @Column(name = "ord_id", insertable = false, updatable = false)
+    @Column(name = "ord_id")
     public Integer getOrdId() {
         return ordId;
     }
@@ -54,7 +54,7 @@ public class OrddVO implements java.io.Serializable {
     }
 
     @NotNull
-    @Column(name = "meals_id", insertable = false, updatable = false)
+    @Column(name = "meals_id")
     public Integer getMealsId() {
         return mealsId;
     }
