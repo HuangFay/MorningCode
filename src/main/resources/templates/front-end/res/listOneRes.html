@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>訂位資料</title>
+
+<style type="text/css">
+    body {
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        background-color: #FFF5EE; /* 淡粉橙 */
+        color: #8B4513; /* 巧克力色 */
+        margin: 0;
+        padding: 20px;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #FFFAF0; /* 淡奶油色 */
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+    h1, h2, h3 {
+        text-align: center;
+        color: #D2691E; /* 巧克力色 */
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    label, span {
+        margin: 10px 0 5px;
+        color: #333;
+    }
+    input, select, textarea {
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    button {
+        padding: 10px;
+        background-color: #FFD700; /* 金色 */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #FFC107;
+    }
+    .navbar {
+        background-color: #FFD700; /* 金色 */
+        padding: 10px 0;
+    }
+    .navbar-brand img {
+        border-radius: 50%; /* 圓形圖片 */
+        box-shadow: 0 0 5px #000; /* 圖片陰影 */
+    }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+    <div align="center">
+        <h2>桌型資料 - listOneRes.html</h2>
+        <h3>
+            <a class="navbar-brand" th:href="@{/res/all}">
+                <img th:src="@{/images/try2.gif}" style="width: 50px; height: 50px;">回訂位紀錄<label th:text="${success}"></label>
+            </a>
+        </h3>
+    </div>
+</nav>
+
+<div class="container" th:fragment="listOneRes-div">
+    <h3>查詢結果 :</h3>
+    <span>訂位編號:</span><span th:text="${resVO.reservationId}"></span><br/>
+    <span>會員編號:</span><span th:text="${resVO.memVO.memNo}"></span><br/>
+    <span>預約時手機號碼:</span><span th:text="${resVO.reservationPhone}"></span><br/>
+    <span>用餐日期:</span><span th:text="${resVO.reservationEatdate}"></span><br/>
+    <span>訂位人數:</span><span th:text="${resVO.reservationNum}"></span><br/>
+    <span>訂位時段編號:</span><span th:text="${resVO.resTimeVO.reservationTime}"></span><br/>
+    <span>訂位時間:</span><span th:text="${resVO.reservationDate}"></span><br/>
+    <span>訂位狀態:</span><span th:text="${resVO.reservationStatus}"></span><br/>
+    <span>幾人桌:</span><span th:text="${resVO.tableTypeVO.tableType}"></span><br/>
+    <span>使用桌數:</span><span th:text="${resVO.reservationTable}"></span><br/>
+    <span>備註:</span><span th:text="${resVO.reservationNote}"></span><br/>
+</div>
+
+</body>
+</html>

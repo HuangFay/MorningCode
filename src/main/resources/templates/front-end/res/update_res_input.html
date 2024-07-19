@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>訂位修改</title>
+
+    <head th:insert="~{/back-end/resc/included-fragment}"></head>
+    <style type="text/css">
+        body {
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            background-color: #FFFAF0; /* 淡奶油色 */
+            color: #8B4513; /* 巧克力色 */
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #FFF8DC; /* 玉米色 */
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            color: #D2691E; /* 巧克力色 */
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            width: 150px;
+            margin-right: 10px;
+            text-align: right;
+            color: #8B4513;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #DEB887; /* Burlywood */
+            border-radius: 4px;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-left: 160px;
+        }
+        button {
+            padding: 10px;
+            background-color: #FFD700; /* 金色 */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #FFC107;
+        }
+        .navbar {
+            background-color: #FF8C00; /* 番茄色 */
+            padding: 10px 0;
+        }
+        .navbar-brand img {
+            border-radius: 50%; /* 圓形圖片 */
+            box-shadow: 0 0 5px #000; /* 圖片陰影 */
+        }
+        .navbar h2, .navbar h3 {
+            color: white;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+    <script>
+        function validatePhone() {
+            const phoneInput = document.getElementById("phone");
+            const errorSpan = document.getElementById("phoneError");
+            const phoneRegex = /^\d{10}$/;
+
+            if (!phoneRegex.test(phoneInput.value)) {
+                errorSpan.textContent = "電話號碼必須是10位數字";
+                return false;
+            } else {
+                errorSpan.textContent = "";
+                return true;
+            }
+        }
+
+        function validateForm() {
+            return validatePhone();
+        }
+    </script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top justify-content-center">
+    <div align="center">
+        <h2>訂位修改</h2>
+        <h3>
+            <a class="navbar-brand" th:href="@{/res/all}">
+                <img th:src="@{/images/try2.gif}" style="width: 50px; height: 50px;" alt="回查詢頁">回查詢頁
+            </a>
+        </h3>
+    </div>
+</nav>
+
+<div class="container" align="center">
+    <h3><b>所有欄位皆為必填欄位</b></h3>
+    <form th:action="@{update}" method="post" th:object="${resVO}" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <div class="form-group">
+            <label>訂位編號:</label>
+            <span th:text="${resVO.reservationId}"></span>
+            <input type="hidden" th:field="*{reservationId}" readonly />
+        </div>
+
+        <div class="form-group">
+            <label for="name">姓名:</label>
+            <span th:text="${resVO.memVO.memName}"></span>
+            <input type="hidden" th:field="*{memVO.memNo}" />
+        </div>
+
+        <div class="form-group">
+            <label for="phone">電話號碼:</label>
+            <input type="tel" th:field="*{reservationPhone}" id="phone" name="phone" required oninput="validatePhone()">
+            <span id="phoneError" class="error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="date">日期:</label>
+            <input type="date" th:field="*{reservationEatdate}" id="date" name="date" required>
+        </div>
+
+        <div class="form-group">
+            <label for="time">時段:</label>
+            <select th:field="*{resTimeVO.reservationTimeId}">
+                <option th:each="resTimeVO : ${resTimeListData}" th:value="${resTimeVO.reservationTimeId}" th:text="${resTimeVO.reservationTime}"></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="people">人數:</label>
+            <input type="number" th:field="*{reservationNum}" id="people" name="people" min="0" value="0" required>
+        </div>
+
+        <div class="form-group">
+            <label for="table">希望桌子數量:</label>
+            <input type="number" th:field="*{reservationTable}" id="table" name="table" min="0" value="0" required>
+        </div>
+
+        <div class="form-group">
+            <label for="tableType">桌型人數:</label>
+            <select th:field="*{tableTypeVO.tableId}">
+                <option th:each="tableTypeVO : ${tableTypeListData}" th:value="${tableTypeVO.tableId}" th:text="${tableTypeVO.tableType}"></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="notes">備註:</label>
+            <textarea id="notes" th:field="*{reservationNote}" name="notes" rows="4"></textarea>
+        </div>
+
+        <button type="submit" id="submit">送出修改</button>
+    </form>
+</div>
+
+</body>
+</html>
