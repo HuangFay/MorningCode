@@ -109,6 +109,8 @@ public class IndexController_inSpringBoot   {
     
     @ModelAttribute
     public void addAttributes(HttpSession session, Model model) {
+    	OrddVO latestOrdd = orddSvc.getLatestOrdd();
+        model.addAttribute("latestOrdd", latestOrdd);
         MemVO memVO = (MemVO) session.getAttribute("memVO");
         if (memVO != null) {
             model.addAttribute("memVO", memVO);

@@ -49,4 +49,8 @@ public class OrddService {
     public List<OrddVO> findByOrdId(Integer ordId) {
         return repository.findByOrdId(ordId);
     }
+  //拿來找最新的訂單分數
+    public OrddVO getLatestOrdd() {
+        return repository.findTopByOrderByOrddIdDesc();
+    }
 }

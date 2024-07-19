@@ -104,4 +104,11 @@ public class OrddController {
         model.addAttribute("orddListData", list);
         return "back-end/ordd/listAllOrdd";
     }
+    
+    @GetMapping("/latest-ordd")
+    public String getLatestOrdd(Model model) {
+        OrddVO latestOrdd = orddSvc.getLatestOrdd();
+        model.addAttribute("latestOrdd", latestOrdd);
+        return "index2";
+    }
 }
