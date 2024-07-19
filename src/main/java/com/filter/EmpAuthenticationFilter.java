@@ -67,7 +67,8 @@ public class EmpAuthenticationFilter implements Filter {
     private boolean hasPermission(HttpSession session, String requestURI) {
     	
     	 if (requestURI.contains("/back-end/leave/listAllLeaveforEmp") || requestURI.contains("/back-end/assign/listAllAssign")||
-    			 requestURI.contains("/back-end/assign/api/")||requestURI.contains("/back-end/leave/addLeave")||requestURI.contains("/back-end/leave/insert")) {
+    			 requestURI.contains("/back-end/assign/api/")||requestURI.contains("/back-end/leave/addLeave")||requestURI.contains("/back-end/leave/insert")||
+    			 requestURI.contains("/back-end/leave/delete")) {
              return true;
          }
     	
@@ -77,6 +78,7 @@ public class EmpAuthenticationFilter implements Filter {
         if (permissions != null) {
             for (FuncVO permission : permissions) {
                 // URI和權限ID判斷
+            	//員工管理
                 if (requestURI.contains("/back-end/emp") && permission.getFunctionId() == 1 ) {
                     return true;
                 }
@@ -87,11 +89,23 @@ public class EmpAuthenticationFilter implements Filter {
                 if (requestURI.contains("/back-end/assign") && permission.getFunctionId() == 1) {
                 	return true;
                 }
+                //前台客戶相關管理
                 if (requestURI.contains("/back-end/mem") && permission.getFunctionId() == 2) {
                     return true;
                 }
+                
+                //最新消息管理
+                //客服相關管理
+                //菜單相關設定
+                if (requestURI.contains("/back-end/meals") && permission.getFunctionId() == 5) {
+                    return true;
+                }
+                if (requestURI.contains("/back-end/mealstypes") && permission.getFunctionId() == 5) {
+                	return true;
+                }
 
-                if (requestURI.contains("/back-end/res") && permission.getFunctionId() == 1) {
+                //訂位相關管理
+                if (requestURI.contains("/back-end/res") && permission.getFunctionId() == 6) {
 
                     return true;
                 }

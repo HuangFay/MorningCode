@@ -10,6 +10,7 @@
 <link rel="stylesheet" th:href="@{/css/customSettings.css}" />
 <link rel='stylesheet'
 	href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'>
+	 <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
 
 </head>
 <body>
@@ -53,7 +54,7 @@
 					</div>
 
 
-					<button type="button" id="updatebutton" onclick="updateMember()">更新資料</button>
+					
 				</form>
 			</div>
 
@@ -69,6 +70,7 @@
 			</div>
 			<div>
 			<button id="password-button" onclick="redirectTo('restPassword')">修改密碼</button>
+			<button type="button" id="updatebutton" onclick="updateMember()">更新資料</button>
 			</div>
 			
 </div>
@@ -99,6 +101,20 @@
 	function redirectTo(url) {
 		window.location.href = url;
 	}
+	
+	
+	 $(document).ready(function() {
+	        // 存登入後會員資料
+	        originalData = {
+	            memName: $('#memName').val(),
+	            memEmail: $('#memEmail').val(),
+	            memAddress: $('#memAddress').val(),
+	            memPhone: $('#memPhone').val(),
+	            memUid: $('#memUid').val(),
+	            memSex: $('#memSex').val(),
+	            memDob: $('#memDob').val()
+	        };
+	    });
 
 		document.getElementById('upFiles').addEventListener('change',
 				function() {
@@ -135,8 +151,21 @@
 
 			if (!updatedMember.memName) {
 				alert("名字不可為空");
+				rollbackData(); 
 				return;
 			}
+			 // 驗證電話號碼和身分證號碼長度
+	        if (updatedMember.memPhone.length !== 10) {
+	            alert("電話號碼必須為10位數");
+	            rollbackData(); 
+	            return;
+	        }
+
+	        if (updatedMember.memUid.length !== 10) {
+	            alert("身分證字號必須為10位數");
+	            rollbackData(); 
+	            return;
+	        }
 
 			if (fileInput.files.length > 0) {
 				var file = fileInput.files[0];
@@ -163,9 +192,21 @@
 				},
 				error : function(xhr) {
 					alert("資料更新失敗: " + xhr.responseText);
+					 rollbackData(); //失敗後回朔
+					 
 				}
 			});
 		}
+		 function rollbackData() {
+		        // 放入初始資料
+		        $('#memName').val(originalData.memName);
+		        $('#memEmail').val(originalData.memEmail);
+		        $('#memAddress').val(originalData.memAddress);
+		        $('#memPhone').val(originalData.memPhone);
+		        $('#memUid').val(originalData.memUid);
+		        $('#memSex').val(originalData.memSex);
+		        $('#memDob').val(originalData.memDob);
+		    }
 
 		function togglePasswordVisibility() {
 			var passwordInput = document.getElementById('memPassword');

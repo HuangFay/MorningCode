@@ -123,7 +123,7 @@ public class IndexController_inSpringBoot   {
     	model.addAttribute("message", message);
         model.addAttribute("myList", myList);
         System.out.println("index");
-        return "index"; //view
+        return "index2"; //view
     }
     
     
