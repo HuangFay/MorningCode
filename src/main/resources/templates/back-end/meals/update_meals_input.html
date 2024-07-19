@@ -138,8 +138,8 @@ body>div:nth-child(2)>form {
 
 				<!--             可以不修改圖片  -->
 				<tr>
-					<td><label>餐點圖片:<br>(未選擇圖片維持舊圖)</label></td>
-					<td><input type="file" name="mealPic" id="pic"
+					<td><label>餐點圖片:</label></td>
+					<td><input type="file" name="picSet" id="pic"
 						multiple="multiple" />
 						<div th:each="pic, iterStar: ${mealsVO.mealspics}"
 							th:id="'pic-' + ${iterStar.index}">

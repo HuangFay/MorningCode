@@ -1,29 +1,35 @@
 package com;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
+
+import javax.persistence.ManyToOne;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.morning.meals.model.MealsRepository;
-import com.morning.meals.model.MealsService;
-import com.morning.meals.model.MealsVO;
+
+import com.morning.emp.model.EmpVO;
+
+//import hibernate.util.CompositeQuery.HibernateUtil_CompositeQuery_Emp3;
+
+
+
+
+import com.morning.emp.model.EmpRepository;
 
 
 
 //@SpringBootApplication
 public class Test_Application_CommandLineRunner implements CommandLineRunner {
     
-//	@Autowired
-//	EmpRepository repository ;
-	
 	@Autowired
-	MealsRepository repository ;
-	
-	@Autowired
-	MealsService mealsSvc;
+	EmpRepository repository ;
 	
 	@Autowired
     private SessionFactory sessionFactory;
@@ -34,21 +40,6 @@ public class Test_Application_CommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String...args) throws Exception {
-//    	Optional<MealsVO> optional = repository.findById(4);
-//		MealsVO mealsVO = optional.get();
-//		
-//		Integer mealsnumber = mealsSvc.getmealsnumber();
-//		for(int i=1; i <= mealsnumber ; i++) {
-//
-//			Double mealsavg = mealsSvc.getavgscore(i);
-//			System.out.println(mealsavg);
-//			
-//			if(mealsavg == null) {
-//				System.out.println("123");
-//				continue;
-//			}
-//			System.out.println(i);
-//			mealsSvc.updateMealsScore(mealsavg, i); // 更新 meals 實
 
     	//● 新增
 //		DeptVO deptVO = new DeptVO(); // 部門POJO
@@ -89,42 +80,42 @@ public class Test_Application_CommandLineRunner implements CommandLineRunner {
 		//System.out.println("--------------------------------");
 
     	//● 查詢-findByPrimaryKey (多方emp2.hbm.xml必須設為lazy="false")(優!)
-//    	Optional<EmpVO> optional = repository.findById(1);
-//		EmpVO empVO3 = optional.get();
-//		System.out.print(empVO3.getEmpId() + ",");
-//		System.out.print(empVO3.getEmpName() + ",");
-//		System.out.print(empVO3.getEmpAccount() + ",");
-//		System.out.print(empVO3.getEmpPassword() + ",");
-//		System.out.print(empVO3.getEmpPhone() + ",");
-//		System.out.print(empVO3.getEmpAddress() + ",");
-//		System.out.print(empVO3.getEmpEmail() + ",");
-//		System.out.print(empVO3.getEmpHiredate() + ",");
-//		System.out.print(empVO3.getEmpStatus() + ",");
+    	Optional<EmpVO> optional = repository.findById(1);
+		EmpVO empVO3 = optional.get();
+		System.out.print(empVO3.getEmpId() + ",");
+		System.out.print(empVO3.getEmpName() + ",");
+		System.out.print(empVO3.getEmpAccount() + ",");
+		System.out.print(empVO3.getEmpPassword() + ",");
+		System.out.print(empVO3.getEmpPhone() + ",");
+		System.out.print(empVO3.getEmpAddress() + ",");
+		System.out.print(empVO3.getEmpEmail() + ",");
+		System.out.print(empVO3.getEmpHiredate() + ",");
+		System.out.print(empVO3.getEmpStatus() + ",");
 //		// 注意以下三行的寫法 (優!)
 //		System.out.print(empVO3.getDeptVO().getDeptno() + ",");
 //		System.out.print(empVO3.getDeptVO().getDname() + ",");
 //		System.out.print(empVO3.getDeptVO().getLoc());
-//		System.out.println("\n---------------------");
+		System.out.println("\n---------------------");
       
     	
 		//● 查詢-getAll (多方emp2.hbm.xml必須設為lazy="false")(優!)
-//    	List<EmpVO> list = repository.findAll();
-//		for (EmpVO aEmp : list) {
-//			System.out.print(aEmp.getEmpId() + ",");
-//			System.out.print(aEmp.getEmpName() + ",");
-//			System.out.print(aEmp.getEmpAccount() + ",");
-//			System.out.print(aEmp.getEmpPassword() + ",");
-//			System.out.print(aEmp.getEmpPhone() + ",");
-//			System.out.print(aEmp.getEmpAddress() + ",");
-//			System.out.print(aEmp.getEmpEmail() + ",");
-//			System.out.print(aEmp.getEmpHiredate() + ",");
-//			System.out.print(aEmp.getEmpStatus() + ",");
+    	List<EmpVO> list = repository.findAll();
+		for (EmpVO aEmp : list) {
+			System.out.print(aEmp.getEmpId() + ",");
+			System.out.print(aEmp.getEmpName() + ",");
+			System.out.print(aEmp.getEmpAccount() + ",");
+			System.out.print(aEmp.getEmpPassword() + ",");
+			System.out.print(aEmp.getEmpPhone() + ",");
+			System.out.print(aEmp.getEmpAddress() + ",");
+			System.out.print(aEmp.getEmpEmail() + ",");
+			System.out.print(aEmp.getEmpHiredate() + ",");
+			System.out.print(aEmp.getEmpStatus() + ",");
 			// 注意以下三行的寫法 (優!)
 //			System.out.print(aEmp.getDeptVO().getDeptno() + ",");
 //			System.out.print(aEmp.getDeptVO().getDname() + ",");
 //			System.out.print(aEmp.getDeptVO().getLoc());
-//			System.out.println();
-//		}
+			System.out.println();
+		}
 
 
 		//● 複合查詢-getAll(map) 配合 req.getParameterMap()方法 回傳 java.util.Map<java.lang.String,java.lang.String[]> 之測試

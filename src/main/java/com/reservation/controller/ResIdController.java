@@ -84,59 +84,30 @@ public class ResIdController {
 		 */
 
 		List<ResCVO> resCVOList = ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
-		List<SysArgVO> sysArgVOList2 = SysArgSvc.findByColumns("2persontable");
-		List<SysArgVO> sysArgVOList4 = SysArgSvc.findByColumns("4persontable");
 		if (!resCVOList.isEmpty()) {
 			ResCVO resCVO = resCVOList.get(0); // Assuming you want the first element
-			String argumentValue = resVO.getTableTypeVO().getTableId() == 1 ?
-					sysArgVOList2.get(0).getSysArgumentValue() :
-					sysArgVOList4.get(0).getSysArgumentValue();
-
-			resCVO.setReservationControlTable(ResSvc.compareLastTwoDigits(
-					argumentValue,
-					resCVO.getReservationControlTable(),
-					resVO.getReservationTable(),
-					resVO.getResTimeVO().getReservationTimeId()
-			));
-
-
-
-		}else{
-			//創建新的控制日期選項
-			ResCVO resCaddVO = new ResCVO();
-			resCaddVO.setReservationControlDate(resVO.getReservationEatdate());
-			resCaddVO.setTableTypeVO(resVO.getTableTypeVO());
-
-			ResCSvc.addRes(resCaddVO);
-
-			resCVOList = ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
-
-
-			ResCVO resCVO = resCVOList.get(0); // Assuming you want the first element
-			String argumentValue = resVO.getTableTypeVO().getTableId() == 1 ?
-					sysArgVOList2.get(0).getSysArgumentValue() :
-					sysArgVOList4.get(0).getSysArgumentValue();
-
-			resCVO.setReservationControlTable(ResSvc.compareLastTwoDigits(
-					argumentValue,
-					resCVO.getReservationControlTable(),
-					resVO.getReservationTable(),
-					resVO.getResTimeVO().getReservationTimeId()
-			));
+			resCVO.setReservationControlTable(resVO.getReservationTable().toString());
+			// Additional logic here
 		}
+
 		//取得設定桌位數
+		List<SysArgVO> sysArgVOList = SysArgSvc.findByColumns("2persontable");
+
+//		ResCVO resCVO = (ResCVO) ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
+//		resCVO.setReservationControlTable(resVO.getReservationTable().toString());
 
 
 
+//		if (resVO.getTableTypeVO().getTableId()==resCVO.getTableTypeVO().getTableId()
+//				&& resVO.getReservationEatdate() == resCVO.getReservationControlDate())
+//		{resCVO.setReservationControlDate(resVO.getReservationEatdate());}
+		System.out.println("日期"+resVO.getReservationEatdate());
+		System.out.println("數量" +resVO.getReservationTable());
+		System.out.println("訂位字串"+sysArgVOList.get(0).getSysArgument());
 
-		//測試列印出來
-//		System.out.println("日期"+resVO.getReservationEatdate());
-//		System.out.println("數量" +resVO.getReservationTable());
-//		System.out.println("訂位字串"+sysArgVOList2.get(0).getSysArgumentValue());
-//
-//		System.out.println("resC編號"+resCVOList.get(0).getReservationControlId());
-//		System.out.println("resC日期"+resCVOList.get(0).getReservationControlDate());
-//		System.out.println("resC數量" +resCVOList.get(0).getReservationControlTable());
+		System.out.println("編號"+resCVOList.get(0).getReservationControlId());
+		System.out.println("日期"+resCVOList.get(0).getReservationControlDate());
+		System.out.println("數量" +resCVOList.get(0).getReservationControlTable());
 
 		/*************************** 2.開始新增資料 *****************************************/
 

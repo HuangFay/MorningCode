@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ca54a08c-614a-4241-aaf3-eda91e089210" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CIA10206-Webapp3.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/qodana.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/front-end/res/listMemRes.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/IndexController_inSpringBoot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/IndexController_inSpringBoot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Test_Application_CommandLineRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Test_Application_CommandLineRunner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/filter/EmpAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/filter/EmpAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/collect/controller/CollectController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/collect/model/CollectRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/collect/model/CollectService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/collect/model/CollectVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/cust/controller/CustController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/morning/cust/controller/CustController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/cust/model/CustRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/morning/cust/model/CustRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/cust/model/CustService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/morning/cust/model/CustService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/meals/controller/MealsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/morning/meals/controller/MealsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/meals/model/MealsVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/morning/meals/model/MealsVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/mealstypes/model/MealsTypesVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/morning/mealstypes/model/MealsTypesVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/ordd/controller/OrddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/morning/ordd/controller/OrddController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/ordd/model/OrddRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/morning/ordd/model/OrddRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/ordd/model/OrddService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/morning/ordd/model/OrddService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/ordd/model/OrddVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/morning/ordd/model/OrddVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/order/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/morning/order/controller/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/order/controller/UserOrderController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/order/model/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/morning/order/model/OrderRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/order/model/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/morning/order/model/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/order/model/OrderVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/morning/order/model/OrderVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/shop/controller/ShopController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/shop/model/ShopRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/shop/model/ShopService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/morning/shop/model/ShopVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/reservation/controller/ResController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/reservation/controller/ResController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/reservation/controller/ResIdController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/reservation/controller/ResIdController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/reservation/model/ResRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/reservation/model/ResRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/reservation/model/ResService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/reservation/model/ResService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/reservationcontrol/controller/ResidController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/reservationcontrol/controller/ResidController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/customSettings.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/customSettings.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/index3.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/index3.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/1/1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/1/10.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/1/11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/1/12.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/1/13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/1/14.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/1/2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/1/3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/1/4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/1/5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/1/6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/1/7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/1/8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/images/1/9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/assign/listAllAssign.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/back-end/assign/listAllAssign.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/emp/listAllEmp.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/back-end/emp/listAllEmp.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/leave/addLeave.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/back-end/leave/addLeave.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/meals/addMeals.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/back-end/meals/addMeals.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/meals/update_meals_input.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/back-end/meals/update_meals_input.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/mem/listAllMem.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/back-end/mem/listAllMem.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/order/all_orders.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/order/order_status.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/back-end/order/order_status.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/shop/addItem.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/shop/included-fragment.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/shop/line_pay.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/shop/listAllItems.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/shop/listOneItem.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/shop/order_success.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/shop/payment_failure.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/shop/select_page.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/shop/update_item_input.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/user/cart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/user/listAllOrder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/back-end/user/order_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/back-end-header-items.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/back-end-header-items.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/header-items.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/header-items.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/front-end/mem/customSettings.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/front-end/mem/customSettings.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/front-end/menu/listfavorite.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/front-end/menu/menu.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/front-end/menu/menu.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/front-end/res/addRes.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/front-end/res/addRes.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2jN6XN3fvmxxUOvuw5LcEaOW2V0" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.Application.executor": "Run",
+    "git-widget-placeholder": "Chen",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/huangchen/MorningCode/src/main/resources/templates/front-end/res",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "com.intellij.platform.ide.impl.presentationAssistant.PresentationAssistantConfigurable",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/templates/front-end/res" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="MorningCode" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="MorningCode" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="CIA10206-Webapp3" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.Application" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.Application" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ca54a08c-614a-4241-aaf3-eda91e089210" name="Changes" comment="" />
+      <created>1721215225367</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1721215225367</updated>
+      <workItem from="1721215226427" duration="1634000" />
+      <workItem from="1721216901357" duration="996000" />
+      <workItem from="1721263625833" duration="19377000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
