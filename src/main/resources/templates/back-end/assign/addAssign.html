@@ -5,39 +5,49 @@
 <title>MorningCode 員工排班</title>
 <link rel="stylesheet" href="/css/assign.css">
 <link rel="stylesheet" th:href="@{/css/index3.css}">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <style>
 .right-pane {
-	width: 79%; /* 调整頁面的寬度 */
+	width: 77%; /* 调整頁面的寬度 */
 	margin-right: 20px;
+	text-align: center;
+}
+
+select {
+	font-size: .6em;
+}
+
+.button {
+	position: absolute;
+	left: 50%;
+	margin-top: 25px;
 }
 </style>
 </head>
 <body>
-    <div align="center">
-        <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center"></nav>
-        <div class="main-container">
-            <div th:replace="fragments/back-end-header-items :: sidebar1"></div>
-            <div class="right-pane">
-                <h1>MorningCode 員工排班</h1>
+	<div class="main-container">
+		<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+		<div class="right-pane">
+			<h1>MorningCode 員工排班</h1>
 
-                <div class="month-selector">
-                    <select id="yearSelect"></select>
-                    <select id="monthSelect"></select>
-                </div>
-                <form id="assignForm" method="post">
-                    <div id="calendar"></div>
-                </form>
+			<div class="month-selector">
+				<select id="yearSelect"></select> <select id="monthSelect"></select>
+			</div>
+			<form id="assignForm" method="post">
+				<div id="calendar"></div>
+			</form>
+			<div class="button">
+				<button type="button" id="editButton" class="btn edit"
+					style="margin: 10px 10px;">編輯排班</button>
+				<button id="saveButton" class="btn save" style="margin-top: 10px;">送出排班</button>
+			</div>
+		</div>
+	</div>
 
-                <button type="button" id="editButton" class="btn edit" style="margin: 10px 10px;">編輯排班</button>
-                <button id="saveButton" class="btn save" style="margin-top: 10px;">送出排班</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
+	<script>
     document.addEventListener('DOMContentLoaded', function() {
         let employeeData;
 
@@ -161,12 +171,10 @@
                 dayCell.className = 'day';
                 dayCell.innerHTML = `
                     <div class="day-label">${i}</div>
-                    <br>
                     <select name="employees1[]" required>
                         <option value="">選擇員工</option>
                         ${employeeData.employees.map(emp => `<option value="${emp.empId}" ${emp.empId === selectedEmpId ? 'selected' : ''}>${emp.empName}</option>`).join('')}
                     </select>
-                    <br>
                     <select name="employees2[]" required>
                         <option value="">選擇員工</option>
                         ${employeeData.employees.map(emp => `<option value="${emp.empId}" ${emp.empId === selectedEmpId1 ? 'selected' : ''}>${emp.empName}</option>`).join('')}
@@ -239,7 +247,7 @@
     });
     </script>
 
-    <script>
+	<script>
     $("a.aa").on("click", function() {
         console.log(this);
         var $li = $(this).closest("li");
