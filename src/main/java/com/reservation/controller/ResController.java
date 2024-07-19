@@ -4,16 +4,17 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
@@ -36,18 +37,7 @@ public class ResController {
 	ResTimeService ResTimeSvc;
 	@Autowired
 	TableTypeService TableTypeSvc;
-
-	@GetMapping("/all")
-	public String getAllReservations(HttpSession session, Model model) {
-		MemVO memVO = (MemVO) session.getAttribute("memVO");
-		if (memVO != null) {
-			List<ResVO> resListData = ResSvc.getMemRes(memVO);
-			model.addAttribute("resListData", resListData);
-		} else {
-			// 處理未登入或未找到 memVO 的情況
-		}
-		return "front-end/res/listMemRes"; // 返回對應的 Thymeleaf 模板名稱
-	}
+	
 	
 	@PostMapping("getOne_For_Display")
 	public String getOne_For_Display(

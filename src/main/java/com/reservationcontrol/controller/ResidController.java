@@ -28,7 +28,6 @@ public class ResidController {
 	ResCService ResCSvc;
 	@Autowired
 	TableTypeService TableSvc;
-
 	
 	@GetMapping("addRes")
 	public String addRes(ModelMap model) {
