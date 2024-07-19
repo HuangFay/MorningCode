@@ -4,14 +4,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>最新消息列表</title>
 
+  <link rel="stylesheet" th:href="@{/css/index3.css}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
 
 </head>
 
 <body>
+<div class="main-container">
+<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+<div class="right-pane" align="center">
 
   <div class="container mt-4">
     <div class="card">
@@ -54,7 +58,9 @@
       </div>
     </div>
   </div>
-
+  
+</div>
+</div>
   <!-- 無樣式 -->
   <!-- <form action="edit" method="post">
     <button type="submit">新增</button>
