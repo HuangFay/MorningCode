@@ -2,6 +2,7 @@ package com.morning.forum.controller;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,9 +29,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.morning.forum.model.ForumPostVO;
+import com.morning.forum.model.ForumReplyDTO;
 import com.morning.forum.model.ForumReplyVO;
 import com.morning.forum.model.ForumReportVO;
 import com.morning.forum.model.ForumService;
+import com.morning.forum.model.PostStatus;
+import com.morning.forum.model.ReportStatus;
 import com.morning.mem.model.MemVO;
 
 @Controller
@@ -85,8 +89,9 @@ public class ForumController {
 		result = removeFieldError(forumPostVO, result, "postTime");
 
 		// 儲存現在的日期
-		Date sqlDate = new Date(System.currentTimeMillis());
-		forumPostVO.setPostTime(sqlDate);
+		//Date sqlDate = new Date(System.currentTimeMillis());
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+		forumPostVO.setPostTime(now);
 
 		System.out.println(forumPostVO);
 
@@ -175,14 +180,19 @@ public class ForumController {
 
 		forumReplyVO.setMemVO(memVO);
 		forumReplyVO.setReplyContent(replyContent);
-
-		Date sqlDate = new Date(System.currentTimeMillis());
-		forumReplyVO.setReplyTime(sqlDate);
+		
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+		forumReplyVO.setReplyTime(now);
 
 		ForumReplyVO savedForumReplyVO = forumSvc.addReply(forumReplyVO);
 
 		if (savedForumReplyVO != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(savedForumReplyVO);
+			ForumReplyDTO forumReplyDTO = new ForumReplyDTO(savedForumReplyVO);
+			forumReplyDTO.setMemName(savedForumReplyVO.getMemVO().getMemName());
+			
+			return ResponseEntity.status(HttpStatus.OK).body(forumReplyDTO);
+			// 不能直接回傳savedForumReplyVO，不然連密碼都會傳到前端..
+			// ( Spring Boot預設用 Jackson 將物件轉為json )
 		}
 
 		return ResponseEntity.status(HttpStatus.OK).body("fail");
@@ -279,11 +289,11 @@ public class ForumController {
 		Integer reportId = Integer.valueOf(reportIdStr);
 		ForumReportVO forumReportVO = forumSvc.getOneReport(reportId);
 		if ( result.equals("approve") ) {
-			forumReportVO.setReportStatus(1);  // 通過
-			forumReportVO.getForumPostVO().setPostStatus(0); // 文章需要被隱藏
+			forumReportVO.setReportStatus(ReportStatus.ACCEPT.toInt());  // 通過
+			forumReportVO.getForumPostVO().setPostStatus(PostStatus.HIDE.toInt()); // 文章需要被隱藏
 		}
 		else if ( result.equals("reject") ) {
-			forumReportVO.setReportStatus(2);  // 未通過
+			forumReportVO.setReportStatus(ReportStatus.REJECT.toInt());  // 未通過
 		}
 		
 		forumSvc.updatePostReport(forumReportVO);
@@ -305,18 +315,4 @@ public class ForumController {
 		return result;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -26,27 +26,33 @@
     main {
       position: absolute;
       top: 15rem;
-      margin: auto 12rem;
+      margin: auto 7rem;
     }
 
     .article {
       border-radius: 10px;
+      /* border: 1px solid gray; */
+      /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      padding: 24px;
     }
 
     h1 {
-      font-size: 2.5rem;
-      color: #666;
+      font-size: 2rem;
+      /* color: #666; */
       margin: 0;
     }
 
     div.post_time {
-      font-size: 1.5rem;
+      font-size: 1rem;
       margin: 4px 0;
     }
 
     p.post_content {
       margin: 0;
       font-size: 1.2rem;
+      text-align: justify;
+      /* border: 1px solid black; */
     }
 
     .fa-cog {
@@ -55,14 +61,13 @@
 
     .show {
       display: none;
-
     }
 
     form {
       display: inline;
     }
 
-    form button {
+    button {
       background: none;
       border: none;
       color: blue;
@@ -72,6 +77,16 @@
       font-size: inherit;
       font-size: 1.2rem;
     }
+
+    .read_more_wrapper {
+      text-align: right;
+    }
+
+    .read_more_wrapper button {
+      font-size: 1rem;
+      color: #10706a;
+    }
+
 
     /* 自訂 Bootstrap 樣式 */
     .btn-primary {
@@ -135,13 +150,15 @@
                 th:text="${forumPostVO.memVO.memName}"></span>
             </div>
 
-            <p class="post_content" th:text="${forumPostVO.postContent}"></p>
+            <p class="post_content" th:text="${forumPostVO.shortenedContent}"></p>
 
-            <!-- 點擊 閱讀更多 -->
-            <form method="get" th:action="@{/forum}">
-              <button class="btn_read_more">閱讀更多</button>
-              <input type="hidden" name="postId" th:value="${forumPostVO.postId}">
-            </form>
+            <div class="read_more_wrapper">
+              <!-- 點擊 閱讀更多 -->
+              <form method="get" th:action="@{/forum}">
+                <button>閱讀更多</button>
+                <input type="hidden" name="postId" th:value="${forumPostVO.postId}">
+              </form>
+            </div>
           </div>
 
           <div style="margin: 10px 0 0;"></div>
@@ -152,25 +169,18 @@
             <input type="hidden" name="postId" th:value="${forumPostVO.postId}">
           </form>
 
-          <span> | </span>
-
           <!-- 點擊刪除 -->
           <form method="post" th:action="@{/forum/delete}">
             <button class="btn_delete_post">刪除</button>
             <input type="hidden" name="postId" th:value="${forumPostVO.postId}">
           </form>
 
-          <!-- 點擊檢舉 -->
-          <!-- <form method="post" th:action="@{/forum/report}">
-            <button class="">檢舉</button>
-            <input type="hidden" name="postId" th:value="${forumPostVO.postId}">
-          </form> -->
-
-          <button type="button" class="btn btn-primary btn_report_post" data-bs-toggle="modal" data-bs-target="#exampleModal"
+          <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
             th:value="${forumPostVO.postId}">檢舉</button>
 
-
         </article>
+        <br>
+        <br>
       </th:block>
       <div th:if="${forumPostListData == null or #lists.isEmpty(forumPostListData)}">
         <h1>目前尚無文章。</h1>
