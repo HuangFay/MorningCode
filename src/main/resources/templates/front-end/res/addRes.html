@@ -66,39 +66,39 @@
         <h1>MorningCode訂位</h1>
         <p>請填寫以下表單來預訂您的位置。</p>
         <form th:action="@{insert}" method="post" th:object="${resVO}" enctype="multipart/form-data">
-
+       
              <div>
-                <label for="memName">姓名:</label>
+                <label for="memName">姓名:</label> 
                 <input type="text" id="memName" name="memName" th:value="${memName}" readonly />
                  <input type="hidden" th:field="*{memVO.memNo}">
             </div>
             <label for="phone">電話號碼:</label>
             <input type="tel" th:field="*{reservationPhone}" id="phone" name="phone"  required>
-
+            
             <label for="date">日期:</label>
             <input type="date" th:field="*{reservationEatdate}" id="date" name="date" required>
-
+            
             <label for="time">時段:</label>
             <select th:field="*{resTimeVO.reservationTimeId}">
                 <option th:each="resTimeVO,iterStat : ${resTimeListData}" th:value="${resTimeVO.reservationTimeId}" th:text="${resTimeVO.reservationTime}">
 <!--                 th:if="${10<iterStat.index &&  iterStat.index< 31}"-->
                 </option>
             </select>
-
+            
             <label for="people">人數:</label>
             <input type="number" th:field="*{reservationNum}" id="people" name="people" min="0" value="0" required>
-
+            
             <label for="people">希望桌子數量:</label>
             <input type="number" th:field="*{reservationTable}" id="table" name="table" min="0" value="0" required>
-
+            
             <label for="name">桌型人數:</label>
             <select th:field="*{tableTypeVO.tableId}">
                 <option th:each="tableTypeVO : ${tableTypeListData}" th:value="${tableTypeVO.tableId}" th:text="${tableTypeVO.tableType}" id="name"  > </option>
             </select>
-
+            
             <label for="notes">備註:</label>
             <textarea id="notes" th:field="*{reservationNote}" name="notes" rows="4"></textarea>
-
+            
             <button  class="submit" type="submit">提交訂位</button>
         </form>
     	</div>
