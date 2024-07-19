@@ -50,6 +50,14 @@
 
         <a class="morning-code" onclick="redirectTo(baseUrl + 'index2')" ><img
 						th:src="@{/images/logo.png}" class="imgsmall"></a>
+
+						
       </div>
       
-     
+  <script th:inline="javascript">
+    var baseUrl = /*[[@{/}]]*/ '/';
+    
+    function redirectTo(url) {
+      window.location.href = url;
+    }
+  </script>
