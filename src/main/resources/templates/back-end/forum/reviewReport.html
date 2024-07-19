@@ -3,10 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>檢舉審核</title>
+  
+  <link rel="stylesheet" th:href="@{/css/index3.css}">
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
 </head>
 <body>
-  <span th:text="${reportVO.reportId}"></span>
+<div class="main-container">
+<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+
+  <div class="container mt-4">
+    <div class="card report-card">
+      <div class="card-body">
+        <h5 class="card-title">檢舉報告</h5>
+        <p class="card-text"><strong>檢舉編號:</strong> <span th:text="${reportVO.reportId}">123</span></p>
+        <p class="card-text"><strong>文章標題:</strong> <span th:text="${reportVO.forumPostVO.postTitle}"></span></p>
+        <p class="card-text report-content"><strong>文章內容:</strong> <span th:text="${reportVO.forumPostVO.postContent}"></span></p>
+        <div class="report-actions">
+          <form method="post" th:action="@{review/submit}" class="d-inline">
+            <input type="hidden" name="reportId" th:value="${reportVO.reportId}">
+            <input type="hidden" name="result" value="approve">
+            <button type="submit" class="btn btn-success">檢舉成立</button>
+          </form>
+          <form method="post" th:action="@{review/submit}" class="d-inline">
+            <input type="hidden" name="reportId" th:value="${reportVO.reportId}">
+            <input type="hidden" name="result" value="reject">
+            <button type="submit" class="btn btn-danger">檢舉失敗</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- 無樣式 -->
+<!--   <span th:text="${reportVO.reportId}"></span>
   <span th:text="${reportVO.forumPostVO.postTitle}"></span>
   <span th:text="${reportVO.forumPostVO.postContent}"></span>
 
@@ -19,8 +52,25 @@
     <button type="submit">檢舉失敗</button>
     <input type="hidden" name="reportId" th:value="${reportVO.reportId}">
     <input type="hidden" name="result" value="reject">
-  </form>
+  </form> -->
 
+
+  <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+  <script>
+  
+  	// sidebar要用到的設定
+    $("a.aa").on("click", function () {
+      console.log(this);
+
+      var $li = $(this).closest("li");
+      $li.find("div.menu-item-1").slideToggle();
+      $li.siblings().find(".menu-item-1").slideUp();
+    });
+
+    function redirectTo(url) {
+      window.location.href = url;
+    }
+  </script>
   
 </body>
 </html>
