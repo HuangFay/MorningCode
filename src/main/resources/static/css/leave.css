@@ -40,6 +40,13 @@ body {
     display: block;
 }
 
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px; 
+    font-size: 32px;
+}
+
 .filter-section {
     margin-bottom: 20px;
     float: right;
