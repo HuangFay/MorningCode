@@ -15,4 +15,7 @@ public interface OrddRepository extends JpaRepository<OrddVO, Integer> {
 
     @Query("FROM OrddVO WHERE ordId = ?1 ORDER BY orddId")
     List<OrddVO> findByOrdId(int ordId);
+    
+    //拿來找最新的訂單分數
+    OrddVO findTopByOrderByOrddIdDesc();
 }
