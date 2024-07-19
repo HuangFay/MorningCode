@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>查詢歷史訂單</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+        .navbar {
+            background-color: #28a745;
+            padding: 1rem;
+            text-align: center;
+            color: #fff;
+        }
+
+        .navbar h2 {
+            margin: 0;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        .container {
+            margin: 2rem auto;
+            padding: 1rem;
+            max-width: 1000px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .order {
+            border-bottom: 1px solid #eee;
+            padding: 1rem 0;
+        }
+
+        .order:last-child {
+            border-bottom: none;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .order-header h4 {
+            margin: 0;
+        }
+
+        .order-header p {
+            margin: 0;
+            font-size: 1rem;
+            font-style: italic;
+            color: #ff69b4;
+        }
+
+        .meal-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .meal-item img {
+            max-width: 100px;
+            height: auto;
+            margin-right: 1rem;
+        }
+
+        .order-details {
+            flex: 1;
+        }
+
+        .order-details p {
+            margin: 0.2rem 0;
+            color: #666;
+        }
+
+        .order-details .note {
+            font-size: 0.8em;
+        }
+
+        .total-amount {
+            color: red;
+            font-weight: bold;
+        }
+
+        .order-status {
+            text-align: right;
+        }
+
+        .order-status p {
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .order-status .status {
+            color: #28a745;
+        }
+
+        .order-status .review {
+            color: #007bff;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 1em;
+            text-decoration: underline;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 5px;
+            max-height: 80%;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .review-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .review-form input, .review-form textarea, .review-form select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .review-form button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            text-transform: uppercase;
+            border-radius: 4px;
+        }
+
+        .review-form button:hover {
+            background-color: #218838;
+        }
+
+        .rating {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rating input[type="radio"] {
+            display: none;
+        }
+
+        .rating label {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .rating input[type="radio"]:checked ~ label,
+        .rating label:hover,
+        .rating label:hover ~ label {
+            color: #f5b301;
+        }
+
+        .preview img {
+            max-width: 100px;
+            margin-top: 10px;
+        }
+
+        .step {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            border-radius: 50%;
+            background-color: #ccc;
+        }
+
+        .step.completed {
+            background-color: #28a745;
+        }
+
+    </style>
+    <script>
+        function openModal(orderId) {
+            document.getElementById('review-form-' + orderId).style.display = 'block';
+        }
+
+        function closeModal(orderId) {
+            document.getElementById('review-form-' + orderId).style.display = 'none';
+        }
+
+        function previewFile(input, previewElementId) {
+            const file = input.files[0];
+            const previewElement = document.getElementById(previewElementId);
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewElement.src = e.target.result;
+                    previewElement.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function showAlert() {
+            alert('已送出評價囉');
+        }
+    </script>
+</head>
+<body>
+
+<div class="navbar">
+    <h2>查詢歷史訂單</h2>
+    <a class="navbar-brand" th:href="@{/ordd/select_page}">
+        <i class="fas fa-arrow-left"></i> 回查詢頁
+    </a>
+</div>
+
+<div class="container">
+    <div class="order">
+        <div class="order-header">
+            <h4>訂單編號: 24844676</h4>
+            <p>預約時間: 2024-07-24 13:00</p>
+        </div>
+        <div class="meal-item">
+            <img src="/images/1.png" alt="餐點圖片">
+            <div class="order-details">
+                <p>餐點名稱: 香雞漢堡</p>
+                <p>單價: NT$45</p>
+                <p>數量: 2</p>
+                <p class="note">備註: 請勿辣</p>
+            </div>
+        </div>
+        <div class="meal-item">
+            <img src="/images/2.png" alt="餐點圖片">
+            <div class="order-details">
+                <p>餐點名稱: 燻雞漢堡</p>
+                <p>單價: NT$40</p>
+                <p>數量: 1</p>              
+                <p class="note">備註: 加起司</p>
+            </div>
+            <p class="total-amount">總金額: NT$90</p>
+        </div>
+        <div class="order-status">
+            <p>狀態: <span class="step completed"></span> 已接單 <span class="step"></span> 製作中 <span class="step"></span> 製作完成</p>
+            <button class="review" onclick="openModal('24844676')">評價</button>
+        </div>
+    </div>
+
+    <div class="order">
+        <div class="order-header">
+            <h4>訂單編號: 24844677</h4>
+            <p>預約時間: 2024-07-24 13:30</p>
+        </div>
+        <div class="meal-item">
+            <img src="/images/3.png" alt="餐點圖片">
+            <div class="order-details">
+                <p>餐點名稱: 原味蛋餅</p>
+                <p>單價: NT$35</p>
+                <p>數量: 1</p>
+                <p class="note">備註: </p>
+            </div>
+            <p class="total-amount">總金額: NT$35</p>
+        </div>
+        <div class="order-status">
+            <p>狀態: <span class="step completed"></span> 已接單 <span class="step completed"></span> 製作中 <span class="step"></span> 製作完成</p>
+            <button class="review" onclick="openModal('24844677')">評價</button>
+        </div>
+    </div>
+    
+     <div class="order">
+        <div class="order-header">
+            <h4>訂單編號: 249658434</h4>
+            <p>預約時間: 2024-07-27 12:30</p>
+        </div>
+        <div class="meal-item">
+            <img src="/images/3.png" alt="餐點圖片">
+            <div class="order-details">
+                <p>餐點名稱: 原味蛋餅</p>
+                <p>單價: NT$35</p>
+                <p>數量: 3</p>
+                <p class="note">備註: </p>
+            </div>
+            
+        </div>
+        
+         <div class="meal-item">
+            <img src="/images/4.png" alt="餐點圖片">
+            <div class="order-details">
+                <p>餐點名稱: 冰奶茶(中)</p>
+                <p>單價: NT$25</p>
+                <p>數量: 1</p>
+                <p class="note">備註:去冰 </p>
+            </div>
+            <p class="total-amount">總金額: NT$130</p>
+        </div>
+        <div class="order-status">
+            <p>狀態: <span class="step completed"></span> 已接單 <span class="step completed"></span> 製作中 <span class="step"></span> 製作完成</p>
+            <button class="review" onclick="openModal('24844677')">評價</button>
+        </div>
+    </div>
+
+    <!-- Modal for review form -->
+    <div id="review-form-24844676" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('24844676')">&times;</span>
+            <h2>評價訂單 - 訂單編號: 24844676</h2>
+            <form class="review-form" action="#" method="post" onsubmit="showAlert(); return false;">
+                <label for="rating">評分:</label>
+                <div class="rating">
+                    <input type="radio" id="star5" name="rating" value="5" required>
+                    <label for="star5">☆</label>
+                    <input type="radio" id="star4" name="rating" value="4">
+                    <label for="star4">☆</label>
+                    <input type="radio" id="star3" name="rating" value="3">
+                    <label for="star3">☆</label>
+                    <input type="radio" id="star2" name="rating" value="2">
+                    <label for="star2">☆</label>
+                    <input type="radio" id="star1" name="rating" value="1">
+                    <label for="star1">☆</label>
+                </div>
+                <label for="comment">評論:</label>
+                <textarea id="comment" name="comment" rows="4" cols="50" required></textarea>
+                <label for="photo">上傳圖片:</label>
+                <input type="file" id="photo" name="photo" accept="image/*" onchange="previewFile(this, 'preview-photo')">
+                <div class="preview">
+                    <img id="preview-photo" src="#" alt="預覽圖片" style="display: none;">
+                </div>
+                <button type="submit">送出評價</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for review form -->
+    <div id="review-form-24844677" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('24844677')">&times;</span>
+            <h2>評價訂單 - 訂單編號: 24844677</h2>
+            <form class="review-form" action="#" method="post" onsubmit="showAlert(); return false;">
+                <label for="rating">評分:</label>
+                <div class="rating">
+                    <input type="radio" id="star5" name="rating" value="5" required>
+                    <label for="star5">☆</label>
+                    <input type="radio" id="star4" name="rating" value="4">
+                    <label for="star4">☆</label>
+                    <input type="radio" id="star3" name="rating" value="3">
+                    <label for="star3">☆</label>
+                    <input type="radio" id="star2" name="rating" value="2">
+                    <label for="star2">☆</label>
+                    <input type="radio" id="star1" name="rating" value="1">
+                    <label for="star1">☆</label>
+                </div>
+                <label for="comment">評論:</label>
+                <textarea id="comment" name="comment" rows="4" cols="50" required></textarea>
+                <label for="photo">上傳圖片:</label>
+                <input type="file" id="photo" name="photo" accept="image/*" onchange="previewFile(this, 'preview-photo')">
+                <div class="preview">
+                    <img id="preview-photo" src="#" alt="預覽圖片" style="display: none;">
+                </div>
+                <button type="submit">送出評價</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

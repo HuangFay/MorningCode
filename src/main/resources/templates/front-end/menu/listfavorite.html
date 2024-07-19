@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>favorite</title>
+<link rel="stylesheet" th:href="@{/css/index2.css}" />
+
+<style>
+
+header {
+	background-color: #333;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
+}
+
+table, th, td {
+	border: 1px solid #ddd;
+}
+
+th, td {
+	padding: 8px;
+	text-align: left;
+}
+
+img {
+	display: block;
+	margin: auto;
+	width: 100px;
+	height: 100px;
+}
+
+button {
+	background-color: #F5F5DC;
+	color:#333;
+	padding: 8px 12px;
+	border: none;
+	cursor: pointer;
+	border-radius: 4px;
+}
+
+button:hover {
+	background-color: #e0e0e0; 
+}
+img.small {
+    width: 40px; 
+    height: 40px; 
+}
+body > div{
+padding-top: 150px;
+}
+</style>
+
+
+</head>
+
+<body>
+<div class="main-container">
+		<div th:replace="fragments/header-items :: navigation"></div>
+
+	<table>
+
+		<thead>
+			<tr>
+				<th>取消收藏</th>
+				<th>商品圖片</th>
+				<th>商品名稱</th>
+				<th>商品價格</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<th:block th:each="collectVO : ${collectVO}">
+				<tr>
+
+					<td>
+						<button type="button" th:data-id="${collectVO.mealsVO.mealsId}"
+							onclick="remove(this)">取消收藏</button>
+					</td>
+
+					<td><img
+						th:src="@{/meals/DBGifReader2} + '?mealsId=' + ${collectVO.mealsVO.mealsId}"
+						width="100px" height="100px"></td>
+
+					<td th:text="${collectVO.mealsVO.mealsName}"></td>
+					<td th:text="${collectVO.mealsVO.mealsPrice}"></td>
+				</tr>
+			</th:block>
+		</tbody>
+	</table>
+	</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script>
+	function remove(button) {
+
+	    var id = $(button).data("id");
+
+	    $.ajax({
+	        type: "POST",
+	        url: "/collect/remove",
+	        data: { mealsId: id },
+	        success: function(response) {
+	            if (response.success) {
+	                $(button).closest("tr").remove(); // 移除對應的表格行
+	            } else {
+	                alert("無法移除收藏，請稍後再試。");
+	            }
+	        },
+	        error: function() {
+	            alert("發生錯誤，請稍後再試。");
+	        }
+	    });
+
+	}
+	</script>
+	<script th:inline="javascript">
+    var baseUrl = /*[[@{/}]]*/ '/';
+
+	 
+    function redirectTo(url) {
+			window.location.href = url;
+		}
+	</script>
+
+</body>
+</html>

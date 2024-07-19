@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>領餐作業</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function updateOrderStatus(orddId) {
+            var status = document.getElementById("status-select-" + orddId).value;
+            $.ajax({
+                url: '/ordd/update_meals_status',
+                type: 'POST',
+                data: {
+                    orddId: orddId,
+                    orddMealsStatus: status
+                },
+                success: function(response) {
+                    if (response === 'success') {
+                        alert('狀態更新成功!');
+                    } else {
+                        alert('狀態更新失敗: ' + response);
+                    }
+                },
+                error: function() {
+                    alert('狀態更新失敗!');
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">領餐作業</h1>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>訂單明細編號</th>
+            <th>訂單編號</th>
+            <th>餐點名稱</th>
+            <th>訂單明細餐點數量</th>
+            <th>訂單明細餐點總金額</th>
+            <th>訂單明細製作狀態</th>
+            <th>客製化</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orddVO : ${orddList}">
+            <td th:text="${orddVO.orddId}">訂單明細編號</td>
+            <td th:text="${orddVO.ordId}">訂單編號</td>
+            <td th:text="${orddVO.mealsVO.mealsName}">餐點名稱</td>
+            <td th:text="${orddVO.orddMealsQuantity}">訂單明細餐點數量</td>
+            <td th:text="${orddVO.orddMealsAmount}">訂單明細餐點總金額</td>
+            <td>
+                <select id="status-select-[[${orddVO.orddId}]]" class="form-control">
+                    <option value="0" th:selected="${orddVO.orddMealsStatus == 0}">未製作</option>
+                    <option value="1" th:selected="${orddVO.orddMealsStatus == 1}">製作中</option>
+                    <option value="2" th:selected="${orddVO.orddMealsStatus == 2}">製作完成</option>
+                    <option value="3" th:selected="${orddVO.orddMealsStatus == 3}">已取餐</option>
+                </select>
+            </td>
+            <td th:text="${#lists.size(orddVO.mealCustomizationDetailsVOList) > 0 ? orddVO.mealCustomizationDetailsVOList : '無'}">客製化</td>
+            <td>
+                <button class="btn btn-primary" th:onclick="'updateOrderStatus(' + ${orddVO.orddId} + ')'">更新狀態</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
