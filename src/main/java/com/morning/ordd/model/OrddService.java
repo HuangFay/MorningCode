@@ -59,6 +59,7 @@ public class OrddService {
   //拿來找最新的訂單分數
     public OrddVO getLatestOrdd() {
         return repository.findTopByOrderByOrddIdDesc();
+    }
 
 
     // 新增的方法，查詢訂單明細及其對應的客製化選項

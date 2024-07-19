@@ -114,6 +114,7 @@ public class OrddController {
         OrddVO latestOrdd = orddSvc.getLatestOrdd();
         model.addAttribute("latestOrdd", latestOrdd);
         return "index2";
+    }
 
     @GetMapping("/meals_status")
     public String mealsStatus(Model model) {
