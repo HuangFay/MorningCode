@@ -1,4 +1,3 @@
-
 package com.morning.order.model;
 
 import java.sql.Timestamp;
@@ -119,4 +118,3 @@ public class OrderVO implements java.io.Serializable {
         this.orderDetails = orderDetails;
     }
 }
-
