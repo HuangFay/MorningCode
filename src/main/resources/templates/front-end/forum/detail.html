@@ -1,32 +1,222 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>文章詳細資料</title>
 
+  <link rel="stylesheet" th:href="@{/css/index2.css}" />
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
   <style>
-    h3 {
-      border: 1px solid black;
+    main {
+      position: absolute;
+      top: 10rem;
+      margin: auto 7rem;
+    }
+
+    .post_time {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+
+    .btn_setting_wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .btn_setting {
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: #6c757d;
+    }
+
+    .setting_btn_collect.show {
+      display: block;
+    }
+
+    .setting_btn_collect form {
+      margin: 0;
+    }
+
+    .setting_btn_collect button {
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      background: none;
+      cursor: pointer;
+      text-align: left;
+      color: #007bff;
+    }
+
+    .setting_btn_collect button:hover {
+      background-color: #f8f9fa;
+    }
+
+    .reply_area {
+      margin-top: 2rem;
+    }
+
+    .reply_area ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .reply_area li {
+      padding: 1rem;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .reply_area div {
+      margin-top: 1rem;
+    }
+
+    .btn-primary,
+    .btn-danger {
+      margin-top: 0.5rem;
+    }
+
+    .post-title {
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .post-content {
+      margin-top: 1rem;
+      white-space: pre-wrap;
+    }
+
+    .reply-author {
+      font-weight: bold;
+    }
+
+    .reply-content {
+      margin-top: 0.5rem;
+    }
+
+    .setting-btn {
+      margin-top: 1rem;
+    }
+
+    .reply-form {
+      margin-top: 2rem;
+    }
+
+    .container {
+      max-width: 800px;
+    }
+
+    .card-body {
+      padding: 2rem;
+    }
+
+    .card {
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .list-group-item {
+      border: none;
+      padding-left: 0;
+    }
+
+    .btn {
+      border-radius: 20px;
+    }
+
+    button {
+      background: none;
+      border: none;
+      color: blue;
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 0;
+      font-size: inherit;
+      font-size: 1.2rem;
     }
   </style>
 </head>
 
 <body>
+  <div class="main-container">
+    <div th:replace="fragments/header-items :: navigation"></div>
+
+    <main>
+      <div class="container mt-4">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h3 class="post-title" th:text="${forumPostVO.postTitle}"></h3>
+            <p class="post_time">Posted on <span th:text="${#dates.format(forumPostVO.postTime, 'yyyy-MM-dd')}">
+              </span> by <span th:text="${forumPostVO.memVO.memName}"></span></p>
+            <p class="post-content" th:text="${forumPostVO.postContent}"></p>
+            <div class="btn_setting_wrapper">
+
+              <div th:if="${memVO != null and memVO.memNo == forumPostVO.memVO.memNo}">
+                <!-- 點擊編輯 -->
+                <form method="post" th:action="@{/forum/editPost}">
+                  <button class="btn_edit_post">編輯</button>
+                  <input type="hidden" name="postId" th:value="${forumPostVO.postId}">
+                </form>
+
+                <!-- 點擊刪除 -->
+                <form method="post" th:action="@{/forum/delete}">
+                  <button class="btn_delete_post">刪除</button>
+                  <input type="hidden" name="postId" th:value="${forumPostVO.postId}">
+                </form>
+              </div>
+              <span th:if="${memVO != null and memVO.memNo != forumPostVO.memVO.memNo}">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                  th:value="${forumPostVO.postId}">檢舉</button>
+              </span>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="reply_area">
+          <h5>回覆</h5>
+          <ul id="reply_area_ul" class="list-group">
+            <th:block th:each="reply : ${forumPostVO.replies}">
+              <li class="list-group-item">
+                <div>
+                  <span class="reply-author" th:text="${reply.memVO.memName}"></span>
+                  <br>
+                  <span class="text-muted" th:text="${#dates.format(reply.replyTime, 'yyyy-MM-dd HH:mm')}"></span>
+                  <p class="reply-content" th:text="${reply.replyContent}"></p>
+                </div>
+                <button type="button" class="btn btn-danger btn-sm btn_delete_post"
+                  th:data-replyId="${reply.replyId}">刪除</button>
+              </li>
+            </th:block>
+          </ul>
+          <div class="reply-form">
+            <h5>新增回覆</h5>
+            <div class="form-group">
+              <textarea id="reply_content" class="form-control" rows="3"></textarea>
+            </div>
+            <button type="button" class="btn btn-primary" id="btn_submit_reply"
+              th:data-postId="${forumPostVO.postId}">送出</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 無樣式 -->
+  <!-- 
   <h3 th:text="${forumPostVO.postTitle}"></h3>
   <span class="post_time">Posted on <span th:text="${forumPostVO.postTime}"></span> by <span th:text="${forumPostVO.memVO.memName}"></span>
   </span>
   <h3 th:text="${forumPostVO.postContent}"></h3>
 
   <div class="btn_setting_wrapper">
-    <span class="btn_setting"><i class="fa fa-cog" aria-hidden="true"></i></span>
     <div class="setting_btn_collect show">
-      <!-- 點擊編輯 -->
+      !-- 點擊編輯 --
       <form method="post" th:action="@{/forum/editPost}">
         <button type="submit" class="btn_edit_post">編輯</button>
         <input type="hidden" name="postId" th:value="${forumPostVO.postId}">
       </form>
-      <!-- 點擊刪除 -->
+      !-- 點擊刪除 --
       <form method="post" th:action="@{/forum/delete}">
         <button type="button" class="btn_delete_post">刪除</button>
         <input type="hidden" name="postId" th:value="${forumPostVO.postId}">
@@ -56,8 +246,10 @@
       	<button type="button" id="btn_submit_reply" th:data-postId="${forumPostVO.postId}">送出</button>
     </div>
   </div>
+  -->
 
   <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.min.js}"></script>
   <script th:inline="javascript">
     $(document).ready(function () {
 
@@ -82,21 +274,21 @@
           method: 'post',
           data: {
             postId: postId,
-        	  replyContent: replyContent
+            replyContent: replyContent
           },
           success: function (reply) {
-        	  console.log(reply);
-        	  if ( reply ) {
-        		  let reply_li_html = get_li_html(reply);
-                  $('#reply_area_ul').append(reply_li_html);
-                  $("#reply_content").val('');
-        	  }
-        	  else {
-        		  alert('新增失敗');
-        	  }
+            console.log(reply);
+            if (reply) {
+              let reply_li_html = get_li_html(reply);
+              $('#reply_area_ul').append(reply_li_html);
+              $("#reply_content").val('');
+            }
+            else {
+              alert('新增失敗');
+            }
           },
           error: function (error) {
-        	  alert('新增失敗');
+            alert('新增失敗');
           }
         });
       });
@@ -113,7 +305,7 @@
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         success: function (response) {
           console.log('Success:', response);
-          if ( response === 'success' ) {
+          if (response === 'success') {
             liItem.remove();
           }
         },
@@ -125,19 +317,23 @@
 
     // 新增的回覆轉成HTML
     function get_li_html(reply) {
-    	console.log(reply);
       return `
-      <li>
-        <div>
-          <span>${reply.memVO.memName}</span>
-          <br>
-          <span>${reply.replyTime}</span>
-          <br>
-          <span>${reply.replyContent}</span>
-        </div>
-        <button type="button" class="btn_delete_post" data-replyId=${reply.replyId}>刪除</button>
-      </li>
+      <li class="list-group-item">
+            <div>
+              <span class="reply-author">${reply.memName}</span>
+              <br>
+              <span class="text-muted">${reply.replyTime}</span>
+              <p class="reply-content">${reply.replyContent}</p>
+            </div>
+            <button type="button" class="btn btn-danger btn-sm" data-replyId="${reply.replyId}">刪除</button>
+          </li>
       `
+    }
+
+
+    var baseUrl = /*[[@{/}]]*/ '/';
+    function redirectTo(url) {
+      window.location.href = url;
     }
 
   </script>

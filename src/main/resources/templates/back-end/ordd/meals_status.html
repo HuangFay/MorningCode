@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>領餐作業</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        function updateOrderStatus(orddId) {
+            var status = document.getElementById("status-select-" + orddId).value;
+            $.ajax({
+                url: '/ordd/update_meals_status',
+                type: 'POST',
+                data: {
+                    orddId: orddId,
+                    orddMealsStatus: status
+                },
+                success: function(response) {
+                    if (response === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '狀態更新成功!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '狀態更新失敗',
+                            text: response
+                        });
+                    }
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '狀態更新失敗!'
+                    });
+                }
+            });
+        }
+
+        function initializeCountdown(endTime, elementId) {
+            var countdownElement = document.getElementById(elementId);
+
+            function updateCountdown() {
+                var now = new Date().getTime();
+                var distance = endTime - now;
+
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                countdownElement.innerHTML = minutes + " 分鐘 " + seconds + " 秒";
+
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.innerHTML = "已過期";
+                }
+            }
+
+            var countdownInterval = setInterval(updateCountdown, 1000);
+            updateCountdown(); // Initial call to display immediately
+        }
+
+        function showMessages() {
+            var messages = [
+                {name: "大衛海鮮", message: "動作快一點，客人在催!"},
+                {name: "Cindy", message: "你剛剛餐點少了一個卡啦雞腿堡 現在補做?客人等等會來拿"},
+                {name: "Kevin", message: "飲料忘記放吸管 你在搞什麼東西"},
+                {name: "彭于晏", message: "你今天下班後有空要一起吃飯嗎?"}
+            ];
+
+            var messageHtml = "<div class='message-board'>";
+            for (var i = 0; i < messages.length; i++) {
+                messageHtml += "<div class='message-item' id='message-" + i + "'><img src='https://img.icons8.com/ios-filled/50/000000/pencil.png' class='message-icon' /><strong>" + messages[i].name + ":</strong> " + messages[i].message + " <button class='btn btn-sm btn-success' onclick='markAsDone(" + i + ")'>完成</button></div>";
+            }
+            messageHtml += "</div>";
+
+            Swal.fire({
+                title: '留言板',
+                html: messageHtml,
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: '關閉',
+                cancelButtonText: '新增留言',
+                cancelButtonColor: '#3085d6'
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.cancel) {
+                    addMessage();
+                }
+            });
+        }
+
+        function markAsDone(messageId) {
+            document.getElementById("message-" + messageId).style.display = "none";
+        }
+
+        function addMessage() {
+            Swal.fire({
+                title: '新增留言',
+                html: `<select id="colleague" class="swal2-input">
+                            <option value="大衛海鮮">大衛海鮮</option>
+                            <option value="Cindy">Cindy</option>
+                            <option value="Kevin">Kevin</option>
+                            <option value="彭于晏">彭于晏</option>
+                        </select>
+                       <textarea id="message" class="swal2-input" placeholder="請輸入留言"></textarea>`,
+                focusConfirm: false,
+                preConfirm: () => {
+                    const colleague = Swal.getPopup().querySelector('#colleague').value;
+                    const message = Swal.getPopup().querySelector('#message').value;
+                    if (!colleague || !message) {
+                        Swal.showValidationMessage(`請輸入留言`);
+                    }
+                    return { colleague: colleague, message: message };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const newMessage = result.value;
+                    // 假設將新留言新增到留言板
+                    var messageBoard = document.querySelector('.message-board');
+                    var messageId = messageBoard.children.length;
+                    var newMessageHtml = `<div class='message-item' id='message-${messageId}'><img src='https://img.icons8.com/ios-filled/50/000000/pencil.png' class='message-icon' /><strong>${newMessage.colleague}:</strong> ${newMessage.message} <button class='btn btn-sm btn-success' onclick='markAsDone(${messageId})'>完成</button></div>`;
+                    messageBoard.innerHTML += newMessageHtml;
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: '留言已送出!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+        }
+
+        function addAnnouncement() {
+            Swal.fire({
+                title: '新增公告',
+                html: `<textarea id="announcement" class="swal2-input" placeholder="請輸入公告訊息"></textarea>`,
+                focusConfirm: false,
+                preConfirm: () => {
+                    const announcement = Swal.getPopup().querySelector('#announcement').value;
+                    if (!announcement) {
+                        Swal.showValidationMessage(`請輸入公告訊息`);
+                    }
+                    return { announcement: announcement };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const newAnnouncement = result.value.announcement;
+                    document.getElementById("announcement-text").innerText = newAnnouncement;
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: '公告已更新!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+        }
+    </script>
+    <style type="text/css">
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .error {
+            color: red;
+        }
+        .btn-sm {
+            font-size: 0.875rem;
+        }
+        .customization-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .customization-list li {
+            font-size: 0.875rem;
+            color: gray;
+        }
+        .countdown {
+            color: red;
+            font-weight: bold;
+        }
+        .message-board {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message-item {
+            display: flex;
+            align-items: center;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .message-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        .announcement-bar {
+            background: #ffcc00;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .announcement-bar span {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .announcement-bar button {
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="text-center">領餐作業</h1>
+
+    <div class="announcement-bar mb-3">
+        <span id="announcement-text">今天沒有火腿</span>
+        <button class="btn btn-warning btn-sm" onclick="addAnnouncement()">更新公告</button>
+    </div>
+
+    <div class="text-right mb-3">
+        <button class="btn btn-info" onclick="showMessages()">查看留言板</button>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>編號</th>
+            <th>餐點</th>
+            <th>數量</th>          
+            <th>製作狀態</th>
+            <th>客製化</th>
+            <th>剩餘時間</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orddVO : ${orddList}">
+            <td th:text="${orddVO.orddId}">訂單明細編號</td>
+            <td th:text="${orddVO.mealsVO.mealsName}">餐點名稱</td>
+            <td th:text="${orddVO.orddMealsQuantity}">訂單明細餐點數量</td>
+            <td>
+                <select class="form-control" 
+                        th:id="'status-select-' + ${orddVO.orddId}" 
+                        th:data-ordd-id="${orddVO.orddId}" 
+                        th:onchange="updateOrderStatus(${orddVO.orddId})">
+                    <option value="0" th:selected="${orddVO.orddMealsStatus == 0}">未製作</option>
+                    <option value="1" th:selected="${orddVO.orddMealsStatus == 1}">製作中</option>
+                    <option value="2" th:selected="${orddVO.orddMealsStatus == 2}">製作完成</option>
+                    <option value="3" th:selected="${orddVO.orddMealsStatus == 3}">已取餐</option>
+                </select>
+            </td>
+            <td>
+                <ul class="customization-list">
+                    <li th:each="customization : ${orddVO.mealCustomizationDetailsVOList}" th:text="${customization.custVO.custName}"></li>
+                </ul>
+            </td>
+            <td>
+                <span class="countdown" th:id="'countdown-' + ${orddVO.orddId}"></span>
+                <script th:inline="javascript">
+                    var ordReserveTime = /*[[${#dates.format(orddVO.orderVO.ordReserveTime, 'yyyy-MM-dd HH:mm:ss')}]]*/ '2024-07-20 15:30:00';
+                    var endTime = new Date(ordReserveTime).getTime();
+                    initializeCountdown(endTime, 'countdown-' + /*[[${orddVO.orddId}]]*/ '1');
+                </script>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-secondary" th:onclick="'updateOrderStatus(' + ${orddVO.orddId} + ')'">更新狀態</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

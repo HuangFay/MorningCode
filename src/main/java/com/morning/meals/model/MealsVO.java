@@ -2,7 +2,6 @@ package com.morning.meals.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -29,7 +28,6 @@ public class MealsVO implements java.io.Serializable {
     private List<MealsPicVO> mealspics = new ArrayList<>();
     private List<OrddVO> orderDetails = new ArrayList<>();
 
-    // 必需有一個不傳參數建構子
     public MealsVO() {
     }
 
@@ -77,7 +75,6 @@ public class MealsVO implements java.io.Serializable {
     }
 
     @Column(name = "meals_description")
-    @NotEmpty(message = "餐點描述不能空白")
     public String getMealsDescription() {
         return mealsDescription;
     }

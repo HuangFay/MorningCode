@@ -4,21 +4,20 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import com.reservation.model.ResService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
-import com.reservation.model.ResService;
 import com.reservation.model.ResVO;
 import com.restime.model.ResTimeService;
 import com.restime.model.ResTimeVO;
@@ -37,7 +36,20 @@ public class ResController {
 	ResTimeService ResTimeSvc;
 	@Autowired
 	TableTypeService TableTypeSvc;
-	
+
+	@GetMapping("/all")
+	public String getAllReservations(HttpSession session, Model model) {
+		MemVO memVO = (MemVO) session.getAttribute("memVO");
+		if (memVO != null) {
+			List<ResVO> resListData = ResSvc.getMemRes(memVO);
+			model.addAttribute("resListData", resListData);
+			System.out.println(resListData);
+		} else {
+			return "front-end/mem/signup";
+		}
+
+		return "front-end/res/listMemRes"; // 返回對應的 Thymeleaf 模板名稱
+	}
 	
 	@PostMapping("getOne_For_Display")
 	public String getOne_For_Display(
@@ -77,7 +89,7 @@ public class ResController {
 
 		/*************************** 3.查詢完成,準備轉交(Send the Success view) **************/
 		model.addAttribute("resVO", resVO);
-		return "back-end/res/update_res_input"; // 查詢完成後轉交update_emp_input.html
+		return "front-end/res/update_res_input"; // 查詢完成後轉交update_emp_input.html
 	}
 	@PostMapping("update")
 	public String update(@Valid ResVO resVO, BindingResult result, ModelMap model
@@ -95,7 +107,7 @@ public class ResController {
 		model.addAttribute("success", "- (修改成功)");
 		resVO = ResSvc.getOneRes(Integer.valueOf(resVO.getReservationId()));
 		model.addAttribute("resVO", resVO);
-		return "back-end/res/listOneRes"; // 修改成功後轉交listOneEmp.html
+		return "front-end/res/listOneRes"; // 修改成功後轉交listOneEmp.html
 	}
 	
 

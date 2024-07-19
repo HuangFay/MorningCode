@@ -2,11 +2,12 @@ package com.morning.ordd.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+import java.util.List;
 
 import com.morning.meals.model.MealsVO;
 import com.morning.order.model.OrderVO;
-
-import java.sql.Timestamp;
+import com.morning.meal.model.MealVO;
 
 @Entity
 @Table(name = "orddetails")
@@ -26,6 +27,7 @@ public class OrddVO implements java.io.Serializable {
     private Timestamp mealsTime;
     private MealsVO mealsVO; // 餐點資訊關聯
     private OrderVO orderVO; // 訂單資訊關聯
+    private List<MealVO> mealCustomizationDetailsVOList; // 客製化明細關聯
 
     public OrddVO() {
     }
@@ -42,7 +44,7 @@ public class OrddVO implements java.io.Serializable {
     }
 
     @NotNull
-    @Column(name = "ord_id", insertable = false, updatable = false)
+    @Column(name = "ord_id")
     public Integer getOrdId() {
         return ordId;
     }
@@ -52,7 +54,7 @@ public class OrddVO implements java.io.Serializable {
     }
 
     @NotNull
-    @Column(name = "meals_id", insertable = false, updatable = false)
+    @Column(name = "meals_id")
     public Integer getMealsId() {
         return mealsId;
     }
@@ -157,5 +159,14 @@ public class OrddVO implements java.io.Serializable {
 
     public void setOrderVO(OrderVO orderVO) {
         this.orderVO = orderVO;
+    }
+
+    @OneToMany(mappedBy = "orddVO", cascade = CascadeType.ALL)
+    public List<MealVO> getMealCustomizationDetailsVOList() {
+        return mealCustomizationDetailsVOList;
+    }
+
+    public void setMealCustomizationDetailsVOList(List<MealVO> mealCustomizationDetailsVOList) {
+        this.mealCustomizationDetailsVOList = mealCustomizationDetailsVOList;
     }
 }

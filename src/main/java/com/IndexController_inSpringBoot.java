@@ -109,6 +109,8 @@ public class IndexController_inSpringBoot   {
     
     @ModelAttribute
     public void addAttributes(HttpSession session, Model model) {
+    	OrddVO latestOrdd = orddSvc.getLatestOrdd();
+        model.addAttribute("latestOrdd", latestOrdd);
         MemVO memVO = (MemVO) session.getAttribute("memVO");
         if (memVO != null) {
             model.addAttribute("memVO", memVO);
@@ -123,7 +125,7 @@ public class IndexController_inSpringBoot   {
     	model.addAttribute("message", message);
         model.addAttribute("myList", myList);
         System.out.println("index");
-        return "index"; //view
+        return "index2"; //view
     }
     
     
@@ -611,6 +613,32 @@ public class IndexController_inSpringBoot   {
 	        return "back-end/user/cart";
 	    }
 	    
-	     
+	    //前台查看歷史訂單畫面
+	    @GetMapping("/front-end/order/orderHistory")
+	    public String orderHistory(HttpSession session, Model model) {
+	        MemVO memVO = (MemVO) session.getAttribute("memVO");
+	        if (memVO != null) {
+	            model.addAttribute("memVO", memVO);
+	            List<OrderVO> orderList = orderSvc.getOrdersByMemNo(memVO.getMemNo());
+	            model.addAttribute("orderHistory", orderList);
+	        }
+	        return "front-end/order/orderHistory";
+	    }
+	       
+	    //後台領餐作業畫面
+	    @GetMapping("/meals_status")
+	    public String mealsStatus(Model model) {
+	        List<OrddVO> orddList = orddSvc.getAll();
+	        model.addAttribute("orddList", orddList);
+	        return "back-end/ordd/meals_status";
+	    }
+	    
+	  //後台查看訂單
+	    @GetMapping("/all_orders")
+	    public String showAllOrdersPage(Model model) {
+	        List<OrderVO> orders = orderSvc.getAll();
+	        model.addAttribute("orders", orders);
+	        return "back-end/order/all_orders";
+	    }
 
 }

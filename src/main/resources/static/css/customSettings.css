@@ -83,5 +83,18 @@ margin:5px ;
 	cursor: pointer;
 	padding: 10px 20px;
 	 border-radius: 5px;
-	  margin-left: 250px;
+	  margin-left: 0px;
+	  margin-top: 135px;
+	       width:200px;
+}
+#updatePassword{
+	background-color: #6D67E4;
+	color: white;
+	border: none;
+	cursor: pointer;
+	padding: 10px 20px;
+	 border-radius: 5px;
+	  margin-left: 110px;
+	       width:200px;
+	
 }

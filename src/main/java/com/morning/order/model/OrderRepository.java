@@ -13,6 +13,6 @@ public interface OrderRepository extends JpaRepository<OrderVO, Integer> {
     @Query(value = "DELETE FROM `order` WHERE ord_id = ?1", nativeQuery = true)
     void deleteByOrdId(int ordId);
 
-    @Query("FROM OrderVO WHERE memVO.memNo = ?1 ORDER BY ordId")
+    @Query("FROM OrderVO o WHERE o.memVO.memNo = ?1 ORDER BY o.ordId")
     List<OrderVO> findByMemNo(Integer memNo);
 }
