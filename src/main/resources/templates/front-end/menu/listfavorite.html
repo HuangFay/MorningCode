@@ -8,7 +8,6 @@
 <link rel="stylesheet" th:href="@{/css/index2.css}" />
 
 <style>
-
 header {
 	background-color: #333;
 	color: white;
@@ -40,7 +39,7 @@ img {
 
 button {
 	background-color: #F5F5DC;
-	color:#333;
+	color: #333;
 	padding: 8px 12px;
 	border: none;
 	cursor: pointer;
@@ -48,14 +47,16 @@ button {
 }
 
 button:hover {
-	background-color: #e0e0e0; 
+	background-color: #e0e0e0;
 }
+
 img.small {
-    width: 40px; 
-    height: 40px; 
+	width: 40px;
+	height: 40px;
 }
-body > div{
-padding-top: 150px;
+
+body>div {
+	padding-top: 150px;
 }
 </style>
 
@@ -63,73 +64,69 @@ padding-top: 150px;
 </head>
 
 <body>
-<div class="main-container">
+	<div class="main-container">
 		<div th:replace="fragments/header-items :: navigation"></div>
 
-	<table>
+		<table>
 
-		<thead>
-			<tr>
-				<th>取消收藏</th>
-				<th>商品圖片</th>
-				<th>商品名稱</th>
-				<th>商品價格</th>
-			</tr>
-		</thead>
-
-		<tbody>
-			<th:block th:each="collectVO : ${collectVO}">
+			<thead>
 				<tr>
-
-					<td>
-						<button type="button" th:data-id="${collectVO.id}"
-							onclick="remove(this)">取消收藏</button>
-					</td>
-
-					<td><img
-						th:src="@{/meals/DBGifReader2} + '?mealsId=' + ${collectVO.mealsVO.mealsId}"
-						width="100px" height="100px"></td>
-
-					<td th:text="${collectVO.mealsVO.mealsName}"></td>
-					<td th:text="${collectVO.mealsVO.mealsPrice}"></td>
+					<th>取消收藏</th>
+					<th>商品圖片</th>
+					<th>商品名稱</th>
+					<th>商品價格</th>
 				</tr>
-			</th:block>
-		</tbody>
-	</table>
+			</thead>
+
+			<tbody>
+				<th:block th:each="collectVO : ${collectVO}">
+					<tr>
+
+						<td>
+							<button th:onclick="'toggleFavorite(this, ' + ${collectVO.mealsVO.mealsId} + ')'">取消收藏</button>
+						</td>
+						<td><img th:src="@{/meals/DBGifReader2} + '?mealsId=' + ${collectVO.mealsVO.mealsId}"
+							width="100px" height="100px"></td>
+						<td th:text="${collectVO.mealsVO.mealsName}"></td>
+						<td th:text="${collectVO.mealsVO.mealsPrice}"></td>
+						
+					</tr>
+				</th:block>
+			</tbody>
+		</table>
 	</div>
 
-	<script>
-	function remove(button) {
-		var id = $(button).data("mealsId");
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-		$.ajax({
-			type : "POST",
-			url : "/collect/delete",
-			data : JSON.stringify({
-				id : id
-			}),
-			contentType : "application/json",
-			success : function(response) {
-				if (response.success) {
-					$(button).closest("tr").remove(); // 移除對應的表格行
-				} else {
-					alert("無法移除收藏，請稍後再試。");
+<script>
+		function toggleFavorite(button, mealsId) {
+
+			$.ajax({
+				type : "POST",
+				url : "/collect/remove",
+				data : {
+					mealsId : mealsId
+				},
+				success : function(response) {
+					if (response.success) {
+						$(button).closest("tr").remove(); // 移除對應的表格行
+					} else {
+						alert("無法移除收藏，請稍後再試。");
+					}
+				},
+				error : function() {
+					alert("發生錯誤，請稍後再試。");
 				}
-			},
-			error : function() {
-				alert("發生錯誤，請稍後再試。");
-			}
-		});
-	}
-	</script>
-	<script th:inline="javascript">
-    var baseUrl = /*[[@{/}]]*/ '/';
+			});
+		}
+</script>
+<script th:inline="javascript">
+		var baseUrl = /*[[@{/}]]*/'/';
 
-	 
-    function redirectTo(url) {
+		function redirectTo(url) {
 			window.location.href = url;
 		}
-	</script>
+</script>
 
 </body>
 </html>
