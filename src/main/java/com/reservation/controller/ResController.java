@@ -4,17 +4,18 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import com.reservation.model.ResService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
@@ -37,6 +38,7 @@ public class ResController {
 	@Autowired
 	TableTypeService TableTypeSvc;
 
+
 	@GetMapping("/all")
 	public String getAllReservations(HttpSession session, Model model) {
 		MemVO memVO = (MemVO) session.getAttribute("memVO");
@@ -50,6 +52,7 @@ public class ResController {
 
 		return "front-end/res/listMemRes"; // 返回對應的 Thymeleaf 模板名稱
 	}
+
 	
 	@PostMapping("getOne_For_Display")
 	public String getOne_For_Display(
