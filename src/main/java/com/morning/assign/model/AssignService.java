@@ -51,6 +51,11 @@ public class AssignService {
     public List<AssignVO> getAssignByDate(Date assignDate) {
         return repository.findByAssignDate(assignDate);
     }
+    
+    public List<AssignVO> getAssignmentsByDate(Date assignDate) {
+        return repository.findByAssignDate(assignDate);
+    }
+
 }
 
 //	public List<AssignVO> getAll(Map<String, String[]> map) {

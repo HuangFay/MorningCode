@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>每月排班查看</title>
-<link rel="stylesheet" href="/css/assignforEmp.css">
+<link rel="stylesheet" th:href="@{/css/assignforEmp.css}">
 <link rel="stylesheet" th:href="@{/css/index3.css}">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -30,11 +30,13 @@
 					<select id="yearSelect"></select> <select id="monthSelect"></select>
 				</div>
 				<div id="calendar"></div>
+
 			</div>
+
 		</div>
 	</div>
 
-	<script>
+	<script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function() {
             let employeeData;
 
@@ -75,7 +77,9 @@
 
             function fetchMonthlyAssignments(year, month) {
                 console.log(`Fetching assignments for ${year}-${month}`);
+
                 fetch(`/back-end/assign/api/getMonthlyAssign?year=${year}&month=${month}`)
+
                     .then(response => response.json())
                     .then(assignments => {
                         console.log("Received assignment data:", assignments);
@@ -85,8 +89,9 @@
                         console.error('Error loading the assignments:', error);
                         initializeCalendar(employeeData, []);
                     });
-            }
+            
 
+            }
             function initializeCalendar(employeeData, assignments) {
                 console.log("Initializing calendar with employee data and assignments", employeeData, assignments);
 
@@ -94,6 +99,7 @@
                     console.error('Employee data is undefined or missing employees property');
                     return;
                 }
+
 
                 const calendar = document.getElementById('calendar');
                 calendar.innerHTML = ''; 
@@ -125,17 +131,29 @@
                     const dateStr = `${year}-${month.toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
                     const assignment = assignments.find(a => a.assignDate === dateStr);
                     const empNameText = assignment ? employeeData.employees.find(emp => emp.empId === assignment.empVO.empId).empName : '未安排';
+                    const empNameText1 = assignment && assignment.empVO1 ? employeeData.employees.find(emp => emp.empId === assignment.empVO1.empId).empName : '未安排'; // 确保 empVO1 存在
+
                     const dayCell = document.createElement('div');
                     dayCell.className = 'day';
                     const dayLabel = document.createElement('div');
                     dayLabel.className = 'day-label';
                     dayLabel.textContent = i;
+                    const shiftLabel = document.createElement('div');
+                    shiftLabel.textContent = '早班';
+                    shiftLabel.className = 'shift-label';
+
                     const empName = document.createElement('span');
                     empName.className = 'empName' + (empNameText !== '未安排' ? ' styled' : '');
                     empName.textContent = empNameText;
+                    const empName1 = document.createElement('span');
+                    empName1.className = 'empName' + (empNameText1 !== '未安排' ? ' styled' : '');
+                    empName1.textContent = empNameText1;
+
                     dayCell.appendChild(dayLabel);
                     dayCell.appendChild(document.createElement('br'));
+                    dayCell.appendChild(shiftLabel);
                     dayCell.appendChild(empName);
+                    dayCell.appendChild(empName1);
                     calendar.appendChild(dayCell);
                 }
             }

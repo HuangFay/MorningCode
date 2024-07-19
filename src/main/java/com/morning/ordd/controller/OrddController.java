@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.morning.ordd.model.OrddService;
 import com.morning.ordd.model.OrddVO;
@@ -132,5 +133,24 @@ public class OrddController {
         List<OrddVO> list = orddSvc.getAll(map);
         model.addAttribute("orddListData", list); 
         return "back-end/ordd/listAllOrdd";
+    }
+    
+    @GetMapping("/meals_status")
+    public String mealsStatus(Model model) {
+        List<OrddVO> orddList = orddSvc.getAll();
+        model.addAttribute("orddList", orddList);
+        return "back-end/ordd/meals_status";
+    }
+
+    @PostMapping("/updateStatus")
+    @ResponseBody
+    public String updateOrderStatus(@RequestParam("orddId") Integer orddId, @RequestParam("status") Integer status) {
+        OrddVO orddVO = orddSvc.getOneOrdd(orddId);
+        if (orddVO != null) {
+            orddVO.setOrddMealsStatus(status);
+            orddSvc.updateOrdd(orddVO);
+            return "success";
+        }
+        return "error";
     }
 }

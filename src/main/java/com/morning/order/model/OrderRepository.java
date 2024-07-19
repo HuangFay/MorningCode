@@ -1,5 +1,3 @@
-// https://docs.spring.io/spring-data/jpa/docs/current/reference/html/
-
 package com.morning.order.model;
 
 import java.util.List;
@@ -10,14 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface OrderRepository extends JpaRepository<OrderVO, Integer> {
 
-        @Transactional
-        @Modifying
-        @Query(value = "delete from `order` where ord_id =?1", nativeQuery = true)
-        void deleteByOrdId(int ordId);
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM `order` WHERE ord_id = ?1", nativeQuery = true)
+    void deleteByOrdId(int ordId);
 
-      //● (自訂)條件查詢
-        @Query(value = "from OrderVO where ord_id=?1 order by ord_id")
-        List<OrderVO> findByOthers(int ordId);
+    @Query("FROM OrderVO o WHERE o.memVO.memNo = ?1 ORDER BY o.ordId")
+    List<OrderVO> findByMemNo(Integer memNo);
 }
-
-

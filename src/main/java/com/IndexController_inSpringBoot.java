@@ -15,8 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.morning.cart.model.CartService;
+import com.morning.cart.model.CartVO;
 import com.morning.cust.model.CustService;
 import com.morning.cust.model.CustVO;
 import com.morning.emp.model.EmpService;
@@ -83,8 +86,10 @@ public class IndexController_inSpringBoot   {
     
     @Autowired
     MealService mealSvc;
-	
-
+    
+    @Autowired
+    CartService cartSvc;
+    
 //訂位autowired
 	@Autowired
 	ResTimeService resTimeSvc;
@@ -383,6 +388,11 @@ public class IndexController_inSpringBoot   {
    public String menu (Model model) {
 	   return "/front-end/menu/menu";
    }
+   //==listfavorite=====================================================
+   @GetMapping("/front-end/menu/listfavorite")
+   public String listfavorite (Model model) {
+	   return "/front-end/menu/listfavorite";
+   }
 
    @GetMapping("/leave/select_page")
 	public String select_page3(Model model) {
@@ -470,15 +480,6 @@ public class IndexController_inSpringBoot   {
 	        }
 	  		return "back-end/res/listAllRes";
 	  	}
-	@GetMapping("listMemRes")
-	public String listAllRes2(HttpSession session,Model model) {
-		EmpVO empVO = (EmpVO) session.getAttribute("empVO");
-		if (empVO != null) {
-			model.addAttribute("empVO", empVO);
-
-		}
-		return "front-end/res/listMemRes";
-	}
 	    //Res selectall 的listDate
 	    @ModelAttribute("resListData") // for select_page.html 第135行用
 		protected List<ResVO> referenceListData_Res(Model model) {
@@ -600,6 +601,32 @@ public class IndexController_inSpringBoot   {
 	        List<MealVO> list = mealSvc.getAll();
 	        return list;
 	    }
-   
+	    
+	    //前台購物車畫面
+	    @GetMapping("/user/cart")
+	    public String showCartPage(@RequestParam("memNo") Integer memNo, Model model) {
+	        List<CartVO> cartItems = cartSvc.getCartItemsByMem(memNo);
+	        model.addAttribute("cartItems", cartItems);
+	        model.addAttribute("memNo", memNo);
+	        return "back-end/user/cart";
+	    }
+	    
+	    @GetMapping("/front-end/order/orderHistory")
+	    public String orderHistory(HttpSession session, Model model) {
+	        MemVO memVO = (MemVO) session.getAttribute("memVO");
+	        if (memVO != null) {
+	            model.addAttribute("memVO", memVO);
+	            List<OrderVO> orderList = orderSvc.getOrdersByMemNo(memVO.getMemNo());
+	            model.addAttribute("orderHistory", orderList);
+	        }
+	        return "front-end/order/orderHistory";
+	    }
+	       
+	    @GetMapping("/meals_status")
+	    public String mealsStatus(Model model) {
+	        List<OrddVO> orddList = orddSvc.getAll();
+	        model.addAttribute("orddList", orddList);
+	        return "back-end/ordd/meals_status";
+	    }
 
 }

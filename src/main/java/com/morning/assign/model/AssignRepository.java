@@ -26,8 +26,8 @@ public interface AssignRepository extends JpaRepository<AssignVO, Integer> {
 	@Query("SELECT a FROM AssignVO a WHERE YEAR(a.assignDate) = :year AND MONTH(a.assignDate) = :month")
 	List<AssignVO> findByMonthAndYear(@Param("year") int year, @Param("month") int month);
 
-	 @Query("SELECT a FROM AssignVO a WHERE a.assignDate = :assignDate")
-	    List<AssignVO> findByAssignDate(@Param("assignDate") Date assignDate);
+	List<AssignVO> findByAssignDate(Date assignDate);
+
 
 }
 
