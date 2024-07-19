@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.reservation.model.ResService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -40,7 +41,6 @@ import com.morning.ordd.model.OrddService;
 import com.morning.ordd.model.OrddVO;
 import com.morning.order.model.OrderService;
 import com.morning.order.model.OrderVO;
-import com.reservation.model.ResService;
 import com.reservation.model.ResVO;
 import com.reservationcontrol.model.ResCService;
 import com.reservationcontrol.model.ResCVO;

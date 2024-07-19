@@ -25,6 +25,9 @@ public class ResService {
 	}
 
 
+	public List<ResVO> getMemRes(MemVO memVO) {
+		return repository.findByMemVO(memVO);
+	}
 	public List<ResVO>getAll(){
 		return repository.findAll();
 	}

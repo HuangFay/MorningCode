@@ -5,4 +5,7 @@ bin/
 .project
 .DS_Store
 src/main/resources/hibernate.cfg.xml
+
 src/main/resources/application.properties
+.idea/
+
