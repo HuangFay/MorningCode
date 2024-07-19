@@ -504,7 +504,7 @@ public class IndexController_inSpringBoot   {
 	        return "back-end/res/addRes"; // 對應的Thymeleaf模板名稱
 	    }
 	    //訂位時段顯示全部畫面
-	    @GetMapping("/restime/listAllResTime")
+	    @GetMapping("/back-end/restime/listAllResTime")
 		public String listAllResTime(Model model) {
 			return "back-end/restime/listAllResTime";
 		}
@@ -514,7 +514,7 @@ public class IndexController_inSpringBoot   {
 			return "back-end/tabletype/select_page";
 		}
 	    //桌型顯示全部畫面
-	    @GetMapping("/tabletype/listAllTableType")
+	    @GetMapping("back-end/tabletype/listAllTableType")
 		public String listAllTableType(Model model) {
 			return "back-end/tabletype/listAllTableType2";
 		}

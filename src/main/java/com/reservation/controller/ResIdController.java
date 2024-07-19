@@ -129,13 +129,13 @@ public class ResIdController {
 
 
 		//測試列印出來
-//		System.out.println("日期"+resVO.getReservationEatdate());
-//		System.out.println("數量" +resVO.getReservationTable());
-//		System.out.println("訂位字串"+sysArgVOList2.get(0).getSysArgumentValue());
-//
-//		System.out.println("resC編號"+resCVOList.get(0).getReservationControlId());
-//		System.out.println("resC日期"+resCVOList.get(0).getReservationControlDate());
-//		System.out.println("resC數量" +resCVOList.get(0).getReservationControlTable());
+		System.out.println("日期"+resVO.getReservationEatdate());
+		System.out.println("數量" +resVO.getReservationTable());
+		System.out.println("訂位字串"+sysArgVOList2.get(0).getSysArgumentValue());
+
+		System.out.println("resC編號"+resCVOList.get(0).getReservationControlId());
+		System.out.println("resC日期"+resCVOList.get(0).getReservationControlDate());
+		System.out.println("resC數量" +resCVOList.get(0).getReservationControlTable());
 
 		/*************************** 2.開始新增資料 *****************************************/
 

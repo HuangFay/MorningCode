@@ -86,7 +86,29 @@ public class ResService {
 
 		return useSit; // 如果沒有更新，返回原始字串
 	}
+	/*
+	 * 更新時先恢復ＤＢ中能用座位
+	 */
+	public String restoreset( String useSit, Integer addNumber,Integer tableTimeId) {
+		// 提取字串的後兩位
 
+
+		int lastTwoDigits2 = Integer.parseInt(useSit.substring((tableTimeId * 2) - 2, tableTimeId * 2));
+		System.out.println(tableTimeId * 2 - 2);
+
+
+		lastTwoDigits2 = lastTwoDigits2 - addNumber;
+
+		// 使用 StringBuilder 來更新 useSit 的相對應字串
+		StringBuilder updatedUseSit = new StringBuilder(useSit);
+		String newLastTwoDigits = String.format("%02d", lastTwoDigits2); // 確保兩位數格式
+
+		// 回填更新後的 lastTwoDigits2 數字到 useSit 的相對應位置
+		updatedUseSit.replace((tableTimeId * 2) - 2, tableTimeId * 2, newLastTwoDigits);
+
+		return updatedUseSit.toString();
+
+	}
 
 
 }
