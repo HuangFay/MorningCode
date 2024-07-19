@@ -275,8 +275,7 @@ public class ForumController {
 	@RequestMapping("reports")
 	public String forumReportList(ModelMap model) {
 		
-		model.addAttribute("forumPostReportListData", 
-				forumSvc.getPendingReviewReports());
+		model.addAttribute("forumPostReportListData", forumSvc.getPendingReviewReports());
 
 		return "back-end/forum/allPostReport";
 	}

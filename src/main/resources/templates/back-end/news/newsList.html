@@ -112,6 +112,20 @@
       });
 
     });
+    
+    
+  	// sidebar要用到的設定
+    $("a.aa").on("click", function () {
+      console.log(this);
+
+      var $li = $(this).closest("li");
+      $li.find("div.menu-item-1").slideToggle();
+      $li.siblings().find(".menu-item-1").slideUp();
+    });
+
+    function redirectTo(url) {
+      window.location.href = url;
+    }
   </script>
 
 </body>
