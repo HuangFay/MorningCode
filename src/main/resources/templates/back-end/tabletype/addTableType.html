@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增桌型</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;	
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 10px 0 5px;
+            color: #333;
+        }
+        input, select, textarea {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+<!-- 研究一下為何只能get請求 -->
+    <div class="container">
+        <h1>新增桌型</h1>
+        <p>請填寫以下表單來新增您的桌型。</p>
+        <!-- <form action="submit_reservation.php" method="post"> -->
+        <form th:action="@{insert}" method="post" th:object="${tableVO}" enctype="multipart/form-data">
+            <label for="name">能容納的人數</label>
+            <input type="number" th:field="*{tableType}" id="headcount" name="headcount" min="0" value="0" required>
+            
+            <label for="phone">數量</label>
+            <input type="number" th:field="*{tableTypeNumber}" id="num" name="num" min="0" value="0" required>
+            
+            
+ 
+            <button type="submit">送出</button>
+        </form>
+        <form>
+        
+        </form>
+    </div>
+</body>
+</html>

@@ -8,6 +8,10 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import com.reservation.model.ResService;
+import com.reservationcontrol.model.ResCService;
+import com.reservationcontrol.model.ResCVO;
+import com.sysargument.model.SysArgService;
+import com.sysargument.model.SysArgVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +40,10 @@ public class ResController {
 	ResTimeService ResTimeSvc;
 	@Autowired
 	TableTypeService TableTypeSvc;
+	@Autowired
+	SysArgService SysArgSvc;
+	@Autowired
+	ResCService ResCSvc;
 
 	@GetMapping("/all")
 	public String getAllReservations(HttpSession session, Model model) {
@@ -79,26 +87,64 @@ public class ResController {
 		}
 	
 	@PostMapping("getOne_For_Update")
-	public String getOne_For_Update(@RequestParam("reservationId") Integer reservationId, ModelMap model) {
+	public String getOne_For_Update(HttpSession session,@RequestParam("reservationId") Integer reservationId, ModelMap model) {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-		
-		
+
+
 		/*************************** 2.開始查詢資料 *****************************************/
 		// EmpService empSvc = new EmpService(); //autowired
 		ResVO resVO = ResSvc.getOneRes(Integer.valueOf(reservationId));
 
 		/*************************** 3.查詢完成,準備轉交(Send the Success view) **************/
 		model.addAttribute("resVO", resVO);
+		session.setAttribute("resVO", resVO);
 		return "front-end/res/update_res_input"; // 查詢完成後轉交update_emp_input.html
 	}
+
+
 	@PostMapping("update")
-	public String update(@Valid ResVO resVO, BindingResult result, ModelMap model
-//			,@RequestParam("upFiles") MultipartFile[] parts
+	public String update(HttpSession session,@Valid ResVO resVO, BindingResult result, ModelMap model
+
 			) throws IOException {
 
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-		
 		resVO.setReservationDate(LocalDateTime.now());
+		List<SysArgVO> sysArgVOList2 = SysArgSvc.findByColumns("2persontable");
+		List<SysArgVO> sysArgVOList4 = SysArgSvc.findByColumns("4persontable");
+		ResVO oldResVO = session.getAttribute("resVO") != null ? (ResVO) session.getAttribute("resVO") : new ResVO();
+
+		List<ResCVO> resCVOList = ResCSvc.findByColumns(oldResVO.getReservationEatdate(), oldResVO.getTableTypeVO());
+		ResCVO resCVO = resCVOList.get(0);
+		System.out.println("吃飯時段"+oldResVO.getResTimeVO().getReservationTimeId());
+		resCVO.setReservationControlTable(ResSvc.restoreset(
+				resCVO.getReservationControlTable(),
+				oldResVO.getReservationTable(),
+				oldResVO.getResTimeVO().getReservationTimeId()));//恢復座位數量
+		System.out.println("resC數量" +resCVO.getReservationControlTable());
+		List<ResCVO>resCVOList2 = ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
+
+		ResCVO resCVO2 = resCVOList2.get(0); // Assuming you want the first element
+		System.out.println("吃飯時段"+resVO.getResTimeVO().getReservationTimeId());
+		String argumentValue = resCVO2.getTableTypeVO().getTableId() == 1 ?
+				sysArgVOList2.get(0).getSysArgumentValue() :
+				sysArgVOList4.get(0).getSysArgumentValue();
+
+		resCVO.setReservationControlTable(ResSvc.compareLastTwoDigits(
+				argumentValue,
+				resCVO2.getReservationControlTable(),
+				resVO.getReservationTable(),
+				resVO.getResTimeVO().getReservationTimeId()
+		));
+
+		//測試列印出來
+		System.out.println("日期"+resVO.getReservationEatdate());
+		System.out.println("數量" +resVO.getReservationTable());
+
+
+		System.out.println("resC編號"+resCVOList.get(0).getReservationControlId());
+		System.out.println("resC日期"+resCVOList.get(0).getReservationControlDate());
+		System.out.println("resC數量" +resCVOList.get(0).getReservationControlTable());
+
 		/*************************** 2.開始修改資料 *****************************************/
 		// EmpService empSvc = new EmpService();
 		ResSvc.updateRes(resVO);
