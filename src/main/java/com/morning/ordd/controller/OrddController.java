@@ -3,6 +3,7 @@ package com.morning.ordd.controller;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -20,9 +21,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.morning.ordd.model.OrddService;
 import com.morning.ordd.model.OrddVO;
+import com.morning.order.model.OrderVO;
 
 @Controller
 @RequestMapping("/ordd")
@@ -105,10 +108,35 @@ public class OrddController {
         return "back-end/ordd/listAllOrdd";
     }
     
+
     @GetMapping("/latest-ordd")
     public String getLatestOrdd(Model model) {
         OrddVO latestOrdd = orddSvc.getLatestOrdd();
         model.addAttribute("latestOrdd", latestOrdd);
         return "index2";
+
+    @GetMapping("/meals_status")
+    public String mealsStatus(Model model) {
+        List<OrddVO> orddList = orddSvc.getAll();
+        model.addAttribute("orddList", orddList);
+        
+        //預定時間
+        model.addAttribute("ordReserveTimeMap", orddList.stream().collect(Collectors.toMap(
+            OrddVO::getOrddId, orddVO -> orddVO.getOrderVO().getOrdReserveTime()
+        )));
+        return "back-end/ordd/meals_status";
+    }
+
+    @PostMapping("/update_meals_status")
+    @ResponseBody
+    public String updateOrderStatus(@RequestParam("orddId") Integer orddId, @RequestParam("orddMealsStatus") Integer status) {
+        OrddVO orddVO = orddSvc.getOneOrdd(orddId);
+        if (orddVO != null) {
+            orddVO.setOrddMealsStatus(status);
+            orddSvc.updateOrdd(orddVO);
+            return "success";
+        }
+        return "error";
+
     }
 }

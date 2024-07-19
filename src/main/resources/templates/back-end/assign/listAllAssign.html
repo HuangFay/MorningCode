@@ -11,28 +11,115 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <style>
 .right-pane {
-	width: 79%; /* 调整頁面的寬度 */
+	width: 77%;
 	margin-right: 20px;
 }
+
+.table-container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+
+}
+
+.scrollable-table {
+	overflow-x: auto;
+	width: 100%;
+}
+
+.table {
+	border-collapse: collapse;
+	width: 3200px;
+}
+
+.table th, .table td {
+	border: 1px solid #ccc;
+	padding: 6px;
+	text-align: center;
+	width: 100px;
+	height: 45px;
+	font-weight: 600;
+}
+
+.table th {
+	background-color: #f2f2f2;
+	font-weight: bold;
+	height: 20px;
+}
+
+.table th:nth-child(1), .table td:nth-child(1) {
+	width: 100px; /* 第一列（員工姓名）寬度 */
+}
+
+#calendar {
+	display: block;
+	grid-template-columns: repeat(8, 2fr);
+	gap: 15px;
+	margin-top: 20px;
+}
+
+.shift-cell {
+	background-color: #ffa190;
+	color: white;
+	font-weight: bold; display : inline-block;
+	padding: 4px 8px;
+	display: inline-block; padding : 4px 8px;
+	border-radius: 50px;
+}
+
+#headerRow {
+	color: #00000070;
+	font-size: 0.9rem;
+}
+
+#calendarBody {
+	background-color: #ffffff;
+}
+/* 卷軸樣式 */
+.scrollable-table::-webkit-scrollbar {
+    width: 15px;
+    height: 10px;
+    background-color: transparent;
+   
+}
+
+.scrollable-table::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+.scrollable-table::-webkit-scrollbar-thumb {
+    background: #c0c0c0; 
+    border-radius: 10px; /* 圓角 */
+}
+
+.scrollable-table::-webkit-scrollbar-thumb:hover {
+    background: #55555599; 
+}
+
 </style>
 </head>
 <body>
-	<div align="center">
-		<nav
-			class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center"></nav>
-		
-		<div class="main-container">
-			<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
-			<div class="right-pane">
-				<h1>MorningCode 查看排班</h1>
 
-				<div class="month-selector">
-					<select id="yearSelect"></select> <select id="monthSelect"></select>
-				</div>
-				<div id="calendar"></div>
-
+	<div class="main-container">
+		<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+		<div class="right-pane">
+			<h1>MorningCode 查看排班</h1>
+			<div class="month-selector">
+				<select id="yearSelect"></select> <select id="monthSelect"></select>
 			</div>
-
+			<div class="table-container">
+				<div class="scrollable-table">
+					<table id="calendar" class="table">
+						<thead>
+							<tr id="headerRow">
+								<th style="width: 150px;">員工姓名</th>
+								<!-- 固定員工姓名列寬度 -->
+							</tr>
+						</thead>
+						<tbody id="calendarBody"></tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -79,7 +166,6 @@
                 console.log(`Fetching assignments for ${year}-${month}`);
 
                 fetch(`/back-end/assign/api/getMonthlyAssign?year=${year}&month=${month}`)
-
                     .then(response => response.json())
                     .then(assignments => {
                         console.log("Received assignment data:", assignments);
@@ -89,9 +175,8 @@
                         console.error('Error loading the assignments:', error);
                         initializeCalendar(employeeData, []);
                     });
-            
-
             }
+
             function initializeCalendar(employeeData, assignments) {
                 console.log("Initializing calendar with employee data and assignments", employeeData, assignments);
 
@@ -100,9 +185,9 @@
                     return;
                 }
 
-
-                const calendar = document.getElementById('calendar');
-                calendar.innerHTML = ''; 
+                const calendarHeader = document.getElementById('headerRow');
+                const calendarBody = document.getElementById('calendarBody');
+                calendarBody.innerHTML = ''; 
 
                 const yearSelect = document.getElementById('yearSelect');
                 const monthSelect = document.getElementById('monthSelect');
@@ -111,53 +196,48 @@
                 const month = parseInt(monthSelect.value);
 
                 const daysInMonth = new Date(year, month, 0).getDate();
-                const firstDay = new Date(year, month - 1, 1).getDay();
-                const dayNames = ['日', '一', '二', '三', '四', '五', '六'];
+                const dayNames = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
+                const weekDays = ['日', '一', '二', '三', '四', '五', '六'];
+
+                // 清空現有的表頭欄位，然後新增員工姓名和日期欄位
+                while (calendarHeader.firstChild) {
+                    calendarHeader.removeChild(calendarHeader.firstChild);
+                }
+                const empHeaderCell = document.createElement('th');
+                empHeaderCell.textContent = '員工姓名';
+                calendarHeader.appendChild(empHeaderCell);
 
                 dayNames.forEach(day => {
-                    const dayHeader = document.createElement('div');
-                    dayHeader.className = 'day day-header';
-                    dayHeader.textContent = day;
-                    calendar.appendChild(dayHeader);
+                    const date = new Date(year, month - 1, day);
+                    const dayHeaderCell = document.createElement('th');
+                    dayHeaderCell.textContent = `${day} (${weekDays[date.getDay()]})`;
+                    calendarHeader.appendChild(dayHeaderCell);
                 });
 
-                for (let i = 0; i < firstDay; i++) {
-                    const emptyDay = document.createElement('div');
-                    emptyDay.className = 'day empty';
-                    calendar.appendChild(emptyDay);
-                }
+                employeeData.employees.forEach(employee => {
+                    const empRow = document.createElement('tr');
 
-                for (let i = 1; i <= daysInMonth; i++) {
-                    const dateStr = `${year}-${month.toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
-                    const assignment = assignments.find(a => a.assignDate === dateStr);
-                    const empNameText = assignment ? employeeData.employees.find(emp => emp.empId === assignment.empVO.empId).empName : '未安排';
-                    const empNameText1 = assignment && assignment.empVO1 ? employeeData.employees.find(emp => emp.empId === assignment.empVO1.empId).empName : '未安排'; // 确保 empVO1 存在
+                    const empNameCell = document.createElement('td');
+                    empNameCell.textContent = employee.empName;
+                    empRow.appendChild(empNameCell);
 
-                    const dayCell = document.createElement('div');
-                    dayCell.className = 'day';
-                    const dayLabel = document.createElement('div');
-                    dayLabel.className = 'day-label';
-                    dayLabel.textContent = i;
-                    const shiftLabel = document.createElement('div');
-                    shiftLabel.textContent = '早班';
-                    shiftLabel.className = 'shift-label';
+                    dayNames.forEach(day => {
+                        const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                        const assignment = assignments.find(a => a.assignDate === dateStr && (a.empVO.empId === employee.empId || (a.empVO1 && a.empVO1.empId === employee.empId)));
+                        const shiftCell = document.createElement('td');
+                        if (assignment) {
+                            const shiftSpan = document.createElement('span');
+                            shiftSpan.textContent = '早';
+                            shiftSpan.classList.add('shift-cell');
+                            shiftCell.appendChild(shiftSpan);
+                        }
+                        empRow.appendChild(shiftCell);
+                    });
 
-                    const empName = document.createElement('span');
-                    empName.className = 'empName' + (empNameText !== '未安排' ? ' styled' : '');
-                    empName.textContent = empNameText;
-                    const empName1 = document.createElement('span');
-                    empName1.className = 'empName' + (empNameText1 !== '未安排' ? ' styled' : '');
-                    empName1.textContent = empNameText1;
-
-                    dayCell.appendChild(dayLabel);
-                    dayCell.appendChild(document.createElement('br'));
-                    dayCell.appendChild(shiftLabel);
-                    dayCell.appendChild(empName);
-                    dayCell.appendChild(empName1);
-                    calendar.appendChild(dayCell);
-                }
+                    calendarBody.appendChild(empRow);
+                });
             }
-
 
             function updateCalendar() {
                 const yearSelect = document.getElementById('yearSelect');
@@ -168,7 +248,7 @@
             }
         });
     </script>
-    <script>
+	<script>
     $("a.aa").on("click", function() {
 		console.log(this);
 		var $li = $(this).closest("li");

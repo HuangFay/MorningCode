@@ -1,6 +1,7 @@
 package com.morning.forum.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
@@ -30,7 +32,7 @@ public class ForumPostVO implements java.io.Serializable {
 	
 	private String postTitle;
 	private String postContent;
-	private Date postTime;
+	private Timestamp postTime;
 	private Integer postStatus;
 	
 	private Set<ForumReplyVO> replies;
@@ -90,11 +92,11 @@ public class ForumPostVO implements java.io.Serializable {
     }
 	
 	@Column(name = "post_time")
-	public Date getPostTime() {
+	public Timestamp getPostTime() {
 		return postTime;
 	}
 	
-	public void setPostTime(Date postTime) {
+	public void setPostTime(Timestamp postTime) {
 		this.postTime = postTime;
 	}
 	
@@ -108,6 +110,7 @@ public class ForumPostVO implements java.io.Serializable {
 	}
 
 	@OneToMany(mappedBy = "forumPostVO", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OrderBy("replyTime ASC")
 	public Set<ForumReplyVO> getReplies() {
 		return replies;
 	}

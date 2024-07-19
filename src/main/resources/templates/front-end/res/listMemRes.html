@@ -133,7 +133,7 @@
         <thead>
         <tr>
             <th>訂位編號</th>
-            <th>會員名稱</th>
+
             <th>預約手機號碼</th>
             <th>用餐日期</th>
             <th>訂位人數</th>
@@ -150,7 +150,7 @@
         <th:block th:each="resVO : ${resListData}">
             <tr>
                 <td th:text="${resVO.reservationId}"></td>
-                <td th:text="${resVO.memVO.memName}"></td>
+
                 <td th:text="${resVO.reservationPhone}"></td>
                 <td th:text="${resVO.reservationEatdate}"></td>
                 <td th:text="${resVO.reservationNum}"></td>
