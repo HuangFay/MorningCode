@@ -621,8 +621,12 @@ public class IndexController_inSpringBoot   {
 	        }
 	        return "front-end/order/orderHistory";
 	    }
-
-
-	     
+	       
+	    @GetMapping("/meals_status")
+	    public String mealsStatus(Model model) {
+	        List<OrddVO> orddList = orddSvc.getAll();
+	        model.addAttribute("orddList", orddList);
+	        return "back-end/ordd/meals_status";
+	    }
 
 }
