@@ -19,6 +19,5 @@ import java.util.List;
 
 		//搜需欄位找出相對應的ResCVO
 		List<ResCVO> findByreservationControlDateAndTableTypeVO(Date reservationControlDate, TableTypeVO tableTypeVO);
-
 }
 	

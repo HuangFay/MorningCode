@@ -60,12 +60,12 @@ public class ResService {
 	}
 
 	//字串比較 如果使用座位增加後 沒有超過設定值 則更新字串
-	public  String compareLastTwoDigits(String totalSit, String useSit, Integer addNumber,Integer tableTimeId) {
+	public static String compareLastTwoDigits(String totalSit, String useSit, Integer addNumber) {
 		// 提取字串的後兩位
-
-		int lastTwoDigits1 = Integer.parseInt(totalSit.substring((tableTimeId * 2) - 2, tableTimeId * 2));
-		int lastTwoDigits2 = Integer.parseInt(useSit.substring((tableTimeId * 2) - 2, tableTimeId * 2));
-		System.out.println(tableTimeId * 2 - 2);
+		int N1 = 2; // 使用的時段區間
+		int lastTwoDigits1 = Integer.parseInt(totalSit.substring((N1 * 2) - 2, N1 * 2));
+		int lastTwoDigits2 = Integer.parseInt(useSit.substring((N1 * 2) - 2, N1 * 2));
+		System.out.println(N1 * 2 - 2);
 
 		if (Integer.compare(lastTwoDigits1, lastTwoDigits2 + addNumber) >= 0) {
 			lastTwoDigits2 = lastTwoDigits2 + addNumber;
@@ -75,7 +75,7 @@ public class ResService {
 			String newLastTwoDigits = String.format("%02d", lastTwoDigits2); // 確保兩位數格式
 
 			// 回填更新後的 lastTwoDigits2 數字到 useSit 的相對應位置
-			updatedUseSit.replace((tableTimeId * 2) - 2, tableTimeId * 2, newLastTwoDigits);
+			updatedUseSit.replace((N1 * 2) - 2, N1 * 2, newLastTwoDigits);
 
 			return updatedUseSit.toString();
 		}
