@@ -51,12 +51,21 @@ public class ForumController {
 		this.validator = validator;
 	}
 	
+	@ModelAttribute("memVO")
+	protected MemVO getMemVO(Model model, HttpSession session) {
+		MemVO memVO = (MemVO) session.getAttribute("memVO");
+
+		return memVO;
+	}
+	
 	/* ========== 文章操作相關 ========== */
 	// 前台 文章列表, 文章內容   /forum?postId=2
 	@GetMapping("")
 	public String listAllPost(
 			@RequestParam(value = "postId", required = false)
-			String postIdStr, ModelMap model) {
+			String postIdStr, HttpSession session,
+			ModelMap model) {
+		
 		if (postIdStr != null) {
 			Integer postId = Integer.valueOf(postIdStr);
 			ForumPostVO forumPostVO = forumSvc.getOnePost(postId);
@@ -84,7 +93,8 @@ public class ForumController {
 	// 前台 新增文章
 	@PostMapping("insert")
 	public String insert(@Valid ForumPostVO forumPostVO, BindingResult result, ModelMap model,
-			RedirectAttributes redirectAttributes) throws IOException {
+			RedirectAttributes redirectAttributes,
+			HttpSession session) throws IOException {
 
 		result = removeFieldError(forumPostVO, result, "postTime");
 
@@ -93,21 +103,25 @@ public class ForumController {
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 		forumPostVO.setPostTime(now);
 
-		System.out.println(forumPostVO);
-
 		// 如果有錯誤，回到上一頁
 		if (result.hasErrors()) {
 			return "front-end/forum/addPost";
 		}
+		
+		MemVO memVO = (MemVO) session.getAttribute("memVO");
+		if (memVO != null) {
+			forumPostVO.setMemVO(memVO);
+			forumPostVO.setPostStatus(PostStatus.SHOW.toInt());
+			forumSvc.addPost(forumPostVO);
 
-		forumSvc.addPost(forumPostVO);
-
-		List<ForumPostVO> list = forumSvc.getAll();
-		model.addAttribute("forumPostListData", list);
-
-		redirectAttributes.addFlashAttribute("success", "- (新增成功)");
-
-		// 新增成功後重導至文章列表
+			List<ForumPostVO> list = forumSvc.getAll();
+			model.addAttribute("forumPostListData", list);
+			redirectAttributes.addFlashAttribute("successResult", "新增成功");
+		} else {
+			redirectAttributes.addFlashAttribute("successResult", "新增失敗");
+		}
+		
+		// 操作後重導至文章列表
 		return "redirect:/forum/";
 	}
 	
@@ -140,7 +154,7 @@ public class ForumController {
 
 		model.addAttribute("forumPostVO", forumPostVO);
 
-		redirectAttributes.addFlashAttribute("success", "- (修改成功)");
+		redirectAttributes.addFlashAttribute("successResult", "修改成功");
 		return "redirect:/forum?postId=" + forumPostVO.getPostId();
 	}
 
@@ -152,7 +166,7 @@ public class ForumController {
 		forumSvc.deletePost(Integer.valueOf(postId));
 
 		model.addAttribute("forumPostListData", forumSvc.getAll());
-		redirectAttributes.addFlashAttribute("success", "- (刪除成功)");
+		redirectAttributes.addFlashAttribute("successResult", "刪除成功");
 
 		return "redirect:/forum/"; // 導回文章列表
 	}

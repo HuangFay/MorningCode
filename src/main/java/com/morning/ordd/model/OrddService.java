@@ -56,6 +56,12 @@ public class OrddService {
         return repository.findByOrdId(ordId);
     }
 
+  //拿來找最新的訂單分數
+    public OrddVO getLatestOrdd() {
+        return repository.findTopByOrderByOrddIdDesc();
+    }
+
+
     // 新增的方法，查詢訂單明細及其對應的客製化選項
     public List<OrddVO> getOrderDetailsWithCustomizations(int orderId) {
         List<OrddVO> orderDetails = findByOrdId(orderId);
@@ -64,5 +70,6 @@ public class OrddService {
             detail.setMealCustomizationDetailsVOList(customizations);
         }
         return orderDetails;
+
     }
 }

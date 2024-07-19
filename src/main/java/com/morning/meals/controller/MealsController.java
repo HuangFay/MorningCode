@@ -127,10 +127,10 @@ public class MealsController {
 			mealsVO.setMealspics(picSet);
 		}
 		
-		if (result.hasErrors()) {
-		
-			return "back-end/meals/update_meals_input";
-		}
+//		if (result.hasErrors()) {
+//		
+//			return "back-end/meals/update_meals_input";
+//		}
 
 		/*************************** 2.開始修改資料 *****************************************/
 		mealsSvc.updateMeals(mealsVO);

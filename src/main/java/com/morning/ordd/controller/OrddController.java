@@ -108,6 +108,14 @@ public class OrddController {
         return "back-end/ordd/listAllOrdd";
     }
     
+
+    @GetMapping("/latest-ordd")
+    public String getLatestOrdd(Model model) {
+        OrddVO latestOrdd = orddSvc.getLatestOrdd();
+        model.addAttribute("latestOrdd", latestOrdd);
+        return "index2";
+    }
+
     @GetMapping("/meals_status")
     public String mealsStatus(Model model) {
         List<OrddVO> orddList = orddSvc.getAll();
@@ -130,5 +138,6 @@ public class OrddController {
             return "success";
         }
         return "error";
+
     }
 }

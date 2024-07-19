@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>編輯文章</title>
+
+  <link rel="stylesheet" th:href="@{/css/index2.css}" />
 
   <style>
     * {
       box-sizing: border-box;
     }
 
-    html {
+    /* html {
       font-size: 62.5%;
-    }
+    } */
 
-    body {
+   /*  body {
       margin: 10rem;
-    }
-    
-    /* ---------------------- */
+    } */
 
-    h1 {
-      font-size: 3rem;
+    /* ---------------------- */
+    
+    main {
+      position: absolute;
+      top: 10rem;
+      margin: auto 7rem;
     }
 
     /* remove all button style */
@@ -40,14 +45,14 @@
     input[type="text"] {
       all: unset;
     }
-    
+
     textarea {
       all: unset;
     }
 
     /* ---------------------- */
 
-	/*
+    /*
     #add_post_area {
        border: 1px solid black;
     }
@@ -56,7 +61,7 @@
     #input_title {
       /* border: 1px solid black; */
       border: 0.5px solid gray;
-      
+
       width: 100%;
       margin: 0 0 0.4rem 0;
 
@@ -87,24 +92,27 @@
       font-size: 2rem;
       text-align: center;
     }
+
     #btn_submit:active {
       background-color: rgb(186, 154, 182);
     }
-
+    
   </style>
 </head>
 
 <body>
+<div class="main-container">
+<div th:replace="fragments/header-items :: navigation"></div>
+<main>
   <h1>編輯文章</h1>
 
   <form th:action="@{update}" method="post" th:object="${forumPostVO}" enctype="multipart/form-data">
 
     <div id="add_post_area">
-      <!-- 把postId隱藏起來的做法 -->
-      <input type="hidden" th:field="*{postId}" readonly /><br/>
-      <input type="hidden" th:field="*{memVO.memNo}" readonly /><br/>
-      <input type="hidden" th:field="*{postTime}" readonly /><br/>
-      <input type="hidden" th:field="*{postStatus}" readonly /><br/>
+      <input type="hidden" th:field="*{postId}" readonly /><br />
+      <input type="hidden" th:field="*{memVO.memNo}" readonly /><br />
+      <input type="hidden" th:field="*{postTime}" readonly /><br />
+      <input type="hidden" th:field="*{postStatus}" readonly /><br />
       <div>
         <input type="text" id="input_title" placeholder="請輸入標題" th:field="*{postTitle}"
           onclick="hideContent('postTitle.errors');" /><br />
@@ -123,6 +131,16 @@
 
   </form>
 
+</main>
+</div>
+
+  <script th:inline="javascript">
+    var baseUrl = /*[[@{/}]]*/ '/';
+    function redirectTo(url) {
+      window.location.href = url;
+    }
+  </script>
+  
 </body>
 
 </html>

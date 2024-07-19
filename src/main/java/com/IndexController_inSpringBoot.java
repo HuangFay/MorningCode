@@ -109,6 +109,8 @@ public class IndexController_inSpringBoot   {
     
     @ModelAttribute
     public void addAttributes(HttpSession session, Model model) {
+    	OrddVO latestOrdd = orddSvc.getLatestOrdd();
+        model.addAttribute("latestOrdd", latestOrdd);
         MemVO memVO = (MemVO) session.getAttribute("memVO");
         if (memVO != null) {
             model.addAttribute("memVO", memVO);
@@ -629,6 +631,14 @@ public class IndexController_inSpringBoot   {
 	        List<OrddVO> orddList = orddSvc.getAll();
 	        model.addAttribute("orddList", orddList);
 	        return "back-end/ordd/meals_status";
+	    }
+	    
+	  //後台查看訂單
+	    @GetMapping("/all_orders")
+	    public String showAllOrdersPage(Model model) {
+	        List<OrderVO> orders = orderSvc.getAll();
+	        model.addAttribute("orders", orders);
+	        return "back-end/order/all_orders";
 	    }
 
 }

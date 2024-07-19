@@ -11,8 +11,9 @@
 <title>G by C</title>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 <link rel="stylesheet" th:href="@{/css/index2.css}" />
 
 </head>
@@ -35,11 +36,18 @@
 			<div class="customer-quote">
 				<span class="meal-review">餐點評價</span>
 				<div class="avatar">
-					<div class="avatar-4"></div>
+				<img th:if="${latestOrdd != null && latestOrdd.getMealsVO() != null}" 
+                 th:src="@{|/meals/DBGifReader2?mealsId=${latestOrdd.getMealsVO().getMealsId()}|}" 
+                 alt="meals" width="100px" height="100px">
+					
 					<div class="frame">
-						<span class="name">Name</span><span class="description">Description</span>
+						<span class="name"
+							th:text="${latestOrdd != null && latestOrdd.getMealsVO() != null ? '餐點名稱: ' + latestOrdd.getMealsVO().getMealsName() : '尚無評價'}">名稱</span>
+						<span class="description"
+							th:text="${latestOrdd != null ? '評分: ' + latestOrdd.getMealsScore() + '/5' : ''}">描述</span>
 					</div>
 				</div>
+				<p th:text="${latestOrdd != null ? latestOrdd.getMealsContent() : '尚無評價內容'}">評價內容</p>
 			</div>
 			<div class="customer-quote">
 				<span class="latest-articles">最新文章</span>
@@ -108,13 +116,12 @@
 
 
 
-	
-		
-	<script th:inline="javascript">
-    var baseUrl = /*[[@{/}]]*/ '/';
 
-	 
-    function redirectTo(url) {
+
+	<script th:inline="javascript">
+		var baseUrl = /*[[@{/}]]*/'/';
+
+		function redirectTo(url) {
 			window.location.href = url;
 		}
 	</script>
