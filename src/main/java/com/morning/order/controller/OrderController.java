@@ -156,6 +156,7 @@ public class OrderController {
         return "back-end/order/order_status";
     }
 
+    //後台查看訂單
     @GetMapping("/all_orders")
     public String showAllOrdersPage(Model model) {
         List<OrderVO> orders = orderSvc.getAll();
@@ -261,6 +262,10 @@ public class OrderController {
         model.addAttribute("order", order);
         return "order_detail";
     }
+    
+    
+    
+    
    
     
 }
