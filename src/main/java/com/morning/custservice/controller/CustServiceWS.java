@@ -52,6 +52,8 @@ public class CustServiceWS {
 //				userName, userNames);
 //		System.out.println(text);
 		
+		System.out.println("userName = " + userName);
+		
 		sessionsMap.remove(userName);
 		sessionsMap.put(userName, userSession);
 		
@@ -70,12 +72,8 @@ public class CustServiceWS {
 		else {
 			System.out.println(userName);
 			memRepository = SpringContext.getBean(MemRepository.class);
-//			MemRepository memRepository = new MemRepository();
-//			@SuppressWarnings("deprecation")
 			Integer memNo = Integer.parseInt(userName);
 	        Optional<MemVO> memVO = memRepository.findById(memNo);
-			//MemVO memVO = memRepository.getById((Integer.valueOf(userName)));
-//			MemVO memVO = (new MemService()).getOneMem(Integer.valueOf(userName));
 			if( memVO.isPresent() ) {
 				usrNameMap.put(userName, memVO.get().getMemName() );
 			} else {
