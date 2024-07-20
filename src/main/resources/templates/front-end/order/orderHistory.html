@@ -51,13 +51,11 @@
                         <thead>
                         <tr>
                             <th>餐點名稱</th>
-                          
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="item : ${orderVO.orderDetails}">
                             <td th:text="${item.mealsVO.mealsName}">餐點名稱</td>
-                            
                         </tr>
                         </tbody>
                     </table>
