@@ -606,10 +606,11 @@ public class IndexController_inSpringBoot   {
 	    
 	    //前台購物車畫面
 	    @GetMapping("/user/cart")
-	    public String showCartPage(@RequestParam("memNo") Integer memNo, Model model) {
-	        List<CartVO> cartItems = cartSvc.getCartItemsByMem(memNo);
+	    public String showCartPage(HttpSession session, Model model) {
+	    	MemVO memVO = (MemVO) session.getAttribute("memVO");
+	        List<CartVO> cartItems = cartSvc.getCartItemsByMem(memVO.getMemNo());
 	        model.addAttribute("cartItems", cartItems);
-	        model.addAttribute("memNo", memNo);
+	        model.addAttribute("memNo", (memVO.getMemNo()));
 	        return "back-end/user/cart";
 	    }
 	    
