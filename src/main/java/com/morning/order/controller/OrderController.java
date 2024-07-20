@@ -223,8 +223,10 @@ public class OrderController {
 
     // 訂單詳情
     @GetMapping("/detail/{ordId}")
-    @ResponseBody
-    public OrderVO getOrderDetail(@PathVariable Integer ordId) {
-        return orderSvc.getOrderDetail(ordId);
+    public String getOrderDetail(@PathVariable Integer ordId, Model model) {
+        OrderVO order = orderSvc.getOrderDetail(ordId);
+        model.addAttribute("order", order);
+        return "front-end/order/order_detail";
     }
+
 }
