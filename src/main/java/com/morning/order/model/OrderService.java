@@ -8,6 +8,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.morning.ordd.model.OrddRepository;
+import com.morning.ordd.model.OrddVO;
+
 import hibernate.util.CompositeQuery.HibernateUtil_CompositeQuery_Order;
 
 @Service("orderService")
@@ -15,6 +18,9 @@ public class OrderService {
 
     @Autowired
     OrderRepository repository;
+
+    @Autowired
+    OrddRepository orddRepository;
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -48,5 +54,23 @@ public class OrderService {
 
     public List<OrderVO> getOrdersByMemNo(Integer memNo) {
         return repository.findByMemNo(memNo);
+    }
+
+    public List<OrderVO> getOrderHistory() {
+        return repository.findAll();
+    }
+
+    public OrderVO getOrderDetail(Integer ordId) {
+        OrderVO order = repository.findById(ordId).orElse(null);
+        if (order != null) {
+            List<OrddVO> orderDetails = orddRepository.findByOrdId(ordId);
+            order.setOrderDetails(orderDetails);
+        }
+        return order;
+    }
+
+    public boolean reorder(Integer ordId) {
+        // Implement your logic here to reorder
+        return true;
     }
 }

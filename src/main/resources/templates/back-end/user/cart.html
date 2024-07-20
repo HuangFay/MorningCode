@@ -17,7 +17,7 @@
                     <tr>
                         <th>餐點編號</th>
                         <th>餐點名稱</th>
-                        <th>單價</th>                  
+                        <th>單價</th>
                         <th>數量</th>
                         <th>操作</th>
                     </tr>
@@ -26,42 +26,98 @@
                     <tr th:each="item : ${cartItems}">
                         <td th:text="${item.mealsId}">餐點編號</td>
                         <td th:text="${item.mealsVO.mealsName}">餐點名稱</td>
-                        <td th:text="${item.mealsVO.mealsPrice}">餐點編號</td>                   
+                        <td th:text="${item.mealsVO.mealsPrice}">單價</td>
                         <td>
-                            <input type="number" th:value="${item.quantity}" min="1" th:id="'quantity-' + ${item.cartItemId}" />
+                            <button class="btn btn-outline-primary" th:onclick="'decreaseQuantity(' + ${item.cartItemId} + ')'">-</button>
+                            <input type="number" th:value="${item.quantity}" min="1" th:id="'quantity-' + ${item.cartItemId}" readonly />
+                            <button class="btn btn-outline-primary" th:onclick="'increaseQuantity(' + ${item.cartItemId} + ')'">+</button>
                         </td>
                         <td>
-                            <button class="btn btn-primary" th:onclick="'updateCartItem(' + ${item.cartItemId} + ')'">更新</button>
                             <button class="btn btn-danger" th:onclick="'removeCartItem(' + ${item.cartItemId} + ')'">移除</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
-             <div class="d-flex justify-content-end">
-                <h4 id="total-amount">總金額: $0</h4>
+            <div class="d-flex justify-content-end">
+                <h4 id="total-amount" th:text="'總金額: $' + ${totalAmount}">總金額: $0</h4>
             </div>
         </div>
 
         <button class="btn btn-danger mt-3" onclick="clearCart()">清空購物車</button>
 
+        <!-- 推薦商品 -->
+        <div class="recommended-items mt-5">
+            <h3>推薦商品</h3>
+            <div class="row" th:each="item : ${recommendedItems}">
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top" th:src="@{|/meals/DBGifReader2?mealsId=${item.mealsId}|}" alt="meals" width="100px" height="100px">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${item.mealsName}">餐點名稱</h5>
+                            <button class="btn btn-primary" th:onclick="'addItemToCart(' + ${item.mealsId} + ')'">加入購物車</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 優惠卷 -->
+        <div class="coupon-form mt-5">
+            <h3>優惠卷</h3>
+            <form id="couponForm" th:action="@{/cart/applyCoupon}" method="post">
+                <div class="form-group">
+                    <label for="couponCode">輸入優惠卷代碼:</label>
+                    <input type="text" id="couponCode" name="couponCode" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-success mt-3">使用優惠卷</button>
+            </form>
+        </div>
+
         <!-- 結帳部分 -->
         <div class="checkout-form mt-5">
             <h3>結帳</h3>
-            <form id="checkoutForm" th:action="@{/cart/checkout}" method="post">
-                <div class="form-group">
-                    <label for="paymentMethod">選擇支付方式:</label>
-                    <select id="paymentMethod" name="paymentMethod" class="form-control">
-                        <option value="cash">現金</option>
-                        <option value="linePay">Line Pay</option>
-                    </select>
+            <button class="btn btn-success" data-toggle="modal" data-target="#checkoutModal">我要下單</button>
 
-      
+            <!-- Modal -->
+            <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="checkoutModalLabel">結帳</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="checkoutForm" th:action="@{/cart/checkout}" method="post">
+                                <div class="form-group">
+                                    <label for="orderType">選擇訂單種類:</label>
+                                    <select id="orderType" name="orderType" class="form-control">
+                                        <option value="0">外帶</option>
+                                        <option value="1">內用</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="reserveTime">選擇預訂時間:</label>
+                                    <input type="datetime-local" id="reserveTime" name="reserveTime" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="paymentMethod">選擇支付方式:</label>
+                                    <select id="paymentMethod" name="paymentMethod" class="form-control">
+                                        <option value="cash">現金</option>
+                                        <option value="linePay">Line Pay</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success mt-3">提交訂單</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-success mt-3">我要下單</button>
-            </form>
+            </div>
         </div>
     </div>
 
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script th:inline="javascript">
         const memNo = /*[[${memNo}]]*/ 1;
 
@@ -82,6 +138,30 @@
             axios.post(`/cart/api/clear/${memNo}`)
                 .then(() => location.reload())
                 .catch(error => console.error('Error clearing cart:', error));
+        }
+
+        function addItemToCart(mealsId) {
+            axios.post(`/cart/addItem`, { mealsId })
+                .then(() => location.reload())
+                .catch(error => console.error('Error adding item to cart:', error));
+        }
+
+        function decreaseQuantity(cartItemId) {
+            const quantityInput = document.getElementById(`quantity-${cartItemId}`);
+            if (quantityInput.value > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+                updateCartItem(cartItemId);
+            }
+        }
+
+        function increaseQuantity(cartItemId) {
+            const quantityInput = document.getElementById(`quantity-${cartItemId}`);
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+            updateCartItem(cartItemId);
+        }
+
+        function showCheckoutForm() {
+            $('#checkoutModal').modal('show');
         }
     </script>
 </body>

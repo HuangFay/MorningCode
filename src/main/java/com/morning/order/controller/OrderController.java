@@ -46,7 +46,7 @@ public class OrderController {
 
     @Autowired
     MemService memSvc;
-    
+
     @Autowired
     CartService cartSvc;
 
@@ -156,7 +156,7 @@ public class OrderController {
         return "back-end/order/order_status";
     }
 
-    //後台查看訂單
+    // 後台查看訂單
     @GetMapping("/all_orders")
     public String showAllOrdersPage(Model model) {
         List<OrderVO> orders = orderSvc.getAll();
@@ -185,7 +185,7 @@ public class OrderController {
 
     @PostMapping("/addOrder")
     @ResponseBody
-    public String addOrder(@RequestParam("memName") String memName, 
+    public String addOrder(@RequestParam("memName") String memName,
                            @RequestParam("memPhone") String memPhone,
                            @RequestParam("reserveTime") String reserveTime,
                            @RequestParam("mealsId[]") List<Integer> mealsIds,
@@ -215,8 +215,8 @@ public class OrderController {
         orderSvc.addOrder(orderVO);
         return "success";
     }
-    
-    //查看歷史訂單
+
+    // 查看歷史訂單
     @GetMapping("/history")
     public String orderHistory(HttpSession session, Model model) {
         MemVO member = (MemVO) session.getAttribute("memVO");
@@ -228,44 +228,11 @@ public class OrderController {
         model.addAttribute("orderHistory", orderHistory);
         return "front-end/order/orderHistory";  // 返回前台歷史訂單頁面
     }
-    
-//    //再買一次
-//    @PostMapping("/reorder/{ordId}")
-//    @ResponseBody
-//    public String reorder(@PathVariable("ordId") Integer ordId, HttpSession session) {
-//        MemVO member = (MemVO) session.getAttribute("memVO");
-//        if (member == null) {
-//            return "未登入";  // 返回錯誤信息
-//        }
-//
-//        OrderVO order = orderSvc.getOneOrder(ordId);
-//        if (order == null) {
-//            return "訂單不存在";
-//        }
-//
-//        List<OrddVO> orderDetails = order.getOrderDetails();
-//        for (OrddVO item : orderDetails) {
-//            CartVO cartVO = new CartVO();
-//            cartVO.setMemNo(member.getMemNo());
-//            cartVO.setMealsId(item.getMealsVO().getMealsId());
-//            cartVO.setQuantity(item.getOrddMealsQuantity());
-//            cartSvc.addCartItem(cartVO);
-//        }
-//
-//        return "success";
-//    }
-    
-    //訂單詳情
+
+    // 訂單詳情
     @GetMapping("/detail/{ordId}")
-    public String getOrderDetail(@PathVariable("ordId") Integer ordId, Model model) {
-        OrderVO order = orderSvc.getOneOrder(ordId);
-        model.addAttribute("order", order);
-        return "order_detail";
+    @ResponseBody
+    public OrderVO getOrderDetail(@PathVariable Integer ordId) {
+        return orderSvc.getOrderDetail(ordId);
     }
-    
-    
-    
-    
-   
-    
 }
