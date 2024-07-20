@@ -504,7 +504,7 @@ public class IndexController_inSpringBoot   {
 	        return "back-end/res/addRes"; // 對應的Thymeleaf模板名稱
 	    }
 	    //訂位時段顯示全部畫面
-	    @GetMapping("/restime/listAllResTime")
+	    @GetMapping("/back-end/restime/listAllResTime")
 		public String listAllResTime(Model model) {
 			return "back-end/restime/listAllResTime";
 		}
@@ -514,7 +514,7 @@ public class IndexController_inSpringBoot   {
 			return "back-end/tabletype/select_page";
 		}
 	    //桌型顯示全部畫面
-	    @GetMapping("/tabletype/listAllTableType")
+	    @GetMapping("back-end/tabletype/listAllTableType")
 		public String listAllTableType(Model model) {
 			return "back-end/tabletype/listAllTableType2";
 		}
@@ -606,10 +606,11 @@ public class IndexController_inSpringBoot   {
 	    
 	    //前台購物車畫面
 	    @GetMapping("/user/cart")
-	    public String showCartPage(@RequestParam("memNo") Integer memNo, Model model) {
-	        List<CartVO> cartItems = cartSvc.getCartItemsByMem(memNo);
+	    public String showCartPage(HttpSession session, Model model) {
+	    	MemVO memVO = (MemVO) session.getAttribute("memVO");
+	        List<CartVO> cartItems = cartSvc.getCartItemsByMem(memVO.getMemNo());
 	        model.addAttribute("cartItems", cartItems);
-	        model.addAttribute("memNo", memNo);
+	        model.addAttribute("memNo", (memVO.getMemNo()));
 	        return "back-end/user/cart";
 	    }
 	    

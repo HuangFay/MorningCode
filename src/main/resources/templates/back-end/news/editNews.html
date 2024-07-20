@@ -64,6 +64,22 @@
   </form> -->
 
   <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.min.js}"></script>
+  <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+  <script>
+  
+  	// sidebar要用到的設定
+    $("a.aa").on("click", function () {
+      console.log(this);
+
+      var $li = $(this).closest("li");
+      $li.find("div.menu-item-1").slideToggle();
+      $li.siblings().find(".menu-item-1").slideUp();
+    });
+
+    function redirectTo(url) {
+      window.location.href = url;
+    }
+  </script>
   
 </body>
 </html>
