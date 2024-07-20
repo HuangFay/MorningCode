@@ -18,16 +18,28 @@ public class CartService {
     @Autowired
     private MealsService mealsService; // 引入 MealsService 以獲取餐點價格
 
-    public void addCartItem(CartVO cartVO) {
-        Optional<CartVO> existingCartItem = repository.findByMemNoAndMealsId(cartVO.getMemNo(), cartVO.getMealsId());
-        if (existingCartItem.isPresent()) {
-            CartVO cartItem = existingCartItem.get();
-            cartItem.setQuantity(cartItem.getQuantity() + cartVO.getQuantity());
-            repository.save(cartItem);
-        } else {
-            repository.save(cartVO);
+    public void addCartItem(Integer memNo, Integer mealsId) {
+        List<CartVO> existingCartItems = repository.findByMemNo(memNo);
+        boolean itemExists = false;
+
+        for (CartVO cart : existingCartItems) {
+            if (cart.getMealsId().equals(mealsId)) {
+                cart.setQuantity(cart.getQuantity() + 1);
+                repository.save(cart);
+                itemExists = true;
+                break;  // 找到匹配項目後跳出循環
+            }
+        }
+
+        if (!itemExists) {
+            CartVO newCart = new CartVO();
+            newCart.setMealsId(mealsId);
+            newCart.setMemNo(memNo);
+            newCart.setQuantity(1);
+            repository.save(newCart);
         }
     }
+
 
     public void updateCartItem(CartVO cartVO) {
         repository.save(cartVO);

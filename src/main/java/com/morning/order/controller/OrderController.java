@@ -229,31 +229,31 @@ public class OrderController {
         return "front-end/order/orderHistory";  // 返回前台歷史訂單頁面
     }
     
-    //再買一次
-    @PostMapping("/reorder/{ordId}")
-    @ResponseBody
-    public String reorder(@PathVariable("ordId") Integer ordId, HttpSession session) {
-        MemVO member = (MemVO) session.getAttribute("memVO");
-        if (member == null) {
-            return "未登入";  // 返回錯誤信息
-        }
-
-        OrderVO order = orderSvc.getOneOrder(ordId);
-        if (order == null) {
-            return "訂單不存在";
-        }
-
-        List<OrddVO> orderDetails = order.getOrderDetails();
-        for (OrddVO item : orderDetails) {
-            CartVO cartVO = new CartVO();
-            cartVO.setMemNo(member.getMemNo());
-            cartVO.setMealsId(item.getMealsVO().getMealsId());
-            cartVO.setQuantity(item.getOrddMealsQuantity());
-            cartSvc.addCartItem(cartVO);
-        }
-
-        return "success";
-    }
+//    //再買一次
+//    @PostMapping("/reorder/{ordId}")
+//    @ResponseBody
+//    public String reorder(@PathVariable("ordId") Integer ordId, HttpSession session) {
+//        MemVO member = (MemVO) session.getAttribute("memVO");
+//        if (member == null) {
+//            return "未登入";  // 返回錯誤信息
+//        }
+//
+//        OrderVO order = orderSvc.getOneOrder(ordId);
+//        if (order == null) {
+//            return "訂單不存在";
+//        }
+//
+//        List<OrddVO> orderDetails = order.getOrderDetails();
+//        for (OrddVO item : orderDetails) {
+//            CartVO cartVO = new CartVO();
+//            cartVO.setMemNo(member.getMemNo());
+//            cartVO.setMealsId(item.getMealsVO().getMealsId());
+//            cartVO.setQuantity(item.getOrddMealsQuantity());
+//            cartSvc.addCartItem(cartVO);
+//        }
+//
+//        return "success";
+//    }
     
     //訂單詳情
     @GetMapping("/detail/{ordId}")

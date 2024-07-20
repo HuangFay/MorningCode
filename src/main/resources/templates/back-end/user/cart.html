@@ -16,6 +16,7 @@
                 <thead>
                     <tr>
                         <th>餐點編號</th>
+                        <th>餐點名稱</th>
                         <th>單價</th>                  
                         <th>數量</th>
                         <th>操作</th>
@@ -24,6 +25,7 @@
                 <tbody>
                     <tr th:each="item : ${cartItems}">
                         <td th:text="${item.mealsId}">餐點編號</td>
+                        <td th:text="${item.mealsVO.mealsName}">餐點名稱</td>
                         <td th:text="${item.mealsVO.mealsPrice}">餐點編號</td>                   
                         <td>
                             <input type="number" th:value="${item.quantity}" min="1" th:id="'quantity-' + ${item.cartItemId}" />
@@ -35,6 +37,9 @@
                     </tr>
                 </tbody>
             </table>
+             <div class="d-flex justify-content-end">
+                <h4 id="total-amount">總金額: $0</h4>
+            </div>
         </div>
 
         <button class="btn btn-danger mt-3" onclick="clearCart()">清空購物車</button>
