@@ -14,16 +14,16 @@ import com.morning.meals.model.MealsVO;
 @Controller
 @RequestMapping("/menu")
 public class MenuController {
-	
+
 	@Autowired
 	MealsService mealsSvc;
-	
-	//菜單
-		@GetMapping("/menu")
-		public String showMenu(Model model) {
-			List<MealsVO> mealsList = mealsSvc.getAllMeals();
-			model.addAttribute("mealsList", mealsList);
-			return "front-end/menu/menu";
-		}
+
+	// 菜單
+	@GetMapping("/menu")
+	public String showMenu(Model model) {
+		List<MealsVO> mealsList = mealsSvc.getAllMeals();
+		model.addAttribute("mealsList", mealsList);
+		return "front-end/menu/menu";
+	}
 
 }
