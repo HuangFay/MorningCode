@@ -177,4 +177,11 @@ public class ResController {
 		List<TableTypeVO> list = TableTypeSvc.getAll();
 		return list;
 	}
+
+	@PostMapping("/cancel")
+	public String cancelReservation(@RequestParam("reservationId") Integer reservationId) {
+		ResSvc.cancelReservation(reservationId);
+		return "redirect:/res/all";
+
+	}
 }

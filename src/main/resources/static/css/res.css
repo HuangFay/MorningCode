@@ -1,0 +1,129 @@
+body {
+    font-family:Arial, sans-serif;
+    background-color: #fcfcfc;
+}
+
+.form{
+    display:inline;
+
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+
+}
+
+.tab-button {
+    color: #bebcbc;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 15px;
+    cursor: pointer;
+    border: 1px solid #f1f1f1;
+    background-color: #e6e6e6;
+    margin-right: 5px;
+    border-radius: 5px 5px 0 0;
+}
+
+.tab-button.active {
+    background-color: #ffff;
+    color: rgba(0, 0, 0, 0.808);
+}
+
+.tab-content .tab-pane {
+    display: none;
+}
+
+.tab-content .tab-pane.active {
+    display: block;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 32px;
+}
+
+.filter-section {
+    margin-bottom: 20px;
+    float: right;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+}
+
+.filter-group label {
+    margin-right: 10px;
+}
+
+.filter-group input, .filter-group select, .filter-group button {
+    margin-right: 10px;
+    padding: 5px;
+
+}
+
+.buttons {
+    margin-bottom: 10px;
+    display: flex;
+    gap: 10px;
+
+}
+
+.submit {
+    background-color: #bfbab0;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-right: 5px;
+    cursor: pointer;
+    min-width: 90px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+
+}
+.submit:hover {
+    background-color: #9e9789;
+
+}
+.morandi-style {
+    background-color: #976666;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-right: 5px;
+    cursor: pointer;
+    min-width: 100px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+}
+
+.morandi-style:hover {
+    background-color: #b08a8a;
+}
+
+
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.schedule-table th, .schedule-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.schedule-table th {
+    background-color: #f2f2f2;
+}
