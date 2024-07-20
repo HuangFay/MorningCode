@@ -341,7 +341,7 @@
                 <select class="form-control" 
                         th:id="'status-select-' + ${orderVO.ordId}" 
                         th:data-ord-id="${orderVO.ordId}" 
-                        th:onchange="updateOrderStatus(${orderVO.ordId})">
+                        th:onchange="'updateOrderStatus(' + ${orderVO.ordId} + ')'">
                     <option value="0" th:selected="${orderVO.ordStatus == 0}">已接單</option>
                     <option value="1" th:selected="${orderVO.ordStatus == 1}">餐點製作中</option>
                     <option value="2" th:selected="${orderVO.ordStatus == 2}">餐點已完成</option>
