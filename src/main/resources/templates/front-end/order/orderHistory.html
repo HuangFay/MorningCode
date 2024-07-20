@@ -26,9 +26,10 @@
         function showOrderDetail(ordId) {
             $.ajax({
                 url: '/order/detail/' + ordId,
-                type: 'GET',
+                type: 'GET',  // 使用 GET 方法來請求訂單詳情
                 success: function(order) {
                     var detailsHtml = '<table class="table"><thead><tr><th>餐點名稱</th><th>餐點圖片</th><th>數量</th><th>總金額</th><th>製作狀態</th></tr></thead><tbody>';
+                    
                     order.orderDetails.forEach(function(item) {
                         detailsHtml += '<tr>';
                         detailsHtml += '<td>' + item.mealsVO.mealsName + '</td>';
@@ -38,15 +39,17 @@
                         detailsHtml += '<td>' + (item.orddMealsStatus === 0 ? '未製作' : item.orddMealsStatus === 1 ? '製作中' : item.orddMealsStatus === 2 ? '製作完成' : '已取餐') + '</td>';
                         detailsHtml += '</tr>';
                     });
+                    
                     detailsHtml += '</tbody></table>';
                     $('#orderDetailModal .modal-body').html(detailsHtml);
                     $('#orderDetailModal').modal('show');
                 },
-                error: function() {
-                    alert('獲取訂單詳情時發生錯誤');
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('獲取訂單詳情時發生錯誤: ' + textStatus + ' - ' + errorThrown);
                 }
             });
         }
+
     </script>
 </head>
 <body>

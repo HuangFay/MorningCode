@@ -77,6 +77,7 @@ public class OrderController {
         OrderVO orderVO = orderSvc.getOneOrder(Integer.valueOf(ordId));
         model.addAttribute("orderVO", orderVO);
         return "back-end/order/update_order_input";
+      
     }
 
     @PostMapping("update")
@@ -141,16 +142,7 @@ public class OrderController {
         return "back-end/order/listAllOrder";
     }
 
-    @GetMapping("/order_success")
-    public String showOrderSuccessPage(@RequestParam("ordId") Integer ordId, Model model) {
-        OrderVO order = orderSvc.getOneOrder(ordId);
-        if (order == null) {
-            return "redirect:/shop/select_page";
-        }
-        model.addAttribute("order", order);
-        return "back-end/shop/order_success";
-    }
-
+   
     @GetMapping("/order_status")
     public String showOrderStatusPage() {
         return "back-end/order/order_status";
