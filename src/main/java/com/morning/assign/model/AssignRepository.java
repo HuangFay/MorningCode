@@ -28,6 +28,13 @@ public interface AssignRepository extends JpaRepository<AssignVO, Integer> {
 
 	List<AssignVO> findByAssignDate(Date assignDate);
 
+	List<AssignVO> findByEmpVO_EmpId(Integer empId);
+	List<AssignVO> findByEmpVO1_EmpId(Integer empId);
+	List<AssignVO> findByAssignDateAndEmpVO_EmpId(Date assignDate, Integer empId);
+	List<AssignVO> findByAssignDateAndEmpVO1_EmpId(Date assignDate, Integer empId);
+
+	
+
 
 }
 

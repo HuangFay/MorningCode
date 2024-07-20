@@ -3,6 +3,7 @@ package com.morning.assign.model;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,15 @@ public class AssignService {
         return repository.findByAssignDate(assignDate);
     }
 
+    public List<Date> getWorkingDatesByEmpId(Integer empId) {
+        List<AssignVO> assignments = repository.findByEmpVO_EmpId(empId);
+        assignments.addAll(repository.findByEmpVO1_EmpId(empId));
+        return assignments.stream()
+                .map(AssignVO::getAssignDate)
+                .collect(Collectors.toList());
+    }
+    
+    
 }
 
 //	public List<AssignVO> getAll(Map<String, String[]> map) {

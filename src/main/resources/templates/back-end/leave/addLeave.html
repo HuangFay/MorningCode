@@ -8,6 +8,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <link rel="stylesheet" th:href="@{/css/index3.css}">
 <link rel="stylesheet" href="/css/assign.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <style>
 body {
 	box-sizing: border-box;
@@ -84,43 +86,54 @@ select, input {
 </head>
 <body>
 
-		<div class="main-container">
-			<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
-			<div class="right-pane">
-				<h1>MorningCode 請假申請</h1>
-				<div class="container">
-					<h3>所有欄位皆為必填欄位</h3>
-					<form th:action="@{/back-end/leave/insert}" method="post"
-						th:object="${leaveVO}" enctype="multipart/form-data">
-						<div>
-							<label>請假員工姓名:</label> <input type="text"
-								th:value="${session.empVO.empName}" readonly />
-						</div>
-						<div>
-							<label>請假日期:</label> <input type="date" th:field="*{leaveDate}"
-								onclick="hideContent('leaveDate.errors');" required /> <span
-								th:if="${#fields.hasErrors('leaveDate')}"
-								th:errors="*{leaveDate}" class="error" id="leaveDate.errors"></span>
-						</div>
-						<div>
-							<label>代班員工姓名:</label> <select name="leaveAssigneeId" required>
-								<option value="">請選擇</option>
-								<option th:each="leaveAssigneeId : ${empListData}"
-									th:value="${leaveAssigneeId.empId}"
-									th:text="${leaveAssigneeId.empName}"></option>
-							</select>
-						</div>
-						<button type="submit" class="btn">送出新增</button>
-					</form>
-				</div>
+	<div class="main-container">
+		<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+		<div class="right-pane">
+			<h1>MorningCode 請假申請</h1>
+			<div class="container">
+				<h3>所有欄位皆為必填欄位</h3>
+				<form th:action="@{/back-end/leave/insert}" method="post"
+					th:object="${leaveVO}" enctype="multipart/form-data">
+					<div>
+						<label>請假員工姓名:</label> <input type="text"
+							th:value="${session.empVO.empName}" readonly />
+					</div>
+					<div>
+						<label>請假日期:</label> <input type="date" th:field="*{leaveDate}"
+							onclick="hideContent('leaveDate.errors');" required /> <span
+							th:if="${#fields.hasErrors('leaveDate')}"
+							th:errors="*{leaveDate}" class="error" id="leaveDate.errors"></span>
+					</div>
+					<div>
+						<label>代班員工姓名:</label> <select name="leaveAssigneeId" required>
+							<option value="">請選擇</option>
+							<option th:each="leaveAssigneeId : ${empListData}"
+								th:value="${leaveAssigneeId.empId}"
+								th:text="${leaveAssigneeId.empName}"></option>
+						</select>
+					</div>
+					<button type="submit" class="btn">送出新增</button>
+				</form>
 			</div>
 		</div>
+	</div>
 
-	<script>
-		// 設置當前日期為最小值
+	<script th:inline="javascript">
 		$(document).ready(function() {
+			// 從後端獲取的工作日期
+			var workingDates = /*[[${workingDates}]]*/ [];
 			var today = new Date().toISOString().split('T')[0];
-			document.getElementById("leaveDate").setAttribute("min", today);
+
+			var formattedDates = workingDates.map(function(date) {
+				return new Date(date).toISOString().split('T')[0];
+			});
+			console.log("Formatted dates:", formattedDates); // 確認日期輸出正確
+
+			// 使用 flatpickr 插件來設置日期選擇器
+			$("#leaveDate").flatpickr({
+				enable: formattedDates,
+				minDate: today
+			});
 		});
 
 		function hideContent(id) {
@@ -130,7 +143,6 @@ select, input {
 
 	<script>
 		$("a.aa").on("click", function() {
-			console.log(this);
 			var $li = $(this).closest("li");
 			$li.find("div.menu-item-1").slideToggle();
 			$li.siblings().find(".menu-item-1").slideUp();
@@ -139,5 +151,7 @@ select, input {
 			window.location.href = url;
 		}
 	</script>
+
+
 </body>
 </html>

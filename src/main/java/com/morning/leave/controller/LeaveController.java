@@ -1,6 +1,7 @@
 package com.morning.leave.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,7 @@ public class LeaveController {
 	@Autowired
 	AssignService assignSvc;
 
-	//填寫假單、代班人員過濾掉登入者
+	// 填寫假單、代班人員過濾掉登入者
 	@GetMapping("/addLeave")
 	public String addLeave(ModelMap model, HttpSession session) {
 		LeaveVO leaveVO = new LeaveVO();
@@ -48,14 +49,19 @@ public class LeaveController {
 			List<EmpVO> filteredEmpList = empSvc.getAll().stream()
 					.filter(emp -> !emp.getEmpId().equals(loggedInEmp.getEmpId())).collect(Collectors.toList());
 			model.addAttribute("empListData", filteredEmpList);
+
+	        // 獲取該員工的上班日期
+	        List<Date> workingDates = assignSvc.getWorkingDatesByEmpId(loggedInEmp.getEmpId());
+	        model.addAttribute("workingDates", workingDates.stream()
+	                .map(date -> date.toString())  // 將日期轉換為字符串
+	                .collect(Collectors.toList()));
 		} else {
 			model.addAttribute("empListData", empSvc.getAll()); // 如果沒有登入資訊，則返回全部員工名單
 		}
-
 		return "back-end/leave/addLeave";
 	}
 
-	//獲取請假員工帳號並帶入
+	// 獲取請假員工帳號並帶入
 	@PostMapping("/insert")
 	public String insert(@Valid LeaveVO leaveVO, HttpSession session, BindingResult result, ModelMap model)
 			throws IOException {
@@ -89,7 +95,6 @@ public class LeaveController {
 		return "redirect:/back-end/leave/listAllLeaveforEmp"; // 新增成功後重導至列表頁面
 	}
 
-
 	@PostMapping("getOne_For_Update")
 	public String getOne_For_Update(@RequestParam("leaveId") String leaveId, ModelMap model) {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
@@ -102,7 +107,6 @@ public class LeaveController {
 		model.addAttribute("leaveVO", leaveVO);
 		return "back-end/leave/update_leave_input"; // 查詢完成後轉交update_emp_input.html
 	}
-
 
 	@PostMapping("update")
 	public String update(@Valid LeaveVO leaveVO, BindingResult result, ModelMap model) throws IOException {
@@ -122,10 +126,10 @@ public class LeaveController {
 		leaveVO = leaveSvc.getOneLeave(Integer.valueOf(leaveVO.getLeaveId()));
 		model.addAttribute("leaveVO", leaveVO);
 
-		return "back-end/leave/listOneLeave"; 
+		return "back-end/leave/listOneLeave";
 	}
 
-	//撤回申請表單
+	// 撤回申請表單
 	@PostMapping("delete")
 	public String delete(@RequestParam("leaveId") String leaveId, ModelMap model) {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
@@ -137,8 +141,7 @@ public class LeaveController {
 		model.addAttribute("success", "- (刪除成功)");
 		return "redirect:/back-end/leave/listAllLeaveforEmp"; // 刪除完成後轉交listAllEmp.html
 	}
-	
-	
+
 	// 審核判斷、將leave的empId帶入到assign的leaveAssigneeId
 	@PostMapping("/updateapproval")
 	public String updateApproval(@RequestParam("leaveId") Integer leaveId,
@@ -151,16 +154,16 @@ public class LeaveController {
 				List<AssignVO> assignList = assignSvc.getAssignmentsByDate(leaveVO.getLeaveDate());
 				for (AssignVO assign : assignList) {
 					if (assign.getAssignDate().equals(leaveVO.getLeaveDate())) { // 確保日期完全匹配
-						if(assign.getEmpVO().equals(leaveVO.getLeaveEmpId())) {
-						assign.setEmpVO(leaveVO.getLeaveAssigneeId());
-						assignSvc.updateAssign(assign);
-						}else if(assign.getEmpVO1().equals(leaveVO.getLeaveEmpId())){
+						if (assign.getEmpVO().equals(leaveVO.getLeaveEmpId())) {
+							assign.setEmpVO(leaveVO.getLeaveAssigneeId());
+							assignSvc.updateAssign(assign);
+						} else if (assign.getEmpVO1().equals(leaveVO.getLeaveEmpId())) {
 							assign.setEmpVO1(leaveVO.getLeaveAssigneeId());
-							assignSvc.updateAssign(assign);	
+							assignSvc.updateAssign(assign);
 						}
 					}
 				}
-				
+
 			} else if (leaveStatus == 2) {
 				leaveVO.rejectLeave(); // 審核不通過
 			} else {

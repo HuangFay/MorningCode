@@ -116,14 +116,21 @@ h1 {
 .schedule-table {
     width: 100%;
     border-collapse: collapse;
+
 }
 
 .schedule-table th, .schedule-table td {
     border: 1px solid #ddd;
     padding: 8px;
-    text-align: center;
+
 }
+
 
 .schedule-table th {
     background-color: #f2f2f2;
+}
+
+table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting_asc_disabled, table.dataTable thead>tr>th.sorting_desc_disabled, table.dataTable thead>tr>td.sorting, table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting_asc_disabled, table.dataTable thead>tr>td.sorting_desc_disabled {
+
+    text-align: center;
 }
