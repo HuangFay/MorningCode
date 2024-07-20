@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import com.morning.cart.model.CartService;
 import com.morning.cart.model.CartVO;
 import com.morning.order.model.OrderService;
+import com.morning.mem.model.MemVO;
 
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/cart")
@@ -78,6 +81,24 @@ public class CartController {
     @GetMapping("/order_success")
     public String showOrderSuccessPage() {
         return "back-end/cart/order_success";
+    }
+    
+    @PostMapping("/add")
+    @ResponseBody
+    public void addmeals(HttpSession session) {
+    Integer mealsId= (Integer)session.getAttribute("mealsId");
+       System.out.println("fhfhfhfhffh"+mealsId);
+       session.removeAttribute("mealsId"); // 清除指定的mealsId
+       System.out.println("fhfhfhfhffh"+mealsId);
+       
+       MemVO memvo =(MemVO)session.getAttribute("memVO");
+       System.out.println(memvo);
+
+       
+       
+       cartService.addCartItem(memvo.getMemNo(), mealsId);
+       
+
     }
     
     

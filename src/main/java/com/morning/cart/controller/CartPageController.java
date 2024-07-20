@@ -40,16 +40,16 @@ public class CartPageController {
         return "back-end/cart/addItem";
     }
 
-    @PostMapping("/addItem")
-    public String addItem(@Valid @ModelAttribute("cartVO") CartVO cartVO, BindingResult result, ModelMap model) {
-        if (result.hasErrors()) {
-            model.addAttribute("mealsList", mealsService.getAll());
-            model.addAttribute("membersList", memService.getAll());
-            return "back-end/cart/addItem";
-        }
-        cartService.addCartItem(cartVO);
-        return "redirect:/cart/listAllItems";
-    }
+//    @PostMapping("/addItem")
+//    public String addItem(@Valid @ModelAttribute("cartVO") CartVO cartVO, BindingResult result, ModelMap model) {
+//        if (result.hasErrors()) {
+//            model.addAttribute("mealsList", mealsService.getAll());
+//            model.addAttribute("membersList", memService.getAll());
+//            return "back-end/cart/addItem";
+//        }
+//        cartService.addCartItem(cartVO);
+//        return "redirect:/cart/listAllItems";
+//    }
 
     @GetMapping("/getOne_For_Update")
     public String getOne_For_Update(@RequestParam("cartItemId") Integer cartItemId, ModelMap model) {

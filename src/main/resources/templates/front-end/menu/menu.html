@@ -194,30 +194,31 @@ color: inherit;
 						</div>
 					</div>
 				</div>
+				<!-- 客製化彈窗 Modal -->
+				<div class="modal fade" id="customizationModal" tabindex="-1" role="dialog" aria-labelledby="customizationModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="customizationModalLabel">客製化選項</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div id="customizationOptionsContainer"></div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+								<button type="button" class="btn btn-primary" th:onclick="'addToCartWithCustomization(' + ${mealsVO.mealsId} + ')'">確定</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</th:block>
 		</div>
 	</div>
 
-	<!-- 客製化彈窗 Modal -->
-	<div class="modal fade" id="customizationModal" tabindex="-1" role="dialog" aria-labelledby="customizationModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="customizationModalLabel">客製化選項</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<div id="customizationOptionsContainer"></div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-					<button type="button" class="btn btn-primary" onclick="addToCartWithCustomization()">加入購物車</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 
 	<!-- 收藏訊息彈窗 -->
 	<div id="favoriteModal" class="modal">
@@ -234,6 +235,7 @@ color: inherit;
 <!-- 加入購物車按鈕-客製化 -->
 <script>
     function showCustomizationOptions(mealsId) {
+    	
         $.ajax({
             url: '/cust/getOptionsByMealId',
             method: 'GET',
@@ -258,14 +260,14 @@ color: inherit;
         });
     }
 
-    function addToCartWithCustomization() {
+    function addToCartWithCustomization(mealsId) {
         var selectedOptions = [];
         $('#customizationOptionsContainer input:checked').each(function() {
             selectedOptions.push($(this).val());
         });
 
-        var mealsId = $('#customizationOptionsContainer').data('meals-id');
-
+        //var mealsId = $('#customizationOptionsContainer').data('mealsId');
+		console.log(mealsId)
         $.ajax({
             url: '/cart/add',
             method: 'POST',
