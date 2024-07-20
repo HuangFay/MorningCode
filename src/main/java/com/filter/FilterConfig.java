@@ -22,7 +22,8 @@ public class FilterConfig {
     public FilterRegistrationBean<MemFrontFilter> memberAuthFilter() {
         FilterRegistrationBean<MemFrontFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new MemFrontFilter());
-        registrationBean.addUrlPatterns("/front-end/res/*"); 
+        registrationBean.addUrlPatterns("/front-end/res/*");
+        registrationBean.addUrlPatterns("/user/*");
         return registrationBean;
     }
 }

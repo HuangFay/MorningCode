@@ -42,9 +42,9 @@ public class EmpVerifyController {
 	            	 session.setAttribute("empPermissions", authenticatedEmp.getFunctions());
 	            	 session.setAttribute("empVO", authenticatedEmp);
 	            	 String redirectLogin = (String) session.getAttribute("location");
-	            	 String front = "/index3";
+//	            	 String front = "/index3";
 //	            	session.setAttribute("empVO", empVO);// 多餘的
-	            	 if (redirectLogin != null && redirectLogin!=front) {
+	            	 if (redirectLogin != null ) {
 		 					session.removeAttribute("redirectLogin");
 		 					return ResponseEntity.ok(redirectLogin); // 導到存URL的位置
 		 				} else {

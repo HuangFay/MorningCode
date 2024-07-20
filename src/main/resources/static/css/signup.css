@@ -337,3 +337,6 @@ body:after {
   border: none;
   z-index: 26;
 }
+.wrapper .form-element input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* 反轉顏色，讓日期選擇器的圖標變白 */
+}

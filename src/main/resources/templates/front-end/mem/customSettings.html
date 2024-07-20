@@ -19,6 +19,12 @@
 		<div class="customSettings">
 			<div class="form-section">
 				<h2>會員資料</h2>
+			<label for="memVerified">信箱驗證狀態:</label> <span
+					th:if="${memVO.memVerified == 0}"> <i class="fa fa-times" style="color:red;"></i>
+					未驗證
+				</span> <span th:if="${memVO.memVerified == 1}"> <i
+					class="fa fa-check" style="color:green;"></i> 已驗證
+				</span>
 			
 				<form id="updateForm" th:object="${memVO}">
 					<div>
@@ -56,24 +62,15 @@
 
 					
 				</form>
-			</div>
-
-
-			<div>
-			<div>
-				<label for="memVerified">信箱驗證狀態:</label> <span
-					th:if="${memVO.memVerified == 0}"> <i class="fa fa-times" style="color:red;"></i>
-					未驗證
-				</span> <span th:if="${memVO.memVerified == 1}"> <i
-					class="fa fa-check" style="color:green;"></i> 已驗證
-				</span>
-			</div>
-			<div>
-			<button id="password-button" onclick="redirectTo('restPassword')">修改密碼</button>
-			<button type="button" id="updatebutton" onclick="updateMember()">更新資料</button>
-			</div>
-			
+				<div class="button-container">
+	<button id="password-button" onclick="redirectTo('restPassword')">修改密碼</button>
+	<button type="button" id="updatebutton" onclick="updateMember()">更新資料</button>
 </div>
+
+			</div>
+
+
+			
 
 
 			<div class="image-section">
@@ -85,9 +82,9 @@
 					<!-- 顯示會員圖片 -->
 					<img th:if="${memVO.upFiles != null}" id="currentImage"
 						th:src="@{'/api/memberImage/' + ${memVO.memNo}}"
-						style="max-width: 200px; max-height: 200px;" /> <img
+						style="max-width: 300px; max-height: 300px;" /> <img
 						id="previewImage"
-						style="max-width: 200px; max-height: 200px; display: none;" />
+						style="max-width: 300px; max-height: 300px; display: none;" />
 				</div>
 			</div>
 		</div>
