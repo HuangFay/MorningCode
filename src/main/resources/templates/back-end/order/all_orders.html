@@ -43,7 +43,7 @@
         function updateOrderStatus(ordId) {
             var status = document.getElementById("status-select-" + ordId).value;
             $.ajax({
-                url: '/order/all_orders',
+                url: '/order/updateOrderStatus',
                 type: 'POST',
                 data: {
                     ordId: ordId,
@@ -87,11 +87,11 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '/order/all_orders',
+                        url: '/order/deleteOrder',
                         type: 'POST',
                         data: { ordId: ordId },
                         success: function(response) {
-                            if (response.success) {
+                            if (response === 'success') {
                                 Swal.fire({
                                     icon: 'success',
                                     title: '刪除成功!',
@@ -187,7 +187,7 @@
         }
 
         function editOrder(ordId) {
-            $.get("/order/all_orders", { ordId: ordId }, function(order) {
+            $.get("/order/getOne_For_Update", { ordId: ordId }, function(order) {
                 Swal.fire({
                     title: '修改訂單',
                     html: `<form id="editOrderForm">

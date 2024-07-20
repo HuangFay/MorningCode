@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -223,8 +225,35 @@ public class OrderController {
 
     // 訂單詳情
     @GetMapping("/detail/{ordId}")
-    @ResponseBody
-    public OrderVO getOrderDetail(@PathVariable Integer ordId) {
-        return orderSvc.getOrderDetail(ordId);
+    public String getOrderDetail(@PathVariable Integer ordId, Model model) {
+        OrderVO order = orderSvc.getOrderDetail(ordId);
+        model.addAttribute("order", order);
+        return "front-end/order/order_detail";
     }
+
+    // 再買一次
+    @PostMapping("/reorder/{ordId}")
+    @ResponseBody
+    public ResponseEntity<String> reorder(@PathVariable Integer ordId) {
+        try {
+            // 获取订单详情
+            OrderVO order = orderSvc.getOrderDetail(ordId);
+            
+            // 遍历订单详情中的餐点，并添加到购物车
+            for (OrddVO detail : order.getOrderDetails()) {
+                CartVO cartItem = new CartVO();
+                cartItem.setMealsId(detail.getMealsVO().getMealsId());
+                cartItem.setQuantity(detail.getOrddMealsQuantity());
+                // 假设你有获取当前用户 memNo 的方法
+                Integer memNo = order.getMemVO().getMemNo();
+                cartItem.setMemNo(memNo);
+                cartSvc.addCartItem(memNo, detail.getMealsVO().getMealsId());
+            }
+            
+            return ResponseEntity.ok("success");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
+        }
+    }
+
 }
