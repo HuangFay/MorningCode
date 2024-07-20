@@ -1,7 +1,7 @@
 .customSettings {
     width: 100%;
     max-width: 1000px;
-    max-height: 400px; /* 設置最大高度 */
+    max-height: 450px; /* 設置最大高度 */
     -webkit-backface-visibility: hidden;/*關閉背面可見性  帥帥帥*/
     backface-visibility: hidden;
     -webkit-font-smoothing: antialiased;
@@ -18,7 +18,9 @@
     padding: 20px;
     box-sizing: border-box;
 }
-
+.form-section{
+	width:400px;
+}
  .form-section input,
         .form-section select {
             flex-grow: 1;
@@ -35,7 +37,7 @@
         }
 
 .image-section {
-    width: 30%; /* 右邊寬度 */
+    width: 40%; /* 右邊寬度 */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -66,7 +68,7 @@ margin:5px ;
     text-align: center; /* 文字居中 */
     text-decoration: none; /* 去除下劃線 */
     width:100%;
-    margin-top: 100px;
+  
 }
 #password-button:hover {
     background-color: darkred; /* 滑鼠懸停時的背景顏色 */
@@ -84,8 +86,10 @@ margin:5px ;
 	padding: 10px 20px;
 	 border-radius: 5px;
 	  margin-left: 0px;
-	  margin-top: 135px;
-	       width:200px;
+	 font-size: 14px; /* 字體大小 */
+	 text-align: center; /* 文字居中 */
+    text-decoration: none; /* 去除下劃線 */
+	       width:100%;
 }
 #updatePassword{
 	background-color: #6D67E4;

@@ -8,6 +8,9 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
+     <link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <script>
         $(document).ready(function() {
@@ -65,11 +68,7 @@
             border-radius: 10px;
         }
 
-        .page {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
+    
 
         #pageStyle {
             display: inline-block;
@@ -94,25 +93,23 @@
 
         /* 早餐店風格 */
         body {
-            font-family: "Comic Sans MS", cursive, sans-serif;
+           height:600px;
             background-color: #FFF5EE;
             color: #8B4513;
+        }
+        html{
+         background-color: #FFF;
         }
 
         h2, h3 {
             color: #D2691E;
         }
 
-        .navbar {
-            background-color: #FFD700;
-        }
+       
 
-        .navbar-brand img {
-            border-radius: 50%;
-            box-shadow: 0 0 5px #000;
-        }
+       
         .container {
-            margin-top: 200px; /* 新增的 CSS 屬性 */
+            margin-top: 165px; /* 新增的 CSS 屬性 */
         }
     </style>
     <link rel="stylesheet" th:href="@{/css/index2.css}" />
