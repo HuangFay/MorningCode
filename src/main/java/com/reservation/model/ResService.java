@@ -109,6 +109,15 @@ public class ResService {
 		return updatedUseSit.toString();
 
 	}
+	public void cancelReservation(Integer reservationId) {
+		Optional<ResVO> optionalReservation = repository.findById(reservationId);
+		if (optionalReservation.isPresent()) {
+			ResVO resVO = optionalReservation.get();
+			resVO.setReservationStatus((byte) 2);
+
+			repository.save(resVO);
+		}
+	}
 
 
 }

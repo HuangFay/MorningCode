@@ -87,7 +87,7 @@ public class ResIdController {
 		List<SysArgVO> sysArgVOList4 = SysArgSvc.findByColumns("4persontable");
 		if (!resCVOList.isEmpty()) {
 			ResCVO resCVO = resCVOList.get(0); // Assuming you want the first element
-			String argumentValue = resVO.getTableTypeVO().getTableId() == 1 ?
+			String argumentValue = resVO.getTableTypeVO().getTableType() == 2 ?
 					sysArgVOList2.get(0).getSysArgumentValue() :
 					sysArgVOList4.get(0).getSysArgumentValue();
 
@@ -112,7 +112,7 @@ public class ResIdController {
 
 
 			ResCVO resCVO = resCVOList.get(0); // Assuming you want the first element
-			String argumentValue = resVO.getTableTypeVO().getTableId() == 1 ?
+			String argumentValue = resVO.getTableTypeVO().getTableType() == 2 ?
 					sysArgVOList2.get(0).getSysArgumentValue() :
 					sysArgVOList4.get(0).getSysArgumentValue();
 
