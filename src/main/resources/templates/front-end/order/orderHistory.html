@@ -35,7 +35,7 @@
                         detailsHtml += '<td><img src="/meals/DBGifReader2?mealsId=' + item.mealsVO.mealsId + '" alt="meals" width="100px" height="100px"></td>';
                         detailsHtml += '<td>' + item.orddMealsQuantity + '</td>';
                         detailsHtml += '<td>' + item.orddMealsAmount + '</td>';
-                        detailsHtml += '<td>' + item.orddMealsStatus + '</td>';
+                        detailsHtml += '<td>' + (item.orddMealsStatus === 0 ? '未製作' : item.orddMealsStatus === 1 ? '製作中' : item.orddMealsStatus === 2 ? '製作完成' : '已取餐') + '</td>';
                         detailsHtml += '</tr>';
                     });
                     detailsHtml += '</tbody></table>';
