@@ -46,8 +46,10 @@
             <thead class="thead-dark">
             <tr>
                 <th>訂單編號</th>
-                <th>訂單日期</th>
+                <th>下單時間</th>
+                <th>預約取餐時間</th>
                 <th>總金額</th>
+                <th>付款狀態</th>
                 <th>訂單狀態</th>
                 <th>餐點資訊</th>
                 <th>操作</th>
@@ -57,8 +59,21 @@
             <tr th:each="orderVO : ${orderHistory}">
                 <td th:text="${orderVO.ordId}">訂單編號</td>
                 <td th:text="${#dates.format(orderVO.ordBuilddate, 'yyyy-MM-dd HH:mm:ss')}">訂單日期</td>
+                <td th:text="${#dates.format(orderVO.ordReserveTime, 'yyyy-MM-dd HH:mm')}">訂單日期</td>
                 <td th:text="${orderVO.ordAmount}">總金額</td>
-                <td th:text="${orderVO.ordStatus}">訂單狀態</td>
+                <td>
+				    <span th:if="${orderVO.ordPaymentStatus == 0}" th:text="'未付款'"></span>
+				    <span th:if="${orderVO.ordPaymentStatus == 1}" th:text="'已付款'"></span>
+				    <span th:if="${orderVO.ordPaymentStatus == 2}" th:text="'已申請退款'"></span>
+				    <span th:if="${orderVO.ordPaymentStatus == 3}" th:text="'退款完成'"></span>
+			    </td>
+                <td>
+				    <span th:if="${orderVO.ordStatus == 0}" th:text="'已接單'"></span>
+				    <span th:if="${orderVO.ordStatus == 1}" th:text="'餐點製作中'"></span>
+				    <span th:if="${orderVO.ordStatus == 2}" th:text="'餐點已完成'"></span>
+				    <span th:if="${orderVO.ordStatus == 3}" th:text="'餐點已領取'"></span>
+				    <span th:if="${orderVO.ordStatus == 4}" th:text="'訂單取消'"></span>
+				</td>
                 <td>
                     <table class="table table-sm">
                         <thead>
