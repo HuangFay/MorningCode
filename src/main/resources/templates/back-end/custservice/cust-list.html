@@ -2,35 +2,193 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>客服客戶列表</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>客服客戶列表</title>
 
-  <link rel="stylesheet" th:href="@{/css/index3.css}">
+	<!-- <link rel="stylesheet" th:href="@{/css/index3.css}"> -->
+	<link rel="stylesheet" href="/css/friendchat.css" type="text/css" />
 </head>
 
 <body>
-  <div class="main-container">
-    <div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+	<!--   <div class="main-container"> -->
+	<!-- <div th:replace="fragments/back-end-header-items :: sidebar1"></div> -->
+	<!-- </div> -->
+	<h3 id="statusOutput" class="statusOutput"></h3>
+	<input id="statusOutput_hidden" type="hidden" value="">
+	<div id="row"></div>
+	<div id="messagesArea" class="panel message-area"></div>
+	<div class="panel input-area">
+		<input id="message" class="text-field" type="text" placeholder="Message"
+			onkeydown="if (event.keyCode == 13) sendMessage();" />
+		<input type="submit" id="sendMessage" class="button" value="送出" onclick="sendMessage();" />
+		<!-- <input type="button" id="connect" class="button" value="Connect" onclick="connect();" />  -->
+		<!-- <input type="button" id="disconnect" class="button" value="Disconnect" onclick="disconnect();" /> -->
+	</div>
 
-  </div>
+	<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+	<script>
+		//var MyPoint = "/FriendWS/emp";
+		//var host = window.location.host;
+		//var path = window.location.pathname;
+		//var webCtx = path.substring(0, path.indexOf('/', 1));
+		//var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
+		//endPointURL = "ws://localhost:8080/FriendWS/emp";
+		//endPointURL = "ws://localhost:8081/CIA10206-Webapp3/FriendWS/" + self;
+		var MyPoint = "/CustServiceWS/emp";
+		var host = window.location.host;
+		var path = window.location.pathname;
+		var webCtx = path.substring(0, path.indexOf('/', 1));
+		var endPointURL = "ws://" + window.location.host + MyPoint;
+		console.log("endPointURL = " + endPointURL);
 
-  <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
-  <script>
-  
-  	// sidebar要用到的設定
-    $("a.aa").on("click", function () {
-      console.log(this);
 
-      var $li = $(this).closest("li");
-      $li.find("div.menu-item-1").slideToggle();
-      $li.siblings().find(".menu-item-1").slideUp();
-    });
+		var statusOutput = document.getElementById("statusOutput");
+		var statusOutputHidden = document.getElementById("statusOutput_hidden");
+		var messagesArea = document.getElementById("messagesArea");
+		var self = 'emp';
+		var webSocket;
 
-    function redirectTo(url) {
-      window.location.href = url;
-    }
-  </script>
+		function connect() {
+			// create a websocket
+			webSocket = new WebSocket(endPointURL);
+
+			webSocket.onopen = function (event) {
+				console.log("Connect Success!");
+				document.getElementById('sendMessage').disabled = false;
+				//document.getElementById('connect').disabled = true;
+				//document.getElementById('disconnect').disabled = false;
+			};
+
+			webSocket.onmessage = function (event) {
+				var jsonObj = JSON.parse(event.data);
+				if ("open" === jsonObj.type) {
+					refreshFriendList(jsonObj);
+				} else if ("history" === jsonObj.type) {
+					messagesArea.innerHTML = '';
+					var ul = document.createElement('ul');
+					ul.id = "area";
+					messagesArea.appendChild(ul);
+					// 這行的jsonObj.message是從redis撈出跟好友的歷史訊息，再parse成JSON格式處理
+					var messages = JSON.parse(jsonObj.message);
+					for (var i = 0; i < messages.length; i++) {
+						var historyData = JSON.parse(messages[i]);
+						var showMsg = historyData.message;
+						var li = document.createElement('li');
+						// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
+						historyData.sender === self ? li.className += 'me' : li.className += 'friend';
+						li.innerHTML = showMsg;
+						ul.appendChild(li);
+					}
+					messagesArea.scrollTop = messagesArea.scrollHeight;
+				} else if ("chat" === jsonObj.type) {
+					var li = document.createElement('li');
+					jsonObj.sender === self ? li.className += 'me' : li.className += 'friend';
+					li.innerHTML = jsonObj.message;
+					console.log(li);
+					document.getElementById("area").appendChild(li);
+					messagesArea.scrollTop = messagesArea.scrollHeight;
+				} else if ("close" === jsonObj.type) {
+					refreshFriendList(jsonObj);
+				}
+
+			};
+
+			webSocket.onclose = function (event) {
+				console.log("Disconnected!");
+			};
+		}
+
+		function sendMessage() {
+			var inputMessage = document.getElementById("message");
+			var friend = statusOutput.textContent;
+			var friendId = statusOutputHidden.value;
+			var message = inputMessage.value.trim();
+
+			if (message === "") {
+				//alert("Input a message");
+				inputMessage.focus();
+			} else if (friend === "") {
+				alert("Choose a friend");
+			} else {
+				var jsonObj = {
+					"type": "chat",
+					"sender": self,
+					"receiver": friendId,
+					"message": message
+				};
+				webSocket.send(JSON.stringify(jsonObj));
+				inputMessage.value = "";
+				inputMessage.focus();
+			}
+		}
+
+		// 有好友上線或離線就更新列表
+		function refreshFriendList(jsonObj) {
+			var friends = jsonObj.users;
+			var friendNames = jsonObj.usersNames;
+			var row = document.getElementById("row");
+			row.innerHTML = '';
+			for (var i = 0; i < friends.length; i++) {
+				if (friends[i] === self) { continue; }
+				row.innerHTML += '<div id=' + i + ' class="column" name="friendName" value=' + friends[i] + ' ><h2 value = ' + friends[i] + ' >' + friendNames[friends[i]] + '</h2></div>';
+			}
+			addListener();
+		}
+		// 註冊列表點擊事件並抓取好友名字以取得歷史訊息
+		function addListener() {
+			var container = document.getElementById("row");
+			container.addEventListener("click", function (e) {
+				var friend = e.srcElement.textContent;
+				var friendId = e.target.getAttribute("value");
+
+				updateFriendName(friend, friendId);
+				var jsonObj = {
+					"type": "history",
+					"sender": self,
+					"receiver": friendId,
+					"message": ""
+				};
+				webSocket.send(JSON.stringify(jsonObj));
+			});
+		}
+
+		function disconnect() {
+			webSocket.close();
+			document.getElementById('sendMessage').disabled = true;
+			document.getElementById('connect').disabled = false;
+			document.getElementById('disconnect').disabled = true;
+		}
+
+		function updateFriendName(name, id) {
+			statusOutput.innerHTML = name;
+			statusOutputHidden.value = id;
+		}
+
+
+
+		$(document).ready(function () {
+			connect();
+
+
+		});
+
+
+		// sidebar要用到的設定
+		$("a.aa").on("click", function () {
+			console.log(this);
+
+			var $li = $(this).closest("li");
+			$li.find("div.menu-item-1").slideToggle();
+			$li.siblings().find(".menu-item-1").slideUp();
+		});
+
+		var baseUrl = /*[[@{/}]]*/ '/';
+
+		function redirectTo(url) {
+			window.location.href = url;
+		}
+	</script>
 
 </body>
 
