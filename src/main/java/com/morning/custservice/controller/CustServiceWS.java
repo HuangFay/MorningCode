@@ -83,7 +83,7 @@ public class CustServiceWS {
 			Set<String> userNames = sessionsMap.keySet();
 			State stateMessage = new State("open", userName, userNames, usrNameMap);
 			String stateMessageJson = gson.toJson(stateMessage);
-			if ( empSession != null ) {
+			if ( empSession != null && empSession.isOpen() ) {
 				empSession.getAsyncRemote().sendText(stateMessageJson);
 			}
 			
@@ -132,10 +132,13 @@ public class CustServiceWS {
 	public void onClose(Session userSession, CloseReason reason) {
 		String userNameClose = null;
 		Set<String> userNames = sessionsMap.keySet();
+		
 		for (String userName : userNames) {
 			if (sessionsMap.get(userName).equals(userSession)) {
 				userNameClose = userName;
-				//sessionsMap.remove(userName);
+				if ( userName.equals("emp") ) {
+					sessionsMap.remove(userName);
+				}
 				break;
 			}
 		}

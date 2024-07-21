@@ -17,11 +17,11 @@
 
           
          
-          <button th:if="${session.memVO == null}" class="button" onclick="redirectTo(baseUrl + 'front-end/mem/signup')">
+          <button th:if="${session.memVO == null}" class="header_button" onclick="redirectTo(baseUrl + 'front-end/mem/signup')">
             <span class="login-register">登入/註冊</span>
           </button>
           <div class="dropdown" th:if="${session.memVO != null}" >
-           <button class="button" >
+           <button class="header_button" >
             <span class="login-register">會員中心</span>
           </button>
           
