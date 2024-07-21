@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Table;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -69,7 +70,10 @@ public class ResIdController {
 
 	@PostMapping("insert")
 	@ResponseBody
-	public Map<String, String> insert(HttpSession session, @Valid ResVO resVO, BindingResult result, ModelMap model) throws IOException {
+	public Map<String, String> insert(HttpSession session, @Valid @ModelAttribute ResVO resVO, BindingResult result, ModelMap model,
+									  @RequestParam(name = "tableTypeVO.tableId") Integer tableId)
+			throws IOException {
+
 		Map<String, String> response = new HashMap<>();
 
 		MemVO memVO = (MemVO) session.getAttribute("memVO");
@@ -78,9 +82,25 @@ public class ResIdController {
 			response.put("message", "未登入，請先註冊或登入。");
 			return response;
 		}
-
+//		System.out.println("tableid 是"+tableId);
+		TableTypeVO tableTypeVO = TableTypeSvc.getOneTableType(tableId);
+		resVO.setTableTypeVO(tableTypeVO);
+		System.out.println("ＶＯ是"+ memVO.toString()+"電話是"+memVO.getMemPhone());
 		resVO.setMemVO(memVO);
 		resVO.setReservationDate(LocalDateTime.now());
+		Integer tableuse=resVO.getReservationNum()/tableTypeVO.getTableType();
+
+		if(resVO.getReservationNum()%tableTypeVO.getTableType()!=0) {
+			tableuse++;
+		}
+		resVO.setReservationTable(tableuse);
+		System.out.println("計算出的桌數"+tableuse);
+
+//		System.out.println("tabletypeVO 等於 " + resVO.getTableTypeVO().toString());
+//		System.out.println("桌型的ＩＤ" + resVO.getTableTypeVO().getTableId().getClass().getName());
+//		System.out.println("人數多少" + resVO.getTableTypeVO().getTableType());
+//		System.out.println("選的時段ＩＤ" + resVO.getResTimeVO().getReservationTimeId());
+//		System.out.println("選的時段" + resVO.getResTimeVO().getReservationTime());
 
 		List<ResCVO> resCVOList = ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
 		List<SysArgVO> sysArgVOList2 = SysArgSvc.findByColumns("2persontable");
@@ -88,7 +108,7 @@ public class ResIdController {
 
 		if (!resCVOList.isEmpty()) {
 			ResCVO resCVO = resCVOList.get(0);
-			String argumentValue = resVO.getTableTypeVO().getTableId() == 1 ?
+			String argumentValue = resVO.getTableTypeVO().getTableType() == 2 ?
 					sysArgVOList2.get(0).getSysArgumentValue() :
 					sysArgVOList4.get(0).getSysArgumentValue();
 
@@ -114,7 +134,7 @@ public class ResIdController {
 			ResCSvc.addRes(resCaddVO);
 			resCVOList = ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
 			ResCVO resCVO = resCVOList.get(0);
-			String argumentValue = resVO.getTableTypeVO().getTableId() == 1 ?
+			String argumentValue = resVO.getTableTypeVO().getTableType() == 2 ?
 					sysArgVOList2.get(0).getSysArgumentValue() :
 					sysArgVOList4.get(0).getSysArgumentValue();
 
@@ -141,6 +161,7 @@ public class ResIdController {
 
 		return response;
 	}
+
 
 
 	//--------------------------------------------------------------------
