@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>訂位預約</title>
-    <link rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -49,7 +49,7 @@
         }
 
         .container {
-            margin-top: 150px; /* 新增的 CSS 屬性 */
+            margin-top: 150px;
         }
     </style>
     <script>
@@ -62,68 +62,100 @@
 </head>
 <body>
 
-    <div class="container">
+<div class="container">
     <div th:replace="fragments/header-items :: navigation"></div>
-    	<div class= "reserve">
+    <div class="reserve">
         <h1>MorningCode訂位</h1>
         <p>請填寫以下表單來預訂您的位置。</p>
-        <form th:action="@{insert}" method="post" th:object="${resVO}" enctype="multipart/form-data">
-       
-             <div>
-                <label for="memName">姓名:</label> 
+        <form id="reservationForm" th:action="@{insert}" method="post" th:object="${resVO}" enctype="multipart/form-data">
+            <div>
+                <label for="memName">姓名:</label>
                 <input type="text" id="memName" name="memName" th:value="${memName}" readonly />
-                 <input type="hidden" th:field="*{memVO.memNo}">
+                <input type="hidden" th:field="*{memVO.memNo}">
             </div>
             <label for="phone">電話號碼:</label>
             <input type="tel" th:field="*{reservationPhone}" id="phone" name="phone"  required>
-            
+
             <label for="date">日期:</label>
             <input type="date" th:field="*{reservationEatdate}" id="date" name="date" required>
-            
+
             <label for="time">時段:</label>
             <select th:field="*{resTimeVO.reservationTimeId}">
                 <option th:each="resTimeVO,iterStat : ${resTimeListData}" th:value="${resTimeVO.reservationTimeId}" th:text="${resTimeVO.reservationTime}">
-<!--                 th:if="${10<iterStat.index &&  iterStat.index< 31}"-->
                 </option>
             </select>
-            
+
             <label for="people">人數:</label>
             <input type="number" th:field="*{reservationNum}" id="people" name="people" min="0" value="0" required>
-            
+
             <label for="people">希望桌子數量:</label>
             <input type="number" th:field="*{reservationTable}" id="table" name="table" min="0" value="0" required>
-            
+
             <label for="name">桌型人數:</label>
             <select th:field="*{tableTypeVO.tableId}">
-                <option th:each="tableTypeVO : ${tableTypeListData}" th:value="${tableTypeVO.tableId}" th:text="${tableTypeVO.tableType}" id="name"  > </option>
+                <option th:each="tableTypeVO : ${tableTypeListData}" th:value="${tableTypeVO.tableId}" th:text="${tableTypeVO.tableType}" id="name"> </option>
             </select>
-            
+
             <label for="notes">備註:</label>
             <textarea id="notes" th:field="*{reservationNote}" name="notes" rows="4"></textarea>
-            
-            <button  class="submit" type="submit">提交訂位</button>
+
+            <button class="submit" type="submit">提交訂位</button>
         </form>
-    	</div>
     </div>
-    <script th:inline="javascript">
-        var baseUrl = /*[[@{/}]]*/ '/';
-        document.addEventListener("DOMContentLoaded", function() {
-            var today = new Date();
-            today.setDate(today.getDate() + 1); // 明天
-            var maxDate = new Date();
-            maxDate.setDate(today.getDate() + 30); // 明天的30天后
+</div>
+<script th:inline="javascript">
+    var baseUrl = /*[[@{/}]]*/ '/';
+    document.addEventListener("DOMContentLoaded", function () {
+        var today = new Date();
+        today.setDate(today.getDate() + 1);
+        var maxDate = new Date();
+        maxDate.setDate(today.getDate() + 30);
 
-            var tomorrow = today.toISOString().split('T')[0];
-            var maxLimit = maxDate.toISOString().split('T')[0];
+        var tomorrow = today.toISOString().split('T')[0];
+        var maxLimit = maxDate.toISOString().split('T')[0];
 
-            var dateInput = document.getElementById("date");
-            dateInput.setAttribute("min", tomorrow);
-            dateInput.setAttribute("max", maxLimit);
-            dateInput.value = tomorrow; // 預設選項為明天
-        });
-        function redirectTo(url) {
-            window.location.href = url;
-        }
-    </script>
+        var dateInput = document.getElementById("date");
+        dateInput.setAttribute("min", tomorrow);
+        dateInput.setAttribute("max", maxLimit);
+        dateInput.value = tomorrow;
+    });
+
+    function redirectTo(url) {
+        window.location.href = url;
+    }
+
+    document.getElementById("reservationForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        var form = event.target;
+        var formData = new FormData(form);
+
+        fetch(form.action, {
+            method: "POST",
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    Swal.fire({
+                        icon: "success",
+                        title: "訂位成功",
+                        text: data.message,
+                        confirmButtonText: "確定"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = baseUrl + "index2";
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "訂位失敗",
+                        text: data.message,
+                        confirmButtonText: "確定"
+                    });
+                }
+            });
+    });
+</script>
 </body>
 </html>
