@@ -51,6 +51,58 @@
 					});
 </script>
 <style type="text/css">
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 32px;
+}
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 15px; /* 搜尋框與表格的距離 */
+}
+
+#example {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#example th, #example td {
+    border: 1px solid #ddd;
+    padding: 8px 10px;
+    text-align: center;
+    background-color: #fff; /* 設置所有表格內容背景為白色 */
+    
+}
+
+#example th {
+    background-color: #f2f2f2;
+    
+}
+#example td {
+    background-color: #fff; !important /* 設置所有表格內容背景為白色 */
+    
+}
+:root {
+    --primary-color: #000;
+    --secondary-color: #fff;
+    --dt-row-selected: 255, 255, 255; /* 覆蓋選中行背景顏色 */
+    --dt-row-selected-text: 0, 0, 0; /* 覆蓋選中行文本顏色 */
+    --dt-row-selected-link: 0, 0, 0; /* 覆蓋選中行鏈接顏色 */
+    --dt-row-stripe: 255, 255, 255; /* 覆蓋條紋行背景顏色 */
+    --dt-row-hover: 255, 255, 255; /* 覆蓋懸停行背景顏色 */
+    --dt-column-ordering: 0, 0, 0;
+    --dt-html-background: white;
+    --dt-row-default-bg: 245, 245, 245; /* 行的默認背景顏色 */
+    --dt-row-hover-bg: 255, 255, 255; /* 滑鼠指向行的背景顏色 */
+    --dt-html-background: white;
+}
+table.dataTable.display>tbody>tr.odd>.sorting_1, table.dataTable.order-column.stripe>tbody>tr.odd>.sorting_1 {
+
+    box-shadow: none;
+}
+
+
 .right-pane {
 	width: 77%; /* 调整頁面的寬度 */
 	margin-right: 20px;
@@ -64,7 +116,7 @@
 		<div class="right-pane">
 			<div align="center">
 
-				<h1>所有訂位時段 - listAllEmp.html</h1>
+				<h1>所有訂位時段</h1>
 				
 			</div>
 
