@@ -6,82 +6,90 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>所有會員資料 </title>
 <link rel="stylesheet" th:href="@{/css/index3.css}">
-
+<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
 
 <!-- dataTables -->
 <script
 	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
-<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+
 
 <!-- dataTables -->
 
 
 <style>
-
-table {
-	background: #f5f5f5;
-	border-collapse: separate;
-	box-shadow: inset 0 1px 0 #fff;
-	font-size: 12px;
-	line-height: 15px;
-	text-align: left;
-	max-width: 600px;
-	border-radius: 15px;
-	overflow: hidden;
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 32px;
+}
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 15px; /* 搜尋框與表格的距離 */
+}
+.dataTables_length{
+	margin: 15px 0; 
 }
 
-th{
-min-width:70px;
+#example {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 讓表格固定 */
 }
-td {
-	
-	max-width:115px;
-	min-width:65px;
-  
-    overflow: hidden; 
-    text-overflow: ellipsis; 
-}
-table th, table td {
-    border: 1px solid #ddd; /* 表格邊框 */
-    padding: 8px;
-    text-align: center; /* 文字居中 */
-}
-th {
-	background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
-	border-left: 1px solid #555;
-	border-right: 1px solid #777;
-	border-top: 1px solid #555;
-	border-bottom: 1px solid #333;
-	box-shadow: inset 0 1px 0 #999;
-	color: #fff;
-	font-weight: bold;
-	padding: 10px 15px;
-	position: relative;
-	text-shadow: 0 1px 0 #000;	
-}	
 
-th:after {
-	background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,.08));
-	content: '';
-	display: block;
-	height: 25%;
-	left: 0;
-	margin: 1px 0 0 0;
-	position: absolute;
-	top: 25%;
-	width: 100%;
+#example th, #example td {
+    border: 1px solid #ddd;
+    text-align: center;
+    background-color: #fff; /* 設置所有表格內容背景為白色 */
+    overflow:hidden;
+	font-size: 0.8rem;
+	text-overflow: ellipsis; /* 顯示省略號 */
+
+    
+}
+
+#example th {
+    background-color: #f2f2f2;
+    
+}
+#example td {
+    background-color: #fff; !important /* 設置所有表格內容背景為白色 */
+    
+}
+
+
+
+:root {
+    --primary-color: #000;
+    --secondary-color: #fff;
+    --dt-row-selected: 255, 255, 255; /* 覆蓋選中行背景顏色 */
+    --dt-row-selected-text: 0, 0, 0; /* 覆蓋選中行文本顏色 */
+    --dt-row-selected-link: 0, 0, 0; /* 覆蓋選中行鏈接顏色 */
+    --dt-row-stripe: 255, 255, 255; /* 覆蓋條紋行背景顏色 */
+    --dt-row-hover: 255, 255, 255; /* 覆蓋懸停行背景顏色 */
+    --dt-column-ordering: 0, 0, 0;
+    --dt-html-background: white;
+    --dt-row-default-bg: 245, 245, 245; /* 行的默認背景顏色 */
+    --dt-row-hover-bg: 255, 255, 255; /* 滑鼠指向行的背景顏色 */
+    --dt-html-background: white;
+}
+table.dataTable.display>tbody>tr.odd>.sorting_1, table.dataTable.order-column.stripe>tbody>tr.odd>.sorting_1 {
+
+    box-shadow: none;
+}
+
+#table-controls {
+	display: flex; 
+	justify-content: flex-end;
 }
 
 
 .right-pane {
 	width: 77%; /* 调整頁面的寬度 */
- 	margin-right: 20px; 
-
+	margin-right: 20px;
+	text-align: center;
 	
-}
-
 
    img.small {
         width: 30px; 
@@ -105,13 +113,13 @@ th:after {
 				<img
 					th:src="@{/images/hihihi.gif}" class="small" ><label th:text="${success}"></label>
 			</h1>
-		</div>
+		
 		
 		
 					<!-- 新增會員按鈕 -->
-	<div id="table-controls" style="display: flex; ">
+	<div id="table-controls">
     <div id="addMemButton" class="addmem">
-       <a th:href="@{/mem/addMem}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">新增會員</a>
+       <a th:href="@{/mem/addMem}" style="display: inline-block; padding: 10px 20px; background-color: #a9b7aa; font-weight: bold; color: white; text-decoration: none; border-radius: 5px;">+ 新增會員</a>
     </div>
 </div>
 		
@@ -132,7 +140,7 @@ th:after {
 				<th>性別</th>
 				<th>生日</th>
 				<th>驗證</th>
-				<th>照片</th>
+				<th style="width: 75px;">照片</th>
 	
 
 				<th>功能</th>
@@ -159,7 +167,7 @@ th:after {
 					 <span th:if="${memVO.memVerified == 1}">已驗證</span></td>
 					
 					
-					<td><img th:src="@{/mem/DBGifReader1} + '?memno=' + ${memVO.memNo}" width="100px" height="100px" ></td>
+					<td><img th:src="@{/mem/DBGifReader1} + '?memno=' + ${memVO.memNo}" width="75px" ></td>
 					
 					<td>
 						<form method="post" th:action="@{/mem/getOne_For_Update}"
@@ -180,6 +188,7 @@ th:after {
 			</th:block>
 		</tbody>
 		</table>
+		</div>
 		<!-- end -->
 		</div>
 </div>		
@@ -188,54 +197,44 @@ th:after {
 </body>
 
 <script th:inline="javascript">
-$(document).ready(
-		function() {
+$(document).ready(function() {
+    $("a.aa").on("click", function() {
+        var $li = $(this).closest("li");
+        $li.find("div.menu-item-1").slideToggle();
+        $li.siblings().find(".menu-item-1").slideUp();
+    });
 
-$("a.aa").on("click", function() {
-	console.log(this);
-	var $li = $(this).closest("li");
-	$li.find("div.menu-item-1").slideToggle();
-	$li.siblings().find(".menu-item-1").slideUp();
+    function redirectTo(url) {
+        window.location.href = url;
+    }
+
+    $('#example').DataTable({
+        "lengthMenu": [3, 5, 10, 20, 50, 100],
+        "searching": false, // 搜尋功能, 預設是開啟
+        "paging": true, // 分頁功能, 預設是開啟
+        "ordering": true, // 排序功能, 預設是開啟
+        "language": {
+            "processing": "處理中...",
+            "loadingRecords": "載入中...",
+            "lengthMenu": "顯示 _MENU_ 筆結果",
+            "zeroRecords": "沒有符合的結果",
+            "info": "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+            "infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
+            "infoFiltered": "(從 _MAX_ 筆結果中過濾)",
+            "infoPostFix": "",
+            "search": "搜尋:",
+            "paginate": {
+                "first": "第一頁",
+                "previous": "上一頁",
+                "next": "下一頁",
+                "last": "最後一頁"
+            },
+            "aria": {
+                "sortAscending": ": 升冪排列",
+                "sortDescending": ": 降冪排列"
+            }
+        }
+    });
 });
-
-function redirectTo(url) {
-	window.location.href = url;
-}
-
-
-new DataTable('#example', {
-	
-	"lengthMenu" : [ 3, 5, 10, 20, 50,
-			100 ],
-	"searching" : false, //搜尋功能, 預設是開啟
-	"paging" : true, //分頁功能, 預設是開啟
-	"ordering" : true, //排序功能, 預設是開啟
-	"language" : {
-		"processing" : "處理中...",
-		"loadingRecords" : "載入中...",
-		"lengthMenu" : "",
-		"zeroRecords" : "沒有符合的結果",
-		"info" : "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
-		"infoEmpty" : "顯示第 0 至 0 筆結果，共 0 筆",
-		"infoFiltered" : "(從 _MAX_ 筆結果中過濾)",
-		"infoPostFix" : "",
-		"search" : "搜尋:",
-		"paginate" : {
-			"first" : "第一頁",
-			"previous" : "上一頁",
-			"next" : "下一頁",
-			"last" : "最後一頁"
-		},
-		"aria" : {
-			"sortAscending" : ": 升冪排列",
-			"sortDescending" : ": 降冪排列"
-		}
-	}
-});
-
-
-
-
-		});
 </script>
 </html>
