@@ -192,13 +192,18 @@
               </li>
             </th:block>
           </ul>
-          <div class="reply-form">
-            <h5>新增回覆</h5>
-            <div class="form-group">
-              <textarea id="reply_content" class="form-control" rows="3"></textarea>
-            </div>
-            <button type="button" class="btn btn-primary" id="btn_submit_reply"
-              th:data-postId="${forumPostVO.postId}">送出</button>
+          <div th:if="${memVO != null}">
+	          <div class="reply-form">
+	            <h5>新增回覆</h5>
+	            <div class="form-group">
+	              <textarea id="reply_content" class="form-control" rows="3"></textarea>
+	            </div>
+	            <button type="button" class="btn btn-primary" id="btn_submit_reply"
+	              th:data-postId="${forumPostVO.postId}">送出</button>
+	          </div>
+          </div>
+          <div th:unless="${memVO != null}">
+          	<p>請登入以回覆</p>
           </div>
         </div>
       </div>

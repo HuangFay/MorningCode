@@ -20,8 +20,18 @@
 
     main {
       position: absolute;
-      top: 10rem;
+      /* top: 8rem; */
       margin: auto 7rem;
+      
+      margin-top: 150px;
+    }
+    
+    main div#button-container {
+    	/* text-align: right; */
+    }
+    
+    main button#btn_add_post {
+      margin-bottom: 8px;
     }
 
     .article {
@@ -122,9 +132,23 @@
     .show>.btn-primary.dropdown-toggle:focus {
       box-shadow: 0 0 0 0.2rem rgba(165, 42, 42, 0.5);
     }
+
     .header_button{
-    text-decoration: none;
+      text-decoration: none;
     }
+    
+    .btn-coffee {
+      background-color: #6f4e37;
+      color: white;
+    }
+    .btn-coffee:hover {
+      background-color: #5a3e2e;
+      color: white;
+    }
+    .btn-coffee i {
+      margin-right: 0.5rem;
+    }
+    
   </style>
 </head>
 
@@ -134,7 +158,10 @@
 
     <main>
       <!-- <h1 th:text="${successResult}"></h1> -->
-      <button onclick="redirectTo(baseUrl + 'forum/addPost')">新增文章</button>
+      <div id="button-container" th:if="${memVO != null}">
+        <button type="button" id="btn_add_post" class="btn btn-coffee btn-sm" onclick="redirectTo(baseUrl + 'forum/addPost')"><i class="fas fa-plus"></i>新增文章</button>
+      	<!-- <button id="btn_add_post" onclick="redirectTo(baseUrl + 'forum/addPost')">新增文章</button> -->
+      </div>
       <th:block th:each="forumPostVO : ${forumPostListData}">
         <article class="article">
           <div class="content_area">
