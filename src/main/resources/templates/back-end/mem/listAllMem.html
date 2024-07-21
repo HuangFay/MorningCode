@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>所有會員資料 </title>
+<title>所有會員資料</title>
 <link rel="stylesheet" th:href="@{/css/index3.css}">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 <!-- dataTables -->
@@ -18,8 +19,8 @@
 <!-- dataTables -->
 
 
-<style>
 
+<style>
 table {
 	background: #f5f5f5;
 	border-collapse: separate;
@@ -32,24 +33,26 @@ table {
 	overflow: hidden;
 }
 
-th{
-min-width:70px;
-}
-td {
-	
-	max-width:115px;
-	min-width:65px;
-  
-    overflow: hidden; 
-    text-overflow: ellipsis; 
-}
-table th, table td {
-    border: 1px solid #ddd; /* 表格邊框 */
-    padding: 8px;
-    text-align: center; /* 文字居中 */
-}
 th {
-	background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
+	min-width: 70px;
+}
+
+td {
+	max-width: 115px;
+	min-width: 65px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+table th, table td {
+	border: 1px solid #ddd; /* 表格邊框 */
+	padding: 8px;
+	text-align: center; /* 文字居中 */
+}
+
+th {
+	background: url(https://jackrugile.com/images/misc/noise-diagonal.png),
+		linear-gradient(#777, #444);
 	border-left: 1px solid #555;
 	border-right: 1px solid #777;
 	border-top: 1px solid #555;
@@ -59,11 +62,12 @@ th {
 	font-weight: bold;
 	padding: 10px 15px;
 	position: relative;
-	text-shadow: 0 1px 0 #000;	
-}	
+	text-shadow: 0 1px 0 #000;
+}
 
 th:after {
-	background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,.08));
+	background: linear-gradient(rgba(255, 255, 255, 0),
+		rgba(255, 255, 255, .08));
 	content: '';
 	display: block;
 	height: 25%;
@@ -74,115 +78,105 @@ th:after {
 	width: 100%;
 }
 
-
 .right-pane {
 	width: 77%; /* 调整頁面的寬度 */
- 	margin-right: 20px; 
-
-	
+	margin-right: 20px;
 }
 
-
-   img.small {
-        width: 30px; 
-        height: 30px; 
-    }
-
+img.small {
+	width: 30px;
+	height: 30px;
+}
 </style>
 </head>
 <body>
-<div class="main-container">
+	<div class="main-container">
 		<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
 
 
 
 
 		<div class="right-pane">
-		<!-- star -->
-		<div align="center">
-		
-			<h1>所有會員資料 
-				<img
-					th:src="@{/images/hihihi.gif}" class="small" ><label th:text="${success}"></label>
-			</h1>
-		</div>
-		
-		
-					<!-- 新增會員按鈕 -->
-	<div id="table-controls" style="display: flex; ">
-    <div id="addMemButton" class="addmem">
-       <a th:href="@{/mem/addMem}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">新增會員</a>
-    </div>
-</div>
-		
-		
-		
-		
-		<table id="example" class="display" >
-		<thead>
-		<tr style="background-color: #CCCCFF">
-				
-				<th>會員編號</th>
-				<th>會員帳號</th>
-				<th>會員姓名</th>
-				<th>員工密碼</th>
-				
-				<th>電話</th>
-				<th>身分證</th>
-				<th>性別</th>
-				<th>生日</th>
-				<th>驗證</th>
-				<th>照片</th>
-	
+			<!-- star -->
+			<div align="center">
 
-				<th>功能</th>
-			
-			</tr>
-		</thead>
-			
-		<tbody>
-			<th:block th:each="memVO : ${memListData}">
-				<tr>
-					
-					<td th:text="${memVO.memNo}"></td>
-					<td th:text="${memVO.memEmail}"></td>
-					<td th:text="${memVO.memName}"></td>
-					<td th:text="${memVO.memPassword}"></td>
-				
-					<td th:text="${memVO.memPhone}"></td>
-					<td th:text="${memVO.memUid}"></td>
-					<td th:text="${memVO.memSex}"></td>
-					<td th:text="${memVO.memDob}"></td>
-					
-					
-					<td><span th:if="${memVO.memVerified == 0}">未驗證</span>
-					 <span th:if="${memVO.memVerified == 1}">已驗證</span></td>
-					
-					
-					<td><img th:src="@{/mem/DBGifReader1} + '?memno=' + ${memVO.memNo}" width="100px" height="100px" ></td>
-					
-					<td>
-						<form method="post" th:action="@{/mem/getOne_For_Update}"
-							style="margin-bottom: 0px;">
-							<input type="submit" value="修改"> <input type="hidden"
-								name="memNo" th:value="${memVO.memNo}">
-						</form>
+				<h1>
+					所有會員資料 <img th:src="@{/images/hihihi.gif}" class="small"><label
+						th:text="${success}"></label>
+				</h1>
+			</div>
 
-					
-						<form method="post" th:action="@{/mem/delete}"
-							style="margin-bottom: 0px;">
-							<input type="submit" value="刪除"> <input type="hidden"
-								name="memNo" th:value="${memVO.memNo}">
-						</form>
-					</td>
-					
-				</tr>
-			</th:block>
-		</tbody>
-		</table>
-		<!-- end -->
+
+			<!-- 新增會員按鈕 -->
+			<div id="table-controls" style="display: flex;">
+				<div id="addMemButton" class="addmem">
+					<a th:href="@{/mem/addMem}"
+						style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">新增會員</a>
+				</div>
+			</div>
+
+
+
+
+			<table id="example" class="display">
+				<thead>
+					<tr style="background-color: #CCCCFF">
+
+						<th>會員編號</th>
+						<th>會員帳號</th>
+						<th>會員姓名</th>
+						<th>員工密碼</th>
+
+						<th>電話</th>
+						<th>身分證</th>
+						<th>性別</th>
+						<th>生日</th>
+						<th>驗證</th>
+						<th>照片</th>
+
+
+						<th>功能</th>
+
+					</tr>
+				</thead>
+
+				<tbody>
+					<th:block th:each="memVO : ${memListData}">
+						<tr>
+
+							<td th:text="${memVO.memNo}"></td>
+							<td th:text="${memVO.memEmail}"></td>
+							<td th:text="${memVO.memName}"></td>
+							<td th:text="${memVO.memPassword}"></td>
+
+							<td th:text="${memVO.memPhone}"></td>
+							<td th:text="${memVO.memUid}"></td>
+							<td th:text="${memVO.memSex}"></td>
+							<td th:text="${memVO.memDob}"></td>
+
+
+							<td><span th:if="${memVO.memVerified == 0}">未驗證</span> <span
+								th:if="${memVO.memVerified == 1}">已驗證</span></td>
+
+
+							<td><img
+								th:src="@{/mem/DBGifReader1} + '?memno=' + ${memVO.memNo}"
+								width="100px" height="100px"></td>
+
+							<td>
+								<button th:onclick="'editMem(' + ${memVO.memNo} + ')'"
+									class="btn btn-primary btn-sm">修改</button>
+
+
+							</td>
+
+						</tr>
+					</th:block>
+				</tbody>
+			</table>
+			<!-- end -->
 		</div>
-</div>		
+	</div>
 
 
 </body>
@@ -237,5 +231,111 @@ new DataTable('#example', {
 
 
 		});
+		
+		
+		
+		<!--swal-->
+function editMem(memNo) {
+    $.get("/mem/getOne_For_Update", { memNo: memNo })
+        .done(function(memVO) {
+            if (memVO) {
+                Swal.fire({
+                    title: '修改會員資料',
+                    html: `<form id="editMemForm">
+                            <input type="hidden" id="editMemNo" value="${memVO.memNo}">
+                            <label>會員姓名</label>
+                            <input id="editMemName" class="swal2-input" type="text" value="${memVO.memName}" placeholder="會員姓名">
+                            <label>會員帳號</label>
+                            <input id="editMemEmail" class="swal2-input" type="email" value="${memVO.memEmail}" placeholder="會員帳號">
+                            <label>會員密碼</label>
+                            <input id="editMemPassword" class="swal2-input" type="password" value="${memVO.memPassword}" placeholder="會員密碼" readOnly/>
+                            <label>會員地址</label>
+                            <input id="editMemAddress" class="swal2-input" type="text" value="${memVO.memAddress}" placeholder="會員地址">
+                            <label>會員電話</label>
+                            <input id="editMemPhone" class="swal2-input" type="text" value="${memVO.memPhone}" placeholder="會員電話">
+                            <label>會員身分證</label>
+                            <input id="editMemUid" class="swal2-input" type="text" value="${memVO.memUid}" placeholder="會員身分證">
+                            <label>會員生日</label>
+                            <input id="editMemDob" class="swal2-input" type="date" value="${memVO.memDob}" placeholder="會員生日">
+                          	<br><br>
+                            <label>會員性別</label>
+                            <select id="editMemSex" class="swal2-input">
+                                <option value="M" ${memVO.memSex === 'M' ? 'selected' : ''}>男</option>
+                                <option value="F" ${memVO.memSex === 'F' ? 'selected' : ''}>女</option>
+                            </select>
+                              <label>會員狀態</label>
+                            <select id="editMemVerified" class="swal2-input">
+                                <option value="0" ${memVO.memVerified === 0 ? 'selected' : ''}>未驗證</option>
+                                <option value="1" ${memVO.memVerified === 1 ? 'selected' : ''}>已驗證</option>
+                            </select>
+                          </form>`,
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    confirmButtonText: '修改',
+                    cancelButtonText: '取消',
+                    preConfirm: () => {
+                        return {
+                            memNo: document.getElementById('editMemNo').value,
+                            memName: document.getElementById('editMemName').value,
+                            memEmail: document.getElementById('editMemEmail').value,
+                            memPassword: document.getElementById('editMemPassword').value,
+                            memAddress: document.getElementById('editMemAddress').value,
+                            memPhone: document.getElementById('editMemPhone').value,
+                            memDob: document.getElementById('editMemDob').value,
+                            memUid: document.getElementById('editMemUid').value,
+                            memSex: document.getElementById('editMemSex').value,
+                            memVerified: document.getElementById('editMemVerified').value
+                        }
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const memData = result.value;
+                        $.ajax({
+                            url: '/mem/update',
+                            type: 'POST',
+                            data: memData,
+                            success: function(response) {
+                                if (response === 'success') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '會員資料修改成功!',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: '會員資料修改失敗',
+                                        text: response
+                                    });
+                                }
+                            },
+                            error: function() {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '會員資料修改失敗!'
+                                });
+                            }
+                        });
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: '找不到會員',
+                    text: '無法獲取會員信息'
+                });
+            }
+        })
+        .fail(function() {
+            Swal.fire({
+                icon: 'error',
+                title: '錯誤',
+                text: '無法獲取會員信息'
+            });
+        });
+}
 </script>
 </html>
