@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>訂單資料管理 - select_page.html</title>
+    <title>後台查詢訂單</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -16,7 +16,7 @@
             color: #fff;
         }
         .container {
-            margin-top: 80px;
+            margin-top: 10px;
         }
         .card {
             border: none;
@@ -40,21 +40,28 @@
             background-color: #004494;
             border-color: #004494;
         }
+        .more-query {
+            display: none;
+        }
     </style>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-md navbar-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" th:href="@{/}">返回首頁</a>
-        <h2 class="text-white mx-auto">訂單資料管理 - select_page.html</h2>
+        <a class="navbar-brand" th:href="@{/index3}">返回首頁</a>
+        <h2 class="text-white mx-auto">查詢訂單</h2>
     </div>
 </nav>
 
 <div class="container mt-5 pt-5">
     <h4 class="mb-4">資料查詢:</h4>
     <!-- 錯誤表列 -->
-    <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+    <div class="alert alert-danger" th:if="${errorMessages}">
+        <ul>
+            <li th:each="error : ${errorMessages}" th:text="${error}"></li>
+        </ul>
+    </div>
 
     <div class="row">
         <div class="col-md-6">
@@ -92,7 +99,7 @@
                         <li class="list-group-item">
                             <form method="post" th:action="@{getOne_For_Display}">
                                 <div class="form-group">
-                                    <label for="ordStatusSelect">選擇訂單做餐狀態:</label>
+                                    <label for="ordStatusSelect">選擇製作狀態:</label>
                                     <select class="form-control" id="ordStatusSelect" name="ordId">
                                         <option value="" selected disabled>請選擇</option>
                                         <option th:each="orderVO : ${orderListData}" th:value="${orderVO.ordId}" th:text="${orderVO.ordStatus == 0 ? '已接單' : orderVO.ordStatus == 1 ? '餐點製作中' : orderVO.ordStatus == 2 ? '餐點已完成' : orderVO.ordStatus == 3 ? '餐點已領取' : '訂單取消'}"></option>
@@ -100,6 +107,46 @@
                                 </div>
                                 <button type="submit" class="btn btn-primary">送出</button>
                             </form>
+                        </li>
+                        <li class="list-group-item">
+                            <form method="post" th:action="@{getOne_For_Display}">
+                                <div class="form-group">
+                                    <label for="ordPaymentStatusSelect">選擇付款狀態:</label>
+                                    <select class="form-control" id="ordPaymentStatusSelect" name="ordId">
+                                        <option value="" selected disabled>請選擇</option>
+                                        <option th:each="orderVO : ${orderListData}" th:value="${orderVO.ordId}" th:text="${orderVO.ordPaymentStatus == 0 ? '未付款' : orderVO.ordPaymentStatus == 1 ? '已付款' : orderVO.ordPaymentStatus == 2 ? '已申請退款' : '退款完成'}"></option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">送出</button>
+                            </form>
+                        </li>
+                        
+                        <li class="list-group-item">
+                            <button class="btn btn-secondary mb-2" id="moreQueryBtn">顯示更多查詢</button>
+                            <div id="moreQuery" class="more-query">
+                                <form method="post" th:action="@{listOrders_ByCompositeQuery}">
+                                    <div class="form-group">
+                                        <label for="ordStatusComposite">訂單狀態:</label>
+                                        <select class="form-control" id="ordStatusComposite" name="ordStatus">
+                                            <option value="" selected disabled>請選擇</option>
+                                            <option value="0">已接單</option>
+                                            <option value="1">餐點製作中</option>
+                                            <option value="2">餐點已完成</option>
+                                            <option value="3">餐點已領取</option>
+                                            <option value="4">訂單取消</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ordDateStart">訂單成立日期（起）:</label>
+                                        <input type="date" class="form-control" id="ordDateStart" name="ordDateStart">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ordDateEnd">訂單成立日期（迄）:</label>
+                                        <input type="date" class="form-control" id="ordDateEnd" name="ordDateEnd">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">送出</button>
+                                </form>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -131,26 +178,15 @@
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    function displayResultPopup(form) {
-        const formData = $(form).serializeArray();
-        let queryData = {};
-        formData.forEach(item => {
-            queryData[item.name] = item.value;
+    $(document).ready(function(){
+        $('#ordStatusComposite').change(function(){
+            var selectedStatus = $(this).children("option:selected").val();
+            console.log("Selected status: " + selectedStatus);
         });
-
-        // 模拟查询结果弹出窗口
-        Swal.fire({
-            title: '查询结果',
-            html: `
-                <p>訂單編號: ${queryData.ordId}</p>
-                <p>這裡是查詢結果的詳細信息...</p>
-            `,
-            icon: 'info',
-            showCloseButton: true,
+        $('#moreQueryBtn').click(function() {
+            $('#moreQuery').toggle();
         });
-
-        return false; // 阻止表单实际提交
-    }
+    });
 </script>
 </body>
 </html>
