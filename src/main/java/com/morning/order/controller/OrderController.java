@@ -34,6 +34,7 @@ import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
 import com.morning.order.model.OrderService;
 import com.morning.order.model.OrderVO;
+import com.morning.ordd.model.OrddService;
 import com.morning.ordd.model.OrddVO;
 import com.morning.cart.model.CartService;
 import com.morning.cart.model.CartVO;
@@ -51,6 +52,9 @@ public class OrderController {
 
     @Autowired
     CartService cartSvc;
+    
+    @Autowired
+    OrddService orddSvc;
 
     @GetMapping("addOrder")
     public String addOrder(ModelMap model) {
@@ -255,5 +259,5 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
         }
     }
-
+    
 }

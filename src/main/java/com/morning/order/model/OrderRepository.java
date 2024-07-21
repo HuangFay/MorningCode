@@ -15,5 +15,6 @@ public interface OrderRepository extends JpaRepository<OrderVO, Integer> {
 
     @Query("FROM OrderVO o WHERE o.memVO.memNo = ?1 ORDER BY o.ordId")
     List<OrderVO> findByMemNo(Integer memNo);
+   
     
 }
