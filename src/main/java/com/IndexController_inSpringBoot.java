@@ -415,11 +415,14 @@ public class IndexController_inSpringBoot   {
        // 从会话中获取当前登录员工
        EmpVO loggedInEmp = (EmpVO) session.getAttribute("empVO");
 
+
        if (loggedInEmp != null) {
            Integer empId = loggedInEmp.getEmpId();
            List<LeaveVO> leaveListData = leaveSvc.getLeavesByEmpId(empId);
+           List<LeaveVO> leaveListForAssignee = leaveSvc.getLeaveAssigneeId(empId);
            model.addAttribute("leaveListData", leaveListData);
            model.addAttribute("loggedInEmp", loggedInEmp); // 增加這一行來傳遞登入員工資料到前端
+           model.addAttribute("leaveListForAssignee", leaveListForAssignee);
 
        }
 

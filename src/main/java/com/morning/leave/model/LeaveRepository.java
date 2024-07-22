@@ -20,6 +20,9 @@ public interface LeaveRepository extends JpaRepository<LeaveVO, Integer> {
 	@Query(value = "delete from `leave` where leave_id =?1", nativeQuery = true)
 	void deleteByLeaveId(int leaveId);
 
+	@Query("SELECT l FROM LeaveVO l WHERE l.leaveAssigneeId.empId = :empId")
+	List<LeaveVO> findByAssignEmpId(Integer empId);
+
 
 	
 	
