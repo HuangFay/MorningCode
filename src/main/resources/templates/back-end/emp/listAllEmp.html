@@ -17,28 +17,56 @@
 
 
 <style>
-table {
-	background: #f5f5f5;
-	border-collapse: collapse; /* 邊框重疊處單一化 */
-	font-size: 14px;
-	min-width: 1000px;
-	
-
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 32px;
 }
-
-th {
-	width: 100px;
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 15px; /* 搜尋框與表格的距離 */
 }
-
-td {
-	overflow: hidden;
-	text-overflow: ellipsis;
+.dataTables_length {
+    margin: 15px 0; 
 }
-
-table th, table td {
-	border: 1px solid #ddd; 
-	padding: 8px;
-	text-align: center; 
+#example {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 讓表格固定 */
+}
+#example th, #example td {
+    border: 1px solid #ddd;
+    text-align: center;
+    background-color: #fff; /* 設置所有表格內容背景為白色 */
+    overflow: hidden;
+    font-size: 0.8rem;
+    text-overflow: ellipsis; /* 顯示省略號 */
+}
+#example th {
+    background-color: #f2f2f2;
+}
+#example td {
+    background-color: #fff !important; /* 設置所有表格內容背景為白色 */
+}
+:root {
+    --primary-color: #000;
+    --secondary-color: #fff;
+    --dt-row-selected: 255, 255, 255; /* 覆蓋選中行背景顏色 */
+    --dt-row-selected-text: 0, 0, 0; /* 覆蓋選中行文本顏色 */
+    --dt-row-selected-link: 0, 0, 0; /* 覆蓋選中行鏈接顏色 */
+    --dt-row-stripe: 255, 255, 255; /* 覆蓋條紋行背景顏色 */
+    --dt-row-hover: 255, 255, 255; /* 覆蓋懸停行背景顏色 */
+    --dt-column-ordering: 0, 0, 0;
+    --dt-html-background: white;
+    --dt-row-default-bg: 245, 245, 245; /* 行的默認背景顏色 */
+    --dt-row-hover-bg: 255, 255, 255; /* 滑鼠指向行的背景顏色 */
+}
+table.dataTable.display>tbody>tr.odd>.sorting_1, table.dataTable.order-column.stripe>tbody>tr.odd>.sorting_1 {
+    box-shadow: none;
+}
+#table-controls {
+    display: flex;
+    justify-content: flex-start;
 }
 
 
@@ -114,9 +142,6 @@ img.small {
 	margin: 10px 0;
 }
 
-select {
-	margin: 15px 0;
-}
 
 table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>th.sorting_asc,
 	table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting_asc_disabled,
@@ -144,6 +169,7 @@ table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>th.sorting_asc,
 	text-decoration: none;
 	cursor: pointer
 }
+
 </style>
 </head>
 <body>
@@ -213,7 +239,7 @@ table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>th.sorting_asc,
 
 							<td><img
 								th:src="@{/emp/DBGifReader} + '?empid=' + ${empVO.empId}"
-								width="100px" height="100px"></td>
+								width="50px" height="50px"></td>
 							<td><span th:if="${empVO.empStatus == 0}">在職</span> <span
 								th:if="${empVO.empStatus == 1}">離職</span></td>
 

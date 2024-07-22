@@ -163,8 +163,8 @@ select {
 	        for (let i = 1; i <= daysInMonth; i++) {
 	            const dateStr = `${year}-${month.toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
 	            const assignment = assignments.find(a => a.assignDate === dateStr);
-	            const selectedEmpId = assignment ? assignment.empVO.empId : '';
-	            const selectedEmpId1 = assignment ? assignment.empVO1.empId : '';
+	            const selectedEmpId = assignment ? assignment.empVO.empId : '1';
+	            const selectedEmpId1 = assignment ? assignment.empVO1.empId : '2';
 	            const isAssigned = !!assignment; // 判斷是否有指派資料
 	            const dayCell = document.createElement('div');
 	            dayCell.className = 'day';
@@ -172,11 +172,11 @@ select {
 	                <div class="day-label">${i}</div>
 	                <select name="employees1[]" required ${isAssigned ? 'disabled' : ''}>
 	                    <option value="">選擇員工</option>
-	                    ${employeeData.employees.map(emp => `<option value="${emp.empId}" ${emp.empId === selectedEmpId ? 'selected' : ''}>${emp.empName}</option>`).join('')}
+	                    ${employeeData.employees.map(emp => `<option value="${emp.empId}" ${emp.empId == selectedEmpId ? 'selected' : ''}>${emp.empName}</option>`).join('')}
 	                </select>
 	                <select name="employees2[]" required ${isAssigned ? 'disabled' : ''}>
 	                    <option value="">選擇員工</option>
-	                    ${employeeData.employees.map(emp => `<option value="${emp.empId}" ${emp.empId === selectedEmpId1 ? 'selected' : ''}>${emp.empName}</option>`).join('')}
+	                    ${employeeData.employees.map(emp => `<option value="${emp.empId}" ${emp.empId == selectedEmpId1 ? 'selected' : ''}>${emp.empName}</option>`).join('')}
 	                </select>
 	                <input type="hidden" name="dates[]" value="${dateStr}">
 	            `;
