@@ -122,10 +122,14 @@ public class ResVO implements java.io.Serializable {
 		public void setReservationNote(String reservationNote) {
 			this.reservationNote = reservationNote;
 		}
-		
-		
-		
-		
-		
-		
+
+
+	@Override
+	public String toString() {
+		return "ResVO [reservationId=" + reservationId + ", memVO=" + memVO + ", reservationEatdate=" + reservationEatdate
+				+ ", reservationNum=" + reservationNum + ", resTimeVO=" + resTimeVO + ", reservationDate="
+				+ reservationDate + ", tableTypeVO=" + tableTypeVO + ", reservationTable=" + reservationTable
+				+ ", reservationStatus=" + reservationStatus + ", reservationPhone=" + reservationPhone
+				+ ", reservationNote=" + reservationNote + "]";
+	}
 }

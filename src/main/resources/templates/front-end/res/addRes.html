@@ -55,13 +55,13 @@
         .submit:hover {
             background-color: #ff6f00;
         }
-        .icon-buttons {
+        .icon-buttons, .number-buttons {
             display: flex;
             gap: 10px;
             justify-content: center;
             margin-top: 20px;
         }
-        .icon-button {
+        .icon-button, .number-button {
             background: none;
             border: 2px solid transparent;
             cursor: pointer;
@@ -69,12 +69,15 @@
             padding: 10px;
             transition: border-color 0.3s ease;
         }
-        .icon-button img {
+        .icon-button img, .number-button {
             width: 80px;
             height: 80px;
             border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .icon-button.selected {
+        .icon-button.selected, .number-button.selected {
             border-color: #ff8f00;
         }
         @media (max-width: 600px) {
@@ -98,7 +101,7 @@
                 margin: 8px 0 4px;
                 font-size: 0.9rem;
             }
-            .icon-button img {
+            .icon-button img, .number-button {
                 width: 60px;
                 height: 60px;
             }
@@ -119,6 +122,14 @@
                 button.classList.remove('selected');
             });
             document.getElementById("button-" + tableId).classList.add('selected');
+        }
+
+        function selectPeople(num) {
+            document.getElementById("people").value = num;
+            document.querySelectorAll('.number-button').forEach(button => {
+                button.classList.remove('selected');
+            });
+            document.getElementById("button-people-" + num).classList.add('selected');
         }
 
         function formatPhoneNumber(input) {
@@ -159,19 +170,32 @@
                 <input type="hidden" th:field="*{memVO.memNo}">
             </div>
             <label for="phone">電話號碼:</label>
-            <input type="tel" th:field="*{reservationPhone}" id="phone" name="phone" placeholder="格式: 09xx-xxx-xxx" required oninput="formatPhoneNumber(this)">
+            <input type="tel" th:field="*{reservationPhone}" id="phone" name="phone"  placeholder="格式: 09xx-xxx-xxx" required oninput="formatPhoneNumber(this)">
 
             <label for="date">日期:</label>
             <input type="date" th:field="*{reservationEatdate}" id="date" name="date" required>
 
             <label for="time">時段:</label>
             <select th:field="*{resTimeVO.reservationTimeId}">
-                <option th:each="resTimeVO,iterStat : ${resTimeListData}" th:value="${resTimeVO.reservationTimeId}" th:text="${resTimeVO.reservationTime}">
+                <option th:each="resTimeVO, iterStat : ${resTimeListData}"
+                        th:if="${iterStat.index >= 10 && iterStat.index < 27}"
+                        th:value="${resTimeVO.reservationTimeId}"
+                        th:text="${resTimeVO.reservationTime}">
                 </option>
             </select>
 
             <label for="people">人數:</label>
-            <input type="number" th:field="*{reservationNum}" id="people" name="people" min="0" value="0" required>
+            <input type="hidden" th:field="*{reservationNum}" id="people" name="people" />
+            <div class="number-buttons">
+                <button type="button" class="number-button" id="button-people-1" onclick="selectPeople(1)">1</button>
+                <button type="button" class="number-button" id="button-people-2" onclick="selectPeople(2)">2</button>
+                <button type="button" class="number-button" id="button-people-3" onclick="selectPeople(3)">3</button>
+                <button type="button" class="number-button" id="button-people-4" onclick="selectPeople(4)">4</button>
+                <button type="button" class="number-button" id="button-people-5" onclick="selectPeople(5)">5</button>
+                <button type="button" class="number-button" id="button-people-6" onclick="selectPeople(6)">6</button>
+                <button type="button" class="number-button" id="button-people-7" onclick="selectPeople(7)">7</button>
+                <button type="button" class="number-button" id="button-people-8" onclick="selectPeople(8)">8</button>
+            </div>
 
             <label for="tableType">選擇桌型:</label>
             <div class="icon-buttons">

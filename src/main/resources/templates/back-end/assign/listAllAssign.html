@@ -7,6 +7,7 @@
 <link rel="stylesheet" th:href="@{/css/index3.css}">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <style>
@@ -202,7 +203,7 @@
                 dayNames.forEach(day => {
                     const date = new Date(year, month - 1, day);
                     const dayHeaderCell = document.createElement('th');
-                    dayHeaderCell.textContent = `${day} (${weekDays[date.getDay()]})`;
+                    dayHeaderCell.innerHTML = `<i class="fa-regular fa-calendar"></i><div> ${day} (${weekDays[date.getDay()]})</div>`;
                     calendarHeader.appendChild(dayHeaderCell);
                 });
 
