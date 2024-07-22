@@ -4,16 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>文章詳細資料</title>
+  <title th:text="${forumPostVO.postTitle}">文章內容</title>
 
   <link rel="stylesheet" th:href="@{/css/index2.css}" />
+  <link rel="stylesheet" th:href="@{/css/common.css}" />
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
   <style>
-    main {
+/*     main {
       position: absolute;
       top: 10rem;
       margin: auto 7rem;
-    }
+    } */
 
     .post_time {
       font-size: 0.9rem;
@@ -108,6 +109,7 @@
 
     .card-body {
       padding: 2rem;
+      width: 100%;
     }
 
     .card {
@@ -144,7 +146,7 @@
   <div class="main-container">
     <div th:replace="fragments/header-items :: navigation"></div>
 
-    <main>
+    <main class="main_content">
       <div class="container mt-4">
         <div class="card mb-4">
           <div class="card-body">
@@ -192,17 +194,47 @@
               </li>
             </th:block>
           </ul>
-          <div class="reply-form">
-            <h5>新增回覆</h5>
-            <div class="form-group">
-              <textarea id="reply_content" class="form-control" rows="3"></textarea>
-            </div>
-            <button type="button" class="btn btn-primary" id="btn_submit_reply"
-              th:data-postId="${forumPostVO.postId}">送出</button>
+          <div th:if="${memVO != null}">
+	          <div class="reply-form">
+	            <h5>新增回覆</h5>
+	            <div class="form-group">
+	              <textarea id="reply_content" class="form-control" rows="3"></textarea>
+	            </div>
+	            <button type="button" class="btn btn-primary" id="btn_submit_reply"
+	              th:data-postId="${forumPostVO.postId}">送出</button>
+	          </div>
+          </div>
+          <div th:unless="${memVO != null}">
+          	<p>請登入以回覆</p>
           </div>
         </div>
       </div>
     </main>
+  </div>
+
+
+  <!-- 檢舉提示 -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">檢舉回報</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">檢舉原因：</label>
+              <textarea class="form-control" id="message-text"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary" id="button_send_report">送出</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- 無樣式 -->
@@ -332,6 +364,51 @@
           </li>
       `
     }
+
+
+    /* 檢舉 */
+    var exampleModal = document.getElementById('exampleModal')
+    exampleModal.addEventListener('show.bs.modal', function (event) {
+      var button = event.relatedTarget
+      var modalBodyInput = exampleModal.querySelector('.modal-body input')
+    });
+
+    $("#exampleModal").on("hide.bs.modal", function (e) {
+      $('#exampleModal').find('#message-text').val("");
+    });
+
+    $("#exampleModal").find("#button_send_report").on("click", function (e) {
+      var reportId = /*[[${forumPostVO.postId}]]*/ "";
+      //var reportId = $('.btn_report_post').val();
+      var reportContent = $('#exampleModal').find('#message-text').val();
+      var formData = 'reportId=' + encodeURIComponent(reportId)
+        + 'reportContent=' + encodeURIComponent(reportContent);
+      $.ajax({
+        url: 'forum/sendPostReport',
+        type: 'POST',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        data: formData,
+        data: {
+          reportId: reportId,
+          reportReason: reportContent
+        },
+        success: function (response) {
+          if (response === "success") {
+            $('#exampleModal').modal('hide');
+            $('#exampleModal').find('#message-text').val("");
+            alert("感謝您的回報，我們會認真審查您的回覆。");
+          } else {
+            alert(response);
+          }
+        },
+        error: function (error) {
+          alert(error);
+        },
+        complete: function () {
+        }
+      });
+
+    })
 
 
     var baseUrl = /*[[@{/}]]*/ '/';

@@ -118,7 +118,7 @@ public class ForumController {
 			model.addAttribute("forumPostListData", list);
 			redirectAttributes.addFlashAttribute("successResult", "新增成功");
 		} else {
-			redirectAttributes.addFlashAttribute("successResult", "新增失敗");
+			redirectAttributes.addFlashAttribute("successResult", "請先登入");
 		}
 		
 		// 操作後重導至文章列表

@@ -14,6 +14,10 @@ public class FilterConfig {
         FilterRegistrationBean<EmpAuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new EmpAuthenticationFilter());
         registrationBean.addUrlPatterns("/back-end/*");
+        registrationBean.addUrlPatterns("/back-end/customer-service");
+        registrationBean.addUrlPatterns("/news/all");
+        registrationBean.addUrlPatterns("/forum/reports");
+        registrationBean.addUrlPatterns("/forum/review");
         return registrationBean;
     }
     
@@ -24,6 +28,9 @@ public class FilterConfig {
         registrationBean.setFilter(new MemFrontFilter());
         registrationBean.addUrlPatterns("/front-end/res/*");
         registrationBean.addUrlPatterns("/user/*");
+        registrationBean.addUrlPatterns("/forum/addPost");
+        registrationBean.addUrlPatterns("/forum/editPost");
+        registrationBean.addUrlPatterns("/customer-service");
         return registrationBean;
     }
 }
