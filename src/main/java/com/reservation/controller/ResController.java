@@ -111,7 +111,7 @@ public class ResController {
 
 	@PostMapping("update")
 	@ResponseBody
-	public Map<String, String> update(HttpSession session, @Valid ResVO resVO, BindingResult result) throws IOException {
+	public Map<String, String> update(HttpSession session, @Valid ResVO resVO, BindingResult result,@RequestParam(name = "tableTypeVO.tableId") Integer tableId) throws IOException {
 		Map<String, String> response = new HashMap<>();
 
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
@@ -134,6 +134,16 @@ public class ResController {
 				oldResVO.getReservationTable(),
 				oldResVO.getResTimeVO().getReservationTimeId())); // 恢復座位數量
 		System.out.println("resC數量" + resCVO.getReservationControlTable());
+		TableTypeVO tableTypeVO = TableTypeSvc.getOneTableType(tableId);
+		resVO.setTableTypeVO(tableTypeVO);
+//
+		Integer tableuse=resVO.getReservationNum()/tableTypeVO.getTableType();
+
+		if(resVO.getReservationNum()%tableTypeVO.getTableType()!=0) {
+			tableuse++;
+		}
+		resVO.setReservationTable(tableuse);
+		System.out.println("計算出的桌數"+tableuse);
 
 		List<ResCVO> resCVOList2 = ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
 		if (!resCVOList2.isEmpty()){
@@ -144,7 +154,7 @@ public class ResController {
 		String argumentValue = resCVO2.getTableTypeVO().getTableType() == 2 ?
 				sysArgVOList2.get(0).getSysArgumentValue() :
 				sysArgVOList4.get(0).getSysArgumentValue();
-		
+
 		String updatesit = ResSvc.compareLastTwoDigits(
 				argumentValue,
 				resCVO2.getReservationControlTable(),

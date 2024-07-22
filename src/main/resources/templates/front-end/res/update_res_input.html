@@ -7,8 +7,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>訂位修改</title>
+    <link rel="stylesheet" th:href="@{/css/index2.css}" />
     <style type="text/css">
-        /* 略 */
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #FFFAF0; /* 淡奶油色 */
+            color: #8B4513; /* 巧克力色 */
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #FFF8DC; /* 玉米色 */
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            color: #D2691E; /* 巧克力色 */
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            width: 150px;
+            margin-right: 10px;
+            text-align: right;
+            color: #8B4513;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #DEB887; /* Burlywood */
+            border-radius: 4px;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-left: 160px;
+        }
+        button {
+            padding: 10px;
+            background-color: #FFD700; /* 金色 */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #FFC107;
+        }
+        .navbar {
+            background-color: #FF8C00; /* 番茄色 */
+            padding: 10px 0;
+        }
+        .navbar-brand img {
+            border-radius: 50%; /* 圓形圖片 */
+            box-shadow: 0 0 5px #000; /* 圖片陰影 */
+        }
+        .navbar h2, .navbar h3 {
+            color: white;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+        }
+        /* 小朋友主題的額外樣式 */
+        body {
+            background-color: #FFFACD; /* 淡黃色 */
+        }
+        .container {
+            background-color: #FFE4B5; /* 輕巧的橙色 */
+        }
+        .navbar {
+            background-color: #FF6347; /* 番茄色 */
+        }
+        .navbar h2, .navbar h3, .navbar a {
+            color: #FFD700; /* 金色 */
+        }
+        button {
+            background-color: #FF4500; /* 橙紅色 */
+        }
+        button:hover {
+            background-color: #FF6347; /* 番茄色 */
+        }
+        .container {
+            margin-top: 150px;
+        }
+        .icon-button.selected, .number-button.selected {
+            border-color: #ff8f00;
+        }
+        @media (max-width: 600px) {
+            .container {
+                margin-top: 21px;
+                padding: 15px;
+            }
+            input, select, textarea {
+                padding: 8px;
+                margin-bottom: 8px;
+                font-size: 0.9rem;
+            }
+            .submit {
+                padding: 8px;
+                font-size: 1rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            label {
+                margin: 8px 0 4px;
+                font-size: 0.9rem;
+            }
+            .icon-button img, .number-button {
+                width: 60px;
+                height: 60px;
+            }
+        }
+        .number-buttons, .icon-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .number-button, .icon-button {
+            width: 70px;
+            height: 70px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #FFF8DC; /* 玉米色 */
+            border: 2px solid #FFD700; /* 金色 */
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .number-button:hover, .icon-button:hover {
+            transform: scale(1.1);
+        }
+        .number-button img, .icon-button img {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+        .number-button.selected, .icon-button.selected {
+            background-color: #FFD700; /* 金色 */
+        }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -53,6 +207,8 @@
 
                 var form = document.querySelector("form");
                 var formData = new FormData(form);
+                var phoneInput = document.getElementById("phone");
+                phoneInput.value = stripPhoneNumber(phoneInput.value);
 
                 fetch("update", {
                     method: "POST",
@@ -86,21 +242,32 @@
                     });
             });
         });
+        function selectTableType(tableId) {
+            document.getElementById("tableType").value = tableId;
+            document.querySelectorAll('.icon-button').forEach(button => {
+                button.classList.remove('selected');
+            });
+            document.getElementById("button-" + tableId).classList.add('selected');
+        }
+
+        function selectPeople(num) {
+            document.getElementById("people").value = num;
+            document.querySelectorAll('.number-button').forEach(button => {
+                button.classList.remove('selected');
+            });
+            document.getElementById("button-people-" + num).classList.add('selected');
+        }
+
+
+
     </script>
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark fixed-top justify-content-center">
-    <div align="center">
-        <h2>訂位修改</h2>
-        <h3>
-            <a class="navbar-brand" th:href="@{/res/all}">
-                <img th:src="@{/images/try2.gif}" style="width: 50px; height: 50px;" alt="回查詢頁">回查詢頁
-            </a>
-        </h3>
-    </div>
-</nav>
-<div class="container" align="center">
-    <h3><b>所有欄位皆為必填欄位</b></h3>
+<div class="container">
+    <div th:replace="fragments/header-items :: navigation"></div>
+
+
+
     <form th:action="@{update}" method="post" th:object="${resVO}" enctype="multipart/form-data">
         <div class="form-group">
             <label>訂位編號:</label>
@@ -116,7 +283,7 @@
 
         <div class="form-group">
             <label for="phone">電話號碼:</label>
-            <input type="tel" th:field="*{reservationPhone}" id="phone" name="phone" required oninput="validatePhone()">
+            <input type="tel" th:field="*{reservationPhone}" id="phone" name="phone" required pattern="\d{10}" >
             <span id="phoneError" class="error"></span>
         </div>
 
@@ -124,30 +291,42 @@
             <label for="date">日期:</label>
             <input type="date" th:field="*{reservationEatdate}" id="date" name="date" required>
         </div>
-
         <div class="form-group">
-            <label for="time">時段:</label>
-            <select th:field="*{resTimeVO.reservationTimeId}" id="time">
-                <option th:each="resTimeVO : ${resTimeListData}" th:value="${resTimeVO.reservationTimeId}" th:text="${resTimeVO.reservationTime}"></option>
-            </select>
+        <label for="time">時段:</label>
+        <select th:field="*{resTimeVO.reservationTimeId}">
+            <option th:each="resTimeVO, iterStat : ${resTimeListData}"
+                    th:if="${iterStat.index >= 10 && iterStat.index < 27}"
+                    th:value="${resTimeVO.reservationTimeId}"
+                    th:text="${resTimeVO.reservationTime}">
+            </option>
+        </select>
+        </div>
+        <label for="people">人數:</label>
+        <input type="hidden" th:field="*{reservationNum}" id="people" name="people" />
+        <div class="number-buttons">
+            <button type="button" class="number-button" id="button-people-1" onclick="selectPeople(1)">1</button>
+            <button type="button" class="number-button" id="button-people-2" onclick="selectPeople(2)">2</button>
+            <button type="button" class="number-button" id="button-people-3" onclick="selectPeople(3)">3</button>
+            <button type="button" class="number-button" id="button-people-4" onclick="selectPeople(4)">4</button>
+            <button type="button" class="number-button" id="button-people-5" onclick="selectPeople(5)">5</button>
+            <button type="button" class="number-button" id="button-people-6" onclick="selectPeople(6)">6</button>
+            <button type="button" class="number-button" id="button-people-7" onclick="selectPeople(7)">7</button>
+            <button type="button" class="number-button" id="button-people-8" onclick="selectPeople(8)">8</button>
         </div>
 
-        <div class="form-group">
-            <label for="people">人數:</label>
-            <input type="number" th:field="*{reservationNum}" id="people" name="people" min="0" value="0" required>
-        </div>
 
-        <div class="form-group">
-            <label for="table">希望桌子數量:</label>
-            <input type="number" th:field="*{reservationTable}" id="table" name="table" min="0" value="0" required>
-        </div>
 
-        <div class="form-group">
-            <label for="tableType">桌型人數:</label>
-            <select th:field="*{tableTypeVO.tableId}" id="tableType">
-                <option th:each="tableTypeVO : ${tableTypeListData}" th:value="${tableTypeVO.tableId}" th:text="${tableTypeVO.tableType}"></option>
-            </select>
+
+        <label for="tableType">選擇桌型:</label>
+        <div class="icon-buttons">
+            <div th:each="tableType : ${tableTypeListData}">
+                <button type="button" class="icon-button" th:id="'button-' + ${tableType.tableId}" th:onclick="'selectTableType(' + ${tableType.tableId} + ')'">
+                    <img th:src="@{'/images/table/' + ${tableType.tableType} + 'person.png'}" th:alt="${tableType.tableType}">
+                </button>
+            </div>
         </div>
+        <input type="hidden" id="tableType" th:field="*{tableTypeVO.tableId}" />
+
 
         <div class="form-group">
             <label for="notes">備註:</label>
@@ -157,5 +336,6 @@
         <button type="submit" id="submit">送出修改</button>
     </form>
 </div>
+
 </body>
 </html>
