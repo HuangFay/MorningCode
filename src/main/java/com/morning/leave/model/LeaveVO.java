@@ -35,7 +35,6 @@ public class LeaveVO {
 	@JoinColumn(name="emp_id")
 	private EmpVO leaveEmpId;
 	
-	@NotNull(message="我是一堵牆")
 	@Column(name="leave_Date")
 	private Date leaveDate;
 	
@@ -49,6 +48,18 @@ public class LeaveVO {
 	@JoinColumn(name="assignee_id")
 	private EmpVO leaveAssigneeId;
 	
+	@Column(name="leave_statusforemp")
+	private Byte leaveStatusforEmp = 0;
+	
+	
+	public Byte getLeaveStatusforEmp() {
+		return leaveStatusforEmp;
+	}
+
+	public void setLeaveStatusforEmp(Byte leaveStatusforEmp) {
+		this.leaveStatusforEmp = leaveStatusforEmp;
+	}
+
 	public LeaveVO() {
         this.leaveFilingdate = new Timestamp(System.currentTimeMillis());
 //        this.leaveApprovaldate = new Timestamp(System.currentTimeMillis());

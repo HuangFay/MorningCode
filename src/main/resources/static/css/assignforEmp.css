@@ -103,4 +103,15 @@ h1 {
 	border-radius: 4px;
 	color: #ffffff;
 }
+
+
+/*早班樣式*/
+.shift-cell {
+	background-color: #ff7e68;
+	color: white;
+	font-weight: bold; display : inline-block;
+	padding: 4px 8px;
+	display: inline-block; padding : 4px 8px;
+	border-radius: 50px;
+}
 	

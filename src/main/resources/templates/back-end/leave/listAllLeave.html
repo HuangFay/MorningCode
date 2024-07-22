@@ -50,8 +50,8 @@
 				<div class="tab-content">
 					<!-- 待審核內容 -->
 					<div class="tab-pane active" id="pending">
-						<form method="post" th:action="@{/back-end/leave/updateapproval}"
-							style="margin-bottom: 0px;">
+						<form method="post" th:action="@{/back-end/leave/updateapproval}" style="margin-bottom: 0px;">
+							<input type="hidden" name="isSubstituteApproval" value="false">
 							<table class="schedule-table">
 								<thead>
 									<tr>
@@ -66,7 +66,7 @@
 								</thead>
 								<tbody>
 									<th:block th:each="leaveVO : ${leaveListData}">
-										<th:block th:if="${leaveVO.leaveStatus == 0}">
+										<th:block th:if="${leaveVO.leaveStatusforEmp == 1 and leaveVO.leaveStatus == 0}">
 											<tr>
 												<td th:text="${leaveVO.leaveFilingdate}"></td>
 												<td th:text="${leaveVO.leaveEmpId.empName}"></td>
