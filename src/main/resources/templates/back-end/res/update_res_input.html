@@ -60,81 +60,144 @@
             box-shadow: 0 0 5px #000; /* 圖片陰影 */
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function validatePhone() {
+            const phoneInput = document.getElementById("phone");
+            const phoneRegex = /^\d{10}$/;
+            return phoneRegex.test(phoneInput.value);
+        }
+
+        function validateForm() {
+            if (!validatePhone()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '錯誤',
+                    text: '電話號碼必須是10位數字'
+                });
+                return false;
+            }
+            return true;
+        }
+
+        $(document).ready(function() {
+            $("#reservationForm").on("submit", function(event) {
+                event.preventDefault();
+
+                if (!validateForm()) {
+                    return;
+                }
+
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    type: "POST",
+                    url: $(this).attr("action"),
+                    data: formData,
+                    success: function(response) {
+                        if (response.status === "success") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '成功',
+                                text: response.message
+                            }).then(function() {
+                                window.location.href = "/res/select_page";
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '錯誤',
+                                text: response.message
+                            });
+                        }
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '錯誤',
+                            text: '請求失敗，請稍後再試。'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-        <div align="center">
-            <h2>訂位修改</h2>
-            <h3>
-                <a class="navbar-brand" th:href="@{/res/select_page}">
-                    <img th:src="@{/images/try2.gif}" style="width: 50px; height: 50px;" alt="回查詢頁">回查詢頁
-                </a>
-            </h3>
-        </div>
-    </nav>
-
-    <div class="container" align="center">
-        <h3><b>所有欄位皆為必填欄位</b></h3>
-        <form th:action="@{update}" method="post" th:object="${resVO}" enctype="multipart/form-data">
-            <div>
-                <label>訂位編號:</label>
-                <span th:text="${resVO.reservationId}"></span>
-                <input type="hidden" th:field="*{reservationId}" style="border:0px; font-weight: bold;" readonly /><br/>
-            </div>
-
-            <div>
-                <label for="name">姓名:</label>
-                <span th:text="${resVO.memVO.memName}"></span>
-                <input type="hidden" th:field="*{memVO.memNo}" />
-            </div>
-
-            <div>
-                <label for="phone">電話號碼:</label>
-                <input type="tel" th:field="*{reservationPhone}" id="phone" name="phone" required>
-            </div>
-
-            <div>
-                <label for="date">日期:</label>
-                <input type="date" th:field="*{reservationEatdate}" id="date" name="date" required>
-            </div>
-
-            <div>
-                <label for="time">時段:</label>
-                <select th:field="*{resTimeVO.reservationTimeId}">
-                    <option th:each="resTimeVO : ${resTimeListData}" th:value="${resTimeVO.reservationTimeId}" th:text="${resTimeVO.reservationTime}"></option>
-                </select>
-            </div>
-
-            <div>
-                <label for="people">人數:</label>
-                <input type="number" th:field="*{reservationNum}" id="people" name="people" min="0" value="0" required>
-            </div>
-
-            <div>
-                <label for="table">希望桌子數量:</label>
-                <input type="number" th:field="*{reservationTable}" id="table" name="table" min="0" value="0" required>
-            </div>
-
-            <div>
-                <label for="tableType">桌型人數:</label>
-                <select th:field="*{tableTypeVO.tableId}">
-                    <option th:each="tableTypeVO : ${tableTypeListData}" th:value="${tableTypeVO.tableId}" th:text="${tableTypeVO.tableType}"></option>
-                </select>
-            </div>
-
-            <div>
-                <label for="notes">備註:</label>
-                <textarea id="notes" th:field="*{reservationNote}" name="notes" rows="4"></textarea>
-            </div>
-
-            <div>
-                <div></div>
-                <div><button type="submit" id="submit"> 送出修改 </button></div>
-                <div></div>
-            </div>
-        </form>
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+    <div align="center">
+        <h2>訂位修改</h2>
+        <h3>
+            <a class="navbar-brand" th:href="@{/res/select_page}">
+                <img th:src="@{/images/try2.gif}" style="width: 50px; height: 50px;" alt="回查詢頁">回查詢頁
+            </a>
+        </h3>
     </div>
+</nav>
+
+<div class="container" align="center">
+    <h3><b>所有欄位皆為必填欄位</b></h3>
+    <form id="reservationForm" th:action="@{update}" method="post" th:object="${resVO}" enctype="multipart/form-data">
+        <div>
+            <label>訂位編號:</label>
+            <span th:text="${resVO.reservationId}"></span>
+            <input type="hidden" th:field="*{reservationId}" style="border:0px; font-weight: bold;" readonly /><br/>
+        </div>
+
+        <div>
+            <label for="name">姓名:</label>
+            <span th:text="${resVO.memVO.memName}"></span>
+            <input type="hidden" th:field="*{memVO.memNo}" />
+        </div>
+
+        <div>
+            <label for="phone">電話號碼:</label>
+            <input type="tel" th:field="*{reservationPhone}" id="phone" name="phone" required>
+        </div>
+
+        <div>
+            <label for="date">日期:</label>
+            <input type="date" th:field="*{reservationEatdate}" id="date" name="date" required>
+        </div>
+
+        <div>
+            <label for="time">時段:</label>
+            <select th:field="*{resTimeVO.reservationTimeId}">
+                <option th:each="resTimeVO : ${resTimeListData}" th:value="${resTimeVO.reservationTimeId}" th:text="${resTimeVO.reservationTime}"></option>
+            </select>
+        </div>
+
+        <div>
+            <label for="people">人數:</label>
+            <input type="number" th:field="*{reservationNum}" id="people" name="people" min="0" value="0" required>
+        </div>
+
+        <div>
+            <label for="table">希望桌子數量:</label>
+            <input type="number" th:field="*{reservationTable}" id="table" name="table" min="0" value="0" required>
+        </div>
+
+        <div>
+            <label for="tableType">桌型人數:</label>
+            <select th:field="*{tableTypeVO.tableId}">
+                <option th:each="tableTypeVO : ${tableTypeListData}" th:value="${tableTypeVO.tableId}" th:text="${tableTypeVO.tableType}" id="tableType"></option>
+            </select>
+        </div>
+
+        <div>
+            <label for="notes">備註:</label>
+            <textarea id="notes" th:field="*{reservationNote}" name="notes" rows="4"></textarea>
+        </div>
+
+        <div>
+            <div></div>
+            <div><button type="submit" id="submit"> 送出修改 </button></div>
+            <div></div>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>

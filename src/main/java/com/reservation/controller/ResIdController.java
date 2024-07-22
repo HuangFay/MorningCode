@@ -85,7 +85,7 @@ public class ResIdController {
 //		System.out.println("tableid 是"+tableId);
 		TableTypeVO tableTypeVO = TableTypeSvc.getOneTableType(tableId);
 		resVO.setTableTypeVO(tableTypeVO);
-		System.out.println("ＶＯ是"+ memVO.toString()+"電話是"+memVO.getMemPhone());
+//		System.out.println("ＶＯ是"+ memVO.toString()+"電話是"+memVO.getMemPhone());
 		resVO.setMemVO(memVO);
 		resVO.setReservationDate(LocalDateTime.now());
 		Integer tableuse=resVO.getReservationNum()/tableTypeVO.getTableType();
@@ -106,7 +106,7 @@ public class ResIdController {
 		List<SysArgVO> sysArgVOList2 = SysArgSvc.findByColumns("2persontable");
 		List<SysArgVO> sysArgVOList4 = SysArgSvc.findByColumns("4persontable");
 
-		if (!resCVOList.isEmpty()) {
+		if (!resCVOList.isEmpty()) { // 如果有找到符合的資料
 			ResCVO resCVO = resCVOList.get(0);
 			String argumentValue = resVO.getTableTypeVO().getTableType() == 2 ?
 					sysArgVOList2.get(0).getSysArgumentValue() :
@@ -127,7 +127,7 @@ public class ResIdController {
 				response.put("status", "error");
 				response.put("message", "座位已滿請選取其他時段！");
 			}
-		} else {
+		} else {//沒找到要創建新的控制表
 			ResCVO resCaddVO = new ResCVO();
 			resCaddVO.setReservationControlDate(resVO.getReservationEatdate());
 			resCaddVO.setTableTypeVO(resVO.getTableTypeVO());
