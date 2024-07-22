@@ -13,65 +13,101 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>員工資料新增</title>
+<link rel="stylesheet" th:href="@{/css/index3.css}">
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 <head th:insert="~{/back-end/emp/included-fragment}"></head>
 <style type="text/css">
-	
-	button {
-		padding: 5px;
-	}
-	
-	label, input, span, select {
-		display: table-cell;
-		margin: 5px;
-		text-align: left;		
-	}
-	input[type=text], input[type=password], select, textarea {
-			margin-right: 8px;
-  box-shadow:  inset 2px 2px 5px #BABECC, inset -5px -5px 10px  #FFF;
-  width: 97%;
-  box-sizing: border-box;
-  transition: all 0.2s ease-in-out;
-  appearance: none;
-  -webkit-appearance: none;
-
-	}
-	
-	.center {
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .error {
-
-    color: red; 
+.right-pane {
+	width: 77%;
+	margin-right: 20px;
+	text-align: center;
+}
+.container {
+	max-width: 600px;
+	margin: 20px auto 50px;
+	padding: 20px;
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-#formContent {
-  -webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 10px 10px 10px 10px;
-  background: #fff;
-  margin: 10px auto;
-	
-  width: 90%;
-  max-width: 450px;
-  position: relative;
-  padding: 0px;
-  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-  text-align: center;
+h1, h2, h3 {
+	text-align: center;
+	color: #333;
 }
+
+h3 {
+	font-size: 1.2rem;
+}
+
+form {
+	display: grid;
+	gap: 10px;
+	margin-top: 20px;
+}
+
+label {
+	display: block;
+	margin-bottom: 5px;
+	color: #666;
+}
+.btn {
+	width: 100%;
+	padding: 12px;
+	margin-top: 10px;
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+	color: white;
+	background-color: #88bbb0;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.btn:hover {
+	background-color: #60a495;
+}
+
+select, input {
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-shadow: inset 1px -1px 2px 0px rgba(0, 0, 0, 0.1);
+}
+input[type=text], input[type=password], select, textarea {
+	width: 560px;
+	box-sizing: border-box;
+	transition: all 0.2s ease-in-out;
+	appearance: none;
+	-webkit-appearance: none;
+}
+	
+.center {
+	margin-left: auto;
+	margin-right: auto;
+}
+.error {
+	color: red; 
+}
+
+
 
 
 </style>
 </head>
 <body>
+	<div class="main-container">
+		<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+		<div class="right-pane">
 
-<nav >
-		 <div align="center"> <h2>員工資料新增</h2>
-		 <h3><a class="navbar-brand" th:href="@{/back-end/emp/listAllEmp}">回查詢頁</a></h3></div>
-</nav>
 
-	<div id="formContent">
+		 <div align="center"> <h1>MorningCode 員工資料新增</h1>
+			<div class="container">
+
+
 		<h3><b>所有欄位皆為必填欄位</b></h3>
 		<form th:action="@{insert}" method="post" th:object="${empVO}" enctype="multipart/form-data">
 			
@@ -137,12 +173,15 @@
 			
 			<div>
 				<div></div>
-				<div><button type="submit" id="submit"> 送出新增 </button></div>
+				<div><button type="submit" class="btn"> 送出新增 </button></div>
 				<div></div>
 			</div>		
 		</form>
 	
 	</div>
+	</div>
+	</div>
+</div>
 
 
 <!-- JavaScript part -->
@@ -198,6 +237,16 @@ function previewfile(file) {
 	}
 }
 </script>   
+	<script>
+		$("a.aa").on("click", function() {
+			var $li = $(this).closest("li");
+			$li.find("div.menu-item-1").slideToggle();
+			$li.siblings().find(".menu-item-1").slideUp();
+		});
+		function redirectTo(url) {
+			window.location.href = url;
+		}
+	</script>
 
 </body>
 </html>
