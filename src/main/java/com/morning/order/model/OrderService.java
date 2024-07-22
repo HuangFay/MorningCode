@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,9 +48,11 @@ public class OrderService {
     public List<OrderVO> getAll() {
         return repository.findAll();
     }
-
+  
+    //複合查詢
     public List<OrderVO> getAll(Map<String, String[]> map) {
-        return HibernateUtil_CompositeQuery_Order.getAllC(map, sessionFactory.openSession());
+        Session session = sessionFactory.openSession();
+        return HibernateUtil_CompositeQuery_Order.getAllC(map, session);
     }
 
     public List<OrderVO> getOrdersByMemNo(Integer memNo) {
