@@ -706,3 +706,30 @@ img.imgsmall {
 	font-size: 1.2em;
 	font-weight: bold;
 }
+.star-rating {
+    unicode-bidi: bidi-override;
+    color: #ccc;
+    font-size: 25px;
+    height: 25px;
+    width: 125px;
+    margin: 0 auto;
+    position: relative;
+    padding: 0;
+}
+
+.star-rating-top {
+    color: #ffcc00;
+    padding: 0;
+    position: absolute;
+    z-index: 1;
+    display: block;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.star-rating-bottom {
+    padding: 0;
+    display: block;
+    z-index: 0;
+}
