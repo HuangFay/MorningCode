@@ -687,7 +687,10 @@ img.imgsmall {
 .customer-quote {
 	word-wrap: break-word;
 	overflow-wrap: break-word;
+	overflow-y: auto;
+	max-height:380px;
 }
+
 
 .description-a {
 	display: block;
