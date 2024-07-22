@@ -36,10 +36,11 @@
 			<div class="customer-quote">
 				<span class="meal-review">最新餐點評價</span>
 				<div class="avatar">
-				<img th:if="${latestOrdd != null && latestOrdd.getMealsVO() != null}" 
-                 th:src="@{|/meals/DBGifReader2?mealsId=${latestOrdd.getMealsVO().getMealsId()}|}" 
-                 alt="meals" width="100px" height="100px">
-					
+					<img
+						th:if="${latestOrdd != null && latestOrdd.getMealsVO() != null}"
+						th:src="@{|/meals/DBGifReader2?mealsId=${latestOrdd.getMealsVO().getMealsId()}|}"
+						alt="meals" width="100px" height="100px">
+
 					<div class="frame">
 						<span class="name"
 							th:text="${latestOrdd != null && latestOrdd.getMealsVO() != null ? '餐點名稱: ' + latestOrdd.getMealsVO().getMealsName() : '尚無評價'}">名稱</span>
@@ -47,27 +48,40 @@
 							th:text="${latestOrdd != null ? '評分: ' + latestOrdd.getMealsScore() + '/5' : ''}">描述</span>
 					</div>
 				</div>
-				<p th:text="${latestOrdd != null ? latestOrdd.getMealsContent() : '尚無評價內容'}">評價內容</p>
+				<p
+					th:text="${latestOrdd != null ? latestOrdd.getMealsContent() : '尚無評價內容'}">評價內容</p>
 			</div>
-			
-			
+
+
 			<div class="customer-quote">
 				<span class="latest-articles">最新文章</span>
 				<div class="avatar-b">
-					<div class="avatar-7"></div>
+
+					<span class="author-name"
+						th:text="${latestPost != null && latestPost.memVO != null ? latestPost.memVO.memName : '匿名'}">
+						作者名字 </span>
 					<div class="frame-8">
-						<span class="name-9">Name</span><span class="description-a">Description</span>
+						<span class="name-9"
+							th:text="${latestPost != null ? latestPost.postTitle : '尚無文章'}">Name</span>
+						<span class="description-a"
+							th:text="${latestPost != null ? latestPost.shortenedContent : ''}">Description</span>
 					</div>
 				</div>
 			</div>
-			
-			
+
+
+
 			<div class="customer-quote">
-				<span class="glowing-review">“A”</span>
+				<span class="glowing-review">最新消息</span>
 				<div class="avatar-c">
-					<div class="avatar-d"></div>
-					<div class="frame-e">
-						<span class="name-f">Name</span><span class="description-10">Description</span>
+
+					<div class="frame-8">
+						<span class="name-9"
+							th:text="${latestNews != null ? latestNews.getNewsTitle() : '尚無消息'}">Name</span>
+						<span class="description-a"
+							th:text="${latestNews != null ? latestNews.getNewsContent() : ''}">Description</span>
+						<span class="datee"
+							th:text="${latestNews != null ? #dates.format(latestNews.getNewsDate(), 'yyyy-MM-dd') : ''}">Date</span>
 					</div>
 				</div>
 			</div>
@@ -76,9 +90,11 @@
 
 		<div class="navigation-footer">
 			<div class="flex-column-bbd">
-			 
+
 				<div class="divider"></div>
-				<h1><a class="back-emp" onclick="redirectTo(baseUrl + 'index3')" >員工專區</a></h1>
+				<h1>
+					<a class="back-emp" onclick="redirectTo(baseUrl + 'index3')">員工專區</a>
+				</h1>
 				<span class="phone">電話:3345678</span><span class="contact-address">聯絡地址:320桃園市中壢區復興路46號8樓</span>
 			</div>
 
@@ -88,8 +104,9 @@
 				<div class="social-icons">
 					<div class="buttons-icon">
 						<div class="icon">
-						<a href="https://www.facebook.com/PageDavidSeafood/?locale=zh_TW" target="_blank"><div class="icon-11" ></div></a>
-							
+							<a href="https://www.facebook.com/PageDavidSeafood/?locale=zh_TW"
+								target="_blank"><div class="icon-11"></div></a>
+
 						</div>
 					</div>
 					<div class="buttons-icon-12">

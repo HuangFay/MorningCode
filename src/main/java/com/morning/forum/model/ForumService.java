@@ -92,6 +92,9 @@ public class ForumService {
 
 		return optional.orElse(null);
 	}
+	 public ForumPostVO getLatestPost() {
+	        return postRepository.findTopByOrderByPostTimeDesc();
+	    }
 	
 }
 
