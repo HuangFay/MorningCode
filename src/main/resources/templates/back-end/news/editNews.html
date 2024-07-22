@@ -1,53 +1,101 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
   <title>新增最新消息</title>
 
+  <link rel="stylesheet" th:href="@{/css/index3.css}">
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
 
   <style>
     .form-group {
-      margin-bottom: 2rem; /* Add more space between form groups */
+      margin-bottom: 2rem;
+      /* Add more space between form groups */
     }
+
     .container {
-      margin-top: 2rem; /* Add space above the form */
+      margin-top: 2rem;
+      /* Add space above the form */
     }
+
     .card-body {
       padding-top: 2rem;
-      padding-bottom: 2rem; /* Add space inside the card */
+      padding-bottom: 2rem;
+      /* Add space inside the card */
+    }
+
+    /* 避免 bootstrap 與 index3.css 樣式衝突 */
+    ol,
+    ul {
+      padding-inline-start: 40px;
+    }
+
+    .welcome-message {
+      height: 24px;
+    }
+
+    .sidebar button {
+      font-size: revert;
+      line-height: initial;
+    }
+
+    .right-pane {
+      /* border: 1px solid red; */
+      /* width: 77%;  */
+      /* 调整頁面的寬度 */
+      /* margin-right: 20px; */
+      /* text-align: center; */
+      margin-left: 256px;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-top: 36px;
+      margin-bottom: 30px;
+      font-size: 32px;
     }
   </style>
 
 </head>
+
 <body>
 
-  <div class="container">
-    <div class="card">
-      <div class="card-header">
-        <h5 class="card-title" th:text="${action == 'add' ? '新增' : '更新'}"></h5>
-      </div>
-      <div class="card-body">
-        <form th:action="@{editAction}" method="post" th:object="${newsVO}" enctype="multipart/form-data">
-          <div class="form-group">
-            <label for="newsTitle">標題</label>
-            <input type="text" id="newsTitle" class="form-control" th:field="*{newsTitle}">
+  <div class="main-container">
+    <div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+
+    <div class="right-pane">
+      <h1 th:text="${'MorningCode 最新消息' + (action == 'add' ? '新增' : '編輯')}"></h1>
+      <div class="container">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title" th:text="${action == 'add' ? '新增' : '更新'}"></h5>
           </div>
-          <div class="form-group">
-            <label for="input_content">內容</label>
-            <textarea id="input_content" class="form-control" rows="5" th:field="*{newsContent}"></textarea>
+          <div class="card-body">
+            <form th:action="@{editAction}" method="post" th:object="${newsVO}" enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="newsTitle">標題</label>
+                <input type="text" id="newsTitle" class="form-control" th:field="*{newsTitle}" required>
+              </div>
+              <div class="form-group">
+                <label for="input_content">內容</label>
+                <textarea id="input_content" class="form-control" rows="5" th:field="*{newsContent}" required></textarea>
+              </div>
+              <div class="form-group">
+                <label for="newsDate">日期</label>
+                <input type="date" id="newsDate" class="form-control" th:field="*{newsDate}" required>
+              </div>
+              <input type="hidden" th:field="*{newsId}" readonly />
+              <button type="submit" class="btn btn-primary" th:text="${action == 'add' ? '新增' : '更新'}"></button>
+            </form>
           </div>
-          <div class="form-group">
-            <label for="newsDate">日期</label>
-            <input type="date" id="newsDate" class="form-control" th:field="*{newsDate}">
-          </div>
-          <input type="hidden" th:field="*{newsId}" readonly />
-          <button type="submit" class="btn btn-primary" 
-                  th:text="${action == 'add' ? '新增' : '更新'}"></button>
-        </form>
+        </div>
       </div>
     </div>
+
   </div>
 
 
@@ -66,8 +114,8 @@
   <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.min.js}"></script>
   <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
   <script>
-  
-  	// sidebar要用到的設定
+  	
+    // sidebar要用到的設定
     $("a.aa").on("click", function () {
       console.log(this);
 
@@ -80,6 +128,7 @@
       window.location.href = url;
     }
   </script>
-  
+
 </body>
+
 </html>

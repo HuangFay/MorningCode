@@ -8,6 +8,23 @@
 
   <link rel="stylesheet" th:href="@{/css/index3.css}">
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
+  
+  <style>
+    /* 避免 bootstrap 與 index3.css 樣式衝突 */
+    ol, ul {
+      padding-inline-start: 40px;
+    }
+
+    .welcome-message {
+      height: 24px;
+    }
+
+    .sidebar button {
+      font-size: revert;
+      line-height: initial;
+    }
+  </style>
+  
 </head>
 
 <body>
