@@ -2,6 +2,7 @@ package com.morning.order.controller;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -143,10 +144,12 @@ public class OrderController {
     @PostMapping("listOrders_ByCompositeQuery")
     public String listAllOrder(HttpServletRequest req, Model model) {
         Map<String, String[]> map = req.getParameterMap();
+        map.forEach((key, value) -> System.out.println(key + " : " + Arrays.toString(value))); // 打印调试信息
         List<OrderVO> list = orderSvc.getAll(map);
         model.addAttribute("orderListData", list);
         return "back-end/order/listAllOrder";
     }
+
 
    
     @GetMapping("/order_status")
@@ -154,14 +157,7 @@ public class OrderController {
         return "back-end/order/order_status";
     }
 
-    // 後台查看訂單
-    @GetMapping("/all_orders")
-    public String showAllOrdersPage(Model model) {
-        List<OrderVO> orders = orderSvc.getAll();
-        model.addAttribute("orders", orders);
-        return "back-end/order/all_orders";
-    }
-
+    
     @PostMapping("/updateOrderStatus")
     @ResponseBody
     public String updateOrderStatus(@RequestParam("ordId") Integer ordId, @RequestParam("ordStatus") Byte ordStatus) {

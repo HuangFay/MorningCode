@@ -536,7 +536,7 @@ public class IndexController_inSpringBoot   {
 			return "back-end/res/select_page";
 		}
 	    
-	    //訂單畫面
+	    //後台查看訂單
 	    @GetMapping("/order/select_page")
 	    public String select_page4(Model model) {
 	        return "back-end/order/select_page";
@@ -633,13 +633,6 @@ public class IndexController_inSpringBoot   {
 	        model.addAttribute("orddList", orddList);
 	        return "back-end/ordd/meals_status";
 	    }
-	    
-	  //後台查看訂單
-	    @GetMapping("/all_orders")
-	    public String showAllOrdersPage(Model model) {
-	        List<OrderVO> orders = orderSvc.getAll();
-	        model.addAttribute("orders", orders);
-	        return "back-end/order/all_orders";
-	    }
+	    	  
 
 }
