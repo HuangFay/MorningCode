@@ -110,50 +110,7 @@
             margin-top: 150px;
         }
     </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var today = new Date().toISOString().split('T')[0];
-            document.getElementById("date").setAttribute("min", today);
-        });
 
-        function selectTableType(tableId) {
-            document.getElementById("tableType").value = tableId;
-            document.querySelectorAll('.icon-button').forEach(button => {
-                button.classList.remove('selected');
-            });
-            document.getElementById("button-" + tableId).classList.add('selected');
-        }
-
-        function selectPeople(num) {
-            document.getElementById("people").value = num;
-            document.querySelectorAll('.number-button').forEach(button => {
-                button.classList.remove('selected');
-            });
-            document.getElementById("button-people-" + num).classList.add('selected');
-        }
-
-        function formatPhoneNumber(input) {
-            var value = input.value.replace(/\D/g, '');
-            var formattedValue = '';
-            if (value.length > 4 && value.length <= 7) {
-                formattedValue = value.slice(0, 4) + '-' + value.slice(4);
-            } else if (value.length > 7) {
-                formattedValue = value.slice(0, 4) + '-' + value.slice(4, 7) + '-' + value.slice(7, 10);
-            } else {
-                formattedValue = value;
-            }
-            input.value = formattedValue;
-        }
-
-        function stripPhoneNumber(phoneNumber) {
-            return phoneNumber.replace(/-/g, '');
-        }
-
-        document.getElementById("reservationForm").addEventListener("submit", function(event) {
-            var phoneInput = document.getElementById("phone");
-            phoneInput.value = stripPhoneNumber(phoneInput.value);
-        });
-    </script>
     <link rel="stylesheet" th:href="@{/css/index2.css}" />
 </head>
 <body>
@@ -170,7 +127,7 @@
                 <input type="hidden" th:field="*{memVO.memNo}">
             </div>
             <label for="phone">電話號碼:</label>
-            <input type="tel" th:field="*{reservationPhone}" id="phone" name="phone"  placeholder="格式: 09xx-xxx-xxx" required oninput="formatPhoneNumber(this)">
+            <input type="tel" th:field="*{reservationPhone}" id="phone" name="phone"  placeholder="格式: 09xxxxxxxx" required oninput="formatPhoneNumber(this)">
 
             <label for="date">日期:</label>
             <input type="date" th:field="*{reservationEatdate}" id="date" name="date" required>
@@ -269,6 +226,50 @@
                     });
                 }
             });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementById("date").setAttribute("min", today);
+    });
+
+    function selectTableType(tableId) {
+        document.getElementById("tableType").value = tableId;
+        document.querySelectorAll('.icon-button').forEach(button => {
+            button.classList.remove('selected');
+        });
+        document.getElementById("button-" + tableId).classList.add('selected');
+    }
+
+    function selectPeople(num) {
+        document.getElementById("people").value = num;
+        document.querySelectorAll('.number-button').forEach(button => {
+            button.classList.remove('selected');
+        });
+        document.getElementById("button-people-" + num).classList.add('selected');
+    }
+
+    function formatPhoneNumber(input) {
+        var value = input.value.replace(/\D/g, '');
+        var formattedValue = '';
+        if (value.length > 4 && value.length <= 7) {
+            formattedValue = value.slice(0, 4) + '' + value.slice(4);
+        } else if (value.length > 7) {
+            formattedValue = value.slice(0, 4) + '' + value.slice(4, 7) + '' + value.slice(7, 10);
+        } else {
+            formattedValue = value;
+        }
+        input.value = formattedValue;
+    }
+
+    function stripPhoneNumber(phoneNumber) {
+        return phoneNumber.replace(/-/g, '');
+    }
+
+    document.getElementById("reservationForm").addEventListener("submit", function(event) {
+        var phoneInput = document.getElementById("phone");
+        phoneInput.value = stripPhoneNumber(phoneInput.value);
     });
 </script>
 </body>

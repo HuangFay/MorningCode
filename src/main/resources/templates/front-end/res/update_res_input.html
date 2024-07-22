@@ -207,8 +207,6 @@
 
                 var form = document.querySelector("form");
                 var formData = new FormData(form);
-                var phoneInput = document.getElementById("phone");
-                phoneInput.value = stripPhoneNumber(phoneInput.value);
 
                 fetch("update", {
                     method: "POST",
@@ -257,6 +255,19 @@
             });
             document.getElementById("button-people-" + num).classList.add('selected');
         }
+        function formatPhoneNumber(input) {
+            var value = input.value.replace(/\D/g, '');
+            var formattedValue = '';
+            if (value.length > 4 && value.length <= 7) {
+                formattedValue = value.slice(0, 4) + '' + value.slice(4);
+            } else if (value.length > 7) {
+                formattedValue = value.slice(0, 4) + '' + value.slice(4, 7) + '' + value.slice(7, 10);
+            } else {
+                formattedValue = value;
+            }
+            input.value = formattedValue;
+        }
+
 
 
 
@@ -283,7 +294,7 @@
 
         <div class="form-group">
             <label for="phone">電話號碼:</label>
-            <input type="tel" th:field="*{reservationPhone}" id="phone" name="phone" required pattern="\d{10}" >
+            <input type="tel" th:field="*{reservationPhone}" id="phone" name="phone" placeholder="格式: 09xxxxxxxx" required oninput="formatPhoneNumber(this)" >
             <span id="phoneError" class="error"></span>
         </div>
 
