@@ -63,12 +63,14 @@
 			
 			
 			<div class="customer-quote">
-				<span class="glowing-review">“A”</span>
+				<span class="glowing-review">最新消息</span>
 				<div class="avatar-c">
-					<div class="avatar-d"></div>
-					<div class="frame-e">
-						<span class="name-f">Name</span><span class="description-10">Description</span>
-					</div>
+					
+					<div class="frame-8">
+                        <span class="name-9" th:text="${latestNews != null ? latestNews.getNewsTitle() : '尚無消息'}">Name</span>
+                        <span class="description-a" th:text="${latestNews != null ? latestNews.getNewsContent() : ''}">Description</span>
+                        <span class="datee" th:text="${latestNews != null ? #dates.format(latestNews.getNewsDate(), 'yyyy-MM-dd') : ''}">Date</span>
+                    </div>
 				</div>
 			</div>
 		</div>

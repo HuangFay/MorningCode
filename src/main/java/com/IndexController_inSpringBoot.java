@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.morning.cart.model.CartService;
@@ -36,6 +35,8 @@ import com.morning.mealstypes.model.MealsTypesService;
 import com.morning.mealstypes.model.MealsTypesVO;
 import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
+import com.morning.news.model.NewsService;
+import com.morning.news.model.NewsVO;
 import com.morning.ordd.model.OrddService;
 import com.morning.ordd.model.OrddVO;
 import com.morning.order.model.OrderService;
@@ -90,6 +91,9 @@ public class IndexController_inSpringBoot   {
     @Autowired
     CartService cartSvc;
     
+    @Autowired
+    NewsService newsSvc;
+    
 //訂位autowired
 	@Autowired
 	ResTimeService resTimeSvc;
@@ -111,6 +115,8 @@ public class IndexController_inSpringBoot   {
     public void addAttributes(HttpSession session, Model model) {
     	OrddVO latestOrdd = orddSvc.getLatestOrdd();
         model.addAttribute("latestOrdd", latestOrdd);
+        NewsVO latestNews = newsSvc.getLatestNews();
+        model.addAttribute("latestNews", latestNews);
         MemVO memVO = (MemVO) session.getAttribute("memVO");
         if (memVO != null) {
             model.addAttribute("memVO", memVO);

@@ -657,3 +657,20 @@ button {
         color: #000000;
         cursor: pointer; /*小手手*/
     }
+
+.customer-quote {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.description-a {
+  display: block;
+  white-space: normal;
+}
+.datee {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 5px 0px 5px 35px;
+}
