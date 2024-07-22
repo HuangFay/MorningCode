@@ -85,7 +85,7 @@
                                 <span th:case="2">已取消</span><span th:case="3">超時取消</span>
                             </span></td>
                             <td>
-                                <form method="post" th:action="@{/res/getOne_For_Update}" style="margin-bottom: 0px;">
+                                <form method="post" th:action="@{/res/backendupdate}" style="margin-bottom: 0px;">
                                     <input type="submit" value="修改">
                                     <input type="hidden" name="reservationId" th:value="${resVO.reservationId}">
                                 </form>
@@ -110,9 +110,10 @@
                             <th>訂位人數</th>
                             <th>訂位時段</th>
                             <th>訂位時間</th>
-                            <th>訂位狀態</th>
+
                             <th>桌型人數</th>
                             <th>桌數</th>
+
                             <th>訂位備註</th>
                             <th>操作</th>
                         </tr>
@@ -128,12 +129,13 @@
                                     <td th:text="${resVO.reservationNum}"></td>
                                     <td th:text="${resVO.resTimeVO.reservationTime}"></td>
                                     <td th:text="${resVO.reservationDate}"></td>
-                                    <td th:text="${resVO.reservationStatus}"></td>
+
                                     <td th:text="${resVO.tableTypeVO.tableType}"></td>
-                                    <td th:text="${resVO.reservationTable}"></td>
+                                    <td th:text="${resVO.reservationTable}">
+
                                     <td th:text="${resVO.reservationNote}"></td>
                                     <td>
-                                        <form method="post" th:action="@{/res/getOne_For_Update}" style="margin-bottom: 0px;">
+                                        <form method="post" th:action="@{/res/backendupdate}" style="margin-bottom: 0px;">
                                             <input type="submit" value="修改">
                                             <input type="hidden" name="reservationId" th:value="${resVO.reservationId}">
                                         </form>
@@ -157,7 +159,7 @@
                             <th>訂位人數</th>
                             <th>訂位時段</th>
                             <th>訂位時間</th>
-                            <th>訂位狀態</th>
+
                             <th>桌型人數</th>
                             <th>桌數</th>
                             <th>訂位備註</th>
@@ -175,7 +177,7 @@
                                     <td th:text="${resVO.reservationNum}"></td>
                                     <td th:text="${resVO.resTimeVO.reservationTime}"></td>
                                     <td th:text="${resVO.reservationDate}"></td>
-                                    <td th:text="${resVO.reservationStatus}"></td>
+
                                     <td th:text="${resVO.tableTypeVO.tableType}"></td>
                                     <td th:text="${resVO.reservationTable}"></td>
                                     <td th:text="${resVO.reservationNote}"></td>
@@ -199,7 +201,7 @@
                             <th>訂位人數</th>
                             <th>訂位時段</th>
                             <th>訂位時間</th>
-                            <th>訂位狀態</th>
+
                             <th>桌型人數</th>
                             <th>桌數</th>
                             <th>訂位備註</th>
@@ -217,7 +219,7 @@
                                     <td th:text="${resVO.reservationNum}"></td>
                                     <td th:text="${resVO.resTimeVO.reservationTime}"></td>
                                     <td th:text="${resVO.reservationDate}"></td>
-                                    <td th:text="${resVO.reservationStatus}"></td>
+
                                     <td th:text="${resVO.tableTypeVO.tableType}"></td>
                                     <td th:text="${resVO.reservationTable}"></td>
                                     <td th:text="${resVO.reservationNote}"></td>
@@ -240,7 +242,7 @@
                             <th>訂位人數</th>
                             <th>訂位時段</th>
                             <th>訂位時間</th>
-                            <th>訂位狀態</th>
+
                             <th>桌型人數</th>
                             <th>桌數</th>
                             <th>訂位備註</th>
@@ -258,12 +260,12 @@
                                     <td th:text="${resVO.reservationNum}"></td>
                                     <td th:text="${resVO.resTimeVO.reservationTime}"></td>
                                     <td th:text="${resVO.reservationDate}"></td>
-                                    <td th:text="${resVO.reservationStatus}"></td>
+
                                     <td th:text="${resVO.tableTypeVO.tableType}"></td>
                                     <td th:text="${resVO.reservationTable}"></td>
                                     <td th:text="${resVO.reservationNote}"></td>
                                     <td>
-                                        <form method="post" th:action="@{/res/getOne_For_Update}" style="margin-bottom: 0px;">
+                                        <form method="post" th:action="@{/res/backendupdate}" style="margin-bottom: 0px;">
                                             <input type="submit" value="修改">
                                             <input type="hidden" name="reservationId" th:value="${resVO.reservationId}">
                                         </form>
