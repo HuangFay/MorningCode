@@ -23,6 +23,8 @@ import com.morning.cust.model.CustService;
 import com.morning.cust.model.CustVO;
 import com.morning.emp.model.EmpService;
 import com.morning.emp.model.EmpVO;
+import com.morning.forum.model.ForumPostVO;
+import com.morning.forum.model.ForumService;
 import com.morning.leave.model.LeaveService;
 import com.morning.leave.model.LeaveVO;
 import com.morning.meal.model.MealService;
@@ -103,6 +105,8 @@ public class IndexController_inSpringBoot   {
 	TableTypeService tableSvc;
 	@Autowired
 	ResService resSvc;
+	@Autowired
+	ForumService forumSvc;
 
 	
     // inject(注入資料) via application.properties
@@ -117,6 +121,8 @@ public class IndexController_inSpringBoot   {
         model.addAttribute("latestOrdd", latestOrdd);
         NewsVO latestNews = newsSvc.getLatestNews();
         model.addAttribute("latestNews", latestNews);
+        ForumPostVO latestPost = forumSvc.getLatestPost();
+        model.addAttribute("latestPost", latestPost);
         MemVO memVO = (MemVO) session.getAttribute("memVO");
         if (memVO != null) {
             model.addAttribute("memVO", memVO);
