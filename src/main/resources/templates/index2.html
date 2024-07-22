@@ -34,7 +34,7 @@
 
 		<div class="cards">
 			<div class="customer-quote">
-				<span class="meal-review">餐點評價</span>
+				<span class="meal-review">最新餐點評價</span>
 				<div class="avatar">
 				<img th:if="${latestOrdd != null && latestOrdd.getMealsVO() != null}" 
                  th:src="@{|/meals/DBGifReader2?mealsId=${latestOrdd.getMealsVO().getMealsId()}|}" 
@@ -76,13 +76,15 @@
 
 		<div class="navigation-footer">
 			<div class="flex-column-bbd">
+			 
 				<div class="divider"></div>
+				<h1><a class="back-emp" onclick="redirectTo(baseUrl + 'index3')" >員工專區</a></h1>
 				<span class="phone">電話:3345678</span><span class="contact-address">聯絡地址:320桃園市中壢區復興路46號8樓</span>
 			</div>
 
 
 			<div class="flex-column-e">
-				<span class="site-name">Site name</span>
+				<span class="site-name"></span>
 				<div class="social-icons">
 					<div class="buttons-icon">
 						<div class="icon">

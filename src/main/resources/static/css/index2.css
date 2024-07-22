@@ -649,4 +649,11 @@ button {
      .welcome-message {
         font-size: 10px; /* 字體大小 */
     }
-  
+  .back-emp {
+        font-size: 30px; 
+        margin-left: 20px; 
+        display: inline-block; 
+        text-decoration: none; 
+        color: #000000;
+        cursor: pointer; /*小手手*/
+    }
