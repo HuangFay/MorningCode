@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -23,16 +24,19 @@ public class NewsVO implements java.io.Serializable {
     private Integer newsId;
 
     @NotNull
+    @NotEmpty(message="文章標題請勿空白。")
     @Size(max = 50)
     @Column(name = "news_title")
     private String newsTitle;
 
     @NotNull
+    @NotEmpty(message="文章內容請勿空白。")
     @Size(max = 1000)
     @Column(name = "news_content")
     private String newsContent;
 
     @NotNull
+    @NotNull(message="發佈日期請勿空白。")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @Column(name = "news_date")
     private Date newsDate;
