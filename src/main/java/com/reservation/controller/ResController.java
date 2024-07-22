@@ -2,7 +2,9 @@ package com.reservation.controller;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -13,6 +15,8 @@ import com.reservationcontrol.model.ResCVO;
 import com.sysargument.model.SysArgService;
 import com.sysargument.model.SysArgVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -85,7 +89,7 @@ public class ResController {
 //			
 			return "back-end/res/select_page"; // 查詢完成後轉交select_page.html由其第128行insert listOneEmp.html內的th:fragment="listOneEmp-div
 		}
-	
+
 	@PostMapping("getOne_For_Update")
 	public String getOne_For_Update(HttpSession session,@RequestParam("reservationId") Integer reservationId, ModelMap model) {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
@@ -105,7 +109,7 @@ public class ResController {
 	@PostMapping("update")
 	public String update(HttpSession session,@Valid ResVO resVO, BindingResult result, ModelMap model
 
-			) throws IOException {
+	) throws IOException {
 
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 		resVO.setReservationDate(LocalDateTime.now());
@@ -122,19 +126,34 @@ public class ResController {
 				oldResVO.getResTimeVO().getReservationTimeId()));//恢復座位數量
 		System.out.println("resC數量" +resCVO.getReservationControlTable());
 		List<ResCVO>resCVOList2 = ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
-
+		String updateStatus;
 		ResCVO resCVO2 = resCVOList2.get(0); // Assuming you want the first element
 		System.out.println("吃飯時段"+resVO.getResTimeVO().getReservationTimeId());
-		String argumentValue = resCVO2.getTableTypeVO().getTableId() == 1 ?
+		System.out.println(resCVO2.getTableTypeVO().toString());
+		String argumentValue = resCVO2.getTableTypeVO().getTableType() == 2 ?
 				sysArgVOList2.get(0).getSysArgumentValue() :
 				sysArgVOList4.get(0).getSysArgumentValue();
-
-		resCVO.setReservationControlTable(ResSvc.compareLastTwoDigits(
+		String updatesit = ResSvc.compareLastTwoDigits(
 				argumentValue,
 				resCVO2.getReservationControlTable(),
 				resVO.getReservationTable(),
 				resVO.getResTimeVO().getReservationTimeId()
-		));
+		);
+		if(!updatesit.equals(resCVO2.getReservationControlTable())) {
+			resCVO2.setReservationControlTable(updatesit);
+
+			updateStatus = "success";
+
+		}else{
+			model.addAttribute("success", "- (修改失敗)");
+			updateStatus = "failure";
+			return "front-end/res/update_res_input";
+
+
+		}
+
+
+
 
 		//測試列印出來
 		System.out.println("日期"+resVO.getReservationEatdate());
@@ -153,9 +172,11 @@ public class ResController {
 		model.addAttribute("success", "- (修改成功)");
 		resVO = ResSvc.getOneRes(Integer.valueOf(resVO.getReservationId()));
 		model.addAttribute("resVO", resVO);
+		model.addAttribute("updateStatus", updateStatus);
 		return "front-end/res/listOneRes"; // 修改成功後轉交listOneEmp.html
 	}
-	
+
+
 
 	@ModelAttribute("memListData")
 	protected List<MemVO> referenceListData() {

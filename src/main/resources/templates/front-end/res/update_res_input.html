@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>訂位修改</title>
 
-    <head th:insert="~{/back-end/resc/included-fragment}"></head>
+
     <style type="text/css">
         body {
             font-family: "Comic Sans MS", cursive, sans-serif;
@@ -100,7 +103,10 @@
         function validateForm() {
             return validatePhone();
         }
+
+
     </script>
+
 </head>
 <body>
 
@@ -126,7 +132,7 @@
 
         <div class="form-group">
             <label for="name">姓名:</label>
-            <span th:text="${resVO.memVO.memName}"></span>
+            <span th:text="${resVO.memVO.memName}" id="name"></span>
             <input type="hidden" th:field="*{memVO.memNo}" />
         </div>
 
@@ -143,7 +149,7 @@
 
         <div class="form-group">
             <label for="time">時段:</label>
-            <select th:field="*{resTimeVO.reservationTimeId}">
+            <select th:field="*{resTimeVO.reservationTimeId}" id="time">
                 <option th:each="resTimeVO : ${resTimeListData}" th:value="${resTimeVO.reservationTimeId}" th:text="${resTimeVO.reservationTime}"></option>
             </select>
         </div>
@@ -160,7 +166,7 @@
 
         <div class="form-group">
             <label for="tableType">桌型人數:</label>
-            <select th:field="*{tableTypeVO.tableId}">
+            <select th:field="*{tableTypeVO.tableId}" id="tableType">
                 <option th:each="tableTypeVO : ${tableTypeListData}" th:value="${tableTypeVO.tableId}" th:text="${tableTypeVO.tableType}"></option>
             </select>
         </div>
@@ -173,6 +179,21 @@
         <button type="submit" id="submit">送出修改</button>
     </form>
 </div>
-
+<script th:if="${updateStatus == 'success'}">
+    console.log(updateStatus);
+    Swal.fire({
+        icon: 'success',
+        title: '成功',
+        text: '修改成功!'
+    });
+</script>
+<script th:if="${updateStatus == 'failure'}">
+    console.log(updateStatus);
+    Swal.fire({
+        icon: 'error',
+        title: '失敗',
+        text: '修改失敗，請重試。'
+    });
+</script>
 </body>
 </html>
