@@ -46,7 +46,7 @@
 <div class="main-container">
     <div th:replace="fragments/header-items :: navigation"></div>
     <div class="container mt-5">
-        <h1 class="text-center">訂單詳情</h1>
+        <h1 class="text-center"></h1><br><br><br><br><br>
         <div class="card">
             <div class="card-header d-flex justify-content-between">
                 <div>訂單編號: <span th:text="${order.ordId}"></span></div>
@@ -64,7 +64,7 @@
 				    <span th:if="${order.ordStatus == 4}" th:text="'訂單取消'"></span>
 				</p>
 
-                <h5>餐點資訊:</h5>
+                <br>
 		        <table class="table table-bordered table-hover">
 		            <thead class="thead-dark">
 		            <tr class="text-center">                            
