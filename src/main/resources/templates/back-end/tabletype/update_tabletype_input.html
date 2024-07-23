@@ -1,94 +1,98 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>員工資料修改 - update_emp_input.html</title>
+	<meta charset="UTF-8">
+	<title>桌椅修改</title>
 
-<head th:insert="~{/back-end/resc/included-fragment}"></head>
-<style type="text/css">
-	
-	button {
-		padding: 5px;
-	}
-	form {
-		display: table;
-	}
-	form div {
-		display: table-row;
-	}
-	label, input, span, select {
-		display: table-cell;
-		margin: 5px;
-		text-align: left;		
-	}
-	input[type=text], input[type=password], select, textarea {
-		width: 200px;
-		margin: 5px;
-	}
-	form div div {
-		display: table-cell;
-	}
-	.center {
-        margin-left: auto;
-        margin-right: auto;
-    }
-</style>
+	<style type="text/css">
+		body {
+			font-family: 'Inter', sans-serif;
+			background-color: #f8f9fa;
+			margin: 0;
+			padding: 20px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+		.container {
+			max-width: 600px;
+			background-color: #fff;
+			padding: 20px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+			text-align: center;
+		}
+		h3 {
+			color: #dc3545;
+		}
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		label {
+			margin: 10px 0 5px;
+			color: #333;
+		}
+		input {
+			padding: 10px;
+			margin-bottom: 10px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			width: 100%;
+		}
+		.submit {
+			padding: 10px 20px;
+			background-color: #28a745;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		.submit:hover {
+			background-color: #218838;
+		}
+		.note {
+			color: #6c757d;
+			font-size: 0.9rem;
+		}
+	</style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-		 <div align="center"> <h2>訂位控制修改 - update_emp_input.html</h2>
-		 <h3><a class="navbar-brand" th:href="@{/tabletype/select_page}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3></div>
-</nav>
-
-	<div align="center">
-		<h3><b>所有欄位皆為必填欄位</b></h3>
-		<form th:action="@{update}" method="post" th:object="${tableTypeVO}" enctype="multipart/form-data">
-			<div>
+<div class="container">
+	<h3><b>所有欄位皆為必填欄位</b></h3>
+	<form th:action="@{update}" method="post" th:object="${tableTypeVO}" enctype="multipart/form-data">
+		<div>
 			<label>桌型控制編號:</label>
-			<input type="text" th:field="*{tableId}" style="border:0px ; font-weight: bold;" readonly /><br/>
+			<input type="text" th:field="*{tableId}" style="border:0px; font-weight: bold;" readonly /><br/>
+		</div>
 
-			</div>
-			
-			<div>
+		<div>
 			<label>桌型人數:</label>
-			<input type="number" th:field="*{tableType}"  onclick="hideContent('reasrvationControlDate.errors');" /><br/>
-			<!-- <span  th:if="${#fields.hasErrors('ename')}" th:errors="*{ename}" class="error" id="ename.errors"></span> -->
-			</div>
-			<div>
+			<input type="number" th:field="*{tableType}" onclick="hideContent('reasrvationControlDate.errors');" /><br/>
+			<!-- <span th:if="${#fields.hasErrors('ename')}" th:errors="*{ename}" class="error" id="ename.errors"></span> -->
+		</div>
+		<div>
 			<label>桌型數量:</label>
 			<input type="number" th:field="*{tableTypeNumber}"  /><br/>
-			<!-- <span  th:if="${#fields.hasErrors('ename')}" th:errors="*{ename}" class="error" id="ename.errors"></span> -->
-			</div>
-			
-	
-			
+			<!-- <span th:if="${#fields.hasErrors('ename')}" th:errors="*{ename}" class="error" id="ename.errors"></span> -->
+		</div>
 
-				
-			
-			
-			
-			
-			<div>
-				<div></div>
-				<div><button type="submit" id="submit"> 送出修改 </button></div>
-				<div></div>
-			</div>		
-		</form>
-	
-	</div>
-
+		<div>
+			<button class="submit" type="submit" id="submit">送出修改</button>
+		</div>
+	</form>
+</div>
 
 <!-- JavaScript part -->
-<!-- <script type="text/javascript">
-//清除提示信息
-function hideContent(d) {
-     document.getElementById(d).style.display = "none";
-} -->
-
-
-
+<script type="text/javascript">
+	//清除提示信息
+	function hideContent(d) {
+		document.getElementById(d).style.display = "none";
+	}
+</script>
 
 </body>
 </html>
