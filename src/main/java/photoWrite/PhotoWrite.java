@@ -11,7 +11,7 @@ class PhotoWrite {
 		InputStream fin = null;
 		String url = "jdbc:mysql://localhost:3306/morningcode?serverTimezone=Asia/Taipei";
 		String userid = "root";
-		String passwd = "Dong0711";
+		String passwd = "azx4639551";
 		String photos = "src/main/resources/static/DB_photos"; //測試用圖片已置於【專案錄徑】底下的【resources/DB_photos】目錄內
 //		String update = "update employee set emp_photo =? where emp_id=?";
 		String update = "update member set mem_photo =? where mem_no=?";
