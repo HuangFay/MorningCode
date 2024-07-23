@@ -3,6 +3,7 @@
 <head>
     <title>訂單詳情</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/index2.css}" />
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -71,7 +72,8 @@
                         <th>餐點名稱</th>
                         <th>價格</th>                      
                         <th>數量</th>
-                        <th>總評分</th>                      
+                        <th>總評分</th>  
+                        <th>歷史評論</th>                      
 
                     </tr>
                     </thead>
@@ -88,6 +90,7 @@
                        th:classappend="${i <= item.mealsVO.mealsTotalScore ? 'fas fa-star' : 'far fa-star'}"
                        style="color: #f5c518;"></i>
                 </div>
+                 <td th:text="${item.mealsContent}">歷史評論</td> 
                                       
                     </tr>                               
                     </tbody>
@@ -203,6 +206,14 @@
             });
         });
     });
+</script>
+<script th:inline="javascript">
+   var baseUrl = /*[[@{/}]]*/ '/';
+
+ 
+   function redirectTo(url) {
+		window.location.href = url;
+	}
 </script>
 </body>
 </html>
