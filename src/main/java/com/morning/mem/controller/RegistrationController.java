@@ -86,6 +86,9 @@ public class RegistrationController {
 		if (!memVO.getMemPassword().matches("^[(a-zA-Z0-9_)]{2,15}$")) {
 			return ResponseEntity.status(400).body("密碼格式不正確");
 		}
+		 if (memSvc.emailExists(memVO.getMemEmail())) {
+		        return ResponseEntity.status(400).body("Email已存在");
+		    }
 		try {
 			String encodedPassword = passwordEncoder.encode(memVO.getMemPassword());
 			memVO.setMemPassword(encodedPassword);
@@ -206,5 +209,13 @@ public class RegistrationController {
 			return ResponseEntity.badRequest().body("密碼更新失敗");
 		}
 	}
-
+	// 購物車===============================================================================
+	 @GetMapping("/checkVerification")
+	    public ResponseEntity<Boolean> checkVerification(HttpSession session) {
+	        MemVO memVO = (MemVO) session.getAttribute("memVO");
+	        if (memVO != null) {
+	            return ResponseEntity.ok(memVO.getMemVerified() == 1);
+	        }
+	        return ResponseEntity.ok(false);
+	    }
 }

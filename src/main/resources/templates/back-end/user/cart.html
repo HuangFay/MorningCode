@@ -139,7 +139,7 @@
     <!-- 結帳部分 -->
     <div class="checkout-form mt-5">
         <h3>結帳</h3>
-        <button class="btn btn-custom" data-toggle="modal" data-target="#checkoutModal">我要下單</button>
+        <button class="btn btn-custom" data-toggle="modal"  onclick="showCheckoutForm()">我要下單</button>
 
         <!-- Modal -->
         <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
@@ -319,6 +319,31 @@
         }
 
         return true;
+    }
+    
+    
+    
+    function showCheckoutForm() {
+        axios.get('/api/checkVerification')
+            .then(response => {
+                if (response.data) {
+                    $('#checkoutModal').modal('show');
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '錯誤',
+                        text: '會員信箱尚未驗證，請先驗證您的信箱。'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error checking verification status:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: '錯誤',
+                    text: '驗證狀態檢查失敗，請稍後再試。'
+                });
+            });
     }
 </script>
 </body>

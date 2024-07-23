@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -29,6 +30,9 @@ public class MemController {
 	@Autowired
 	MemService memSvc;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@GetMapping("addMem")
 	public String addMem(ModelMap model) {
 		MemVO memVO = new MemVO();
@@ -55,6 +59,8 @@ public class MemController {
 			return "back-end/mem/addMem";
 		}
 		/*************************** 2.開始新增資料 *****************************************/
+		String encodedPassword = passwordEncoder.encode(memVO.getMemPassword());
+		memVO.setMemPassword(encodedPassword);
 		memVO.setMemVerified((byte) 0);
 		memSvc.addMem(memVO);
 		/*************************** 3.新增完成,準備轉交(Send the Success view) **************/
