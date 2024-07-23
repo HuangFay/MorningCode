@@ -4,17 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>討論區 - 新增文章</title>
 
   <link rel="stylesheet" th:href="@{/css/index2.css}" />
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
-   <link rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
 
   <style>
-    /*     * {
+    * {
       box-sizing: border-box;
-    } */
+    }
 
     /*  html {
       font-size: 62.5%;
@@ -33,13 +32,17 @@
       right: 10rem;
     }
 
+    button {
+      all: unset;
+    }
+
     h1 {
-      font-size: 3rem;
+      font-size: 1.5rem;
     }
 
     /* remove all button style */
     /* 參考: https://stackoverflow.com/questions/2460100/remove-the-complete-styling-of-an-html-button-submit */
-    add_post_area button {
+    /* #add_post_area button {
       all: unset;
       background: none;
       color: inherit;
@@ -48,34 +51,35 @@
       font: inherit;
       cursor: pointer;
       outline: inherit;
-    }
+    } */
 
     input[type="text"] {
-      all: unset;
+      /* all: unset; */
+      padding: 2px 8px;
     }
 
     textarea {
       all: unset;
+      padding: 2px 8px;
     }
 
     /* ---------------------- */
 
 
     #input_title {
-      border: 1px solid black;
       border: 0.5px solid gray;
 
       width: 100%;
       margin: 0 0 0.4rem 0;
 
-      font-size: 2.2rem;
+      font-size: 2rem;
     }
 
     #input_content {
       border: 0.5px solid gray;
 
       width: 100%;
-      height: 50rem;
+      height: 50vh;
 
       font-size: 2rem;
 
@@ -95,10 +99,6 @@
       font-size: 2rem;
       text-align: center;
     }
-
-    */ #btn_submit:active {
-      background-color: rgb(186, 154, 182);
-    }
   </style>
 </head>
 
@@ -113,26 +113,34 @@
 
         <div id="add_post_area">
           <div>
-            <input type="text" id="input_title" placeholder="請輸入標題" th:field="*{postTitle}"
-              onclick="hideContent('postTitle.errors');" /><br />
             <span th:if="${#fields.hasErrors('postTitle')}" th:errors="*{postTitle}" class="error"
               id="postTitle.errors"></span>
+            <input type="text" id="input_title" placeholder="請輸入標題" th:field="*{postTitle}"
+              onclick="hideContent('postTitle.errors');" /><br />
           </div>
 
           <div>
-            <textarea id="input_content" th:field="*{postContent}"></textarea>
             <span th:if="${#fields.hasErrors('postContent')}" th:errors="*{postContent}" class="error"
-              id="postTitle.errors"></span>
+              id="postContent.errors"></span>
+            <textarea id="input_content" th:field="*{postContent}" onclick="hideContent('postContent.errors');"></textarea>
+
           </div>
           <button type="submit" id="btn_submit">發表</button>
 
         </div>
 
       </form>
-      </main>
+    </main>
   </div>
 
   <script th:inline="javascript">
+    function hideContent(elementId) {
+      var element = document.getElementById(elementId);
+      if (element) {
+        element.style.display = 'none';
+      }
+    }
+
     var baseUrl = /*[[@{/}]]*/ '/';
 
     function redirectTo(url) {

@@ -4,9 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>編輯文章</title>
+  <title>討論區 - 編輯文章</title>
 
   <link rel="stylesheet" th:href="@{/css/index2.css}" />
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+
 
   <style>
     * {
@@ -17,16 +20,23 @@
       font-size: 62.5%;
     } */
 
-   /*  body {
+    /*  body {
       margin: 10rem;
     } */
 
     /* ---------------------- */
-    
-    main {
+
+    /*     main {
       position: absolute;
       top: 10rem;
       margin: auto 7rem;
+    } */
+
+    main {
+      position: absolute;
+      top: 11rem;
+      left: 10rem;
+      right: 10rem;
     }
 
     /* remove all button style */
@@ -42,21 +52,30 @@
       outline: inherit; */
     }
 
+    h1 {
+      font-size: 1.5rem;
+    }
+
     input[type="text"] {
-      all: unset;
+      /* all: unset; */
+      padding: 2px 8px;
     }
 
     textarea {
       all: unset;
+      padding: 2px 8px;
     }
 
-    /* ---------------------- */
-
-    /*
-    #add_post_area {
-       border: 1px solid black;
-    }
-    */
+    /* #add_post_area button {
+      all: unset;
+      background: none;
+      color: inherit;
+      border: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+      outline: inherit;
+    } */
 
     #input_title {
       /* border: 1px solid black; */
@@ -65,14 +84,14 @@
       width: 100%;
       margin: 0 0 0.4rem 0;
 
-      font-size: 2.2rem;
+      font-size: 2rem;
     }
 
     #input_content {
       border: 0.5px solid gray;
 
       width: 100%;
-      height: 50rem;
+      height: 50vh;
 
       font-size: 2rem;
 
@@ -92,55 +111,57 @@
       font-size: 2rem;
       text-align: center;
     }
-
-    #btn_submit:active {
-      background-color: rgb(186, 154, 182);
-    }
-    
   </style>
 </head>
 
 <body>
-<div class="main-container">
-<div th:replace="fragments/header-items :: navigation"></div>
-<main>
-  <h1>編輯文章</h1>
+  <div class="main-container">
+    <div th:replace="fragments/header-items :: navigation"></div>
+    <main>
+      <h1>編輯文章</h1>
 
-  <form th:action="@{update}" method="post" th:object="${forumPostVO}" enctype="multipart/form-data">
+      <form th:action="@{update}" method="post" th:object="${forumPostVO}" enctype="multipart/form-data">
 
-    <div id="add_post_area">
-      <input type="hidden" th:field="*{postId}" readonly /><br />
-      <input type="hidden" th:field="*{memVO.memNo}" readonly /><br />
-      <input type="hidden" th:field="*{postTime}" readonly /><br />
-      <input type="hidden" th:field="*{postStatus}" readonly /><br />
-      <div>
-        <input type="text" id="input_title" placeholder="請輸入標題" th:field="*{postTitle}"
-          onclick="hideContent('postTitle.errors');" /><br />
-        <span th:if="${#fields.hasErrors('postTitle')}" th:errors="*{postTitle}" class="error"
-          id="postTitle.errors"></span>
-      </div>
+        <div id="add_post_area">
+          <input type="hidden" th:field="*{postId}" readonly />
+          <input type="hidden" th:field="*{memVO.memNo}" readonly />
+          <input type="hidden" th:field="*{postTime}" readonly />
+          <input type="hidden" th:field="*{postStatus}" readonly />
+          <div>
+            <span th:if="${#fields.hasErrors('postTitle')}" th:errors="*{postTitle}" class="error"
+              id="postTitle.errors"></span>
+            <input type="text" id="input_title" placeholder="請輸入標題" th:field="*{postTitle}"
+              onclick="hideContent('postTitle.errors');" /><br />
+          </div>
 
-      <div>
-        <textarea id="input_content" th:field="*{postContent}"></textarea>
-        <span th:if="${#fields.hasErrors('postContent')}" th:errors="*{postContent}" class="error"
-          id="postTitle.errors"></span>
-      </div>
-      <button type="submit" id="btn_submit">更新</button>
+          <div>
+            <span th:if="${#fields.hasErrors('postContent')}" th:errors="*{postContent}" class="error"
+              id="postContent.errors"></span>
+            <textarea id="input_content" th:field="*{postContent}" onclick="hideContent('postContent.errors');"></textarea>
+          </div>
+          <button type="submit" id="btn_submit">更新</button>
 
-    </div>
+        </div>
 
-  </form>
+      </form>
 
-</main>
-</div>
+    </main>
+  </div>
 
   <script th:inline="javascript">
+    function hideContent(elementId) {
+      var element = document.getElementById(elementId);
+      if (element) {
+        element.style.display = 'none';
+      }
+    }
+
     var baseUrl = /*[[@{/}]]*/ '/';
     function redirectTo(url) {
       window.location.href = url;
     }
   </script>
-  
+
 </body>
 
 </html>
