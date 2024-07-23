@@ -211,6 +211,7 @@
 								<th>代班員工</th>
 								<th>核准日期</th>
 								<th>核准狀態</th>
+								<th>操作</th>
 								
 							</tr>
 						</thead>
@@ -228,6 +229,9 @@
 												<span th:case="1">審核通過</span> 
 											<span th:case="2">審核不通過</span>
 										</span>
+									</td>
+									<td>
+											<button class="detail-button" th:data-leave-id="${leaveVO.leaveId}">詳情</button>
 									</td>
 									
 								</tr>
