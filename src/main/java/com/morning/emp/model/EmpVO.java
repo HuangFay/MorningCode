@@ -51,12 +51,12 @@ emp_status tinyint
 	
 	
 	@NotEmpty(message="員工姓名: 請勿空白")
-	@Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,20}$", message = "員工姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到20之間")
+	@Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z)]{2,20}$", message = "員工姓名: 只能是中、英文字母 , 且長度必需在2到20之間")
 	@Column(name ="emp_name")
 	private String empName;
 	
 	@NotEmpty(message="員工帳號: 請勿空白")
-	@Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$", message = "員工姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間")
+	@Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$", message = "員工帳號: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間")
 	@Column(name ="emp_account")
 	private String empAccount;
 	

@@ -55,9 +55,11 @@ public class CartController {
     }
 
     @PostMapping("/checkout")
-    public String checkout(@RequestParam String paymentMethod) {
-        // 清空購物車
-        cartService.clearCart();
+    public String checkout(@RequestParam String paymentMethod, @RequestParam String selectedItems) {
+        String[] selectedItemIds = selectedItems.split(",");
+        for (String itemId : selectedItemIds) {
+            cartService.deleteCartItem(Integer.valueOf(itemId));
+        }
 
         // 根據支付方式跳轉不同頁面
         if ("linePay".equals(paymentMethod)) {
@@ -82,15 +84,25 @@ public class CartController {
     public String showOrderSuccessPage() {
         return "back-end/cart/order_success";
     }
-    
+
     @PostMapping("/add")
     @ResponseBody
     public void addmeals(HttpSession session) {
     Integer mealsId= (Integer)session.getAttribute("mealsId");
        MemVO memvo =(MemVO)session.getAttribute("memVO");
-       System.out.println(memvo);  
+       System.out.println(memvo);
        cartService.addCartItem(memvo.getMemNo(), mealsId);
-    }  
+    }
+
+    @GetMapping("/getTotalCount")
+    @ResponseBody
+    public Integer getTotalCount(HttpSession session) {
+        MemVO memvo =(MemVO)session.getAttribute("memVO");
+        return cartService.calculateTotalAmount(memvo.getMemNo());
+    }
     
+    
+    
+
 
 }
