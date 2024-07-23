@@ -41,6 +41,7 @@
 			border: 1px solid #ccc;
 			border-radius: 4px;
 			width: 100%;
+			/* text-align: center; */
 		}
 		.submit {
 			padding: 10px 20px;
@@ -66,7 +67,7 @@
 	<form th:action="@{update}" method="post" th:object="${tableTypeVO}" enctype="multipart/form-data">
 		<div>
 			<label>桌型控制編號:</label>
-			<input type="text" th:field="*{tableId}" style="border:0px; font-weight: bold;" readonly /><br/>
+			<input type="text" th:field="*{tableId}" style="border:0px; font-weight: bold; text-align:center; width: unset;" readonly /><br/>
 		</div>
 
 		<div>

@@ -189,7 +189,7 @@
                   <span class="text-muted" th:text="${#dates.format(reply.replyTime, 'yyyy-MM-dd HH:mm')}"></span>
                   <p class="reply-content" th:text="${reply.replyContent}"></p>
                 </div>
-                <button type="button" class="btn btn-danger btn-sm btn_delete_post"
+                <button th:if="${memVO != null and memVO.memNo == reply.memVO.memNo}" type="button" class="btn btn-danger btn-sm btn_delete_post"
                   th:data-replyId="${reply.replyId}">刪除</button>
               </li>
             </th:block>
