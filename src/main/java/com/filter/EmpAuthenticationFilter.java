@@ -68,7 +68,7 @@ public class EmpAuthenticationFilter implements Filter {
     	
     	 if (requestURI.contains("/back-end/leave/listAllLeaveforEmp") || requestURI.contains("/back-end/assign/listAllAssign")||
     			 requestURI.contains("/back-end/assign/api/")||requestURI.contains("/back-end/leave/addLeave")||requestURI.contains("/back-end/leave/insert")||
-    			 requestURI.contains("/back-end/leave/delete")||requestURI.contains("/back-end/leave/updateapproval")) ||
+    			 requestURI.contains("/back-end/leave/delete")||requestURI.contains("/back-end/leave/updateapproval") ||
     			 requestURI.contains("/news/all") ||
     			 requestURI.contains("/forum/reports") ||
     			 requestURI.contains("/forum/review")
