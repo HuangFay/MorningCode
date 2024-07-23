@@ -68,32 +68,14 @@ public class TableTypeController {
 //			,@RequestParam("upFiles") MultipartFile[] parts
 			) throws IOException {
 
-		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-		// 去除BindingResult中upFiles欄位的FieldError紀錄 --> 見第172行
-//		result = removeFieldError(resVO, result, "upFiles");
-//
-//		if (parts[0].isEmpty()) { // 使用者未選擇要上傳的新圖片時
-//			// EmpService empSvc = new EmpService();
-//			byte[] upFiles = empSvc.getOneEmp(empVO.getEmpno()).getUpFiles();
-//			empVO.setUpFiles(upFiles);
-//		} else {
-//			for (MultipartFile multipartFile : parts) {
-//				byte[] upFiles = multipartFile.getBytes();
-//				empVO.setUpFiles(upFiles);
-//			}
-//		}
-//		if (result.hasErrors()) {
-//			return "back-end/emp/update_emp_input";
-//		}
-		/*************************** 2.開始修改資料 *****************************************/
+
 		// EmpService empSvc = new EmpService();
 		TableTypeSvc.updateTableType(tableTypeVO);
 
-		/*************************** 3.修改完成,準備轉交(Send the Success view) **************/
 		model.addAttribute("success", "- (修改成功)");
 		tableTypeVO = TableTypeSvc.getOneTableType(Integer.valueOf(tableTypeVO.getTableId()));
 		model.addAttribute("tableTypeVO", tableTypeVO);
-		return "back-end/tabletype/listOneTableType"; // 修改成功後轉交listOneEmp.html
+		return "back-end/tabletype/listAllTableType2"; // 修改成功後轉交listOneEmp.html
 	}
 	@ModelAttribute("tableTypeListData")
 	protected List<TableTypeVO> referenceListData() {

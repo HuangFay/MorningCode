@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>訂位修改</title>
     <link rel="stylesheet" th:href="@{/css/index2.css}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
     <style type="text/css">
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif;
@@ -164,7 +165,11 @@
             background-color: #FFD700; /* 金色 */
         }
     </style>
-    <script>
+    <script th:inline="javascript">
+        var baseUrl = /*[[@{/}]]*/ '/';
+        function redirectTo(url) {
+            window.location.href = url;
+        }
         document.addEventListener("DOMContentLoaded", function () {
             var today = new Date();
             today.setDate(today.getDate() + 1);
@@ -197,9 +202,7 @@
         function validateForm() {
             return validatePhone();
         }
-        function redirectTo(url) {
-            window.location.href = url;
-        }
+
 
         document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("submit").addEventListener("click", function (event) {
@@ -277,7 +280,7 @@
 <div class="container">
     <div th:replace="fragments/header-items :: navigation"></div>
 
-
+    <h1>訂位修改</h1>
 
     <form th:action="@{update}" method="post" th:object="${resVO}" enctype="multipart/form-data">
         <div class="form-group">
@@ -347,6 +350,7 @@
         <button type="submit" id="submit">送出修改</button>
     </form>
 </div>
+
 
 </body>
 </html>
