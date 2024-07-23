@@ -27,6 +27,40 @@
             color: #ff6f61;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
+        .form-control-inline {
+            display: inline-block;
+            width: 50px; /* 限制宽度 */
+            vertical-align: middle;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+        .btn-trash {
+            background-color: transparent;
+            border: none;
+            color: #dc3545;
+        }
+        .btn-trash:hover {
+            color: #bd2130;
+        }
+        .quantity-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .quantity-input, .customization-select {
+            width: 80px; /* 与数量输入框宽度一致 */
+            text-align: center;
+            padding-right: 0; /* 移除默认的右边距 */
+            background: transparent;
+            border: none; /* 移除边框 */
+        }
+        .customization-select {
+            appearance: none; /* 隐藏默认箭头 */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
     </style>
 </head>
 
@@ -39,15 +73,16 @@
             是在哈囉 購物車空空的?<br>再繼續買阿！
         </div>
         <div th:if="${!#lists.isEmpty(cartItems)}">
-            <table class="table table-hover">
+            <table class="table table-hover text-center">
                 <thead class="thead-dark">
                 <tr>
                     <th><input type="checkbox" id="selectAll" /></th>
                     <th>餐點編號</th>
                     <th>餐點名稱</th>
+                    <th>客製化選項</th>
                     <th>單價</th>
-                    <th>數量</th>
-                    <th>操作</th>
+                    <th>數量</th>                  
+                    <th>移除</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -55,14 +90,40 @@
                     <td><input type="checkbox" class="item-checkbox" th:value="${item.cartItemId}" th:data-price="${item.mealsVO.mealsPrice}" /></td>
                     <td th:text="${item.mealsId}">餐點編號</td>
                     <td th:text="${item.mealsVO.mealsName}">餐點名稱</td>
+                    <td>
+                        <select th:id="'customization-' + ${item.cartItemId}" class="customization-select">
+                            <option value="加蛋" selected>加蛋</option>
+                            <option value="加起司">加起司</option>
+                            <option value="加培根">加培根</option>
+                            <option value="熱的">熱的</option>
+                            <option value="溫的">溫的</option>
+                            <option value="冰的">冰的</option>
+                            <option value="去冰">去冰</option>
+                            <option value="中杯">中杯</option>
+                            <option value="大杯">大杯</option>
+                            <option value="加大辣">加大辣</option>
+                            <option value="加中辣">加中辣</option>
+                            <option value="加小辣">加小辣</option>
+                            <option value="不要加洋蔥">不要加洋蔥</option>
+                            <option value="不要加生菜">不要加生菜</option>
+                            <option value="不要加番茄片">不要加番茄片</option>
+                            <option value="不加醬">不加醬</option>
+                            <option value="醬多一點">醬多一點</option>
+                        </select>
+                    </td>
                     <td th:text="${item.mealsVO.mealsPrice}">單價</td>
                     <td>
-                        <button class="btn btn-outline-primary btn-sm" th:onclick="'decreaseQuantity(' + ${item.cartItemId} + ',' + ${item.mealsVO.mealsPrice} + ')'">-</button>
-                        <input type="number" th:value="${item.quantity}" min="1" th:id="'quantity-' + ${item.cartItemId}" readonly class="form-control d-inline w-25" />
-                        <button class="btn btn-outline-primary btn-sm" th:onclick="'increaseQuantity(' + ${item.cartItemId} + ',' + ${item.mealsVO.mealsPrice} + ')'">+</button>
+                        <div class="quantity-container">
+                            <button class="btn btn-outline-primary btn-sm" th:onclick="'decreaseQuantity(' + ${item.cartItemId} + ',' + ${item.mealsVO.mealsPrice} + ')'">-</button>
+                            <input type="number" th:value="${item.quantity}" min="1" th:id="'quantity-' + ${item.cartItemId}" readonly class="form-control quantity-input mx-2" />
+                            <button class="btn btn-outline-primary btn-sm" th:onclick="'increaseQuantity(' + ${item.cartItemId} + ',' + ${item.mealsVO.mealsPrice} + ')'">+</button>
+                        </div>
                     </td>
+                    
                     <td>
-                        <button class="btn btn-danger btn-sm" th:onclick="'removeCartItem(' + ${item.cartItemId} + ')'">移除</button>
+                        <button class="btn btn-trash" th:onclick="'removeCartItem(' + ${item.cartItemId} + ')'" title="移除">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -78,7 +139,7 @@
     <!-- 結帳部分 -->
     <div class="checkout-form mt-5">
         <h3>結帳</h3>
-        <button class="btn btn-custom" data-toggle="modal" data-target="#checkoutModal">我要下單</button>
+        <button class="btn btn-custom" data-toggle="modal"  onclick="showCheckoutForm()">我要下單</button>
 
         <!-- Modal -->
         <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
@@ -107,7 +168,6 @@
                                 <label for="paymentMethod">選擇支付方式:</label>
                                 <select id="paymentMethod" name="paymentMethod" class="form-control">
                                     <option value="cash">現金</option>
-                                    <option value="linePay">Line Pay</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -127,12 +187,14 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh_tw.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
 <script th:inline="javascript">
     const memNo = /*[[${memNo}]]*/ 1;
 
     function updateCartItem(cartItemId) {
         const quantity = document.getElementById(`quantity-${cartItemId}`).value;
-        axios.put(`/cart/api/update/${cartItemId}?quantity=${quantity}`)
+        const customization = document.getElementById(`customization-${cartItemId}`).value;
+        axios.put(`/cart/api/update/${cartItemId}?quantity=${quantity}&customization=${customization}`)
             .then(() => location.reload())
             .catch(error => console.error('Error updating cart item:', error));
     }
@@ -257,6 +319,31 @@
         }
 
         return true;
+    }
+    
+    
+    
+    function showCheckoutForm() {
+        axios.get('/api/checkVerification')
+            .then(response => {
+                if (response.data) {
+                    $('#checkoutModal').modal('show');
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '錯誤',
+                        text: '會員信箱尚未驗證，請先驗證您的信箱。'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error checking verification status:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: '錯誤',
+                    text: '驗證狀態檢查失敗，請稍後再試。'
+                });
+            });
     }
 </script>
 </body>

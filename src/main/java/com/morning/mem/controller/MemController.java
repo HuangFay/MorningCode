@@ -152,8 +152,10 @@ public class MemController {
 			return "error";
 		}
 		try {
-//			    	 MemVO existingMem = memSvc.getOneMem(memVO.getMemNo());
+			    	 MemVO existingMem = memSvc.getOneMem(memVO.getMemNo());
 //			    	 memVO.setMemPassword(existingMem.getMemPassword());
+			
+			   memVO.setUpFiles(existingMem.getUpFiles());
 			memSvc.updateMem(memVO);
 			System.out.println("Update successful");
 			return "success";
@@ -163,4 +165,7 @@ public class MemController {
 			return "error";
 		}
 	}
+	
+	
+	
 }

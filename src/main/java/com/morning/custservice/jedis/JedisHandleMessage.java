@@ -1,9 +1,12 @@
 package com.morning.custservice.jedis;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.ScanParams;
+import redis.clients.jedis.ScanResult;
 
 
 public class JedisHandleMessage {
@@ -29,6 +32,45 @@ public class JedisHandleMessage {
 		jedis.rpush(receiverKey, message);
 
 		jedis.close();
+	}
+	
+	public static List<String> getMemList() {
+		Jedis jedis = pool.getResource();
+		
+		// 初始光標
+        byte[] cursor = ScanParams.SCAN_POINTER_START_BINARY;
+        ScanParams scanParams = new ScanParams().count(10).match("emp:*".getBytes());
+        List<String> empNumbers = new ArrayList<>();
+
+        do {
+            // 執行 SCAN 命令
+            ScanResult<byte[]> scanResult = jedis.scan(cursor, scanParams);
+            cursor = scanResult.getCursorAsBytes(); // 獲取新的光標
+
+            // 過濾和處理鍵
+            for (byte[] key : scanResult.getResult()) {
+                String keyString = new String(key);
+                System.out.println("Key: " + keyString);
+
+                // 提取數字部分
+                String numberPart = keyString.substring(4); // "emp:".length() = 4
+                empNumbers.add(numberPart);
+            }
+        } while (!ScanParams.SCAN_POINTER_START.equals(new String(cursor))); // 當光標為 0 時結束掃描
+
+        jedis.close();
+
+        // 將結果轉換為字符串數組
+        String[] empArray = empNumbers.toArray(new String[0]);
+
+        // 輸出結果
+        System.out.println("Extracted emp numbers: ");
+        for (String num : empArray) {
+            System.out.println(num);
+        }
+        
+		return empNumbers;
+		
 	}
 
 }
