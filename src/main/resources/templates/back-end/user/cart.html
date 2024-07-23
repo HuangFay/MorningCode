@@ -49,9 +49,17 @@
             align-items: center;
             justify-content: center;
         }
-        .quantity-input {
-            width: 60px;
+        .quantity-input, .customization-select {
+            width: 80px; /* 与数量输入框宽度一致 */
             text-align: center;
+            padding-right: 0; /* 移除默认的右边距 */
+            background: transparent;
+            border: none; /* 移除边框 */
+        }
+        .customization-select {
+            appearance: none; /* 隐藏默认箭头 */
+            -webkit-appearance: none;
+            -moz-appearance: none;
         }
     </style>
 </head>
@@ -71,8 +79,9 @@
                     <th><input type="checkbox" id="selectAll" /></th>
                     <th>餐點編號</th>
                     <th>餐點名稱</th>
+                    <th>客製化選項</th>
                     <th>單價</th>
-                    <th>數量</th>
+                    <th>數量</th>                  
                     <th>移除</th>
                 </tr>
                 </thead>
@@ -81,6 +90,27 @@
                     <td><input type="checkbox" class="item-checkbox" th:value="${item.cartItemId}" th:data-price="${item.mealsVO.mealsPrice}" /></td>
                     <td th:text="${item.mealsId}">餐點編號</td>
                     <td th:text="${item.mealsVO.mealsName}">餐點名稱</td>
+                    <td>
+                        <select th:id="'customization-' + ${item.cartItemId}" class="customization-select">
+                            <option value="加蛋" selected>加蛋</option>
+                            <option value="加起司">加起司</option>
+                            <option value="加培根">加培根</option>
+                            <option value="熱的">熱的</option>
+                            <option value="溫的">溫的</option>
+                            <option value="冰的">冰的</option>
+                            <option value="去冰">去冰</option>
+                            <option value="中杯">中杯</option>
+                            <option value="大杯">大杯</option>
+                            <option value="加大辣">加大辣</option>
+                            <option value="加中辣">加中辣</option>
+                            <option value="加小辣">加小辣</option>
+                            <option value="不要加洋蔥">不要加洋蔥</option>
+                            <option value="不要加生菜">不要加生菜</option>
+                            <option value="不要加番茄片">不要加番茄片</option>
+                            <option value="不加醬">不加醬</option>
+                            <option value="醬多一點">醬多一點</option>
+                        </select>
+                    </td>
                     <td th:text="${item.mealsVO.mealsPrice}">單價</td>
                     <td>
                         <div class="quantity-container">
@@ -89,6 +119,7 @@
                             <button class="btn btn-outline-primary btn-sm" th:onclick="'increaseQuantity(' + ${item.cartItemId} + ',' + ${item.mealsVO.mealsPrice} + ')'">+</button>
                         </div>
                     </td>
+                    
                     <td>
                         <button class="btn btn-trash" th:onclick="'removeCartItem(' + ${item.cartItemId} + ')'" title="移除">
                             <i class="fas fa-trash-alt"></i>
@@ -162,7 +193,8 @@
 
     function updateCartItem(cartItemId) {
         const quantity = document.getElementById(`quantity-${cartItemId}`).value;
-        axios.put(`/cart/api/update/${cartItemId}?quantity=${quantity}`)
+        const customization = document.getElementById(`customization-${cartItemId}`).value;
+        axios.put(`/cart/api/update/${cartItemId}?quantity=${quantity}&customization=${customization}`)
             .then(() => location.reload())
             .catch(error => console.error('Error updating cart item:', error));
     }
