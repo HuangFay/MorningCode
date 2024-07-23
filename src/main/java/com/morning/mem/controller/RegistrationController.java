@@ -86,6 +86,9 @@ public class RegistrationController {
 		if (!memVO.getMemPassword().matches("^[(a-zA-Z0-9_)]{2,15}$")) {
 			return ResponseEntity.status(400).body("密碼格式不正確");
 		}
+		 if (memSvc.emailExists(memVO.getMemEmail())) {
+		        return ResponseEntity.status(400).body("Email已存在");
+		    }
 		try {
 			String encodedPassword = passwordEncoder.encode(memVO.getMemPassword());
 			memVO.setMemPassword(encodedPassword);
