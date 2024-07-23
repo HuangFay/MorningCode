@@ -210,7 +210,7 @@
                         </thead>
                         <tbody>
                         <th:block th:each="resVO : ${resListData}">
-                            <th:block th:if="${resVO.reservationStatus == '2'}">
+                            <th:block th:if="${resVO.reservationStatus == 2}">
                                 <tr>
                                     <td th:text="${resVO.reservationId}"></td>
                                     <td th:text="${resVO.memVO.memName}"></td>
@@ -251,7 +251,7 @@
                         </thead>
                         <tbody>
                         <th:block th:each="resVO : ${resListData}">
-                            <th:block th:if="${resVO.reservationStatus == '2'}">
+                            <th:block th:if="${resVO.reservationStatus == 3}">
                                 <tr>
                                     <td th:text="${resVO.reservationId}"></td>
                                     <td th:text="${resVO.memVO.memName}"></td>
