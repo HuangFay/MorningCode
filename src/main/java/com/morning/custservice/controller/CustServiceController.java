@@ -1,17 +1,19 @@
-package com.morning.custservice;
+package com.morning.custservice.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 //@RequestMapping("customer-service")
-public class CustomerServiceController {
+public class CustServiceController {
 	
 	// 前端
 	@GetMapping("customer-service")
-	public String customerService(ModelMap model) {
+	public String customerService(@RequestParam(name = "id", required = false) String id, ModelMap model) {
 
+		model.addAttribute("userId", id);
 		return "front-end/custservice/cust-service.html";
 	}
 	

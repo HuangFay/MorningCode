@@ -7,60 +7,101 @@
   <title>最新消息列表</title>
 
   <link rel="stylesheet" th:href="@{/css/index3.css}">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
+  <!-- 如果bootstrap可以用，就把style的內容拿掉 -->
+
+  <style>
+    /* 避免 bootstrap 與 index3.css 樣式衝突 */
+    ol,
+    ul {
+      padding-inline-start: 40px;
+    }
+
+    .welcome-message {
+      height: 24px;
+    }
+
+    .sidebar button {
+      font-size: revert;
+      line-height: initial;
+    }
+
+    .right-pane {
+      /* border: 1px solid red; */
+      /* width: 77%;  */
+      /* 调整頁面的寬度 */
+      /* margin-right: 20px; */
+      /* text-align: center; */
+      margin-left: 256px;
+
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-top: 36px;
+      margin-bottom: 30px;
+      font-size: 32px;
+    }
+  </style>
 
 </head>
 
 <body>
-<div class="main-container">
-<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
-<div class="right-pane" align="center">
 
-  <div class="container mt-4">
-    <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="card-title">最新消息列表</h5>
-        <form action="edit" method="post" class="d-inline">
-          <button type="submit" class="btn btn-primary">新增</button>
-        </form>
+  <div class="main-container">
+    <div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+
+    <div class="right-pane">
+      <h1>MorningCode 最新消息管理</h1>
+      <div class="container mt-4">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title">最新消息列表</h5>
+            <form action="edit" method="post" class="d-inline">
+              <button type="submit" class="btn btn-primary">新增</button>
+            </form>
+          </div>
+          <div class="card-body">
+            <table class="table table-striped table-hover">
+              <thead class="thead-dark text-center">
+                <tr>
+                  <th scope="col">編號</th>
+                  <th scope="col">公告標題</th>
+                  <th scope="col">發佈日期</th>
+                  <th scope="col">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <th:block th:each="newsVO : ${newsListData}">
+                  <tr>
+                    <td class="text-center" th:text="${newsVO.newsId}"></td>
+                    <td class="text-center" th:text="${newsVO.newsTitle}"></td>
+                    <td class="text-center" th:text="${#dates.format(newsVO.newsDate, 'yyyy.MM.dd')}"></td>
+                    <td class="text-center">
+                      <form action="edit" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-warning btn-sm btn-space">編輯</button>
+                        <input type="hidden" name="newsId" th:value="${newsVO.newsId}">
+                      </form>
+                      <form class="deleteForm d-inline" action="deleteAction" method="post">
+                        <button type="button" class="btn btn-danger btn-sm btn_delete_news">刪除</button>
+                        <input type="hidden" name="newsId" th:value="${newsVO.newsId}">
+                      </form>
+                    </td>
+                  </tr>
+                </th:block>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-      <div class="card-body">
-        <table class="table table-striped table-hover">
-          <thead class="thead-dark text-center">
-            <tr>
-              <th scope="col">編號</th>
-              <th scope="col">公告標題</th>
-              <th scope="col">發佈日期</th>
-              <th scope="col">操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <th:block th:each="newsVO : ${newsListData}">
-              <tr>
-                <td class="text-center" th:text="${newsVO.newsId}"></td>
-                <td class="text-center" th:text="${newsVO.newsTitle}"></td>
-                <td class="text-center" th:text="${#dates.format(newsVO.newsDate, 'yyyy.MM.dd')}"></td>
-                <td class="text-center">
-                  <form action="edit" method="post" class="d-inline">
-                    <button type="submit" class="btn btn-warning btn-sm btn-space">編輯</button>
-                    <input type="hidden" name="newsId" th:value="${newsVO.newsId}">
-                  </form>
-                  <form class="deleteForm d-inline" action="deleteAction" method="post">
-                    <button type="button" class="btn btn-danger btn-sm btn_delete_news">刪除</button>
-                    <input type="hidden" name="newsId" th:value="${newsVO.newsId}">
-                  </form>
-                </td>
-              </tr>
-            </th:block>
-          </tbody>
-        </table>
-      </div>
+
     </div>
+
   </div>
-  
-</div>
-</div>
+
+
   <!-- 無樣式 -->
   <!-- <form action="edit" method="post">
     <button type="submit">新增</button>
@@ -112,9 +153,9 @@
       });
 
     });
-    
-    
-  	// sidebar要用到的設定
+
+
+    // sidebar要用到的設定
     $("a.aa").on("click", function () {
       console.log(this);
 

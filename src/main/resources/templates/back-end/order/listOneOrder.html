@@ -1,47 +1,92 @@
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>訂單資料 - listOneOrder.html</title>
+<title>單筆訂單資料</title>
 
 <head th:insert="~{/back-end/order/included-fragment}"></head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Bootstrap CSS -->
 <style type="text/css">
-        
-    span {
-                display: inline-block;
-                width: 150px;
-                text-align: left;
-                font-weight: bold;
-        }
+    .info-box {
+        max-width: 800px;
+        background-color: #f8f9fa;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        margin-top: 80px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .info-box span {
+        display: inline-block;
+        width: 150px;
+        text-align: left;
+        font-weight: bold;
+    }
+    .navbar {
+        margin-bottom: 10px;
+    }
+    .container {
+        padding-top: 20px; /* Adjust this value based on the height of your fixed navbar */
+    }
+    h3, h2 {
+        margin: 0; /* Remove top and bottom margins to reduce height */
+        font-size: 1.5rem; /* Adjust font size to reduce height */
+    }
+    .navbar-brand {
+        padding: 0; /* Remove padding to reduce height */
+    }
 </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-                 <div align="center"> <h2>每筆訂單資料 - listOneOrder.html</h2>
-                 <h3><a class="navbar-brand" th:href="@{/order/select_page}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3></div>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <div class="container d-flex justify-content-between">
+        <div class="navbar-header">
+            <h2 class="text-white">單筆訂單資料</h2>
+        </div>
+        <div>
+            <h3><a class="navbar-brand text-white" href="/order/listAllOrder">回上一頁<label class="text-white"></label></a></h3>
+        </div>
+    </div>
 </nav>
 
-        <div align="center" th:fragment="listOneOrder-div"> <!-- 此div被select_page.html第158行insert用 -->
-                <h3><span>查詢結果 :</span></h3>
-                <span>訂單編號:</span><span th:text="${orderVO.ordId}"></span><br/>
-                <span>訂單種類:</span><span th:text="${orderVO.ordType}"></span><br/>
-                <span>總金額:</span><span th:text="${orderVO.ordAmount}"></span><br/>
-                <span>製作狀態:</span><span th:text="${orderVO.ordStatus}"></span><br/>
-                <span>成立訂單日期:</span><span th:text="${orderVO.ordBuilddate}"></span><br/>
-                <span>預訂時間:</span><span th:text="${orderVO.ordReserveTime}"></span><br/>
-                <span>會員:</span><span th:text="${orderVO.memVO.memNo} + '-[' + ${orderVO.memVO.memName} + ']'"></span><br/>          
+<div class="container d-flex justify-content-center">
+    <div class="info-box" th:fragment="listOneOrder-div"> <!-- 此div被select_page.html第158行insert用 -->
+        <h3 class="text-center">【訂單資訊如下】</h3><br>
+        <div class="row">
+            <div class="col-md-6"><span>訂單編號:</span></div>
+            <div class="col-md-6"><span th:text="${orderVO.ordId}"></span></div>
         </div>
+        <div class="row">
+            <div class="col-md-6"><span>訂單種類:</span></div>
+            <div class="col-md-6"><span th:text="${orderVO.ordType == 0 ? '外帶' : '內用'}"></span></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><span>總金額:</span></div>
+            <div class="col-md-6"><span th:text="${orderVO.ordAmount}"></span></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><span>製作狀態:</span></div>
+            <div class="col-md-6"><span th:text="${orderVO.ordStatus == 0 ? '已接單' : orderVO.ordStatus == 1 ? '餐點製作中' : orderVO.ordStatus == 2 ? '餐點已完成' : orderVO.ordStatus == 3 ? '餐點已領取' : '訂單取消'}"></span></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><span>成立訂單日期:</span></div>
+            <div class="col-md-6"><span th:text="${#dates.format(orderVO.ordBuilddate, 'yyyy-MM-dd HH:mm:ss')}"></span></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><span>預訂時間:</span></div>
+            <div class="col-md-6"><span th:text="${#dates.format(orderVO.ordReserveTime, 'yyyy-MM-dd HH:mm:ss')}"></span></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><span>會員:</span></div>
+            <div class="col-md-6"><span th:text="${orderVO.memVO.memNo + ' - [' + orderVO.memVO.memName + ']'}"></span></div>
+        </div>
+    </div>
+</div>
 
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

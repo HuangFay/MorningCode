@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>訂單詳情</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        .star-rating {
+            font-size: 1.5em;
+            direction: rtl;
+            display: inline-block;
+        }
+        .star-rating input {
+            display: none;
+        }
+        .star-rating label {
+            color: #ccc;
+            cursor: pointer;
+        }
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #f5c518;
+        }
+        .review-item {
+            margin-bottom: 20px;
+        }
+        .previewImages {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            max-width: 100%;
+        }
+        .previewImage {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+<div class="main-container">
+    <div th:replace="fragments/header-items :: navigation"></div>
+    <div class="container mt-5">
+        <h1 class="text-center">訂單詳情</h1>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div>訂單編號: <span th:text="${order.ordId}"></span></div>
+                <!-- 「我要評價」按鈕放在右上角 -->
+                <button id="showReviewModal" class="btn btn-primary">我要評價</button>
+            </div>
+            <div class="card-body">
+                <p>訂單日期: <span th:text="${#dates.format(order.ordBuilddate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+                <p>總金額: <span th:text="${order.ordAmount}"></span></p>
+                <p>訂單狀態: 
+				    <span th:if="${order.ordStatus == 0}" th:text="'已接單'"></span>
+				    <span th:if="${order.ordStatus == 1}" th:text="'餐點製作中'"></span>
+				    <span th:if="${order.ordStatus == 2}" th:text="'餐點已完成'"></span>
+				    <span th:if="${order.ordStatus == 3}" th:text="'餐點已領取'"></span>
+				    <span th:if="${order.ordStatus == 4}" th:text="'訂單取消'"></span>
+				</p>
+
+                <h5>餐點資訊:</h5>
+		        <table class="table table-bordered table-hover">
+		            <thead class="thead-dark">
+		            <tr class="text-center">                            
+                        <th>餐點圖片</th>
+                        <th>餐點名稱</th>
+                        <th>價格</th>                      
+                        <th>數量</th>
+                        <th>總評分</th>                      
+
+                    </tr>
+                    </thead>
+                    
+                    <tbody>
+                    <tr th:each="item : ${order.orderDetails}">
+                    <td><img th:src="@{|/meals/DBGifReader2?mealsId=${item.mealsVO.mealsId}|}" alt="meals" width="100px" height="100px"></td>
+                        <td th:text="${item.mealsVO.mealsName}">餐點名稱</td>              
+                        <td th:text="${item.mealsVO.mealsPrice}">價格</td>                        
+                        <td th:text="${item.orddMealsQuantity}">數量</td> 
+                       <td>
+                <div class="star-rating">
+                    <i th:each="i : ${#numbers.sequence(5, 1)}"
+                       th:classappend="${i <= item.mealsVO.mealsTotalScore ? 'fas fa-star' : 'far fa-star'}"
+                       style="color: #f5c518;"></i>
+                </div>
+                                      
+                    </tr>                               
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>  
+
+    <!-- 評論模態框 -->
+    <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reviewModalLabel">撰寫評論</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="reviewForm">
+                        <div th:each="item : ${order.orderDetails}" class="review-item">
+                            <h6 th:text="${item.mealsVO.mealsName}">餐點名稱</h6>
+                            <div class="form-group">
+                                <label for="rating-${item.mealsVO.mealsId}">星級評分:</label>
+                                <div class="star-rating" id="rating-${item.mealsVO.mealsId}">
+                                    <input type="radio" id="5-stars-${item.mealsVO.mealsId}" name="rating-${item.mealsVO.mealsId}" value="5" /><label for="5-stars-${item.mealsVO.mealsId}" class="fas fa-star"></label>
+                                    <input type="radio" id="4-stars-${item.mealsVO.mealsId}" name="rating-${item.mealsVO.mealsId}" value="4" /><label for="4-stars-${item.mealsVO.mealsId}" class="fas fa-star"></label>
+                                    <input type="radio" id="3-stars-${item.mealsVO.mealsId}" name="rating-${item.mealsVO.mealsId}" value="3" /><label for="3-stars-${item.mealsVO.mealsId}" class="fas fa-star"></label>
+                                    <input type="radio" id="2-stars-${item.mealsVO.mealsId}" name="rating-${item.mealsVO.mealsId}" value="2" /><label for="2-stars-${item.mealsVO.mealsId}" class="fas fa-star"></label>
+                                    <input type="radio" id="1-stars-${item.mealsVO.mealsId}" name="rating-${item.mealsVO.mealsId}" value="1" /><label for="1-stars-${item.mealsVO.mealsId}" class="fas fa-star"></label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="reviewContent-${item.mealsVO.mealsId}">評論內容:</label>
+                                <textarea class="form-control" id="reviewContent-${item.mealsVO.mealsId}" name="reviewContent-${item.mealsVO.mealsId}" rows="4"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="reviewImage-${item.mealsVO.mealsId}">上傳照片:</label>
+                                <input type="file" class="form-control-file reviewImage" id="reviewImage-${item.mealsVO.mealsId}" name="reviewImage-${item.mealsVO.mealsId}" accept="image/*" multiple>
+                                <div class="previewImages"></div> <!-- 用於顯示多張圖片預覽 -->
+                            </div>
+                            <div class="form-group">
+                                <label for="reviewVideo-${item.mealsVO.mealsId}">上傳影片:</label>
+                                <input type="file" class="form-control-file reviewVideo" id="reviewVideo-${item.mealsVO.mealsId}" name="reviewVideo-${item.mealsVO.mealsId}" accept="video/*">
+                                <video class="previewVideo" id="previewVideo-${item.mealsVO.mealsId}" controls style="display: none; max-width: 100%; height: auto; margin-top: 10px;">
+                                    <source src="#" id="videoSource-${item.mealsVO.mealsId}">
+                                </video>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">送出</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        // 顯示評論模態框
+        $('#showReviewModal').click(function() {
+            $('#reviewModal').modal('show');
+        });
+
+        // 圖片預覽
+        $('.reviewImage').change(function(){
+            var previewImages = $(this).siblings('.previewImages');
+            previewImages.empty(); // 清空之前的預覽
+            $.each(this.files, function(index, file) {
+                var reader = new FileReader();
+                var img = $('<img>').addClass('previewImage');
+                reader.onload = function(e) {
+                    img.attr('src', e.target.result);
+                }
+                reader.readAsDataURL(file);
+                previewImages.append(img);
+            });
+        });
+
+        // 影片預覽
+        $('.reviewVideo').change(function(){
+            var file = this.files[0];
+            var previewVideo = $(this).siblings('.previewVideo');
+            var videoSource = previewVideo.find('source');
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                videoSource.attr('src', e.target.result);
+                previewVideo.show();
+                videoSource[0].load();
+            }
+            reader.readAsDataURL(file);
+        });
+
+        // 表單提交
+        $('#reviewForm').submit(function(e){
+            e.preventDefault();
+            // 這裡可以添加表單提交的AJAX代碼
+
+            // 清除所有上傳的圖片和影片
+            $('.reviewImage').val('');
+            $('.previewImages').empty();
+            $('.reviewVideo').val('');
+            $('.previewVideo').hide();
+
+            // 關閉模態框
+            $('#reviewModal').modal('hide');
+
+            // 顯示成功提示
+            Swal.fire({
+                icon: 'success',
+                title: '評論成功',
+                text: '您的評論已成功提交！'
+            });
+        });
+    });
+</script>
+</body>
+</html>

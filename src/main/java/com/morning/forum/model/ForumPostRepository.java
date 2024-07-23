@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.morning.news.model.NewsVO;
+
 public interface ForumPostRepository extends JpaRepository<ForumPostVO, Integer> {
 
 	// 取得文章列表 (過濾可顯示的文章, 根據時間排序)
@@ -17,4 +19,7 @@ public interface ForumPostRepository extends JpaRepository<ForumPostVO, Integer>
 //            "WHERE post_status = 1 " +
 //            "ORDER BY post_time DESC", nativeQuery = true)
 //    List<ForumPostVO> findByPostTimeDesc(@Param("length") int length);
+    
+    ForumPostVO findTopByOrderByPostTimeDesc();
+
 }

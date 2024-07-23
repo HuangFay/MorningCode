@@ -31,7 +31,7 @@ public class EmpAuthenticationFilter implements Filter {
         boolean isLoggedIn = (session != null && session.getAttribute("empVO") != null);
         String loginURI = httpRequest.getContextPath() + "/back-end/emplogin";
         String logoutURI = httpRequest.getContextPath() + "/back-end/emplogout";
-//        String noAccessURI = httpRequest.getContextPath() + "/no-access"; // 沒權限的轉跳
+        String noAccessURI = httpRequest.getContextPath() + "/no-access"; // 沒權限的轉跳
         String requestURI = httpRequest.getRequestURI();
 
         if (isLoggedIn || requestURI.equals(loginURI) || requestURI.equals(logoutURI) || requestURI.endsWith("emplogin") || requestURI.contains("/api/")) {
@@ -44,10 +44,10 @@ public class EmpAuthenticationFilter implements Filter {
                     return;
                 }
 
-//                if (empVO.getEmpStatus() != 0 || !hasPermission(session, requestURI)) {
-//                    httpResponse.sendRedirect(noAccessURI);
-//                    return;
-//                }
+                if (empVO.getEmpStatus() != 0 || !hasPermission(session, requestURI)) {
+                    httpResponse.sendRedirect(noAccessURI);
+                    return;
+                }
             }
             chain.doFilter(request, response);
         } 
@@ -93,9 +93,25 @@ public class EmpAuthenticationFilter implements Filter {
                 if (requestURI.contains("/back-end/mem") && permission.getFunctionId() == 2) {
                     return true;
                 }
+                if (requestURI.contains("/order") && permission.getFunctionId() == 2) {
+                    return true;
+                }
+              
+                if (requestURI.contains("/ordd") && permission.getFunctionId() == 2) {
+                	return true;
+                }
                 
                 //最新消息管理
+                if (requestURI.contains("/news/all") && permission.getFunctionId() == 3) {
+                	return true;
+                }
                 //客服相關管理
+                if (requestURI.contains("/forum/reports") && permission.getFunctionId() == 4) {
+                	return true;
+                }
+                if (requestURI.contains("/back-end/customer-service") && permission.getFunctionId() == 4) {
+                	return true;
+                }
                 //菜單相關設定
                 if (requestURI.contains("/back-end/meals") && permission.getFunctionId() == 5) {
                     return true;
@@ -108,6 +124,14 @@ public class EmpAuthenticationFilter implements Filter {
                 if (requestURI.contains("/back-end/res") && permission.getFunctionId() == 6) {
 
                     return true;
+                }
+                if (requestURI.contains("/back-end/tabletype") && permission.getFunctionId() == 6) {
+                	
+                	return true;
+                }
+                if (requestURI.contains("/back-end/restime") && permission.getFunctionId() == 6) {
+                	
+                	return true;
                 }
             }
         }

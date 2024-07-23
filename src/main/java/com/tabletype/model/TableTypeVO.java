@@ -40,9 +40,9 @@ public class TableTypeVO implements java.io.Serializable{
 		this.tableTypeNumber = tableTypeNumber;
 	}
 	
-//	public String toString() {
-//		return "TableTypeVO [tableId=" + tableId + ", tableType=" + tableType + ", tableTypeNumber=" + tableTypeNumber + "]";
-//	}
+	public String toString() {
+		return "TableTypeVO [tableId=" + tableId + ", tableType=" + tableType + ", tableTypeNumber=" + tableTypeNumber + "]";
+	}
 	
 	
 }

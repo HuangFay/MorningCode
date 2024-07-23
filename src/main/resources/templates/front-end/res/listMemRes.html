@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -8,10 +7,13 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
+     <link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <script>
         $(document).ready(function() {
-            $('#example').DataTable({
+            var table = $('#example').DataTable({
                 "lengthMenu": [5, 10, 20, 50, 100],
                 "searching": true,
                 "paging": true,
@@ -24,7 +26,6 @@
                     "info": "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
                     "infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
                     "infoFiltered": "(從 _MAX_ 筆結果中過濾)",
-                    "infoPostFix": "",
                     "search": "搜尋:",
                     "paginate": {
                         "first": "第一頁",
@@ -37,6 +38,12 @@
                         "sortDescending": ": 降冪排列"
                     }
                 }
+            });
+
+            // Custom filter by reservation status
+            $('#statusFilter').on('change', function() {
+                var selectedStatus = $(this).val();
+                table.column(8).search(selectedStatus).draw();
             });
         });
     </script>
@@ -65,11 +72,7 @@
             border-radius: 10px;
         }
 
-        .page {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
+    
 
         #pageStyle {
             display: inline-block;
@@ -94,25 +97,23 @@
 
         /* 早餐店風格 */
         body {
-            font-family: "Comic Sans MS", cursive, sans-serif;
+           height:600px;
             background-color: #FFF5EE;
             color: #8B4513;
+        }
+        html{
+         background-color: #FFF;
         }
 
         h2, h3 {
             color: #D2691E;
         }
 
-        .navbar {
-            background-color: #FFD700;
-        }
+       
 
-        .navbar-brand img {
-            border-radius: 50%;
-            box-shadow: 0 0 5px #000;
-        }
+       
         .container {
-            margin-top: 200px; /* 新增的 CSS 屬性 */
+            margin-top: 165px; /* 新增的 CSS 屬性 */
         }
     </style>
     <link rel="stylesheet" th:href="@{/css/index2.css}" />
@@ -120,57 +121,65 @@
 
 <body>
 <div class="container">
-<div th:replace="fragments/header-items :: navigation"></div>
+    <div th:replace="fragments/header-items :: navigation"></div>
 
+    <div align="center">
+        <b><font color="red">第<label id="currentPage">1</label>/<label id="pageNumber"></label>頁</font></b>
+        <b>● 符 合 查 詢 條 件 如 下 所 示 : 共 <font color="red" th:text="${resListData.size}"></font> 筆</b>
+    </div>
 
-<div align="center">
-    <b><font color="red">第<label id="currentPage">1</label>/<label id="pageNumber"></label>頁</font></b>
-    <b>● 符 合 查 詢 條 件 如 下 所 示 : 共 <font color="red" th:text="${resListData.size}"></font> 筆</b>
-</div>
-
-<div class="table-header">
-    <table id="example" class="display" style="width: 100%">
-        <thead>
-        <tr>
-            <th>訂位編號</th>
-
-            <th>預約手機號碼</th>
-            <th>用餐日期</th>
-            <th>訂位人數</th>
-            <th>訂位時段</th>
-            <th>訂位時間</th>
-            <th>訂位狀態</th>
-            <th>桌型人數</th>
-            <th>桌數</th>
-            <th>訂位備註</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <th:block th:each="resVO : ${resListData}">
+    <div class="table-header">
+        <label for="statusFilter">訂位狀態過濾:</label>
+        <select id="statusFilter">
+            <option value="">全部</option>
+            <option value="已確認">已完成</option>
+            <option value="已取消">已取消</option>
+            <option value="待確認">已逾時取消</option>
+        </select>
+        <table id="example" class="display" style="width: 100%">
+            <thead>
             <tr>
-                <td th:text="${resVO.reservationId}"></td>
-
-                <td th:text="${resVO.reservationPhone}"></td>
-                <td th:text="${resVO.reservationEatdate}"></td>
-                <td th:text="${resVO.reservationNum}"></td>
-                <td th:text="${resVO.resTimeVO.reservationTime}"></td>
-                <td th:text="${resVO.reservationDate}"></td>
-                <td th:text="${resVO.reservationStatus}"></td>
-                <td th:text="${resVO.tableTypeVO.tableType}"></td>
-                <td th:text="${resVO.reservationTable}"></td>
-                <td th:text="${resVO.reservationNote}"></td>
-                <td>
-                    <form method="post" th:action="@{/res/getOne_For_Update}" style="margin-bottom: 0px;">
-                        <input type="submit" value="修改">
-                        <input type="hidden" name="reservationId" th:value="${resVO.reservationId}">
-                    </form>
-                </td>
+                <th>訂位編號</th>
+                <th>預約手機號碼</th>
+                <th>用餐日期</th>
+                <th>訂位人數</th>
+                <th>訂位時段</th>
+                <th>訂位時間</th>
+                <th>桌型人數</th>
+                <th>桌數</th>
+                <th>訂位狀態</th>
+                <th>訂位備註</th>
+                <th>操作</th>
             </tr>
-        </th:block>
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+            <th:block th:each="resVO : ${resListData}">
+                <tr>
+                    <td th:text="${resVO.reservationId}"></td>
+                    <td th:text="${resVO.reservationPhone}"></td>
+                    <td th:text="${resVO.reservationEatdate}"></td>
+                    <td th:text="${resVO.reservationNum}"></td>
+                    <td th:text="${resVO.resTimeVO.reservationTime}"></td>
+                    <td th:text="${resVO.reservationDate}"></td>
+                    <td th:text="${resVO.tableTypeVO.tableType}"></td>
+                    <td th:text="${resVO.reservationTable}"></td>
+                    <td th:text="${resVO.reservationStatus}"></td>
+                    <td th:text="${resVO.reservationNote}"></td>
+                    <td>
+                        <form method="post" th:action="@{/res/getOne_For_Update}" style="margin-bottom: 0px;">
+                            <input type="submit" value="修改">
+                            <input type="hidden" name="reservationId" th:value="${resVO.reservationId}">
+                        </form>
+                        <form method="post" th:action="@{/res/cancel}" style="margin-top: 5px;">
+                            <input type="hidden" name="reservationId" th:value="${resVO.reservationId}">
+                            <input type="submit" value="取消">
+                        </form>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
 </div>
 <script th:inline="javascript">
     var baseUrl = /*[[@{/}]]*/ '/';
@@ -180,5 +189,4 @@
     }
 </script>
 </body>
-
 </html>

@@ -73,9 +73,9 @@ h1 {
     gap: 10px;
 
 }
-
-.submit {
-    background-color: #bfbab0;
+/*撤回 不同意*/
+.submit, .submireject {
+    background-color: #BF242A;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -87,12 +87,50 @@ h1 {
     font-weight: bold;
 
 }
-.submit:hover {
-    background-color: #9e9789;
+.submit:hover, .submireject:hover  {
+    background-color: #dd4850;
 
 }
+/*詳情 */
+.detail-button{
+	background-color: #b9b9b9;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-right: 5px;
+    cursor: pointer;
+    min-width: 90px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+	
+}
+.detail-button:hover {
+    background-color: #c9c9c9;
+
+}
+/*同意 */
+.submitagree{
+	background-color: #2374ab;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-right: 5px;
+    cursor: pointer;
+    min-width: 90px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+	
+}
+.submitagree:hover {
+    background-color: #62addf;
+
+}
+
+/*填寫假單 */
 .morandi-style {
-    background-color: #976666; 
+    background-color: #CA774B; 
     color: white;
     border: none;
     padding: 10px 15px; 
@@ -116,14 +154,21 @@ h1 {
 .schedule-table {
     width: 100%;
     border-collapse: collapse;
+
 }
 
 .schedule-table th, .schedule-table td {
     border: 1px solid #ddd;
     padding: 8px;
-    text-align: center;
+
 }
+
 
 .schedule-table th {
     background-color: #f2f2f2;
+}
+
+table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting_asc_disabled, table.dataTable thead>tr>th.sorting_desc_disabled, table.dataTable thead>tr>td.sorting, table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting_asc_disabled, table.dataTable thead>tr>td.sorting_desc_disabled {
+
+    text-align: center;
 }

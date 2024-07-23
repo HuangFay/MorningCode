@@ -2,6 +2,7 @@ package com.morning.order.controller;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -32,6 +35,7 @@ import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
 import com.morning.order.model.OrderService;
 import com.morning.order.model.OrderVO;
+import com.morning.ordd.model.OrddService;
 import com.morning.ordd.model.OrddVO;
 import com.morning.cart.model.CartService;
 import com.morning.cart.model.CartVO;
@@ -46,9 +50,12 @@ public class OrderController {
 
     @Autowired
     MemService memSvc;
-    
+
     @Autowired
     CartService cartSvc;
+    
+    @Autowired
+    OrddService orddSvc;
 
     @GetMapping("addOrder")
     public String addOrder(ModelMap model) {
@@ -77,6 +84,7 @@ public class OrderController {
         OrderVO orderVO = orderSvc.getOneOrder(Integer.valueOf(ordId));
         model.addAttribute("orderVO", orderVO);
         return "back-end/order/update_order_input";
+      
     }
 
     @PostMapping("update")
@@ -136,34 +144,20 @@ public class OrderController {
     @PostMapping("listOrders_ByCompositeQuery")
     public String listAllOrder(HttpServletRequest req, Model model) {
         Map<String, String[]> map = req.getParameterMap();
+        map.forEach((key, value) -> System.out.println(key + " : " + Arrays.toString(value))); // 打印调试信息
         List<OrderVO> list = orderSvc.getAll(map);
         model.addAttribute("orderListData", list);
         return "back-end/order/listAllOrder";
     }
 
-    @GetMapping("/order_success")
-    public String showOrderSuccessPage(@RequestParam("ordId") Integer ordId, Model model) {
-        OrderVO order = orderSvc.getOneOrder(ordId);
-        if (order == null) {
-            return "redirect:/shop/select_page";
-        }
-        model.addAttribute("order", order);
-        return "back-end/shop/order_success";
-    }
 
+   
     @GetMapping("/order_status")
     public String showOrderStatusPage() {
         return "back-end/order/order_status";
     }
 
-    //後台查看訂單
-    @GetMapping("/all_orders")
-    public String showAllOrdersPage(Model model) {
-        List<OrderVO> orders = orderSvc.getAll();
-        model.addAttribute("orders", orders);
-        return "back-end/order/all_orders";
-    }
-
+    
     @PostMapping("/updateOrderStatus")
     @ResponseBody
     public String updateOrderStatus(@RequestParam("ordId") Integer ordId, @RequestParam("ordStatus") Byte ordStatus) {
@@ -185,7 +179,7 @@ public class OrderController {
 
     @PostMapping("/addOrder")
     @ResponseBody
-    public String addOrder(@RequestParam("memName") String memName, 
+    public String addOrder(@RequestParam("memName") String memName,
                            @RequestParam("memPhone") String memPhone,
                            @RequestParam("reserveTime") String reserveTime,
                            @RequestParam("mealsId[]") List<Integer> mealsIds,
@@ -215,8 +209,8 @@ public class OrderController {
         orderSvc.addOrder(orderVO);
         return "success";
     }
-    
-    //查看歷史訂單
+
+    // 查看歷史訂單
     @GetMapping("/history")
     public String orderHistory(HttpSession session, Model model) {
         MemVO member = (MemVO) session.getAttribute("memVO");
@@ -228,44 +222,38 @@ public class OrderController {
         model.addAttribute("orderHistory", orderHistory);
         return "front-end/order/orderHistory";  // 返回前台歷史訂單頁面
     }
-    
-//    //再買一次
-//    @PostMapping("/reorder/{ordId}")
-//    @ResponseBody
-//    public String reorder(@PathVariable("ordId") Integer ordId, HttpSession session) {
-//        MemVO member = (MemVO) session.getAttribute("memVO");
-//        if (member == null) {
-//            return "未登入";  // 返回錯誤信息
-//        }
-//
-//        OrderVO order = orderSvc.getOneOrder(ordId);
-//        if (order == null) {
-//            return "訂單不存在";
-//        }
-//
-//        List<OrddVO> orderDetails = order.getOrderDetails();
-//        for (OrddVO item : orderDetails) {
-//            CartVO cartVO = new CartVO();
-//            cartVO.setMemNo(member.getMemNo());
-//            cartVO.setMealsId(item.getMealsVO().getMealsId());
-//            cartVO.setQuantity(item.getOrddMealsQuantity());
-//            cartSvc.addCartItem(cartVO);
-//        }
-//
-//        return "success";
-//    }
-    
-    //訂單詳情
+
+    // 訂單詳情
     @GetMapping("/detail/{ordId}")
-    public String getOrderDetail(@PathVariable("ordId") Integer ordId, Model model) {
-        OrderVO order = orderSvc.getOneOrder(ordId);
+    public String getOrderDetail(@PathVariable Integer ordId, Model model) {
+        OrderVO order = orderSvc.getOrderDetail(ordId);
         model.addAttribute("order", order);
-        return "order_detail";
+        return "front-end/order/order_detail";
     }
-    
-    
-    
-    
-   
+
+    // 再買一次
+    @PostMapping("/reorder/{ordId}")
+    @ResponseBody
+    public ResponseEntity<String> reorder(@PathVariable Integer ordId) {
+        try {
+            // 获取订单详情
+            OrderVO order = orderSvc.getOrderDetail(ordId);
+            
+            // 遍历订单详情中的餐点，并添加到购物车
+            for (OrddVO detail : order.getOrderDetails()) {
+                CartVO cartItem = new CartVO();
+                cartItem.setMealsId(detail.getMealsVO().getMealsId());
+                cartItem.setQuantity(detail.getOrddMealsQuantity());
+                // 假设你有获取当前用户 memNo 的方法
+                Integer memNo = order.getMemVO().getMemNo();
+                cartItem.setMemNo(memNo);
+                cartSvc.addCartItem(memNo, detail.getMealsVO().getMealsId());
+            }
+            
+            return ResponseEntity.ok("success");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail");
+        }
+    }
     
 }

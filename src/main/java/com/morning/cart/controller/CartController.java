@@ -87,19 +87,10 @@ public class CartController {
     @ResponseBody
     public void addmeals(HttpSession session) {
     Integer mealsId= (Integer)session.getAttribute("mealsId");
-       System.out.println("fhfhfhfhffh"+mealsId);
-       session.removeAttribute("mealsId"); // 清除指定的mealsId
-       System.out.println("fhfhfhfhffh"+mealsId);
-       
        MemVO memvo =(MemVO)session.getAttribute("memVO");
-       System.out.println(memvo);
-
-       
-       
+       System.out.println(memvo);  
        cartService.addCartItem(memvo.getMemNo(), mealsId);
-       
+    }  
+    
 
-    }
-    
-    
 }

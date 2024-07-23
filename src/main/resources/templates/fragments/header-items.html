@@ -17,11 +17,11 @@
 
           
          
-          <button th:if="${session.memVO == null}" class="button" onclick="redirectTo(baseUrl + 'front-end/mem/signup')">
+          <button th:if="${session.memVO == null}" class="header_button" onclick="redirectTo(baseUrl + 'front-end/mem/signup')">
             <span class="login-register">登入/註冊</span>
           </button>
           <div class="dropdown" th:if="${session.memVO != null}" >
-           <button class="button" >
+           <button class="header_button" >
             <span class="login-register">會員中心</span>
           </button>
           
@@ -30,14 +30,14 @@
             <a href="#" onclick="redirectTo(baseUrl + 'front-end/order/orderHistory')">訂單查詢</a>
               <a href="#" onclick="redirectTo('/res/all')">訂位查詢</a>
             <a href="#" onclick="redirectTo(baseUrl + 'collect/listfavorite')">收藏餐點</a>
-            <a href="#" onclick="redirectTo('test3')">客服功能</a>
+            <a href="#" onclick="redirectTo(baseUrl + 'customer-service')">客服功能</a>
             <a href="#" onclick="redirectTo(baseUrl + 'logout')">登出</a>
           </div>
           </div>
          
         
         <div th:if="${session.memVO != null}" class="welcome-message">
-             <span class="page">歡迎會員： <span th:text="${session.memVO.memName}"></span></span>
+             <span class="page">歡迎會員： <span class="animate__animated animate__fadeInLeftBig" th:text="${session.memVO.memName}"></span></span>
         </div>
      
           

@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.morning.cart.model.CartService;
@@ -24,6 +23,8 @@ import com.morning.cust.model.CustService;
 import com.morning.cust.model.CustVO;
 import com.morning.emp.model.EmpService;
 import com.morning.emp.model.EmpVO;
+import com.morning.forum.model.ForumPostVO;
+import com.morning.forum.model.ForumService;
 import com.morning.leave.model.LeaveService;
 import com.morning.leave.model.LeaveVO;
 import com.morning.meal.model.MealService;
@@ -36,6 +37,8 @@ import com.morning.mealstypes.model.MealsTypesService;
 import com.morning.mealstypes.model.MealsTypesVO;
 import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
+import com.morning.news.model.NewsService;
+import com.morning.news.model.NewsVO;
 import com.morning.ordd.model.OrddService;
 import com.morning.ordd.model.OrddVO;
 import com.morning.order.model.OrderService;
@@ -90,6 +93,9 @@ public class IndexController_inSpringBoot   {
     @Autowired
     CartService cartSvc;
     
+    @Autowired
+    NewsService newsSvc;
+    
 //訂位autowired
 	@Autowired
 	ResTimeService resTimeSvc;
@@ -99,6 +105,8 @@ public class IndexController_inSpringBoot   {
 	TableTypeService tableSvc;
 	@Autowired
 	ResService resSvc;
+	@Autowired
+	ForumService forumSvc;
 
 	
     // inject(注入資料) via application.properties
@@ -111,6 +119,10 @@ public class IndexController_inSpringBoot   {
     public void addAttributes(HttpSession session, Model model) {
     	OrddVO latestOrdd = orddSvc.getLatestOrdd();
         model.addAttribute("latestOrdd", latestOrdd);
+        NewsVO latestNews = newsSvc.getLatestNews();
+        model.addAttribute("latestNews", latestNews);
+        ForumPostVO latestPost = forumSvc.getLatestPost();
+        model.addAttribute("latestPost", latestPost);
         MemVO memVO = (MemVO) session.getAttribute("memVO");
         if (memVO != null) {
             model.addAttribute("memVO", memVO);
@@ -415,11 +427,14 @@ public class IndexController_inSpringBoot   {
        // 从会话中获取当前登录员工
        EmpVO loggedInEmp = (EmpVO) session.getAttribute("empVO");
 
+
        if (loggedInEmp != null) {
            Integer empId = loggedInEmp.getEmpId();
            List<LeaveVO> leaveListData = leaveSvc.getLeavesByEmpId(empId);
+           List<LeaveVO> leaveListForAssignee = leaveSvc.getLeaveAssigneeId(empId);
            model.addAttribute("leaveListData", leaveListData);
            model.addAttribute("loggedInEmp", loggedInEmp); // 增加這一行來傳遞登入員工資料到前端
+           model.addAttribute("leaveListForAssignee", leaveListForAssignee);
 
        }
 
@@ -536,7 +551,7 @@ public class IndexController_inSpringBoot   {
 			return "back-end/res/select_page";
 		}
 	    
-	    //訂單畫面
+	    //後台查看訂單
 	    @GetMapping("/order/select_page")
 	    public String select_page4(Model model) {
 	        return "back-end/order/select_page";
@@ -633,13 +648,15 @@ public class IndexController_inSpringBoot   {
 	        model.addAttribute("orddList", orddList);
 	        return "back-end/ordd/meals_status";
 	    }
+
 	    
 	  //後台查看訂單
-	    @GetMapping("/all_orders")
-	    public String showAllOrdersPage(Model model) {
-	        List<OrderVO> orders = orderSvc.getAll();
-	        model.addAttribute("orders", orders);
-	        return "back-end/order/all_orders";
-	    }
+//	    @GetMapping("/all_orders")
+//	    public String showAllOrdersPage(Model model) {
+//	        List<OrderVO> orders = orderSvc.getAll();
+//	        model.addAttribute("orders", orders);
+//	        return "back-end/order/all_orders";
+//	    }
+
 
 }

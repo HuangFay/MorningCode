@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>最新消息列表</title>
+
+  <link rel="stylesheet" th:href="@{/css/index3.css}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <!-- <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" /> -->
+  <!-- 如果bootstrap可以用，就把style的內容拿掉 -->
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 15px;
+    }
+
+    .mt-4 {
+      margin-top: 1.5rem !important;
+    }
+
+    /* 卡片样式 */
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      word-wrap: break-word;
+      background-color: #fff;
+      background-clip: border-box;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+      padding: 0.5rem 1rem;
+      margin-bottom: 0;
+      background-color: rgba(0, 0, 0, 0.03);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      margin-top: 0;
+      margin-bottom: 0;
+      font-size: 1.25rem;
+    }
+
+    .card-body {
+      flex: 1 1 auto;
+      padding: 1rem;
+    }
+
+    /* 表格样式 */
+    .table {
+      width: 100%;
+      margin-bottom: 1rem;
+      color: #212529;
+      border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+      padding: 0.75rem;
+      vertical-align: top;
+      border-top: 1px solid #dee2e6;
+    }
+
+    .table thead th {
+      vertical-align: bottom;
+      border-bottom: 2px solid #dee2e6;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .table-hover tbody tr:hover {
+      color: #212529;
+      background-color: rgba(0, 0, 0, 0.075);
+    }
+
+    .thead-dark th {
+      color: #fff;
+      background-color: #343a40;
+      border-color: #454d55;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    /* Flexbox utility classes */
+    .d-flex {
+      display: flex !important;
+    }
+
+    .justify-content-between {
+      justify-content: space-between !important;
+    }
+
+    .align-items-center {
+      align-items: center !important;
+    }
+
+    /* 按钮样式 */
+    .btn {
+      display: inline-block;
+      font-weight: 400;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      user-select: none;
+      border: 1px solid transparent;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      border-radius: 0.25rem;
+      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+    }
+
+    .btn-primary:hover {
+      color: #fff;
+      background-color: #0b5ed7;
+      border-color: #0a58ca;
+    }
+
+    .btn-warning {
+      color: #212529;
+      background-color: #ffc107;
+      border-color: #ffc107;
+    }
+
+    .btn-warning:hover {
+      color: #212529;
+      background-color: #ffca2c;
+      border-color: #ffc720;
+    }
+
+    .btn-danger {
+      color: #fff;
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+      color: #fff;
+      background-color: #bb2d3b;
+      border-color: #b02a37;
+    }
+
+    .btn-sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      border-radius: 0.2rem;
+    }
+
+    .btn-space {
+      margin-right: 0.5rem;
+    }
+
+    /* 表单样式 */
+    .form-inline {
+      display: inline;
+    }
+
+    .d-inline {
+      display: inline !important;
+    }
+
+
+    
+    .right-pane {
+      /* border: 1px solid red; */
+      /* width: 77%;  */
+      /* 调整頁面的寬度 */
+      /* margin-right: 20px; */
+      /* text-align: center; */
+      margin-left: 256px;
+
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 32px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="main-container">
+    <div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+
+    <div class="right-pane">
+      <h1>MorningCode 最新消息管理</h1>
+      <div class="container mt-4">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title">最新消息列表</h5>
+            <form action="edit" method="post" class="d-inline">
+              <button type="submit" class="btn btn-primary">新增</button>
+            </form>
+          </div>
+          <div class="card-body">
+            <table class="table table-striped table-hover">
+              <thead class="thead-dark text-center">
+                <tr>
+                  <th scope="col">編號</th>
+                  <th scope="col">公告標題</th>
+                  <th scope="col">發佈日期</th>
+                  <th scope="col">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <th:block th:each="newsVO : ${newsListData}">
+                  <tr>
+                    <td class="text-center" th:text="${newsVO.newsId}"></td>
+                    <td class="text-center" th:text="${newsVO.newsTitle}"></td>
+                    <td class="text-center" th:text="${#dates.format(newsVO.newsDate, 'yyyy.MM.dd')}"></td>
+                    <td class="text-center">
+                      <form action="edit" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-warning btn-sm btn-space">編輯</button>
+                        <input type="hidden" name="newsId" th:value="${newsVO.newsId}">
+                      </form>
+                      <form class="deleteForm d-inline" action="deleteAction" method="post">
+                        <button type="button" class="btn btn-danger btn-sm btn_delete_news">刪除</button>
+                        <input type="hidden" name="newsId" th:value="${newsVO.newsId}">
+                      </form>
+                    </td>
+                  </tr>
+                </th:block>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- 無樣式 -->
+  <!-- <form action="edit" method="post">
+    <button type="submit">新增</button>
+  </form>
+  <table>
+    <thead>
+      <tr>
+        <td>編號</td>
+        <td>公告標題</td>
+        <td>發佈日期</td>
+        <td>操作</td>
+      </tr>
+    </thead>
+    <tbody>
+      <th:block th:each="newsVO : ${newsListData}">
+        <tr>
+
+          <td th:text="${newsVO.newsId}"></td>
+          <td th:text="${newsVO.newsTitle}"></td>
+          <td th:text="${#dates.format(newsVO.newsDate, 'yyyy.MM.dd')}"></td>
+          <td>
+            <form action="edit" method="post">
+              <button type="submit">編輯</button>
+              <input type="hidden" name="newsId" th:value="${newsVO.newsId}">
+            </form>
+            <br>
+            <form class="deleteForm" action="deleteAction" method="post">
+              <button type="button" class="btn_delete_news">刪除</button>
+              <input type="hidden" name="newsId" th:value="${newsVO.newsId}">
+            </form>
+          </td>
+
+        </tr>
+      </th:block>
+    </tbody>
+  </table> -->
+
+  <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.min.js}"></script>
+  <script>
+    $(document).ready(function () {
+
+      $('.btn_delete_news').on('click', function (e) {
+        e.preventDefault();
+        let r = confirm('確定刪除?');
+        if (r === true) {
+          $(this).closest('form').submit();
+        }
+      });
+
+    });
+
+
+    // sidebar要用到的設定
+    $("a.aa").on("click", function () {
+      console.log(this);
+
+      var $li = $(this).closest("li");
+      $li.find("div.menu-item-1").slideToggle();
+      $li.siblings().find(".menu-item-1").slideUp();
+    });
+
+    function redirectTo(url) {
+      window.location.href = url;
+    }
+  </script>
+
+</body>
+
+</html>

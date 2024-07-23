@@ -1,0 +1,157 @@
+* {
+	/* margin: auto;
+	padding: 0px; */
+}
+
+html, body {
+	font: 15px verdana, Times New Roman, arial, helvetica, sans-serif,
+		Microsoft JhengHei;
+	/* width: 100vw; */
+	/* height: 95%; */
+	/* background: #eeeeda; */
+
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+	
+}
+
+.friendchat {
+	/* border: 2px solid red; */
+	position: relative;
+	width: 30vw;
+	height: 100%;
+
+	margin-top: 280px;
+
+	/* display: inline; */
+}
+
+.panel {
+	/* border: 2px solid #0078ae; */
+	border: 2px solid #5a3e36;
+	border-radius: 5px;
+
+	/* float: right;
+	border: 2px solid #0078ae;
+	border-radius: 5px;
+	width: 50%; */
+}
+
+.message-area {
+	width: 100%;
+	height: 70%;
+	resize: none;
+	box-sizing: border-box;
+	overflow: auto;
+	/* background-color: #ffffff; */
+	background-color: #f4f1ea;
+}
+
+.input-area {
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+	gap: 5px; /* 控制元素之間的間距 */
+	padding: 10px;
+
+	/* background: #0078ae;
+	box-shadow: inset 0 0 10px #00568c; */
+	background: #a67c52;
+	box-shadow: inset 0 0 10px #8c684a;
+}
+
+.input-area input {
+	flex-shrink: 0;
+	margin: 0;
+}
+
+.text-field {
+	flex-grow: 1;
+
+	border: 1px solid grey;
+	padding: 0.2em;
+	box-shadow: 0 0 5px #000000;
+}
+
+h1 {
+	font-size: 1.5em;
+	padding: 5px;
+	margin: 5px;
+}
+
+#message {
+	min-width: 50%;
+	max-width: 100%;
+}
+
+h3.statusOutput {
+	/* background: #0078ae; */
+	background: #a67c52;
+	text-align: center;
+	color: #ffffff;
+	border: 1px solid grey;
+	padding: 0.2em;
+	box-shadow: 0 0 5px #000000;
+	width: 30%;
+	margin: 0 auto;
+	/* margin-top: 14%;
+	margin-left: 60%; */
+}
+
+#row {
+	float: left;
+	width: 50%;
+}
+
+.column {
+  float: left;
+  width: 50%;
+  padding: 5%;
+  margin-bottom: 5px;
+  background-color: #ffffff;
+}
+
+ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul li{
+  display:inline-block;
+  clear: both;
+  padding: 20px;
+  border-radius: 30px;
+  margin-bottom: 2px;
+  font-family: Helvetica, Arial, sans-serif;
+
+  /* 額外加的 */
+  background: #8c684a;
+}
+
+.friend{
+  background: #eee;
+  float: left;
+}
+
+.me{
+  float: right;
+  /* background: #0084ff; */
+  background: #8c684a;
+  color: #fff;
+}
+
+.friend + .me{
+  border-bottom-right-radius: 5px;
+}
+
+.me + .me{
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.me:last-of-type {
+  border-bottom-right-radius: 30px;
+}

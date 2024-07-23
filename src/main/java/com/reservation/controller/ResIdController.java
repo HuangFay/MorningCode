@@ -2,8 +2,11 @@ package com.reservation.controller;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.persistence.Table;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -16,10 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.morning.mem.model.MemService;
 import com.morning.mem.model.MemVO;
@@ -46,7 +46,7 @@ public class ResIdController {
 	TableTypeService TableTypeSvc;
 	@Autowired
 	SysArgService SysArgSvc;
-	
+
 	@GetMapping("addRes")
 	public String addRes(HttpSession session,ModelMap model) {
 		// 從 session 中獲取 memVO
@@ -66,89 +66,104 @@ public class ResIdController {
 
 	    return "front-end/res/addRes";
 	}
-	
-	
+
+
 	@PostMapping("insert")
-	public String insert(@Valid ResVO resVO, BindingResult result, ModelMap model) throws IOException{
-		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+	@ResponseBody
+	public Map<String, String> insert(HttpSession session, @Valid @ModelAttribute ResVO resVO, BindingResult result, ModelMap model,
+									  @RequestParam(name = "tableTypeVO.tableId") Integer tableId)
+			throws IOException {
+
+		Map<String, String> response = new HashMap<>();
+
+		MemVO memVO = (MemVO) session.getAttribute("memVO");
+		if (memVO == null) {
+			response.put("status", "error");
+			response.put("message", "未登入，請先註冊或登入。");
+			return response;
+		}
+//		System.out.println("tableid 是"+tableId);
+		TableTypeVO tableTypeVO = TableTypeSvc.getOneTableType(tableId);
+		resVO.setTableTypeVO(tableTypeVO);
+//		System.out.println("ＶＯ是"+ memVO.toString()+"電話是"+memVO.getMemPhone());
+		resVO.setMemVO(memVO);
 		resVO.setReservationDate(LocalDateTime.now());
-//		resVO.getTableTypeVO().getTableId();
-//		resVO.getReservationTable();
-		/*
-		 *前端給 吃飯日期  桌位數量 桌位類型 （ＯＫ）
-		 * 用吃飯時間+桌位類型 找出ResCVO的 控制桌位數量  如果無此天資料就創一個（ＯＫ）
-		 * 使用service 方法驗證數量 回傳字串儲存回資料庫
-		 *
-		 *
-		 */
+		Integer tableuse=resVO.getReservationNum()/tableTypeVO.getTableType();
+
+		if(resVO.getReservationNum()%tableTypeVO.getTableType()!=0) {
+			tableuse++;
+		}
+		resVO.setReservationTable(tableuse);
+		System.out.println("計算出的桌數"+tableuse);
+
+//		System.out.println("tabletypeVO 等於 " + resVO.getTableTypeVO().toString());
+//		System.out.println("桌型的ＩＤ" + resVO.getTableTypeVO().getTableId().getClass().getName());
+//		System.out.println("人數多少" + resVO.getTableTypeVO().getTableType());
+//		System.out.println("選的時段ＩＤ" + resVO.getResTimeVO().getReservationTimeId());
+//		System.out.println("選的時段" + resVO.getResTimeVO().getReservationTime());
 
 		List<ResCVO> resCVOList = ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
 		List<SysArgVO> sysArgVOList2 = SysArgSvc.findByColumns("2persontable");
 		List<SysArgVO> sysArgVOList4 = SysArgSvc.findByColumns("4persontable");
-		if (!resCVOList.isEmpty()) {
-			ResCVO resCVO = resCVOList.get(0); // Assuming you want the first element
-			String argumentValue = resVO.getTableTypeVO().getTableId() == 1 ?
+
+		if (!resCVOList.isEmpty()) { // 如果有找到符合的資料
+			ResCVO resCVO = resCVOList.get(0);
+			String argumentValue = resVO.getTableTypeVO().getTableType() == 2 ?
 					sysArgVOList2.get(0).getSysArgumentValue() :
 					sysArgVOList4.get(0).getSysArgumentValue();
 
-			resCVO.setReservationControlTable(ResSvc.compareLastTwoDigits(
+			String updadesit = ResSvc.compareLastTwoDigits(
 					argumentValue,
 					resCVO.getReservationControlTable(),
 					resVO.getReservationTable(),
 					resVO.getResTimeVO().getReservationTimeId()
-			));
+			);
 
-
-
-		}else{
-			//創建新的控制日期選項
+			if (!updadesit.equals(resCVO.getReservationControlTable())) {
+				resCVO.setReservationControlTable(updadesit);
+				response.put("status", "success");
+				response.put("message", "訂位成功");
+			} else {
+				response.put("status", "error");
+				response.put("message", "座位已滿請選取其他時段！");
+			}
+		} else {//沒找到要創建新的控制表
 			ResCVO resCaddVO = new ResCVO();
 			resCaddVO.setReservationControlDate(resVO.getReservationEatdate());
 			resCaddVO.setTableTypeVO(resVO.getTableTypeVO());
-
 			ResCSvc.addRes(resCaddVO);
-
 			resCVOList = ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
-
-
-			ResCVO resCVO = resCVOList.get(0); // Assuming you want the first element
-			String argumentValue = resVO.getTableTypeVO().getTableId() == 1 ?
+			ResCVO resCVO = resCVOList.get(0);
+			String argumentValue = resVO.getTableTypeVO().getTableType() == 2 ?
 					sysArgVOList2.get(0).getSysArgumentValue() :
 					sysArgVOList4.get(0).getSysArgumentValue();
 
-			resCVO.setReservationControlTable(ResSvc.compareLastTwoDigits(
+			String updadesit = ResSvc.compareLastTwoDigits(
 					argumentValue,
 					resCVO.getReservationControlTable(),
 					resVO.getReservationTable(),
 					resVO.getResTimeVO().getReservationTimeId()
-			));
+			);
+
+			if (!updadesit.equals(resCVO.getReservationControlTable())) {
+				resCVO.setReservationControlTable(updadesit);
+				response.put("status", "success");
+				response.put("message", "訂位成功");
+			} else {
+				response.put("status", "error");
+				response.put("message", "座位已滿請選取其他時段！");
+			}
 		}
-		//取得設定桌位數
 
+		if ("success".equals(response.get("status"))) {
+			ResSvc.addRes(resVO);
+		}
 
-
-
-		//測試列印出來
-		System.out.println("日期"+resVO.getReservationEatdate());
-		System.out.println("數量" +resVO.getReservationTable());
-		System.out.println("訂位字串"+sysArgVOList2.get(0).getSysArgumentValue());
-
-		System.out.println("resC編號"+resCVOList.get(0).getReservationControlId());
-		System.out.println("resC日期"+resCVOList.get(0).getReservationControlDate());
-		System.out.println("resC數量" +resCVOList.get(0).getReservationControlTable());
-
-		/*************************** 2.開始新增資料 *****************************************/
-
-		// EmpService empSvc = new EmpService();
-		ResSvc.addRes(resVO);
-		/*************************** 3.新增完成,準備轉交(Send the Success view) **************/
-		List<ResVO> list = ResSvc.getAll();
-		model.addAttribute("resListData", list);
-		model.addAttribute("success", "- (新增成功)");
-		return "redirect:/index2"; // 新增成功後重導至
-	
+		return response;
 	}
-	
+
+
+
 	//--------------------------------------------------------------------
 //	//轉道自己所發的文章的mapping
 //    @GetMapping("listMyArticles")

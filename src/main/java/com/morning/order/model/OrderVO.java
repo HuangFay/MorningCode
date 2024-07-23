@@ -61,7 +61,7 @@ public class OrderVO implements java.io.Serializable {
     
     @Column(name = "ord_amount")
     @NotNull(message = "請輸入1~9999數字")
-    @Min(value = 0, message = "請輸入1~9999數字")
+    @Min(value = 1, message = "請輸入1~9999數字")
     @Max(value = 9999, message = "請輸入1~9999數字")
     public Integer getOrdAmount() {
         return ordAmount;

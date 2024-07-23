@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.morning.ordd.model.OrddVO;
+
 @Service("newsService")
 public class NewsService {
 	
@@ -30,5 +32,11 @@ public class NewsService {
 		if (newsRepository.existsById(newsId))
 			newsRepository.deleteById(newsId);
 	}
+	
+	
+	//前台
+	 public NewsVO getLatestNews() {
+	        return newsRepository.findTopByOrderByNewsIdDesc();
+	    }
 	
 }

@@ -186,7 +186,76 @@
             });
         }
 
-        
+        function editOrder(ordId) {
+            $.get("/order/getOne_For_Update", { ordId: ordId }, function(order) {
+                Swal.fire({
+                    title: '修改訂單',
+                    html: `<form id="editOrderForm">
+                            <input type="hidden" id="editOrdId" value="${order.ordId}">
+                            <label>會員編號</label>
+                            <input id="editMemNo" class="swal2-input" type="number" value="${order.memVO.memNo}" placeholder="會員編號">
+                            <label>訂單種類</label>
+                            <input id="editOrdType" class="swal2-input" type="number" value="${order.ordType}" placeholder="0:外帶, 1:內用">
+                            <label>訂單總金額</label>
+                            <input id="editOrdAmount" class="swal2-input" type="number" value="${order.ordAmount}" placeholder="訂單總金額">
+                            <label>訂單成立日期</label>
+                            <input id="editOrdBuilddate" class="swal2-input" type="datetime-local" value="${order.ordBuilddate}" placeholder="訂單成立日期">
+                            <label>訂單預訂時間</label>
+                            <input id="editOrdReserveTime" class="swal2-input" type="datetime-local" value="${order.ordReserveTime}" placeholder="訂單預訂時間">
+                            <label>付款狀態</label>
+                            <input id="editOrdPaymentStatus" class="swal2-input" type="number" value="${order.ordPaymentStatus}" placeholder="0:未付款, 1:已付款, 2:已申請退款, 3:退款完成">
+                          </form>`,
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    confirmButtonText: '修改',
+                    cancelButtonText: '取消',
+                    preConfirm: () => {
+                        return {
+                            ordId: document.getElementById('editOrdId').value,
+                            memNo: document.getElementById('editMemNo').value,
+                            ordType: document.getElementById('editOrdType').value,
+                            ordAmount: document.getElementById('editOrdAmount').value,
+                            ordBuilddate: document.getElementById('editOrdBuilddate').value,
+                            ordReserveTime: document.getElementById('editOrdReserveTime').value,
+                            ordPaymentStatus: document.getElementById('editOrdPaymentStatus').value
+                        }
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const orderData = result.value;
+                        $.ajax({
+                            url: '/order/update',
+                            type: 'POST',
+                            data: orderData,
+                            success: function(response) {
+                                if (response === 'success') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '訂單修改成功!',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: '訂單修改失敗',
+                                        text: response
+                                    });
+                                }
+                            },
+                            error: function() {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '訂單修改失敗!'
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        }
     </script>
     <style type="text/css">
         .center {
@@ -244,8 +313,6 @@
 <div class="container">
     <h1 class="text-center">查看訂單</h1>
 
-   
-
     <div class="text-right mb-3">
         <button class="btn btn-success" onclick="addOrder()">新增訂單</button>
     </div>
@@ -265,29 +332,29 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="order : ${orders}">
-            <td th:text="${order.ordId}">1</td>
-            <td th:text="${order.memVO.memName}">王小明</td>
-            <td th:text="${order.ordType}">0</td>
-            <td th:text="${order.ordAmount}">500</td>
+        <tr th:each="orderVO : ${orders}">
+            <td th:text="${orderVO.ordId}">1</td>
+            <td th:text="${orderVO.memVO.memName}">王小明</td>
+            <td th:text="${orderVO.ordType}">0</td>
+            <td th:text="${orderVO.ordAmount}">500</td>
             <td>
                 <select class="form-control" 
-                        th:id="'status-select-' + ${order.ordId}" 
-                        th:data-ord-id="${order.ordId}" 
-                        th:onchange="updateOrderStatus(${order.ordId})">
-                    <option value="0" th:selected="${order.ordStatus == 0}">已接單</option>
-                    <option value="1" th:selected="${order.ordStatus == 1}">餐點製作中</option>
-                    <option value="2" th:selected="${order.ordStatus == 2}">餐點已完成</option>
-                    <option value="3" th:selected="${order.ordStatus == 3}">餐點已領取</option>
-                    <option value="4" th:selected="${order.ordStatus == 4}">訂單取消</option>
+                        th:id="'status-select-' + ${orderVO.ordId}" 
+                        th:data-ord-id="${orderVO.ordId}" 
+                        th:onchange="'updateOrderStatus(' + ${orderVO.ordId} + ')'">
+                    <option value="0" th:selected="${orderVO.ordStatus == 0}">已接單</option>
+                    <option value="1" th:selected="${orderVO.ordStatus == 1}">餐點製作中</option>
+                    <option value="2" th:selected="${orderVO.ordStatus == 2}">餐點已完成</option>
+                    <option value="3" th:selected="${orderVO.ordStatus == 3}">餐點已領取</option>
+                    <option value="4" th:selected="${orderVO.ordStatus == 4}">訂單取消</option>
                 </select>
             </td>
-            <td th:text="${order.ordBuilddate}">2023-07-15 14:30:00</td>
-            <td th:text="${order.ordReserveTime}">2023-07-15 15:30:00</td>
-            <td th:text="${order.ordPaymentStatus}">0</td>
+            <td th:text="${orderVO.ordBuilddate}">2023-07-15 14:30:00</td>
+            <td th:text="${orderVO.ordReserveTime}">2023-07-15 15:30:00</td>
+            <td th:text="${orderVO.ordPaymentStatus}">0</td>
             <td>
-                <button class="btn btn-sm btn-info" th:onclick="'location.href=\'/order/getOne_For_Update?ordId=' + ${order.ordId} + '\''">修改</button>
-                <button class="btn btn-sm btn-danger" th:onclick="deleteOrder(${order.ordId})">刪除</button>
+                <button class="btn btn-sm btn-info" th:onclick="|editOrder(${orderVO.ordId})|">修改</button>
+                <button class="btn btn-sm btn-danger" th:onclick="|deleteOrder(${orderVO.ordId})|">刪除</button>
             </td>
         </tr>
         </tbody>

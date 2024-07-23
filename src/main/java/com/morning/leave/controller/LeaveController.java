@@ -1,6 +1,7 @@
 package com.morning.leave.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.morning.assign.model.AssignService;
 import com.morning.assign.model.AssignVO;
@@ -37,7 +39,7 @@ public class LeaveController {
 	@Autowired
 	AssignService assignSvc;
 
-	//填寫假單、代班人員過濾掉登入者
+	// 填寫假單、代班人員過濾掉登入者
 	@GetMapping("/addLeave")
 	public String addLeave(ModelMap model, HttpSession session) {
 		LeaveVO leaveVO = new LeaveVO();
@@ -48,14 +50,19 @@ public class LeaveController {
 			List<EmpVO> filteredEmpList = empSvc.getAll().stream()
 					.filter(emp -> !emp.getEmpId().equals(loggedInEmp.getEmpId())).collect(Collectors.toList());
 			model.addAttribute("empListData", filteredEmpList);
+
+	        // 獲取該員工的上班日期
+	        List<Date> workingDates = assignSvc.getWorkingDatesByEmpId(loggedInEmp.getEmpId());
+	        model.addAttribute("workingDates", workingDates.stream()
+	                .map(date -> date.toString())  // 將日期轉換為字符串
+	                .collect(Collectors.toList()));
 		} else {
 			model.addAttribute("empListData", empSvc.getAll()); // 如果沒有登入資訊，則返回全部員工名單
 		}
-
 		return "back-end/leave/addLeave";
 	}
 
-	//獲取請假員工帳號並帶入
+	// 獲取請假員工帳號並帶入
 	@PostMapping("/insert")
 	public String insert(@Valid LeaveVO leaveVO, HttpSession session, BindingResult result, ModelMap model)
 			throws IOException {
@@ -89,7 +96,6 @@ public class LeaveController {
 		return "redirect:/back-end/leave/listAllLeaveforEmp"; // 新增成功後重導至列表頁面
 	}
 
-
 	@PostMapping("getOne_For_Update")
 	public String getOne_For_Update(@RequestParam("leaveId") String leaveId, ModelMap model) {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
@@ -102,7 +108,6 @@ public class LeaveController {
 		model.addAttribute("leaveVO", leaveVO);
 		return "back-end/leave/update_leave_input"; // 查詢完成後轉交update_emp_input.html
 	}
-
 
 	@PostMapping("update")
 	public String update(@Valid LeaveVO leaveVO, BindingResult result, ModelMap model) throws IOException {
@@ -122,10 +127,10 @@ public class LeaveController {
 		leaveVO = leaveSvc.getOneLeave(Integer.valueOf(leaveVO.getLeaveId()));
 		model.addAttribute("leaveVO", leaveVO);
 
-		return "back-end/leave/listOneLeave"; 
+		return "back-end/leave/listOneLeave";
 	}
 
-	//撤回申請表單
+	// 撤回申請表單
 	@PostMapping("delete")
 	public String delete(@RequestParam("leaveId") String leaveId, ModelMap model) {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
@@ -137,44 +142,68 @@ public class LeaveController {
 		model.addAttribute("success", "- (刪除成功)");
 		return "redirect:/back-end/leave/listAllLeaveforEmp"; // 刪除完成後轉交listAllEmp.html
 	}
-	
-	
+
 	// 審核判斷、將leave的empId帶入到assign的leaveAssigneeId
 	@PostMapping("/updateapproval")
-	public String updateApproval(@RequestParam("leaveId") Integer leaveId,
-			@RequestParam("leaveStatus") Byte leaveStatus, ModelMap model) {
-		LeaveVO leaveVO = leaveSvc.getOneLeave(leaveId);
-		if (leaveVO != null) {
-			if (leaveStatus == 1) {
-				leaveVO.approveLeave(); // 審核通過
-				// 根據請假的日期查找相應的排班
-				List<AssignVO> assignList = assignSvc.getAssignmentsByDate(leaveVO.getLeaveDate());
-				for (AssignVO assign : assignList) {
-					if (assign.getAssignDate().equals(leaveVO.getLeaveDate())) { // 確保日期完全匹配
-						if(assign.getEmpVO().equals(leaveVO.getLeaveEmpId())) {
-						assign.setEmpVO(leaveVO.getLeaveAssigneeId());
-						assignSvc.updateAssign(assign);
-						}else if(assign.getEmpVO1().equals(leaveVO.getLeaveEmpId())){
-							assign.setEmpVO1(leaveVO.getLeaveAssigneeId());
-							assignSvc.updateAssign(assign);	
-						}
-					}
-				}
-				
-			} else if (leaveStatus == 2) {
-				leaveVO.rejectLeave(); // 審核不通過
-			} else {
-				return "redirect:/back-end/leave/listAllLeave";
-			}
-			leaveSvc.updateLeave(leaveVO); // 更新請假紀錄
-		}
+	public String updateApproval(@RequestParam(value = "leaveId") Integer leaveId,
+	                             @RequestParam(value = "leaveStatus", required = false) Byte leaveStatus,
+	                             @RequestParam(value = "leaveStatusforEmp", required = false) Byte leaveStatusforEmp,
+	                             @RequestParam(value = "isSubstituteApproval", required = false) Boolean isSubstituteApproval,
+	                             ModelMap model) {
+	    LeaveVO leaveVO = leaveSvc.getOneLeave(leaveId);
+
+	    if (leaveVO != null) {
+	        // 首先處理代班簽核狀態
+	        if (leaveStatusforEmp != null) {
+	            leaveVO.setLeaveStatusforEmp(leaveStatusforEmp);
+	        }
+	        
+	        // 如果代班簽核狀態為1（簽核通過）且管理員也進行了簽核
+	        if (leaveVO.getLeaveStatusforEmp() == 1 && leaveStatus != null) {
+	            if (leaveStatus == 1) {
+	                leaveVO.approveLeave(); // 管理員審核通過
+	                // 更新 Assign
+	                List<AssignVO> assignList = assignSvc.getAssignmentsByDate(leaveVO.getLeaveDate());
+	                for (AssignVO assign : assignList) {
+	                    if (assign.getAssignDate().equals(leaveVO.getLeaveDate())) {
+	                        if (assign.getEmpVO().equals(leaveVO.getLeaveEmpId())) {
+	                            assign.setEmpVO(leaveVO.getLeaveAssigneeId());
+	                            assignSvc.updateAssign(assign);
+	                        } else if (assign.getEmpVO1().equals(leaveVO.getLeaveEmpId())) {
+	                            assign.setEmpVO1(leaveVO.getLeaveAssigneeId());
+	                            assignSvc.updateAssign(assign);
+	                        }
+	                    }
+	                }
+	            } else if (leaveStatus == 2) {
+	                leaveVO.rejectLeave(); // 管理員審核不通過
+	            }
+	        } else if (leaveVO.getLeaveStatusforEmp() == 2) { // 代班簽核不通過
+	            leaveVO.setLeaveStatus((byte) 2); // 整個請假申請不通過
+	        }
+	        
+	        leaveSvc.updateLeave(leaveVO); // 更新請假紀錄
+	    }
+
 
 		model.addAttribute("success", "- (修改成功)");
 		model.addAttribute("leaveVO", leaveVO);
 
-		return "redirect:/back-end/leave/listAllLeave";
+		// 根據是否為代班簽核決定跳轉的頁面
+	    if (isSubstituteApproval != null && isSubstituteApproval) {
+	        return "redirect:/back-end/leave/listAllLeaveforEmp";
+	    } else {
+	        return "redirect:/back-end/leave/listAllLeave";
+	    }
 	}
 
+	@GetMapping("/getDetails")
+	@ResponseBody
+	public LeaveVO getLeaveDetails(@RequestParam("leaveId") Integer leaveId) {
+	    return leaveSvc.getOneLeave(leaveId);
+	}
+	
+	
 	@ModelAttribute("empListData")
 	protected List<EmpVO> referenceListData() {
 		List<EmpVO> list = empSvc.getAll();

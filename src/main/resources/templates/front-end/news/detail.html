@@ -7,28 +7,38 @@
   <title th:text="${newsVO.newsTitle}"></title>
 
   <link rel="stylesheet" th:href="@{/css/index2.css}" />
+  <link rel="stylesheet" th:href="@{/css/common.css}" />
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
-  <link rel="stylesheet" th:href="@{/css/index2.css}" />
+  
+  <style>
+  	.h4 {
+  		margin-bottom: 0 important!;
+  	}
+  </style>
 </head>
 
 <body>
 
   <div th:replace="fragments/header-items :: navigation"></div>
   
+  <main class="main_content">
+  
   <div class="container mt-4">
     <div class="card">
       <div class="card-header">
-        <h5 class="card-title" th:text="${newsVO.newsTitle}">News Title</h5>
+        <h4 class="card-title" th:text="${newsVO.newsTitle}"></h4>
       </div>
       <div class="card-body">
         <p class="card-text">
           <span class="font-weight-bold">公告時間：</span>
-          <span th:text="${#dates.format(newsVO.newsDate, 'yyyy.MM.dd')}">2024.07.17</span>
+          <span th:text="${#dates.format(newsVO.newsDate, 'yyyy.MM.dd')}"></span>
         </p>
-        <p class="card-text" th:text="${newsVO.newsContent}">This is the news content. It provides a brief description or full content of the news.</p>
+        <p class="card-text" th:text="${newsVO.newsContent}"></p>
       </div>
     </div>
   </div>
+  
+  </main>
 
 
   <!-- 無樣式 -->

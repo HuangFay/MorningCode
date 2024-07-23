@@ -4,9 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.morning.ordd.model.OrddRepository;
+import com.morning.ordd.model.OrddVO;
 
 import hibernate.util.CompositeQuery.HibernateUtil_CompositeQuery_Order;
 
@@ -15,6 +19,9 @@ public class OrderService {
 
     @Autowired
     OrderRepository repository;
+
+    @Autowired
+    OrddRepository orddRepository;
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -41,12 +48,31 @@ public class OrderService {
     public List<OrderVO> getAll() {
         return repository.findAll();
     }
-
+  
+    //複合查詢
     public List<OrderVO> getAll(Map<String, String[]> map) {
-        return HibernateUtil_CompositeQuery_Order.getAllC(map, sessionFactory.openSession());
+        Session session = sessionFactory.openSession();
+        return HibernateUtil_CompositeQuery_Order.getAllC(map, session);
     }
 
     public List<OrderVO> getOrdersByMemNo(Integer memNo) {
         return repository.findByMemNo(memNo);
+    }
+
+    public List<OrderVO> getOrderHistory() {
+        return repository.findAll();
+    }
+
+    public OrderVO getOrderDetail(Integer ordId) {
+        OrderVO order = repository.findById(ordId).orElse(null);
+        if (order != null) {
+            List<OrddVO> orderDetails = orddRepository.findByOrdId(ordId);
+            order.setOrderDetails(orderDetails);
+        }
+        return order;
+    }
+
+    public boolean reorder(Integer ordId) {
+        return true;
     }
 }
