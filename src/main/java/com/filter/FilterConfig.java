@@ -18,7 +18,7 @@ public class FilterConfig {
         registrationBean.addUrlPatterns("/news/all");
         registrationBean.addUrlPatterns("/forum/reports");
         registrationBean.addUrlPatterns("/forum/review");
-        registrationBean.addUrlPatterns("/order/*");
+        registrationBean.addUrlPatterns("/order/select_page");
         registrationBean.addUrlPatterns("/ordd/*");
         return registrationBean;
     }
