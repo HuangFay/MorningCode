@@ -2,6 +2,7 @@ package com.morning.custservice.controller;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -59,11 +60,37 @@ public class CustServiceWS {
 		
 		
 		if ( userName.equals("emp") ) {
+//			empSession = userSession;
+//			usrNameMap.put(userName, "emp");
+//			
+//			Set<String> userNames = sessionsMap.keySet();
+//			State stateMessage = new State("open", userName, userNames, usrNameMap);
+//			String stateMessageJson = gson.toJson(stateMessage);
+//			if ( empSession != null ) {
+//				empSession.getAsyncRemote().sendText(stateMessageJson);
+//			}
+			
 			empSession = userSession;
 			usrNameMap.put(userName, "emp");
 			
-			Set<String> userNames = sessionsMap.keySet();
-			State stateMessage = new State("open", userName, userNames, usrNameMap);
+			//Set<String> userNames = sessionsMap.keySet();
+			List<String> memList = JedisHandleMessage.getMemList();
+			System.out.println("memList = " + memList);
+			Set<String> userNamesSet = new HashSet<>(memList);
+	        for (String user : userNamesSet) {
+	        	Integer memNo = Integer.parseInt(user);
+	        	memRepository = SpringContext.getBean(MemRepository.class);
+	        	Optional<MemVO> memVO = memRepository.findById(memNo);
+				if( memVO.isPresent() ) {
+					usrNameMap.remove(user);
+					usrNameMap.put(user, memVO.get().getMemName() );
+				} else {
+					usrNameMap.remove(user);
+					usrNameMap.put(user, "");
+				}
+	        }
+			
+			State stateMessage = new State("open", userName, userNamesSet, usrNameMap);
 			String stateMessageJson = gson.toJson(stateMessage);
 			if ( empSession != null ) {
 				empSession.getAsyncRemote().sendText(stateMessageJson);
@@ -111,7 +138,20 @@ public class CustServiceWS {
 			}
 		}
 		
-
+//		if ("memlist".equals(chatMessage.getType())) {
+//			List<String> memListData = JedisHandleMessage.getMemList();
+//			System.out.println("memList = " + memListData);
+//			
+//			String memListMsg = gson.toJson(memListData);
+//			ChatMessage cmMemList = new ChatMessage("friendlist", sender, receiver, memListMsg);
+//			
+//			if (userSession != null && userSession.isOpen()) {
+//				userSession.getAsyncRemote().sendText(gson.toJson(cmMemList));
+//			}
+//			
+//			return;
+//		}
+		
 		Session receiverSession = sessionsMap.get(receiver);
 		if (receiverSession != null && receiverSession.isOpen()) {
 			receiverSession.getAsyncRemote().sendText(message);
