@@ -1,72 +1,172 @@
-
-
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>員工資料 - listOneEmp.html</title>
-
-<head th:insert="~{/back-end/emp/included-fragment}"></head>
+<link rel="stylesheet" th:href="@{/css/index3.css}">
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <style type="text/css">
-	
-    span {
-		display: inline-block;
-		width: 150px;
-		text-align: left;
-		font-weight: bold;
-	}
-	#formContent {
-  -webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 10px 10px 10px 10px;
-  background: #fff;
-  margin: 10px auto;
-
-  width: 90%;
-  max-width: 450px;
-  position: relative;
-  padding: 0px;
-  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-  text-align: center;
-  
+.right-pane {
+	width: 77%;
+	margin-right: 20px;
+	text-align: center;
 }
- ul {
-        list-style-type: none; /* 移除li的marker */
-    }
+.container {
+	max-width: 600px;
+	margin: 20px auto 50px;
+	padding: 20px;
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, h3 {
+	text-align: center;
+	color: #333;
+}
+
+h3 {
+	font-size: 1.2rem;
+}
+
+form {
+	display: grid;
+	gap: 10px;
+
+}
+
+label {
+	display: block;
+	margin-bottom: 5px;
+	color: #666;
+}
+.btn {
+	width: 100%;
+	padding: 12px;
+	margin-top: 10px;
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+	color: white;
+	background-color: #88bbb0;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.btn:hover {
+	background-color: #60a495;
+}
+
+select, input {
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-shadow: inset 1px -1px 2px 0px rgba(0, 0, 0, 0.1);
+}
+input[type=text], input[type=password], select, textarea {
+	width: 560px;
+	box-sizing: border-box;
+	transition: all 0.2s ease-in-out;
+	appearance: none;
+	-webkit-appearance: none;
+}
+	
+.center {
+	margin-left: auto;
+	margin-right: auto;
+}
+.error {
+	color: red; 
+}
+
+.employee-info {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	gap: 10px;
+	align-items: center;
+}
+
+.employee-info span {
+	display: block;
+}
+
+.employee-info img {
+	margin-top: 10px;
+}
+.oneemp{
+width:250px;
+}
 </style>
 </head>
 <body>
 
-<nav >
-		 <div align="center"> <h2>員工個人資料 - listOneEmp.html</h2>
-		 <h3><a class="navbar-brand" th:href="@{/back-end/emp/listAllEmp}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3></div>
-</nav>
 
-	<div align="center" th:fragment="listOneEmp-div" id="formContent"> <!-- 此div被select_page.html第158行insert用 -->
-		<h3><span>查詢結果 :</span></h3>
-		<span>員工編號:</span><span th:text="${empVO.empId}"></span><br/>
-		<span>員工姓名:</span><span th:text="${empVO.empName}"></span><br/>
-		<span>帳號:</span><span th:text="${empVO.empAccount}"></span><br/>
-		<span>密碼:</span><span th:text="${empVO.empPassword}"></span><br/>
-		<span>電話:</span><span th:text="${empVO.empPhone}"></span><br/>
-		<span>地址:</span><span th:text="${empVO.empAddress}"></span><br/>
-		<span>email:</span><span th:text="${empVO.empEmail}"></span><br/>
-		<span>雇用日期:</span><span th:text="${empVO.empHiredate}"></span><br/>
-		<span>狀態:</span><span th:text="${empVO.empStatus ==0? '奴':'割'}"></span><br/>
-		<span>照片:</span><span><img th:src="@{/emp/DBGifReader} + '?empid=' + ${empVO.empId}" width="100px"></span><br/>
-		 <h3>員工權限</h3>
-        <div>
-            <ul>
-                <li th:each="func : ${empVO.functions}">
-                    <span th:text="${func.functionName}"></span>
-                </li>
-            </ul>
-        </div>
-	</div>
-	 
-	  
+<div class="main-container">
+		<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+		<div class="right-pane">
 
+			<div align="center">
+				<h1>MorningCode 員工資料修改</h1>
+				<div class="container">
+					<h3><span>查詢結果 :</span></h3>
+					<div class="employee-info">
+						<span>員工帳號:</span>
+						<span th:text="${empVO.empId}" class="oneemp"></span>
+
+						<span>員工姓名:</span>
+						<span th:text="${empVO.empName}" class="oneemp"></span>
+
+						<span>帳號:</span>
+						<span th:text="${empVO.empAccount}" class="oneemp"></span>
+
+						<span>密碼:</span>
+						<span th:text="${empVO.empPassword}"class="oneemp"></span>
+
+						<span>電話:</span>
+						<span th:text="${empVO.empPhone}"class="oneemp"></span>
+
+						<span>地址:</span>
+						<span th:text="${empVO.empAddress}"class="oneemp"></span>
+
+						<span>email:</span>
+						<span th:text="${empVO.empEmail}"class="oneemp"></span>
+
+						<span>雇用日期:</span>
+						<span th:text="${empVO.empHiredate}"class="oneemp"></span>
+
+						<span>狀態:</span>
+						<span th:text="${empVO.empStatus ==0? '在職':'離職'}"class="oneemp"></span>
+
+						<span>照片:</span>
+						<span class="oneemp">
+						<img th:src="@{/emp/DBGifReader} + '?empid=' + ${empVO.empId}" width="100px">
+						</span>
+					</div>
+					<h3>員工權限</h3>
+					<div>
+						<ul>
+							<li th:each="func : ${empVO.functions}">
+								<span th:text="${func.functionName}"></span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+</div>
+
+<script>
+	$("a.aa").on("click", function() {
+		var $li = $(this).closest("li");
+		$li.find("div.menu-item-1").slideToggle();
+		$li.siblings().find(".menu-item-1").slideUp();
+	});
+	function redirectTo(url) {
+		window.location.href = url;
+	}
+</script>
 </body>
 </html>
