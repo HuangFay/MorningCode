@@ -11,7 +11,7 @@ class MealsPhotoWrite {
 		InputStream fin = null;
 		String url = "jdbc:mysql://localhost:3306/morningcode?serverTimezone=Asia/Taipei";
 		String userid = "root";
-		String passwd = "880316";
+		String passwd = "azx4639551";
 		String photos = "src/main/resources/static/images/1"; //測試用圖片已置於【專案錄徑】底下的【resources/DB_photos1】目錄內
 		String update = "update meal_picture set meal_pic =? where meal_pic_id=?";
 

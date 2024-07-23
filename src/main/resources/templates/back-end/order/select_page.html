@@ -16,11 +16,12 @@
             color: #fff;
         }
         .container {
-            margin-top: 10px;
+            margin-top: 20px;
         }
         .card {
             border: none;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
         .list-group-item {
             border: none;
@@ -42,6 +43,10 @@
         }
         .more-query {
             display: none;
+        }
+        .card-header {
+            background-color: #0056b3;
+            color: white;
         }
     </style>
 </head>
@@ -65,7 +70,7 @@
 
     <div class="row">
         <div class="col-md-6">
-            <div class="card mb-4">
+            <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0">查詢訂單</h5>
                 </div>
@@ -122,40 +127,39 @@
                         </li>
                         
                         <li class="list-group-item">
-					    <button class="btn btn-secondary mb-2" id="moreQueryBtn">顯示更多查詢</button>
-					    <div id="moreQuery" class="more-query">
-					        <form method="post" th:action="@{listOrders_ByCompositeQuery}">
-					            <div class="form-group">
-					                <label for="ordStatusComposite">訂單狀態:</label>
-					                <select class="form-control" id="ordStatusComposite" name="ordStatus">
-					                    <option value="" selected disabled>請選擇</option>
-					                    <option value="0">已接單</option>
-					                    <option value="1">餐點製作中</option>
-					                    <option value="2">餐點已完成</option>
-					                    <option value="3">餐點已領取</option>
-					                    <option value="4">訂單取消</option>
-					                </select>
-					            </div>
-					            <div class="form-group">
-					                <label for="ordDateStart">訂單成立日期（起）:</label>
-					                <input type="date" class="form-control" id="ordDateStart" name="ordDateStart">
-					            </div>
-					            <div class="form-group">
-					                <label for="ordDateEnd">訂單成立日期（迄）:</label>
-					                <input type="date" class="form-control" id="ordDateEnd" name="ordDateEnd">
-					            </div>
-					            <button type="submit" class="btn btn-primary">送出</button>
-					        </form>
-					    </div>
-					</li>
-
+                            <button class="btn btn-secondary mb-2" id="moreQueryBtn">顯示更多查詢</button>
+                            <div id="moreQuery" class="more-query">
+                                <form method="post" th:action="@{listOrders_ByCompositeQuery}">
+                                    <div class="form-group">
+                                        <label for="ordStatusComposite">訂單狀態:</label>
+                                        <select class="form-control" id="ordStatusComposite" name="ordStatus">
+                                            <option value="" selected disabled>請選擇</option>
+                                            <option value="0">已接單</option>
+                                            <option value="1">餐點製作中</option>
+                                            <option value="2">餐點已完成</option>
+                                            <option value="3">餐點已領取</option>
+                                            <option value="4">訂單取消</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ordDateStart">訂單成立日期（起）:</label>
+                                        <input type="date" class="form-control" id="ordDateStart" name="ordDateStart">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ordDateEnd">訂單成立日期（迄）:</label>
+                                        <input type="date" class="form-control" id="ordDateEnd" name="ordDateEnd">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">送出</button>
+                                </form>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <div class="col-md-6">
-            <div class="card mb-4">
+            <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0">訂單管理</h5>
                 </div>

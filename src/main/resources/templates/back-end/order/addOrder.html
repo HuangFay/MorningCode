@@ -141,13 +141,8 @@ form label {
             defaultDate: new Date(),
             minTime: "00:00",
             maxTime: "23:45",
-            minuteIncrement: 15,
-            disable: [
-                function(date) {
-                    // 每週一禁用
-                    return (date.getDay() === 1);
-                }
-            ]
+            minuteIncrement: 1,
+           
         });
     });
 </script>
