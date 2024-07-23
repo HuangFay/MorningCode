@@ -68,10 +68,7 @@ public class EmpAuthenticationFilter implements Filter {
     	
     	 if (requestURI.contains("/back-end/leave/listAllLeaveforEmp") || requestURI.contains("/back-end/assign/listAllAssign")||
     			 requestURI.contains("/back-end/assign/api/")||requestURI.contains("/back-end/leave/addLeave")||requestURI.contains("/back-end/leave/insert")||
-    			 requestURI.contains("/back-end/leave/delete")||requestURI.contains("/back-end/leave/updateapproval") ||
-    			 requestURI.contains("/news/all") ||
-    			 requestURI.contains("/forum/reports") ||
-    			 requestURI.contains("/forum/review")
+    			 requestURI.contains("/back-end/leave/delete")||requestURI.contains("/back-end/leave/updateapproval")
     			 ) {
              return true;
          }
@@ -104,13 +101,12 @@ public class EmpAuthenticationFilter implements Filter {
                 if (requestURI.contains("/ordd") && permission.getFunctionId() == 2) {
                 	return true;
                 }
-                
                 //最新消息管理
                 if (requestURI.contains("/news/all") && permission.getFunctionId() == 3) {
                 	return true;
                 }
-                //客服相關管理
-                if (requestURI.contains("/forum/reports") && permission.getFunctionId() == 4) {
+                //客服檢舉相關管理 ( /forum/reports表示檢舉列表, /forum/review表示審核檢舉 )
+                if (requestURI.contains("/forum") && permission.getFunctionId() == 4) {
                 	return true;
                 }
                 if (requestURI.contains("/back-end/customer-service") && permission.getFunctionId() == 4) {
