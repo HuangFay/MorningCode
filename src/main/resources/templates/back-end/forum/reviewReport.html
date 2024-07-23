@@ -9,20 +9,49 @@
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
   
   <style>
-  
+    /* 避免 bootstrap 與 index3.css 樣式衝突 */
+    ol, ul {
+      padding-inline-start: 40px;
+    }
+
+    .welcome-message {
+      height: 24px;
+    }
+
+    .sidebar button {
+      font-size: revert;
+      line-height: initial;
+    }
+    
+    .right-pane {
+      margin-left: 256px;
+      width: 80%;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-top: 36px;
+      margin-bottom: 30px;
+      font-size: 32px;
+    }
+    
   </style>
 </head>
 <body>
 <div class="main-container">
 <div th:replace="fragments/back-end-header-items :: sidebar1"></div>
 
+<div class="right-pane">
+  <h1>MorningCode 審核檢舉文章</h1>
   <div class="container mt-4">
     <div class="card report-card">
       <div class="card-body">
-        <h5 class="card-title">檢舉報告</h5>
-        <p class="card-text"><strong>檢舉編號:</strong> <span th:text="${reportVO.reportId}">123</span></p>
+        <h5 class="card-title">檢舉審核</h5>
+        <p class="card-text"><strong>檢舉編號:</strong> <span th:text="${reportVO.reportId}"></span></p>
         <p class="card-text"><strong>文章標題:</strong> <span th:text="${reportVO.forumPostVO.postTitle}"></span></p>
-        <p class="card-text report-content"><strong>文章內容:</strong> <span th:text="${reportVO.forumPostVO.postContent}"></span></p>
+        <p class="card-text report-content"><strong>文章內容:</strong><br><span th:text="${reportVO.forumPostVO.postContent}"></span></p>
+        <p class="card-text"><strong>檢舉理由:</strong><br><span th:text="${reportVO.reportReason}"></span></p>
         <div class="report-actions">
           <form method="post" th:action="@{review/submit}" class="d-inline">
             <input type="hidden" name="reportId" th:value="${reportVO.reportId}">
@@ -39,6 +68,7 @@
     </div>
   </div>
 
+</div>
 </div>
 
 

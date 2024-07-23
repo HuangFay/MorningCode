@@ -246,7 +246,7 @@ public class ForumController {
 		forumReportVO.setReportReason(reportReason);
 		
 		forumReportVO.setMemVO(memVO);
-		forumReportVO.setReportStatus(1);
+		forumReportVO.setReportStatus(ReportStatus.PENDING.toInt());
 
 		// 儲存現在的日期
 		Date sqlDate = new Date(System.currentTimeMillis());
