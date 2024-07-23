@@ -345,7 +345,16 @@ public class ResController {
 
 	@PostMapping("/cancel")
 	public String cancelReservation(@RequestParam("reservationId") Integer reservationId) {
+		ResVO resVO = ResSvc.getOneRes(reservationId);
+		List<ResCVO> resCVOList = ResCSvc.findByColumns(resVO.getReservationEatdate(), resVO.getTableTypeVO());
+		ResCVO resCVO = resCVOList.get(0);
+		System.out.println("修改前"+resCVO.getReservationControlTable());
 
+		resCVO.setReservationControlTable(ResSvc.restoreset(
+				resCVO.getReservationControlTable(),
+				resVO.getReservationTable(),
+				resVO.getResTimeVO().getReservationTimeId()));
+		System.out.println("修改後"+resCVO.getReservationControlTable());
 
 		ResSvc.cancelReservation(reservationId);
 

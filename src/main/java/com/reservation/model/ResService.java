@@ -115,6 +115,7 @@ public class ResService {
 			ResVO resVO = optionalReservation.get();
 			resVO.setReservationStatus((byte) 2);
 
+
 			repository.save(resVO);
 		}
 	}

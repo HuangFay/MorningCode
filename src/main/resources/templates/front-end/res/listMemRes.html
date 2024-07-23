@@ -7,16 +7,15 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
-    <link rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
-
-<link rel="stylesheet" th:href="@{/css/res.css}" />
-<script th:src="@{/js/res.js}"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+    <link rel="stylesheet" th:href="@{/css/res.css}" />
+    <script th:src="@{/js/res.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style type="text/css">
         /* Existing styles remain unchanged */
         table {
-            width: 100%;	
+            width: 100%;
             background-color: white;
             margin-top: 5px;
             margin-bottom: 5px;
@@ -38,7 +37,7 @@
             border-radius: 10px;
         }
 
-    
+
 
         #pageStyle {
             display: inline-block;
@@ -74,13 +73,13 @@
             color: #D2691E;
         }
 
-       
 
-       
+
+
         .container {
             margin: 165px 100px; /* 新增的 CSS 屬性 */
         }
-           
+
     </style>
     <link rel="stylesheet" th:href="@{/css/index2.css}" />
 </head>
@@ -113,9 +112,9 @@
 		                <th>桌型人數</th>
 		                <th>桌數</th>
 		                <th>訂位狀態</th>
-		                <th>訂位備註</th>
+                        <th>訂位備註</th>
 		                <th>操作</th>
-		                
+
                     </tr>
                     </thead>
                     <tbody>
@@ -129,17 +128,17 @@
                     <td th:text="${resVO.reservationDate}"></td>
                     <td th:text="${resVO.tableTypeVO.tableType}"></td>
                     <td th:text="${resVO.reservationTable}"></td>
-                    <td th:text="${resVO.reservationStatus}"></td>
+                    <td><span th:switch="${resVO.reservationStatus}">
+                                <span th:case="0">已確認</span><span th:case="1">已完成</span>
+                                <span th:case="2">已取消</span><span th:case="3">超時取消</span>
+                            </span></td>
                     <td th:text="${resVO.reservationNote}"></td>
                     <td>
                         <form method="post" th:action="@{/res/getOne_For_Update}" style="margin-bottom: 0px;">
                             <input type="submit" value="修改">
                             <input type="hidden" name="reservationId" th:value="${resVO.reservationId}">
                         </form>
-                        <form method="post" th:action="@{/res/cancel}" style="margin-top: 5px;">
-                            <input type="hidden" name="reservationId" th:value="${resVO.reservationId}">
-                            <input type="submit" value="取消">
-                        </form>
+
                     </td>
 
                 </tr>
@@ -161,11 +160,10 @@
 			                <th>訂位人數</th>
 			                <th>訂位時段</th>
 			                <th>訂位時間</th>
-			                <th>桌型人數</th>
-			                <th>桌數</th>
-			                <th>訂位狀態</th>
-			                <th>訂位備註</th>
 
+
+			                <th>訂位備註</th>
+                            <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -178,11 +176,20 @@
 				                    <td th:text="${resVO.reservationNum}"></td>
 				                    <td th:text="${resVO.resTimeVO.reservationTime}"></td>
 				                    <td th:text="${resVO.reservationDate}"></td>
-				                    <td th:text="${resVO.tableTypeVO.tableType}"></td>
-				                    <td th:text="${resVO.reservationTable}"></td>
-				                    <td th:text="${resVO.reservationStatus}"></td>
-				                    <td th:text="${resVO.reservationNote}"></td>
 
+
+				                    <td th:text="${resVO.reservationNote}"></td>
+                                    <td>
+                                        <form method="post" th:action="@{/res/getOne_For_Update}" style="margin-bottom: 0px;">
+                                            <input type="submit" value="修改">
+                                            <input type="hidden" name="reservationId" th:value="${resVO.reservationId}">
+                                        </form>
+
+                                        <form method="post" th:action="@{/res/cancel}" class="cancel-form"  style="margin-top: 5px;">
+                                        <input type="hidden" name="reservationId" th:value="${resVO.reservationId}">
+                                        <input type="submit" value="取消訂位" class="cancel-button">
+                                    </form>
+                                    </td>
 				                </tr>
                             </th:block>
                         </th:block>
@@ -201,9 +208,8 @@
 			                <th>訂位人數</th>
 			                <th>訂位時段</th>
 			                <th>訂位時間</th>
-			                <th>桌型人數</th>
-			                <th>桌數</th>
-			                <th>訂位狀態</th>
+
+
 			                <th>訂位備註</th>
 
                         </tr>
@@ -218,9 +224,8 @@
 				                    <td th:text="${resVO.reservationNum}"></td>
 				                    <td th:text="${resVO.resTimeVO.reservationTime}"></td>
 				                    <td th:text="${resVO.reservationDate}"></td>
-				                    <td th:text="${resVO.tableTypeVO.tableType}"></td>
-				                    <td th:text="${resVO.reservationTable}"></td>
-				                    <td th:text="${resVO.reservationStatus}"></td>
+
+
 				                    <td th:text="${resVO.reservationNote}"></td>
 
                                 </tr>
@@ -241,9 +246,9 @@
 		                <th>訂位人數</th>
 		                <th>訂位時段</th>
 		                <th>訂位時間</th>
-		                <th>桌型人數</th>
-		                <th>桌數</th>
-		                <th>訂位狀態</th>
+
+
+
 		                <th>訂位備註</th>
 
                         </tr>
@@ -258,9 +263,9 @@
 				                    <td th:text="${resVO.reservationNum}"></td>
 				                    <td th:text="${resVO.resTimeVO.reservationTime}"></td>
 				                    <td th:text="${resVO.reservationDate}"></td>
-				                    <td th:text="${resVO.tableTypeVO.tableType}"></td>
-				                    <td th:text="${resVO.reservationTable}"></td>
-				                    <td th:text="${resVO.reservationStatus}"></td>
+
+
+
 				                    <td th:text="${resVO.reservationNote}"></td>
 
                                 </tr>
@@ -280,9 +285,9 @@
 			                <th>訂位人數</th>
 			                <th>訂位時段</th>
 			                <th>訂位時間</th>
-			                <th>桌型人數</th>
-			                <th>桌數</th>
-			                <th>訂位狀態</th>
+
+
+
 			                <th>訂位備註</th>
                         </tr>
                         </thead>
@@ -296,11 +301,11 @@
 				                    <td th:text="${resVO.reservationNum}"></td>
 				                    <td th:text="${resVO.resTimeVO.reservationTime}"></td>
 				                    <td th:text="${resVO.reservationDate}"></td>
-				                    <td th:text="${resVO.tableTypeVO.tableType}"></td>
-				                    <td th:text="${resVO.reservationTable}"></td>
-				                    <td th:text="${resVO.reservationStatus}"></td>
+
+
+
 				                    <td th:text="${resVO.reservationNote}"></td>
-      
+
                                 </tr>
                             </th:block>
                         </th:block>
@@ -351,6 +356,27 @@
 
         // 初始化顯示第一個分頁
         $('.tab-button[data-tab="all"]').click();
+
+        $('.cancel-button').on('click', function(event) {
+            event.preventDefault();
+            var form = $(this).closest('form');
+
+            Swal.fire({
+                title: '確定要取消嗎?',
+                text: "此操作無法回復!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '是的, 取消訂位!',
+                cancelButtonText: '取消'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+
     });
 </script>
 </body>
