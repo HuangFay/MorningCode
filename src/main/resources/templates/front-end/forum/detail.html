@@ -10,7 +10,7 @@
   <link rel="stylesheet" th:href="@{/css/common.css}" />
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
   <style>
-/*     main {
+    /*     main {
       position: absolute;
       top: 10rem;
       margin: auto 7rem;
@@ -136,8 +136,9 @@
       font-size: inherit;
       font-size: 1.2rem;
     }
-      .header_button{
-    text-decoration: none;
+
+    .header_button {
+      text-decoration: none;
     }
   </style>
 </head>
@@ -189,23 +190,23 @@
                   <span class="text-muted" th:text="${#dates.format(reply.replyTime, 'yyyy-MM-dd HH:mm')}"></span>
                   <p class="reply-content" th:text="${reply.replyContent}"></p>
                 </div>
-                <button th:if="${memVO != null and memVO.memNo == reply.memVO.memNo}" type="button" class="btn btn-danger btn-sm btn_delete_post"
-                  th:data-replyId="${reply.replyId}">刪除</button>
+                <button th:if="${memVO != null and memVO.memNo == reply.memVO.memNo}" type="button"
+                  class="btn btn-danger btn-sm btn_delete_post" th:data-replyId="${reply.replyId}">刪除</button>
               </li>
             </th:block>
           </ul>
           <div th:if="${memVO != null}">
-	          <div class="reply-form">
-	            <h5>新增回覆</h5>
-	            <div class="form-group">
-	              <textarea id="reply_content" class="form-control" rows="3"></textarea>
-	            </div>
-	            <button type="button" class="btn btn-primary" id="btn_submit_reply"
-	              th:data-postId="${forumPostVO.postId}">送出</button>
-	          </div>
+            <div class="reply-form">
+              <h5>新增回覆</h5>
+              <div class="form-group">
+                <textarea id="reply_content" class="form-control" rows="3"></textarea>
+              </div>
+              <button type="button" class="btn btn-primary" id="btn_submit_reply"
+                th:data-postId="${forumPostVO.postId}">送出</button>
+            </div>
           </div>
           <div th:unless="${memVO != null}">
-          	<p>請登入以回覆</p>
+            <p>請登入以回覆</p>
           </div>
         </div>
       </div>
@@ -288,8 +289,19 @@
   <script th:inline="javascript">
     $(document).ready(function () {
 
+
+
       // 點擊刪除按鈕
-      $(".btn_delete_post").on("click", function (e) {
+      /*       $(".btn_delete_post").on("click", function (e) {
+              let r = confirm('是否刪除留言?');
+              if (r === true) {
+                var replyId = $(this).attr('data-replyId');
+                var liItem = $(this).closest('li');
+      
+                deleteReply(replyId, liItem);
+              }
+            }); */
+      $(document).on("click", ".btn_delete_post", function (e) {
         let r = confirm('是否刪除留言?');
         if (r === true) {
           var replyId = $(this).attr('data-replyId');
@@ -297,7 +309,6 @@
 
           deleteReply(replyId, liItem);
         }
-
       });
 
       // 新增回覆按鈕
@@ -360,7 +371,7 @@
               <span class="text-muted">${reply.replyTime}</span>
               <p class="reply-content">${reply.replyContent}</p>
             </div>
-            <button type="button" class="btn btn-danger btn-sm" data-replyId="${reply.replyId}">刪除</button>
+            <button type="button" class="btn btn-danger btn-sm btn_delete_post" data-replyId="${reply.replyId}">刪除</button>
           </li>
       `
     }
