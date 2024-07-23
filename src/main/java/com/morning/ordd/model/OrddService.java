@@ -74,7 +74,6 @@ public class OrddService {
     }
 
 	public OrddVO getOrderDetail(Integer orddId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
