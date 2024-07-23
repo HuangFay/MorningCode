@@ -7,50 +7,16 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
-     <link rel="stylesheet"
+    <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
-	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-    <script>
-        $(document).ready(function() {
-            var table = $('#example').DataTable({
-                "lengthMenu": [5, 10, 20, 50, 100],
-                "searching": true,
-                "paging": true,
-                "ordering": true,
-                "language": {
-                    "processing": "處理中...",
-                    "loadingRecords": "載入中...",
-                    "lengthMenu": "顯示 _MENU_ 筆結果",
-                    "zeroRecords": "沒有符合的結果",
-                    "info": "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
-                    "infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
-                    "infoFiltered": "(從 _MAX_ 筆結果中過濾)",
-                    "search": "搜尋:",
-                    "paginate": {
-                        "first": "第一頁",
-                        "previous": "上一頁",
-                        "next": "下一頁",
-                        "last": "最後一頁"
-                    },
-                    "aria": {
-                        "sortAscending": ": 升冪排列",
-                        "sortDescending": ": 降冪排列"
-                    }
-                }
-            });
+<link rel="stylesheet" th:href="@{/css/res.css}" />
+<script th:src="@{/js/res.js}"></script>
 
-            // Custom filter by reservation status
-            $('#statusFilter').on('change', function() {
-                var selectedStatus = $(this).val();
-                table.column(8).search(selectedStatus).draw();
-            });
-        });
-    </script>
     <style type="text/css">
         /* Existing styles remain unchanged */
         table {
-            width: 100%;
+            width: 100%;	
             background-color: white;
             margin-top: 5px;
             margin-bottom: 5px;
@@ -98,8 +64,7 @@
         /* 早餐店風格 */
         body {
            height:600px;
-            background-color: #FFF5EE;
-            color: #8B4513;
+            background-color: #f8f9fa;
         }
         html{
          background-color: #FFF;
@@ -113,8 +78,9 @@
 
        
         .container {
-            margin-top: 165px; /* 新增的 CSS 屬性 */
+            margin: 165px 100px; /* 新增的 CSS 屬性 */
         }
+           
     </style>
     <link rel="stylesheet" th:href="@{/css/index2.css}" />
 </head>
@@ -123,37 +89,37 @@
 <div class="container">
     <div th:replace="fragments/header-items :: navigation"></div>
 
-    <div align="center">
-        <b><font color="red">第<label id="currentPage">1</label>/<label id="pageNumber"></label>頁</font></b>
-        <b>● 符 合 查 詢 條 件 如 下 所 示 : 共 <font color="red" th:text="${resListData.size}"></font> 筆</b>
-    </div>
+    <div align="center" style="padding-top: 20px;">
 
-    <div class="table-header">
-        <label for="statusFilter">訂位狀態過濾:</label>
-        <select id="statusFilter">
-            <option value="">全部</option>
-            <option value="已確認">已完成</option>
-            <option value="已取消">已取消</option>
-            <option value="待確認">已逾時取消</option>
-        </select>
-        <table id="example" class="display" style="width: 100%">
-            <thead>
-            <tr>
-                <th>訂位編號</th>
-                <th>預約手機號碼</th>
-                <th>用餐日期</th>
-                <th>訂位人數</th>
-                <th>訂位時段</th>
-                <th>訂位時間</th>
-                <th>桌型人數</th>
-                <th>桌數</th>
-                <th>訂位狀態</th>
-                <th>訂位備註</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            <th:block th:each="resVO : ${resListData}">
+
+       <div class="tabs">
+                <button class="tab-button active" data-tab="all">所有紀錄</button>
+                <button class="tab-button" data-tab="confirm">已確認訂位</button>
+                <button class="tab-button" data-tab="finish">已完成</button>
+                <button class="tab-button" data-tab="cancel">已取消</button>
+                <button class="tab-button" data-tab="overtime">超時取消</button>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane" id="all">
+                <table class="schedule-table">
+                    <thead>
+                    <tr>
+		                <th>訂位編號</th>
+		                <th>預約手機號碼</th>
+		                <th>用餐日期</th>
+		                <th>訂位人數</th>
+		                <th>訂位時段</th>
+		                <th>訂位時間</th>
+		                <th>桌型人數</th>
+		                <th>桌數</th>
+		                <th>訂位狀態</th>
+		                <th>訂位備註</th>
+		                <th>操作</th>
+		                
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:each="resVO : ${resListData}">
                 <tr>
                     <td th:text="${resVO.reservationId}"></td>
                     <td th:text="${resVO.reservationPhone}"></td>
@@ -175,18 +141,217 @@
                             <input type="submit" value="取消">
                         </form>
                     </td>
+
                 </tr>
             </th:block>
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+            <div class="tab-content">
+                <!-- 已確認 -->
+                <div class="tab-pane" id="confirm">
+                    <table class="schedule-table">
+                        <thead>
+                        <tr>
+			                <th>訂位編號</th>
+			                <th>預約手機號碼</th>
+			                <th>用餐日期</th>
+			                <th>訂位人數</th>
+			                <th>訂位時段</th>
+			                <th>訂位時間</th>
+			                <th>桌型人數</th>
+			                <th>桌數</th>
+			                <th>訂位狀態</th>
+			                <th>訂位備註</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="resVO : ${resListData}">
+                            <th:block th:if="${resVO.reservationStatus == 0}">
+                                <tr>
+				                    <td th:text="${resVO.reservationId}"></td>
+				                    <td th:text="${resVO.reservationPhone}"></td>
+				                    <td th:text="${resVO.reservationEatdate}"></td>
+				                    <td th:text="${resVO.reservationNum}"></td>
+				                    <td th:text="${resVO.resTimeVO.reservationTime}"></td>
+				                    <td th:text="${resVO.reservationDate}"></td>
+				                    <td th:text="${resVO.tableTypeVO.tableType}"></td>
+				                    <td th:text="${resVO.reservationTable}"></td>
+				                    <td th:text="${resVO.reservationStatus}"></td>
+				                    <td th:text="${resVO.reservationNote}"></td>
+
+				                </tr>
+                            </th:block>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div class="tab-pane" id="finish">
+                    <table class="schedule-table">
+                        <thead>
+                        <tr>
+			                <th>訂位編號</th>
+			                <th>預約手機號碼</th>
+			                <th>用餐日期</th>
+			                <th>訂位人數</th>
+			                <th>訂位時段</th>
+			                <th>訂位時間</th>
+			                <th>桌型人數</th>
+			                <th>桌數</th>
+			                <th>訂位狀態</th>
+			                <th>訂位備註</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="resVO : ${resListData}">
+                            <th:block th:if="${resVO.reservationStatus == 1}">
+                                <tr>
+				                    <td th:text="${resVO.reservationId}"></td>
+				                    <td th:text="${resVO.reservationPhone}"></td>
+				                    <td th:text="${resVO.reservationEatdate}"></td>
+				                    <td th:text="${resVO.reservationNum}"></td>
+				                    <td th:text="${resVO.resTimeVO.reservationTime}"></td>
+				                    <td th:text="${resVO.reservationDate}"></td>
+				                    <td th:text="${resVO.tableTypeVO.tableType}"></td>
+				                    <td th:text="${resVO.reservationTable}"></td>
+				                    <td th:text="${resVO.reservationStatus}"></td>
+				                    <td th:text="${resVO.reservationNote}"></td>
+
+                                </tr>
+                            </th:block>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 待確認 -->
+                <div class="tab-pane" id="cancel">
+                    <table class="schedule-table">
+                        <thead>
+                        <tr>
+		                <th>訂位編號</th>
+		                <th>預約手機號碼</th>
+		                <th>用餐日期</th>
+		                <th>訂位人數</th>
+		                <th>訂位時段</th>
+		                <th>訂位時間</th>
+		                <th>桌型人數</th>
+		                <th>桌數</th>
+		                <th>訂位狀態</th>
+		                <th>訂位備註</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="resVO : ${resListData}">
+                            <th:block th:if="${resVO.reservationStatus == 2}">
+                                <tr>
+				                    <td th:text="${resVO.reservationId}"></td>
+				                    <td th:text="${resVO.reservationPhone}"></td>
+				                    <td th:text="${resVO.reservationEatdate}"></td>
+				                    <td th:text="${resVO.reservationNum}"></td>
+				                    <td th:text="${resVO.resTimeVO.reservationTime}"></td>
+				                    <td th:text="${resVO.reservationDate}"></td>
+				                    <td th:text="${resVO.tableTypeVO.tableType}"></td>
+				                    <td th:text="${resVO.reservationTable}"></td>
+				                    <td th:text="${resVO.reservationStatus}"></td>
+				                    <td th:text="${resVO.reservationNote}"></td>
+
+                                </tr>
+                            </th:block>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="tab-pane" id="overtime">
+                    <table class="schedule-table">
+                        <thead>
+                        <tr>
+			                <th>訂位編號</th>
+			                <th>預約手機號碼</th>
+			                <th>用餐日期</th>
+			                <th>訂位人數</th>
+			                <th>訂位時段</th>
+			                <th>訂位時間</th>
+			                <th>桌型人數</th>
+			                <th>桌數</th>
+			                <th>訂位狀態</th>
+			                <th>訂位備註</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="resVO : ${resListData}">
+                            <th:block th:if="${resVO.reservationStatus == '2'}">
+                                <tr>
+				                    <td th:text="${resVO.reservationId}"></td>
+				                    <td th:text="${resVO.reservationPhone}"></td>
+				                    <td th:text="${resVO.reservationEatdate}"></td>
+				                    <td th:text="${resVO.reservationNum}"></td>
+				                    <td th:text="${resVO.resTimeVO.reservationTime}"></td>
+				                    <td th:text="${resVO.reservationDate}"></td>
+				                    <td th:text="${resVO.tableTypeVO.tableType}"></td>
+				                    <td th:text="${resVO.reservationTable}"></td>
+				                    <td th:text="${resVO.reservationStatus}"></td>
+				                    <td th:text="${resVO.reservationNote}"></td>
+      
+                                </tr>
+                            </th:block>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 所有紀錄 -->
+
+            </div>
+		</div>
     </div>
-</div>
 <script th:inline="javascript">
     var baseUrl = /*[[@{/}]]*/ '/';
 
     function redirectTo(url) {
         window.location.href = url;
     }
+    $(document).ready(function() {
+        var table = $('.schedule-table').DataTable({
+            "lengthMenu": [5, 10, 20, 50, 100],
+            "searching": true,
+            "paging": true,
+            "ordering": true,
+            "language": {
+                "processing": "處理中...",
+                "loadingRecords": "載入中...",
+                "lengthMenu": "顯示 _MENU_ 筆結果",
+                "zeroRecords": "沒有符合的結果",
+                "info": "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+                "infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
+                "infoFiltered": "(從 _MAX_ 筆結果中過濾)",
+                "search": "搜尋:",
+                "paginate": {
+                    "first": "第一頁",
+                    "previous": "上一頁",
+                    "next": "下一頁",
+                    "last": "最後一頁"
+                },
+                "aria": {
+                    "sortAscending": ": 升冪排列",
+                    "sortDescending": ": 降冪排列"
+                }
+            }
+        });
+
+
+
+        // 初始化顯示第一個分頁
+        $('.tab-button[data-tab="all"]').click();
+    });
 </script>
 </body>
 </html>
