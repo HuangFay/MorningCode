@@ -63,7 +63,7 @@
             <th scope="col">檢舉人</th>
             <th scope="col">檢舉理由</th>
             <th scope="col">檢舉時間</th>
-            <!-- <th scope="col">狀態</th> -->
+            <th scope="col">狀態</th>
             <th scope="col">審核</th>
           </tr>
         </thead>
@@ -76,7 +76,7 @@
               <td th:text="${reportVO.memVO.memName}"></td>
               <td th:text="${reportVO.reportReason}"></td>
               <td th:text="${#dates.format(reportVO.reportTime, 'yyyy-MM-dd HH:mm')}"></td>
-              <!-- <td th:text="${reportVO.reportStatus}"></td> -->
+              <td th:text="${reportVO.reportStatus}"></td>
               <td>
                 <form method="post" th:action="@{review}" class="d-inline">
                   <button type="submit" class="btn btn-primary btn-sm">審核</button>

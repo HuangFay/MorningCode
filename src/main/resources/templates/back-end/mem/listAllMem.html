@@ -256,54 +256,18 @@ function editMem(memNo) {
                     confirmButtonText: '修改',
                     cancelButtonText: '取消',
                     preConfirm: () => {
-                    	
-                    	  const memName = document.getElementById('editMemName').value;
-                    	    const memEmail = document.getElementById('editMemEmail').value;
-                    	    const memPhone = document.getElementById('editMemPhone').value;
-                    	    const memUid = document.getElementById('editMemUid').value;
-                    	    const memDob = document.getElementById('editMemDob').value;
-                    	    const memSex = document.getElementById('editMemSex').value;
-                    	
-                    	    
-                    	    if (!memName || !memEmail || !memPhone || !memUid || !memDob || !memSex) {
-                    	        Swal.showValidationMessage('請填寫所有必填欄位');
-                    	        return false;
-                    	    }
-                    	    
-                    	    // Email 
-                    	    const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-                    	    if (!emailRegex.test(memEmail)) {
-                    	        Swal.showValidationMessage('會員email必需@gmail.com結尾');
-                    	        return false;
-                    	    }
-
-                    	    // Phone 
-                    	    const phoneRegex = /^\d{10}$/;
-                    	    if (!phoneRegex.test(memPhone)) {
-                    	        Swal.showValidationMessage('會員電話長度必需為10位數字');
-                    	        return false;
-                    	    }
-
-                    	    // ID 
-                    	    const idRegex = /^[A-Z]\d{9}$/;
-                    	    if (!idRegex.test(memUid)) {
-                    	        Swal.showValidationMessage('身分證號碼格式錯誤：首位為英文大寫，後9位為數字');
-                    	        return false;
-                    	    }
-                    	    
-                    	    
                         return {
                             memNo: document.getElementById('editMemNo').value,
-                            memName: memName,
-                            memEmail: memEmail,
+                            memName: document.getElementById('editMemName').value,
+                            memEmail: document.getElementById('editMemEmail').value,
                             memPassword: document.getElementById('editMemPassword').value,
                             memAddress: document.getElementById('editMemAddress').value,
-                            memPhone: memPhone,
-                            memDob: memDob,
-                            memUid: memUid,
-                            memSex: memSex,
+                            memPhone: document.getElementById('editMemPhone').value,
+                            memDob: document.getElementById('editMemDob').value,
+                            memUid: document.getElementById('editMemUid').value,
+                            memSex: document.getElementById('editMemSex').value,
                             memVerified: document.getElementById('editMemVerified').value
-                        };
+                        }
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {

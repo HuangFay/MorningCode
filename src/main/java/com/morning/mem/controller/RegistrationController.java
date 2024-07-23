@@ -209,13 +209,5 @@ public class RegistrationController {
 			return ResponseEntity.badRequest().body("密碼更新失敗");
 		}
 	}
-	// 購物車===============================================================================
-	 @GetMapping("/checkVerification")
-	    public ResponseEntity<Boolean> checkVerification(HttpSession session) {
-	        MemVO memVO = (MemVO) session.getAttribute("memVO");
-	        if (memVO != null) {
-	            return ResponseEntity.ok(memVO.getMemVerified() == 1);
-	        }
-	        return ResponseEntity.ok(false);
-	    }
+
 }
