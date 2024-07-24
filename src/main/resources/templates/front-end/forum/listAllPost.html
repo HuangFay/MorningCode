@@ -295,7 +295,7 @@
       var formData = 'reportId=' + encodeURIComponent(reportId)
         + 'reportContent=' + encodeURIComponent(reportContent);
       $.ajax({
-        url: 'forum/sendPostReport',
+        url: '/forum/sendPostReport',
         type: 'POST',
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         data: formData,
