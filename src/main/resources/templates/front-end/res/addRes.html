@@ -200,6 +200,26 @@
         var phoneInput = document.getElementById("phone");
         phoneInput.value = stripPhoneNumber(phoneInput.value);
 
+        if (document.getElementById("people").value === "") {
+            Swal.fire({
+                icon: "warning",
+                title: "警告",
+                text: "請選擇人數",
+                confirmButtonText: "確定"
+            });
+            return;
+        }
+
+        if (document.getElementById("tableType").value === "") {
+            Swal.fire({
+                icon: "warning",
+                title: "警告",
+                text: "請選擇桌型",
+                confirmButtonText: "確定"
+            });
+            return;
+        }
+
         fetch(form.action, {
             method: "POST",
             body: formData,
