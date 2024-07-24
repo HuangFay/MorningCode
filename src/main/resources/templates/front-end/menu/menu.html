@@ -279,8 +279,16 @@ color: inherit;
                 alert('已加入購物車');
                 $('#customizationModal').modal('hide');
             },
-            error: function() {
-                alert('加入購物車失敗');
+            error: function(xhr) {
+                if (xhr.status === 403) {
+                   
+                    alert('請先登入');
+                   
+                    window.location.href = '/front-end/mem/signup'; 
+                } else {
+                   
+                    alert('加入購物車失敗');
+                }
             }
         });
     }

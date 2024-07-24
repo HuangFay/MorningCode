@@ -1,18 +1,27 @@
 package com.morning.cart.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import com.morning.cart.model.CartService;
-import com.morning.cart.model.CartVO;
-import com.morning.order.model.OrderService;
-import com.morning.mem.model.MemVO;
-
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.morning.cart.model.CartService;
+import com.morning.cart.model.CartVO;
+import com.morning.mem.model.MemVO;
+import com.morning.order.model.OrderService;
 
 @Controller
 @RequestMapping("/cart")
@@ -87,11 +96,22 @@ public class CartController {
 
     @PostMapping("/add")
     @ResponseBody
-    public void addmeals(HttpSession session) {
-    Integer mealsId= (Integer)session.getAttribute("mealsId");
-       MemVO memvo =(MemVO)session.getAttribute("memVO");
-       System.out.println(memvo);
-       cartService.addCartItem(memvo.getMemNo(), mealsId);
+    public ResponseEntity<String> addmeals(HttpSession session) {
+        // 获取用户信息
+        MemVO memvo = (MemVO) session.getAttribute("memVO");
+
+        // 检查用户是否登录
+        if (memvo == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("请先登录"); // 返回403状态码和错误消息
+        }
+
+        // 获取餐点ID
+        Integer mealsId = (Integer) session.getAttribute("mealsId");
+
+        // 处理添加到购物车的逻辑
+        cartService.addCartItem(memvo.getMemNo(), mealsId);
+
+        return ResponseEntity.ok("添加成功"); // 返回成功消息
     }
 
     @GetMapping("/getTotalCount")
