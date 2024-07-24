@@ -340,3 +340,6 @@ body:after {
 .wrapper .form-element input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1); /* 反轉顏色，讓日期選擇器的圖標變白 */
 }
+.birthday {
+    line-height: 10px; 
+}

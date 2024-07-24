@@ -8,7 +8,12 @@
 <link rel='stylesheet'
 	href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'>
 <link rel="stylesheet" th:href="@{/css/signup.css}">
-
+<style>
+.birthday input {
+min-height:40px;
+max-height:40px;
+}
+</style>
 </head>
 <body>
 	<!-- partial:index.partial.html -->
@@ -45,25 +50,29 @@
 					class="confirm-password" placeholder="重新輸入密碼" />
 			</div>
 
-
-			<div class="form-element">
-				<span><i class="fa fa-map-marker"></i></span><input type="text"
-					class="address" placeholder="輸入地址" />
+			<div class="form-element" id="addressSelect" style="height: 70px;">
+				<span><i class="fa fa-map-marker"></i></span>
+				<select id="city" class="city-select" style="width: 110px;padding-top: 5px;padding-bottom: 5px;" >
+					<option value="">請選擇縣市</option>
+					<!-- 這裡將填入台灣的縣市選項 -->
+				</select>
+				<select id="district" class="district-select"style="width: 110px;padding-top: 5px;padding-bottom: 5px;">
+					<option value="">請選擇區域</option>
+					<!-- 這裡將根據選擇的縣市動態填入區域選項 -->
+				</select>
+				<input type="text" class="street-address" placeholder="請輸入詳細地址"style="margin-top: 0px;" />
 			</div>
-
 			<div class="form-element">
 				<span><i class="fa fa-mobile"></i></span><input type="text"
 					class="phone" placeholder="電話" />
 			</div>
 
 			<div class="form-element">
-				<span><i class="fa fa-venus-mars"></i></span> <select class="gender">
+				<span><i class="fa fa-venus-mars"></i></span> <select class="gender"style="margin-top: 5px; margin-bottom: 5px;">
 					<option value="M">男</option>
 					<option value="F">女</option>
 				</select>
 			</div>
-
-
 
 			<div class="form-element">
 				<span><i class="fa fa-credit-card"></i></span><input type="text"
@@ -75,12 +84,7 @@
 					class="birthday" placeholder="生日" />
 			</div>
 
-
-
-
-
-
-			<button class="btn-register">註冊</button>
+			<button class="btn-register"style="margin-top: 10px;">註冊</button>
 		</div>
 
 		<div class="login-view-toggle">
@@ -95,136 +99,156 @@
 			</div>
 		</div>
 
-	
 		<div class="forget" style="display: none;">
 			<div class="form-element">
 				<span><i class="fa fa-birthday-cake"></i></span><input type="text" id="forget-password" class="forget-password1" placeholder="輸入email" />
 			</div>
 			<button id="btn-forget" class="btn-forget">發送至信箱</button>
-
-
 		</div>
 		
 		<a class="morning-code" th:href="@{/index2}" >morning code</a>
 		
-		
 	</div>
-		<!-- partial -->
-		<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
-		<script th:src="@{/js/signup.js}"></script>
+	<!-- partial -->
+	<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+	<script th:src="@{/js/signup.js}"></script>
 
+	<script th:inline="javascript">
+		const taiwanCitiesAndDistricts = {
+			"台北市": ["中正區", "大同區", "中山區", "松山區", "大安區", "萬華區", "信義區", "士林區", "北投區", "內湖區", "南港區", "文山區"],
+			"新北市": ["板橋區", "三重區", "中和區", "永和區", "新莊區", "新店區", "樹林區", "鶯歌區", "三峽區", "淡水區", "汐止區", "瑞芳區", "土城區", "蘆洲區", "五股區", "泰山區", "林口區", "深坑區", "石碇區", "坪林區", "三芝區", "石門區", "八里區", "平溪區", "雙溪區", "貢寮區", "金山區", "萬里區", "烏來區"],
+			// 之後可添加其他縣市和區域
+		};
 
+		$(document).ready(function() {
+			// 填充縣市選項
+			for (let city in taiwanCitiesAndDistricts) {
+				$('#city').append(`<option value="${city}">${city}</option>`);
+			}
 
-		<!-- ================================================================================================== -->
+			// 當縣市改變時更新區域選項
+			$('#city').change(function() {
+				const city = $(this).val();
+				const districts = taiwanCitiesAndDistricts[city] || [];
+				const $districtSelect = $('#district');
+				$districtSelect.empty().append('<option value="">請選擇區域</option>');
 
-		<script th:inline="javascript">
-			$(function() {
-				// 註冊按鈕
-				$('.btn-register').on('click', function() {
-					var account = {
-						memName : $('.name').val(),
-						memEmail : $('.email').val(),
-						memPassword : $('.password').val(),
-						memAddress : $('.address').val(),
-						memPhone : $('.phone').val(),
-						memSex : $('.gender').val(),
-						memUid : $('.id').val(),
-						memDob : $('.birthday').val()
-					};
-
-					// 簡單驗證
-					if (account.memPassword !== $('.confirm-password').val()) {
-						alert("密碼不匹配");
-						return;
-					}
-
-					// 發送AJAX请求
-					$.ajax({
-						type : "POST",
-						url :  /*[[@{/api/register}]]*/ "",
-						contentType : "application/json",
-						data : JSON.stringify(account),
-						success : function(response) {
-							alert(response);
-							window.location.href = /*[[@{/index2}]]*/ "";
-						},
-						error : function(xhr) {
-							alert("註冊失敗: " + xhr.responseText);
-						}
-					});
+				districts.forEach(district => {
+					$districtSelect.append(`<option value="${district}">${district}</option>`);
 				});
+			});
+		});
 
-				//登入
-				$('.btn-login').on('click', function() {
-					var login = {
-						memEmail : $('.login-email').val(),
-						memPassword : $('.login-password').val()
-					};
+		$(function() {
+			// 註冊按鈕
+			$('.btn-register').on('click', function() {
+				const city = $('#city').val();
+				const district = $('#district').val();
+				const streetAddress = $('.street-address').val();
+				const fullAddress = `${city}${district}${streetAddress}`;
 
-					//簡單驗證
-					if (!login.memEmail) {
-						alert("請輸入帳號");
-						return;
+				var account = {
+					memName : $('.name').val(),
+					memEmail : $('.email').val(),
+					memPassword : $('.password').val(),
+					memAddress : fullAddress,
+					memPhone : $('.phone').val(),
+					memSex : $('.gender').val(),
+					memUid : $('.id').val(),
+					memDob : $('.birthday').val()
+				};
+
+				// 簡單驗證
+				if (account.memPassword !== $('.confirm-password').val()) {
+					alert("密碼不匹配");
+					return;
+				}
+
+				// 發送AJAX请求
+				$.ajax({
+					type : "POST",
+					url : /*[[@{/api/register}]]*/ "",
+					contentType : "application/json",
+					data : JSON.stringify(account),
+					success : function(response) {
+						alert(response);
+						window.location.href = /*[[@{/index2}]]*/ "";
+					},
+					error : function(xhr) {
+						alert("註冊失敗: " + xhr.responseText);
 					}
-					if (!login.memPassword) {
-						alert("請輸入密碼");
-						return;
-					}
-
-					//發送ajax請求
-					$.ajax({
-						type : "POST",
-						url :  /*[[@{/api/login}]]*/ "",
-						contentType : "application/json",
-						data : JSON.stringify(login),
-						success : function(response) {
-							alert("登入成功");
-							 
-							 window.location.href = response;
-						},
-						error : function(xhr) {
-							if (xhr.status === 401) {
-								alert("帳號或密碼有誤");
-							} else {
-								alert("登入失敗: " + xhr.responseText);
-							}
-						}
-					});
-
 				});
-				
-				
-				//忘記密碼
-				$('#btn-forget').on('click',function(){
-				    var email = $('#forget-password').val().trim();
-				    
-				    if (!email) {
-				        alert("請輸入Email");
-				        return;
-				    }
+			});
 
-				    $.ajax({
-				        type : "POST",
-				    	url :  /*[[@{/api/forgot-password}]]*/ "",
-				        contentType : "application/json",
-				        data: JSON.stringify({ "email": email }),
-				        success: function(response) {
-				            alert(response.message);
-				            window.location.href = /*[[@{/front-end/mem/signup}]]*/ "";
-				        },
-				        error: function(xhr, status, error) {
-				            var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : "發送失敗";
-				            alert(errorMessage);
-				        }
-				    });
+			//登入
+			$('.btn-login').on('click', function() {
+				var login = {
+					memEmail : $('.login-email').val(),
+					memPassword : $('.login-password').val()
+				};
+
+				//簡單驗證
+				if (!login.memEmail) {
+					alert("請輸入帳號");
+					return;
+				}
+				if (!login.memPassword) {
+					alert("請輸入密碼");
+					return;
+				}
+
+				//發送ajax請求
+				$.ajax({
+					type : "POST",
+					url : /*[[@{/api/login}]]*/ "",
+					contentType : "application/json",
+					data : JSON.stringify(login),
+					success : function(response) {
+						alert("登入成功");
+						 
+						 window.location.href = response;
+					},
+					error : function(xhr) {
+						if (xhr.status === 401) {
+							alert("帳號或密碼有誤");
+						} else {
+							alert("登入失敗: " + xhr.responseText);
+						}
+					}
 				});
 
 			});
-		</script>
-		<script>
-      function redirectTo(url) {
-          window.location.href = url;
-      }
-  </script>
+			
+			//忘記密碼
+			$('#btn-forget').on('click',function(){
+				var email = $('#forget-password').val().trim();
+				
+				if (!email) {
+					alert("請輸入Email");
+					return;
+				}
+
+				$.ajax({
+					type : "POST",
+					url : /*[[@{/api/forgot-password}]]*/ "",
+					contentType : "application/json",
+					data: JSON.stringify({ "email": email }),
+					success: function(response) {
+						alert(response.message);
+						window.location.href = /*[[@{/front-end/mem/signup}]]*/ "";
+					},
+					error: function(xhr, status, error) {
+						var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : "發送失敗";
+						alert(errorMessage);
+					}
+				});
+			});
+		});
+	</script>
+	<script>
+		function redirectTo(url) {
+			window.location.href = url;
+		}
+	</script>
 </body>
 </html>
