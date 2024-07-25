@@ -52,14 +52,12 @@ max-height:40px;
 
 			<div class="form-element" id="addressSelect" style="height: 70px;">
 				<span><i class="fa fa-map-marker"></i></span>
-				<select id="city" class="city-select" style="width: 110px;padding-top: 5px;padding-bottom: 5px;" >
-					<option value="">請選擇縣市</option>
-					<!-- 這裡將填入台灣的縣市選項 -->
-				</select>
-				<select id="district" class="district-select"style="width: 110px;padding-top: 5px;padding-bottom: 5px;">
-					<option value="">請選擇區域</option>
-					<!-- 這裡將根據選擇的縣市動態填入區域選項 -->
-				</select>
+				<select id="city" class="city-select" style="width: 110px;padding-top: 5px;padding-bottom: 5px;">
+    <option value="">請選擇縣市</option>
+</select>
+<select id="district" class="district-select" style="width: 110px;padding-top: 5px;padding-bottom: 5px;">
+    <option value="">請選擇區域</option>
+</select>
 				<input type="text" class="street-address" placeholder="請輸入詳細地址"style="margin-top: 0px;" />
 			</div>
 			<div class="form-element">
@@ -121,24 +119,39 @@ max-height:40px;
 		};
 
 		$(document).ready(function() {
-			// 填充縣市選項
-			for (let city in taiwanCitiesAndDistricts) {
-				$('#city').append(`<option value="${city}">${city}</option>`);
-			}
+		    // 填充縣市選項
+		    for (let city in taiwanCitiesAndDistricts) {
+		        $('#city').append(`<option value="${city}">${city}</option>`);
+		    }
 
-			// 當縣市改變時更新區域選項
-			$('#city').change(function() {
-				const city = $(this).val();
-				const districts = taiwanCitiesAndDistricts[city] || [];
-				const $districtSelect = $('#district');
-				$districtSelect.empty().append('<option value="">請選擇區域</option>');
+		    // 設置默認縣市（例如：台北市）
+		    $('#city').val('台北市');
 
-				districts.forEach(district => {
-					$districtSelect.append(`<option value="${district}">${district}</option>`);
-				});
-			});
+		    // 定義一個函數來更新區域選項
+		    function updateDistricts(city) {
+		        const districts = taiwanCitiesAndDistricts[city] || [];
+		        const $districtSelect = $('#district');
+		        $districtSelect.empty().append('<option value="">請選擇區域</option>');
+
+		        districts.forEach(district => {
+		            $districtSelect.append(`<option value="${district}">${district}</option>`);
+		        });
+
+		        // 如果是台北市，預設選擇中正區
+		        if (city === '台北市') {
+		            $districtSelect.val('中正區');
+		        }
+		    }
+
+		    // 初始填充區域選項
+		    updateDistricts('台北市');
+
+		    // 當縣市改變時更新區域選項
+		    $('#city').change(function() {
+		        const selectedCity = $(this).val();
+		        updateDistricts(selectedCity);
+		    });
 		});
-
 		$(function() {
 			// 註冊按鈕
 			$('.btn-register').on('click', function() {

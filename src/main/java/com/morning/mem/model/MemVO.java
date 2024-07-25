@@ -26,7 +26,7 @@ public class MemVO implements Serializable{
 	private Integer memNo;
 	
 	@NotEmpty(message="會員Email: 請勿空白")
-	@Pattern(regexp = "^[a-zA-Z0-9._%+-]+@gmail\\.com$", message = "員工email:必需@gmail.com結尾")
+	@Pattern(regexp = "^[a-zA-Z0-9._%+-]+@gmail\\.com$", message = "會員email:必需@gmail.com結尾")
 	@Column(name ="mem_email" ,unique = true)
 	private String memEmail;
 	

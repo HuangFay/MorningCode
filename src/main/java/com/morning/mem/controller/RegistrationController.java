@@ -105,7 +105,7 @@ public class RegistrationController {
 			// 發送email
 			sendVerificationEmail(memVO.getMemEmail(), uuid);
 
-			return ResponseEntity.ok("註冊成功，請查收驗證信");
+			return ResponseEntity.ok("註冊成功，已發送驗證信，請於24小時內進行認證");
 		} catch (Exception e) {
 			return ResponseEntity.status(500).body("註冊失敗：" + e.getMessage());
 		}
