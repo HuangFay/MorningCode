@@ -116,7 +116,7 @@ public class RegistrationController {
 		message.setFrom("morningcodes@gmail.com");
 		message.setTo(toEmail);
 		message.setSubject("請驗證您的郵箱");
-		message.setText("請點擊以下連結驗證您的郵箱：" + appUrl + "/verify.html?token=" + uuid);
+		message.setText("請於24小時內點擊以下連結驗證您的郵箱：" + appUrl + "/verify.html?token=" + uuid);
 		mailSender.send(message);
 	}
 

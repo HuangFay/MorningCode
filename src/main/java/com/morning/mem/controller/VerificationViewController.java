@@ -1,5 +1,7 @@
 package com.morning.mem.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,9 @@ public class VerificationViewController {
     
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+    
+    @Autowired
+    private HttpSession session;
 
     @GetMapping("/verify.html")
     public String showVerificationResult(@RequestParam String token, Model model) {
@@ -29,6 +34,8 @@ public class VerificationViewController {
                 memVO.setMemVerified((byte) 1);
                 memSvc.updateMem(memVO);
                 redisTemplate.delete("verify:" + token);
+                
+                session.setAttribute("memVO", memVO);
                 model.addAttribute("message", "信箱驗證成功！");
                 return "front-end/mem/verificationSuccess";
             } else {
