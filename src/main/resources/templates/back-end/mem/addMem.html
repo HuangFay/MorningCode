@@ -146,7 +146,7 @@ input[type=text], input[type=password], select, textarea {
 			
 			<div>
 			<label>會員身分證:</label>
-			<input type="text" th:field="*{memUid}" onclick="hideContent('memPhone.errors');" /><br/>
+			<input type="text" th:field="*{memUid}" onclick="hideContent('memUid.errors');" /><br/>
 			<span  th:if="${#fields.hasErrors('memUid')}" th:errors="*{memUid}" class="error" id="memUid.errors"></span>
 			</div>
 			
@@ -168,7 +168,7 @@ input[type=text], input[type=password], select, textarea {
 			
 			<div>
 			<label>會員生日:</label>
-			<input type="date" th:field="*{memDob}" onclick="hideContent('memPhone.errors');" /><br/>
+			<input type="date" th:field="*{memDob}" onclick="hideContent('memDob.errors');" /><br/>
 			<span  th:if="${#fields.hasErrors('memDob')}" th:errors="*{memDob}" class="error" id="memDob.errors"></span>
 			</div>
 			
@@ -205,6 +205,8 @@ input[type=text], input[type=password], select, textarea {
 
 function hideContent(d) {
      document.getElementById(d).style.display = "none";
+
+     document.getElementById(d).innerHTML = "";
 }
 
 //照片上傳-預覽用

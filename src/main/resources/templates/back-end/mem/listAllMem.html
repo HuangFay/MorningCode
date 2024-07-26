@@ -221,6 +221,7 @@ function editMem(memNo) {
     $.get("/mem/getOne_For_Update", { memNo: memNo })
         .done(function(memVO) {
             if (memVO) {
+            	 originalMemData = memVO;
                 Swal.fire({
                     title: '修改會員資料',
                     html: `<form id="editMemForm">
@@ -267,6 +268,7 @@ function editMem(memNo) {
                     	    
                     	    if (!memName || !memEmail || !memPhone || !memUid || !memDob || !memSex) {
                     	        Swal.showValidationMessage('請填寫所有必填欄位');
+                    	        resetToOriginalData();
                     	        return false;
                     	    }
                     	    
@@ -274,6 +276,7 @@ function editMem(memNo) {
                     	    const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
                     	    if (!emailRegex.test(memEmail)) {
                     	        Swal.showValidationMessage('會員email必需@gmail.com結尾');
+                    	        resetToOriginalData();
                     	        return false;
                     	    }
 
@@ -281,6 +284,7 @@ function editMem(memNo) {
                     	    const phoneRegex = /^\d{10}$/;
                     	    if (!phoneRegex.test(memPhone)) {
                     	        Swal.showValidationMessage('會員電話長度必需為10位數字');
+                    	        resetToOriginalData();
                     	        return false;
                     	    }
 
@@ -288,6 +292,7 @@ function editMem(memNo) {
                     	    const idRegex = /^[A-Z]\d{9}$/;
                     	    if (!idRegex.test(memUid)) {
                     	        Swal.showValidationMessage('身分證號碼格式錯誤：首位為英文大寫，後9位為數字');
+                    	        resetToOriginalData();
                     	        return false;
                     	    }
                     	    
@@ -354,6 +359,14 @@ function editMem(memNo) {
                 text: '無法獲取會員信息'
             });
         });
+}
+function resetToOriginalData() {
+    document.getElementById('editMemName').value = originalMemData.memName;
+    document.getElementById('editMemEmail').value = originalMemData.memEmail;
+    document.getElementById('editMemPhone').value = originalMemData.memPhone;
+    document.getElementById('editMemUid').value = originalMemData.memUid;
+    document.getElementById('editMemDob').value = originalMemData.memDob;
+    document.getElementById('editMemSex').value = originalMemData.memSex;
 }
 
 </script>

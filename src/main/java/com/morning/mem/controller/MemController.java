@@ -58,6 +58,11 @@ public class MemController {
 		if (result.hasErrors() || parts[0].isEmpty()) {
 			return "back-end/mem/addMem";
 		}
+	    if (memSvc.emailExists(memVO.getMemEmail())) {
+	        model.addAttribute("errorMessage", "該Email已存在");
+	        return "back-end/mem/addMem";
+	    }
+
 		/*************************** 2.開始新增資料 *****************************************/
 		String encodedPassword = passwordEncoder.encode(memVO.getMemPassword());
 		memVO.setMemPassword(encodedPassword);
