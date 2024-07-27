@@ -2,8 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>請假申請</title>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <link rel="stylesheet" th:href="@{/css/index3.css}">
@@ -81,77 +80,100 @@ select, input {
 	color: red;
 	font-size: 0.875em;
 	margin-top: 5px;
+	display: none; /* 初始隐藏错误消息 */
 }
 </style>
 </head>
 <body>
 
-	<div class="main-container">
-		<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
-		<div class="right-pane">
-			<h1>MorningCode 請假申請</h1>
-			<div class="container">
-				<h3>所有欄位皆為必填欄位</h3>
-				<form th:action="@{/back-end/leave/insert}" method="post"
-					th:object="${leaveVO}" enctype="multipart/form-data">
-					<div>
-						<label>請假員工姓名:</label> <input type="text"
-							th:value="${session.empVO.empName}" readonly />
-					</div>
-					<div>
-						<label>請假日期:</label> <input type="date" th:field="*{leaveDate}"
-							onclick="hideContent('leaveDate.errors');" required /> <span
-							th:if="${#fields.hasErrors('leaveDate')}"
-							th:errors="*{leaveDate}" class="error" id="leaveDate.errors"></span>
-					</div>
-					<div>
-						<label>代班員工姓名:</label> <select name="leaveAssigneeId" required>
-							<option value="">請選擇</option>
-							<option th:each="leaveAssigneeId : ${empListData}"
-								th:value="${leaveAssigneeId.empId}"
-								th:text="${leaveAssigneeId.empName}"></option>
-						</select>
-					</div>
-					<button type="submit" class="btn">送出新增</button>
-				</form>
-			</div>
+<div class="main-container">
+	<div th:replace="fragments/back-end-header-items :: sidebar1"></div>
+	<div class="right-pane">
+		<h1>MorningCode 請假申請</h1>
+		<div class="container">
+			<h3>所有欄位皆為必填欄位</h3>
+			<form th:action="@{/back-end/leave/insert}" method="post"
+				th:object="${leaveVO}" enctype="multipart/form-data" onsubmit="return validateForm()">
+				<div>
+					<label>請假員工姓名:</label> <input type="text"
+						th:value="${session.empVO.empName}" readonly />
+				</div>
+				<div>
+					<label>請假日期:</label>
+					<input type="text" id="leaveDate" th:field="*{leaveDate}" required/>
+					<span class="error" id="leaveDate.errors">請假日期不能為空</span>
+				</div>
+				<div>
+					<label>代班員工姓名:</label> 
+					<select name="leaveAssigneeId" id="leaveAssigneeId">
+						<option value="">請選擇</option>
+						<option th:each="leaveAssigneeId : ${empListData}"
+							th:value="${leaveAssigneeId.empId}"
+							th:text="${leaveAssigneeId.empName}"></option>
+					</select>
+					<span class="error" id="leaveAssigneeId.errors">請選擇員工</span>
+				</div>
+				<button type="submit" class="btn">送出新增</button>
+			</form>
 		</div>
 	</div>
+</div>
 
-	<script th:inline="javascript">
-		$(document).ready(function() {
-			// 從後端獲取的工作日期
-			var workingDates = /*[[${workingDates}]]*/ [];
-			var today = new Date().toISOString().split('T')[0];
+<script th:inline="javascript">
+    $(document).ready(function() {
+        // 從後端獲取的工作日期
+        var workingDates = /*[[${workingDates}]]*/ [];
+        var today = new Date().toISOString().split('T')[0];
 
-			var formattedDates = workingDates.map(function(date) {
-				return new Date(date).toISOString().split('T')[0];
-			});
-			console.log("Formatted dates:", formattedDates); // 確認日期輸出正確
+        var formattedDates = workingDates.map(function(date) {
+            return new Date(date).toISOString().split('T')[0];
+        });
+        console.log("Formatted dates:", formattedDates); // 確認日期輸出正確
 
-			// 使用 flatpickr 插件來設置日期選擇器
-			$("#leaveDate").flatpickr({
-				enable: formattedDates,
-				minDate: today
-			});
-		});
+        // 使用 flatpickr 插件來設置日期選擇器
+        flatpickr("#leaveDate", {
+            enable: formattedDates,
+            minDate: today,
+            dateFormat: "Y-m-d"
+        });
+    });
 
-		function hideContent(id) {
-			$('#' + id).hide();
-		}
-	</script>
+    function validateForm() {
+        var leaveDate = document.getElementById("leaveDate").value;
+        var leaveDateError = document.getElementById("leaveDate.errors");
+        var leaveAssigneeId = document.getElementById("leaveAssigneeId").value;
+        var leaveAssigneeIdError = document.getElementById("leaveAssigneeId.errors");
 
-	<script>
-		$("a.aa").on("click", function() {
-			var $li = $(this).closest("li");
-			$li.find("div.menu-item-1").slideToggle();
-			$li.siblings().find(".menu-item-1").slideUp();
-		});
-		function redirectTo(url) {
-			window.location.href = url;
-		}
-	</script>
+        var isValid = true;
 
+        if (leaveDate === "") {
+            leaveDateError.style.display = "block";
+            isValid = false;
+        } else {
+            leaveDateError.style.display = "none";
+        }
+
+        if (leaveAssigneeId === "") {
+            leaveAssigneeIdError.style.display = "block";
+            isValid = false;
+        } else {
+            leaveAssigneeIdError.style.display = "none";
+        }
+
+        return isValid; // 返回是否有效，以决定是否提交表单
+    }
+</script>
+
+<script>
+    $("a.aa").on("click", function() {
+        var $li = $(this).closest("li");
+        $li.find("div.menu-item-1").slideToggle();
+        $li.siblings().find(".menu-item-1").slideUp();
+    });
+    function redirectTo(url) {
+        window.location.href = url;
+    }
+</script>
 
 </body>
 </html>
